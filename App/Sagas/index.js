@@ -6,18 +6,18 @@ import DebugConfig from '../Config/DebugConfig'
 /* ------------- Types ------------- */
 
 import { StartupTypes } from '../Redux/StartupRedux'
-import { GithubTypes } from '../Redux/GithubRedux'
+import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux';
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { getUserAvatar } from './GithubSagas'
+import { LogIn } from './LogInSaga'
 
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
 // to the sagas which need it.
-const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
+const api = DebugConfig.useFixtures ? FixtureAPI : API.create();
 
 /* ------------- Connect Types To Sagas ------------- */
 
@@ -26,7 +26,6 @@ export default function * root () {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
 
-    // some sagas receive extra parameters in addition to an action
-    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api)
+    takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api)
   ])
 }
