@@ -1,5 +1,7 @@
 const colors = {
-  primary: '',
+  primary: '#00E1C9',
+  salmon: '#FA5C78',
+  primaryGradient: 'linear-gradient(-90deg, #00E1C9 2%, #00C098 100%)',
   primary_transparent: '',
 
 

@@ -3,14 +3,17 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors, Metrics } from '../Themes/';
 
-export default ButtonOutline = ({color, children}) => {
+export default ButtonOutline = ({color, children, pressHandler}) => {
+
   const styles = StyleSheet.create({
     container: {
+      marginTop: Metrics.baseMargin,
       flex: 1,
-      alignItems:'center'
+      alignItems:'center',
+      backgroundColor: Colors.transparent
     },
     button: {
-      borderColor: color || Colors.white,
+      borderColor: color || Colors.snow,
       borderWidth: 2,
       justifyContent: 'center',
       backgroundColor: Colors.transparent,
@@ -19,7 +22,7 @@ export default ButtonOutline = ({color, children}) => {
       height: 45
     },
     text: {
-      color: color || Colors.white,
+      color: color || Colors.snow,
       textAlign: 'center',
       fontSize: Fonts.size.medium,
     }
@@ -27,7 +30,7 @@ export default ButtonOutline = ({color, children}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={pressHandler}>
         <Text style={styles.text}>{children}</Text>
       </TouchableOpacity>
     </View>
