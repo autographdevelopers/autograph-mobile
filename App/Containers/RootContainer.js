@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StatusBar } from 'react-native'
-import ReduxNavigation from '../Navigation/ReduxNavigation'
+import AppWithNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
@@ -19,8 +19,8 @@ class RootContainer extends Component {
   render () {
     return (
       <View style={styles.applicationView}>
-        <StatusBar barStyle='light-content' />
-        <ReduxNavigation />
+        <StatusBar barStyle='default' translucent={true}/>
+        <AppWithNavigation />
       </View>
     )
   }

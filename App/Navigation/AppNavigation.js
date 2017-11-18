@@ -12,7 +12,7 @@ const routeConfigs = {
 const navigationConfigs = {
   headerMode: 'none',
   initialRouteName: 'login',
-  navigationOptions: { headerStyle: styles.header }
+  cardStyle: styles.card
 }
 
 export default StackNavigator(routeConfigs, navigationConfigs);
