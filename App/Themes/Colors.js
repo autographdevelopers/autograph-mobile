@@ -3,7 +3,10 @@ const colors = {
   salmon: '#FA5C78',
   primaryGradient: 'linear-gradient(-90deg, #00E1C9 2%, #00C098 100%)',
   primary_transparent: '',
-
+  lightGrey: '#EFEFF4',
+  mediumGrey: '#CECED2',
+  strongGrey: '#8E8E93',
+  softBlack: '#3C3F43',
 
 
   background: '#ff6e7f',

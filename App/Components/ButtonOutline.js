@@ -8,7 +8,7 @@ export default ButtonOutline = ({color, children, pressHandler}) => {
   const styles = StyleSheet.create({
     container: {
       marginTop: Metrics.baseMargin,
-      flex: 1,
+      // flex: 1,
       alignItems:'center',
       backgroundColor: Colors.transparent
     },

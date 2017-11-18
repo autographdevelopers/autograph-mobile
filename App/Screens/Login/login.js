@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux';
 import ButtonOutline from '../../Components/ButtonOutline'
+import LoginInputField from '../../Components/LoginInputField'
 
 import {StyleSheet} from 'react-native'
 import {Fonts, Metrics, Colors} from '../../Themes/'
@@ -42,6 +43,11 @@ class LoginScreen extends Component {
           <View>
             {errorMessage && <Text>{errorMessage}</Text>}
           </View>
+          <LoginInputField value={email}
+                           onChangetext={this.setField('email')}
+                           placeholder={'Please type in your email address.'}
+                           label={'Email'}
+          />
           <Text>Email</Text>
           <TextInput value={email} onChangeText={this.setField('email')} autoCapitalize={'none'}
                      autoFocus={true} placeholder={'Please type in your email address.'} />
