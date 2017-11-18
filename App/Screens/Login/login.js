@@ -3,8 +3,6 @@ import { Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-nativ
 import { connect } from 'react-redux';
 import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux';
 
-import style from './styles'
-
 class LoginScreen extends Component {
 
   constructor (props) {
