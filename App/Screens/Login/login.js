@@ -1,27 +1,63 @@
-import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { connect } from 'react-redux';
-import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux';
+import React, { Component } from 'react'
+import { Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { connect } from 'react-redux'
+import { SESSION_ACTION_TYPES } from '../../Redux/SessionRedux'
 import ButtonOutline from '../../Components/ButtonOutline'
 import LoginInputField from '../../Components/LoginInputField'
 
-import {StyleSheet} from 'react-native'
-import {Fonts, Metrics, Colors} from '../../Themes/'
+import { StyleSheet } from 'react-native'
+import { Fonts, Metrics, Colors } from '../../Themes/'
 
-const styles=  StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     // flex: 1,
     // paddingHorizontal: Metrics.marginHorizontal,
     flex: 1,
+    // alignItems: 'center'
 
   },
+  inputsWrapper: {
+    // borderWidth: .5,
+    justifyContent: 'flex-start',
+    flex: 2
+  },
+  titleWrapper: {
+    flex: 2,
+    justifyContent: 'center',
+    // borderWidth: .5
+  },
+  btnWrapper: {
+    flex: 1,
+    paddingVertical: 20,
+    justifyContent: 'center',
+    // borderWidth: .5
+
+  },
+  brandName: {
+    color: Colors.snow,
+    fontSize: Fonts.size.big,
+    textAlign: 'center',
+    fontWeight: '500'
+  },
+  slogan: {
+    fontSize: Fonts.size.regular,
+    textAlign: 'center',
+    color: Colors.snow
+  },
   inputsGroup: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    // textAlign: 'center'
+  },
+  error: {
+    textAlign: 'center',
+    color: Colors.salmon
+  },
+  resetPassword: {
+    textAlign: 'center',
+    color: Colors.snow,
+    marginTop: 20
+
   }
 })
-
-
 
 class LoginScreen extends Component {
 
@@ -30,41 +66,46 @@ class LoginScreen extends Component {
     this.state = {email: '', password: ''}
   }
 
-  setField(field) {
+  setField (field) {
     return text => {
       let changedField = {}
-      changedField[field] = text;
-      this.setState(changedField);
+      changedField[field] = text
+      this.setState(changedField)
     }
   }
 
   render () {
-    const {errorMessage, handleSubmit} = this.props;
-    const {email, password} = this.state;
+    const {errorMessage, handleSubmit} = this.props
+    const {email, password} = this.state
 
     return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.brandName}>AutoGraph</Text>
+          {/*<Text style={styles.slogan}>Profejonalne narzedzie do zarzadzania szkola jazdy.</Text>*/}
+        </View>
+        <View style={styles.inputsWrapper}>
           <View>
-            {errorMessage && <Text>{errorMessage}</Text>}
+            {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
           </View>
-          <View style={styles.inputsGroup}>
-            <LoginInputField value={email}
-                             handleTextChange={this.setField('email')}
-                             placeholder={'Please type in your email address.'}
-                             label={'EMAIL'}
-                             icon={'envelope'}
-                             secure={false}
-            />
-            <LoginInputField value={password}
-                             handleTextChange={this.setField('password')}
-                             placeholder={'Please type in your password.'}
-                             label={'PASSWORD'}
-                             icon={'md-lock'}
-                             secure={true}
-            />
-            <ButtonOutline onPress={handleSubmit(email, password)}>Log In</ButtonOutline>
-          </View>
+          <LoginInputField value={email}
+                           handleTextChange={this.setField('email')}
+                           placeholder={'Please type in your email address.'}
+                           label={'EMAIL'}
+                           icon={'envelope'}
+                           secure={false}
+          />
+          <LoginInputField value={password}
+                           handleTextChange={this.setField('password')}
+                           placeholder={'Please type in your password.'}
+                           label={'PASSWORD'}
+                           icon={'md-lock'}
+                           secure={true}
+          />
+        </View>
+        <View style={styles.btnWrapper}>
+          <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
+          <Text style={styles.resetPassword}>ZRESETUJ HASLO</Text>
         </View>
       </View>
     )

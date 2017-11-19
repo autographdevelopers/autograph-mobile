@@ -25,6 +25,7 @@ export default ButtonOutline = ({color, children, onPress}) => {
       color: color || Colors.snow,
       textAlign: 'center',
       fontSize: Fonts.size.medium,
+      fontWeight: '700'
     }
   });
 

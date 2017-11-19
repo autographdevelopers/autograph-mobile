@@ -27,7 +27,7 @@ export const INITIAL_STATE = {
 /* ------------- Handlers ------------- */
 
 export const setUserSessionHandler = (state, {sessionMetadata}) => {
-  return {...state, ...sessionMetadata}
+  return {...state, ...sessionMetadata, errorMessage: null}
 };
 
 export const setAuthenticationErrorMessageHandler = (state, {errorMessage}) => {
