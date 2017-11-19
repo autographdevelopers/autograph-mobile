@@ -38,6 +38,11 @@ export default LoginInputField = ({label, icon, value, handleTextChange, placeho
     iconBox: {
       position: 'absolute',
       left: 15,
+      width: 24,
+      height: 24,
+      flex:1,
+      justifyContent: 'center',
+      alignItems: 'center',
       zIndex: 9999
     },
     inputRow: {
