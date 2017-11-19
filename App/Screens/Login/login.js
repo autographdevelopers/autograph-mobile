@@ -75,7 +75,7 @@ class LoginScreen extends Component {
   }
 
   render () {
-    const {errorMessage, handleSubmit} = this.props
+    const {errorMessage, handleSubmit, navigation: {navigate}} = this.props
     const {email, password} = this.state
 
     return (
@@ -105,7 +105,7 @@ class LoginScreen extends Component {
         </View>
         <View style={styles.btnWrapper}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
-          <Text style={styles.resetPassword}>ZRESETUJ HASLO</Text>
+          <TouchableOpacity onPress={() => navigate('resetPassword')}><Text style={styles.resetPassword}>ZRESETUJ HASLO</Text></TouchableOpacity>
         </View>
       </View>
     )
