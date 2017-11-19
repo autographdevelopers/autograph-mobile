@@ -10,9 +10,14 @@ import {Fonts, Metrics, Colors} from '../../Themes/'
 
 const styles=  StyleSheet.create({
   container: {
+    // flex: 1,
+    // paddingHorizontal: Metrics.marginHorizontal,
     flex: 1,
-    paddingRight: Metrics.marginHorizontal,
-    paddingLeft: Metrics.marginHorizontal
+
+  },
+  inputsGroup: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   }
 })
 
@@ -34,7 +39,7 @@ class LoginScreen extends Component {
   }
 
   render () {
-    const {errorMessage, user} = this.props;
+    const {errorMessage, handleSubmit} = this.props;
     const {email, password} = this.state;
 
     return (
@@ -43,25 +48,24 @@ class LoginScreen extends Component {
           <View>
             {errorMessage && <Text>{errorMessage}</Text>}
           </View>
-          <LoginInputField value={email}
-                           onChangetext={this.setField('email')}
-                           placeholder={'Please type in your email address.'}
-                           label={'Email'}
-          />
-          <Text>Email</Text>
-          <TextInput value={email} onChangeText={this.setField('email')} autoCapitalize={'none'}
-                     autoFocus={true} placeholder={'Please type in your email address.'} />
+          <View style={styles.inputsGroup}>
+            <LoginInputField value={email}
+                             handleTextChange={this.setField('email')}
+                             placeholder={'Please type in your email address.'}
+                             label={'EMAIL'}
+                             icon={'envelope'}
+                             secure={false}
+            />
+            <LoginInputField value={password}
+                             handleTextChange={this.setField('password')}
+                             placeholder={'Please type in your password.'}
+                             label={'PASSWORD'}
+                             icon={'md-lock'}
+                             secure={true}
+            />
+            <ButtonOutline onPress={handleSubmit(email, password)}>Log In</ButtonOutline>
+          </View>
         </View>
-        <View>
-          <Text>Password</Text>
-          <TextInput value={password} onChangeText={this.setField('password')} autoCapitalize={'none'}
-                     autoFocus={true} placeholder={'Please type in your password.'} secureTextEntry={true}/>
-        </View>
-        <ButtonOutline>Log In</ButtonOutline>
-        {/*<TouchableOpacity onPress={this.props.handleSubmit(email, password)}>*/}
-          {/*<Text>Log In</Text>*/}
-          {/*{user && <Text>{user.name}</Text>}*/}
-        {/*</TouchableOpacity>*/}
       </View>
     )
   }

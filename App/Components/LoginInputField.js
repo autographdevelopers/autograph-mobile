@@ -19,7 +19,7 @@ export default LoginInputField = ({label, icon, value, handleTextChange, placeho
     grouper: {
       // flex: 1,
       width: '85%',
-      height: 'auto'
+      // height: 'auto',
     },
     label: {
       color: Colors.snow,

@@ -4,7 +4,7 @@ import {Fonts, Metrics, Colors} from '../../Themes/'
 export default StyleSheet.create({
   applicationView: {
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.primary
   },
   container: {
     flex: 1,
