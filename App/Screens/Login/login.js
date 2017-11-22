@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { SESSION_ACTION_TYPES } from '../../Redux/SessionRedux'
 import ButtonOutline from '../../Components/ButtonOutline'
 import LoginInputField from '../../Components/LoginInputField'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { StyleSheet } from 'react-native'
 import { Fonts, Metrics, Colors } from '../../Themes/'
@@ -105,7 +106,8 @@ class LoginScreen extends Component {
         </View>
         <View style={styles.btnWrapper}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
-          <TouchableOpacity onPress={() => navigate('resetPassword')}><Text style={styles.resetPassword}>ZRESETUJ HASLO</Text></TouchableOpacity>
+          <Icon size={15} icon={'lock-reset'} color={Colors.snow} />
+          {/*<TouchableOpacity onPress={() => navigate('resetPassword')}><Text style={styles.resetPassword}>ZRESETUJ HASLO</Text></TouchableOpacity>*/}
         </View>
       </View>
     )

@@ -11,7 +11,9 @@ function ReduxNavigation (props) {
     state: nav
   })
 
-  return <AppNavigation navigation={navigation} />
+  return (
+    <AppNavigation navigation={navigation} />
+  )
 }
 
 const mapStateToProps = state => ({ nav: state.nav })
