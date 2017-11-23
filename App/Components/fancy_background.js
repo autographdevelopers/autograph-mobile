@@ -8,7 +8,7 @@ export default FancyBackground = ({children}) => {
     overlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: Colors.primary,
-      opacity: 0.5,
+      opacity: 0.78,
       zIndex: 1
     },
     container: {
@@ -29,33 +29,4 @@ export default FancyBackground = ({children}) => {
       <View style={styles.children}>{children}</View>
     </View>
   )
-}
-
-
-{/*<View style={{flex: 1, backgroundColor: '#eee'}}>*/
-}
-
-{/*/!*background image*!/*/
-}
-{/*<View style={{ position: 'absolute', top: 0, left: 0, width: '100%', zIndex:999, height: '100%'}}>*/
-}
-{/*<Image style={{flex: 1, resizeMode,}} source={require('../Images/login_pic.jpg')}/>*/
-}
-{/*</View>*/
-}
-
-{/*/!*overlay*!/*/
-}
-{/*<View style={{flex: 1, backgroundColor: 'transparent', justifyContent: 'center'}}>*/
-}
-{/*<Text style={{textAlign: 'center', fontSize: 40,}}>*/
-}
-{/*Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquid aspernatur at blanditiis corporis dolores explicabo illo ipsam laboriosam molestiae nulla, officia, pariatur porro praesentium sapiente sequi veniam? Ea, tempore!*/
-}
-{/*</Text>*/
-}
-{/*</View>*/
-}
-
-{/*</View>*/
 }

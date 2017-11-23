@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   }
 });
 
+
 export default class LaunchScreen extends Component {
 
   constructor (props) {
@@ -74,7 +75,7 @@ export default class LaunchScreen extends Component {
 
             <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
               <Text style={styles.label}>Masz już konto?</Text>
-              <ButtonOutline>ZALOGUJ SIĘ</ButtonOutline>
+              <ButtonOutline onPress={()=>{this.props.navigation.navigate('login')}}>ZALOGUJ SIĘ</ButtonOutline>
             </View>
 
           </View>

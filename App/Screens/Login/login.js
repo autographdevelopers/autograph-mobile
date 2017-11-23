@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, TextInput } from 'react-native'
-import { connect } from 'react-redux'
-import { SESSION_ACTION_TYPES } from '../../Redux/SessionRedux'
+import React, {Component} from 'react'
+import {Text, View, TouchableOpacity, TextInput} from 'react-native'
+import {connect} from 'react-redux'
+import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux'
 import ButtonOutline from '../../Components/ButtonOutline'
 import LoginInputField from '../../Components/LoginInputField'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { StyleSheet } from 'react-native'
-import { Fonts, Metrics, Colors } from '../../Themes/'
+import {StyleSheet} from 'react-native'
+import {Fonts, Metrics, Colors} from '../../Themes/'
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   btnWrapper: {
     flex: 1,
     paddingVertical: 20,
-    justifyContent: 'center',
+    alignItems: 'center'
     // borderWidth: .5
 
   },
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
 
 class LoginScreen extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {email: '', password: ''}
   }
 
-  setField (field) {
+  setField(field) {
     return text => {
       let changedField = {}
       changedField[field] = text
@@ -75,12 +75,12 @@ class LoginScreen extends Component {
     }
   }
 
-  render () {
+  render() {
     const {errorMessage, handleSubmit, navigation: {navigate}} = this.props
     const {email, password} = this.state
 
     return (
-      <View style={styles.container}>
+      <FancyBackground>
         <View style={styles.titleWrapper}>
           <Text style={styles.brandName}>AutoGraph</Text>
           {/*<Text style={styles.slogan}>Profejonalne narzedzie do zarzadzania szkola jazdy.</Text>*/}
@@ -106,17 +106,19 @@ class LoginScreen extends Component {
         </View>
         <View style={styles.btnWrapper}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
-          <Icon size={15} icon={'lock-reset'} color={Colors.snow} />
+          <Icon size={15} icon={'lock-reset'} color={Colors.snow}/>
           {/*<TouchableOpacity onPress={() => navigate('resetPassword')}><Text style={styles.resetPassword}>ZRESETUJ HASLO</Text></TouchableOpacity>*/}
         </View>
-      </View>
+      </FancyBackground>
     )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   handleSubmit: (email, password) => {
-    return () => { dispatch({type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: {email, password}}) }
+    return () => {
+      dispatch({type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: {email, password}})
+    }
   }
 })
 
