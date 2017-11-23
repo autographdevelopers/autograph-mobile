@@ -4,9 +4,15 @@ import AppWithNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
+import {StyleSheet} from 'react-native'
 
-// Styles
-import styles from './Styles/RootContainerStyles'
+const styles = StyleSheet.create({
+  applicationView: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+    // paddingHorizontal: 15
+  }
+});
 
 class RootContainer extends Component {
   componentDidMount () {

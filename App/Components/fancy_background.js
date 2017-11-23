@@ -16,6 +16,7 @@ export default FancyBackground = ({children}) => {
     },
     children: {
       flex: 1,
+      zIndex: 9999
     }
   });
 

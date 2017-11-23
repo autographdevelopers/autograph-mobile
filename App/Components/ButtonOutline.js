@@ -30,10 +30,8 @@ export default ButtonOutline = ({color, children, onPress}) => {
 });
 
 return (
-  <View style={styles.container}>
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
-  </View>
 );
 }
