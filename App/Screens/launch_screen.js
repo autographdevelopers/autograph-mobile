@@ -9,11 +9,9 @@ import ButtonWhiteFill from '../Components/button_white_fill';
 const styles = StyleSheet.create({
   section: {
     flex: 1,
-    borderColor: 'black',
-    borderWidth: 1,
   },
   brandSection :{
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   brand: {
@@ -41,14 +39,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   actions: {
-    justifyContent: 'flex-start',
-    // paddingBottom: 70
+    justifyContent: 'flex-end',
+    paddingBottom: 70
   },
   actionWrapper: {
     alignItems: 'center'
   },
   actionWrapperLast: {
-    // marginTop: 43
+    marginTop: 35
   }
 });
 
@@ -66,7 +64,6 @@ export default class LaunchScreen extends Component {
             <Text style={styles.brandName}>AutoGraph</Text>
             <Text style={styles.slogan}>Profesjonalne narzędzie do zarządzania szkołami jazdy.</Text>
           </View>
-          <View style={styles.section}/>
 
           <View style={[styles.section, styles.actions]}>
 
