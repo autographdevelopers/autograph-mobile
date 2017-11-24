@@ -9,7 +9,7 @@ function ReduxNavigation (props) {
   const navigation = ReactNavigation.addNavigationHelpers({
     dispatch,
     state: nav
-  })
+  });
 
   return (
     <AppNavigation navigation={navigation} />

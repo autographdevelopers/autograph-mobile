@@ -5,34 +5,28 @@ import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux'
 import ButtonOutline from '../../Components/ButtonOutline'
 import LoginInputField from '../../Components/LoginInputField'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import NavHeader from '../../Components/nav_header';
 
 import {StyleSheet} from 'react-native'
 import {Fonts, Metrics, Colors} from '../../Themes/'
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // paddingHorizontal: Metrics.marginHorizontal,
     flex: 1,
-    // alignItems: 'center'
 
   },
   inputsWrapper: {
-    // borderWidth: .5,
     justifyContent: 'flex-start',
     flex: 2
   },
   titleWrapper: {
     flex: 2,
     justifyContent: 'center',
-    // borderWidth: .5
   },
   btnWrapper: {
     flex: 1,
     paddingVertical: 20,
     alignItems: 'center'
-    // borderWidth: .5
-
   },
   brandName: {
     color: Colors.snow,
@@ -45,9 +39,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.snow
   },
-  inputsGroup: {
-    // textAlign: 'center'
-  },
   error: {
     textAlign: 'center',
     color: Colors.salmon
@@ -58,9 +49,20 @@ const styles = StyleSheet.create({
     marginTop: 20
 
   }
-})
+});
 
 class LoginScreen extends Component {
+
+  static navigationOptions = {
+    headerStyle: {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      zIndex: 99999,
+      top: 0,
+      left: 0,
+      right: 0
+      }
+  };
 
   constructor(props) {
     super(props)
@@ -91,14 +93,14 @@ class LoginScreen extends Component {
           </View>
           <LoginInputField value={email}
                            handleTextChange={this.setField('email')}
-                           placeholder={'Please type in your email address.'}
+                           placeholder={'Type in your email address.'}
                            label={'EMAIL'}
                            icon={'envelope'}
                            secure={false}
           />
           <LoginInputField value={password}
                            handleTextChange={this.setField('password')}
-                           placeholder={'Please type in your password.'}
+                           placeholder={'Type in your password.'}
                            label={'PASSWORD'}
                            icon={'md-lock'}
                            secure={true}
@@ -130,3 +132,4 @@ const mapStateToProps = (state, _) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
+

@@ -5,6 +5,7 @@ import { Fonts, Metrics, Colors } from '../Themes/'
 import {StyleSheet} from 'react-native'
 import ButtonOutline from '../Components/ButtonOutline'
 import ButtonWhiteFill from '../Components/button_white_fill';
+import {connect} from 'react-redux'
 
 const styles = StyleSheet.create({
   section: {
@@ -51,13 +52,12 @@ const styles = StyleSheet.create({
 });
 
 
-export default class LaunchScreen extends Component {
+class LaunchScreen extends Component {
+  static navigationOptions = {
+    header: null
+  };
 
-  constructor (props) {
-    super(props)
-  }
-
-  render () {
+  render() {
     return (
       <FancyBackground>
         <View style={styles.container}>
@@ -75,12 +75,16 @@ export default class LaunchScreen extends Component {
 
             <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
               <Text style={styles.label}>Masz już konto?</Text>
-              <ButtonOutline onPress={()=>{this.props.navigation.navigate('login')}}>ZALOGUJ SIĘ</ButtonOutline>
+              <ButtonOutline onPress={() => {
+                this.props.navigation.navigate('login')
+              }}>ZALOGUJ SIĘ</ButtonOutline>
             </View>
-
           </View>
         </View>
       </FancyBackground>
     )
   }
-}
+};
+
+
+export default connect()(LaunchScreen);

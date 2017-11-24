@@ -26,6 +26,7 @@ export default LoginInputField = ({label, icon, value, handleTextChange, placeho
       backgroundColor: Colors.transparent,
       fontSize: Fonts.size.small,
       fontWeight: 'bold',
+      marginBottom: 11
     },
     input: {
       borderRadius: 5,
