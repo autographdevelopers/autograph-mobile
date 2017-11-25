@@ -4,29 +4,25 @@ import {connect} from 'react-redux'
 import {SESSION_ACTION_TYPES} from '../../Redux/SessionRedux'
 import ButtonOutline from '../../Components/ButtonOutline'
 import LoginInputField from '../../Components/LoginInputField'
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavHeader from '../../Components/nav_header';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {StyleSheet} from 'react-native'
 import {Fonts, Metrics, Colors} from '../../Themes/'
 
 const styles = StyleSheet.create({
-  container: {
+  inputsSection: {
+    justifyContent: 'flex-end',
     flex: 1,
+  },
+  titleSection: {
+    flex: 1,
+    justifyContent: 'center',
 
   },
-  inputsWrapper: {
-    justifyContent: 'flex-start',
-    flex: 2
-  },
-  titleWrapper: {
-    flex: 2,
-    justifyContent: 'center',
-  },
-  btnWrapper: {
+  actionsSection: {
     flex: 1,
-    paddingVertical: 20,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
   brandName: {
     color: Colors.snow,
@@ -46,14 +42,22 @@ const styles = StyleSheet.create({
   resetPassword: {
     textAlign: 'center',
     color: Colors.snow,
-    marginTop: 20
-
+    fontSize: Fonts.size.small,
+    fontWeight: 'bold',
+    marginLeft: 8
+  },
+  resetPasswordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 32,
+    marginBottom: 36
   }
 });
 
 class LoginScreen extends Component {
 
   static navigationOptions = {
+    headerTintColor: Colors.snow,
     headerStyle: {
       position: 'absolute',
       backgroundColor: 'transparent',
@@ -61,33 +65,34 @@ class LoginScreen extends Component {
       top: 0,
       left: 0,
       right: 0
-      }
+    }
   };
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {email: '', password: ''}
   }
 
   setField(field) {
     return text => {
-      let changedField = {}
-      changedField[field] = text
-      this.setState(changedField)
+      let changedField = {};
+      changedField[field] = text;
+      this.setState(changedField);
     }
   }
 
   render() {
-    const {errorMessage, handleSubmit, navigation: {navigate}} = this.props
-    const {email, password} = this.state
+    const {errorMessage, handleSubmit, navigation: {navigate}} = this.props;
+    const {email, password} = this.state;
 
     return (
       <FancyBackground>
-        <View style={styles.titleWrapper}>
+
+        <View style={styles.titleSection}>
           <Text style={styles.brandName}>AutoGraph</Text>
-          {/*<Text style={styles.slogan}>Profejonalne narzedzie do zarzadzania szkola jazdy.</Text>*/}
         </View>
-        <View style={styles.inputsWrapper}>
+
+        <View style={styles.inputsSection}>
           <View>
             {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
           </View>
@@ -106,11 +111,17 @@ class LoginScreen extends Component {
                            secure={true}
           />
         </View>
-        <View style={styles.btnWrapper}>
+
+        <View style={styles.actionsSection}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
-          <Icon size={15} icon={'lock-reset'} color={Colors.snow}/>
-          {/*<TouchableOpacity onPress={() => navigate('resetPassword')}><Text style={styles.resetPassword}>ZRESETUJ HASLO</Text></TouchableOpacity>*/}
+          <View style={styles.resetPasswordContainer}>
+            <Icon name={'lock-reset'} size={20} color={Colors.snow}/>
+            <TouchableOpacity onPress={() => navigate('resetPassword')} >
+              <Text style={styles.resetPassword}>ZRESETUJ HASLO</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
       </FancyBackground>
     )
   }
@@ -122,7 +133,7 @@ const mapDispatchToProps = dispatch => ({
       dispatch({type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: {email, password}})
     }
   }
-})
+});
 
 const mapStateToProps = (state, _) => {
   return {
