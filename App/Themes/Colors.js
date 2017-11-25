@@ -1,6 +1,4 @@
 const colors = {
-  primary: '#00E1C9',
-
   primaryWarm: '#00C098',
   primaryCold: '#00E1C9',
   salmon: '#FA5C78',
@@ -10,7 +8,6 @@ const colors = {
   softBlack: '#3C3F43',
 
 
-  background: '#ff6e7f',
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
   transparent: 'rgba(0,0,0,0)',
@@ -33,6 +30,6 @@ const colors = {
   border: '#483F53',
   banner: '#5F3E63',
   text: '#E0D7E5'
-}
+};
 
 export default colors

@@ -1,4 +1,5 @@
 const type = {
+  // TODO  fix Roboto font doesn't load
   base: 'RobotoRegular',
   bold: 'RobotoBold',
   // emphasis: 'HelveticaNeue-Italic',
@@ -20,7 +21,7 @@ const size = {
   medium: 15,
   small: 11,
   tiny: 8.5
-}
+};
 
 const style = {
   h1: {

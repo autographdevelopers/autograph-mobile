@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import React, { Component } from 'react';
-import NavHeader from '../Components/nav_header';
+import NavHeader from '../Components/NavHeader';
 
 export default class ResetPasswordScreen extends Component {
 

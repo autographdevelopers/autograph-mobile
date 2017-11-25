@@ -1,10 +1,10 @@
 import { Text, ScrollView, Image, View } from 'react-native';
 import React, { Component } from 'react';
-import FancyBackground from '../Components/fancy_background';
+import FancyBackground from '../Components/FancyBackground';
 import { Fonts, Metrics, Colors } from '../Themes/'
 import {StyleSheet} from 'react-native'
 import ButtonOutline from '../Components/ButtonOutline'
-import ButtonWhiteFill from '../Components/button_white_fill';
+import ButtonWhiteFill from '../Components/ButtonWhiteFill';
 import {connect} from 'react-redux'
 
 const styles = StyleSheet.create({

@@ -9,8 +9,6 @@ import {StyleSheet} from 'react-native'
 const styles = StyleSheet.create({
   applicationView: {
     flex: 1,
-    // paddingTop: StatusBar.currentHeight,
-    // paddingHorizontal: 15
   }
 });
 

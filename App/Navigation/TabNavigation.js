@@ -1,15 +1,16 @@
-import ActivitiesScreen from '../Screens/activities';
+import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import { TabNavigator } from 'react-navigation';
+import { Colors } from '../Themes';
 
 const routesConfigs = {
-  activities: {screen: ActivitiesScreen}
-}
+  activities: { screen: ActivitiesScreen }
+};
 
 const navigationConfig = {
   animationEnabled: true,
   tabBarOptions: {
-    activeTintColor: '#e91e63'
+    activeTintColor: Colors.primaryWarm
   }
-}
+};
 
 export default TabNavigator(routesConfigs, navigationConfig);

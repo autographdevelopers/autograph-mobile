@@ -11,14 +11,11 @@ export default LoginInputField = ({label, icon, value, handleTextChange, placeho
   const styles = StyleSheet.create({
     container: {
       marginTop: Metrics.doubleBaseMargin,
-      // flex: 1,
       alignItems:'center',
       backgroundColor: Colors.transparent
     },
     grouper: {
-      // flex: 1,
       width: '85%',
-      // height: 'auto',
     },
     label: {
       color: Colors.snow,

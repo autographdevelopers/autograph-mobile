@@ -6,12 +6,6 @@ import { Fonts, Colors, Metrics } from '../Themes/';
 export default ButtonWhiteFill = ({color, children, onPress}) => {
 
   const styles = StyleSheet.create({
-    container: {
-      marginTop: Metrics.baseMargin,
-      // flex: 1,
-      alignItems:'center',
-      backgroundColor: Colors.transparent
-    },
     button: {
       borderColor: color || Colors.snow,
       borderWidth: 2,
@@ -30,8 +24,8 @@ export default ButtonWhiteFill = ({color, children, onPress}) => {
   });
 
   return (
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.text}>{children}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
+      <Text style={styles.text}>{children}</Text>
+    </TouchableOpacity>
   );
 }
