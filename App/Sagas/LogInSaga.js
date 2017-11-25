@@ -16,7 +16,7 @@ export function * LogIn (api, action) {
     yield put(userActionCreators.setUser(user));
     yield put(PrimaryNavigation.router.getActionForPathAndParams('main'));
   } else {
-    // what if server turned off?
+    // TODO :how to handle server turned off or 500 errors
     const errorMessage = response.data.errors[0];
     yield put(sessionActionCreators.setAuthenticationErrorMessage(errorMessage));
   }

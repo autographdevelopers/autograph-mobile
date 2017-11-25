@@ -32,6 +32,7 @@ export function * startup (action) {
       }
     })
   }
+  // TODO find out why it caused error
   // const avatar = yield select(selectAvatar)
   // only get if we don't have it yet
   // if (!is(String, avatar)) {
