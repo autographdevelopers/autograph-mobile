@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -79,6 +78,7 @@
 		F9CF84A5B1804C03A2900244 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A72F5F96DBD46AD9DE395A7 /* SimpleLineIcons.ttf */; };
 		FC7F2B23261946C1A5427A55 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAE1CFE45ADE4F349A65BA86 /* Roboto-MediumItalic.ttf */; };
 		FD4D6EF017D049F2813C657D /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4B24586C24B2AA970284E /* Roboto-Thin.ttf */; };
+		AD32A0C0B5D340F5A8ECAFF0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B0281A21FBF848B481E1D4A8 /* LICENSE.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -451,6 +451,7 @@
 		E8CDB8036F684234878A8E70 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		E924DD9B23434561B77E8A10 /* RobotoLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = RobotoLightItalic.ttf; path = ../App/Fonts/Roboto/RobotoLightItalic.ttf; sourceTree = "<group>"; };
 		F78F151FE34E4F95B0885323 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
+		B0281A21FBF848B481E1D4A8 /* LICENSE.txt */ = {isa = PBXFileReference; name = "LICENSE.txt"; path = "../App/Fonts/Roboto/LICENSE.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -807,6 +808,7 @@
 				38A88CC4050A423593012089 /* RobotoRegular.ttf */,
 				B876DED8145946748D146F4F /* RobotoThin.ttf */,
 				3C90E3DA033A4265B3392EC9 /* RobotoThinItalic.ttf */,
+				B0281A21FBF848B481E1D4A8 /* LICENSE.txt */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1332,6 +1334,7 @@
 				25DC72C9FD154EB0BA486A28 /* RobotoRegular.ttf in Resources */,
 				11D8BFB1B8744CA3A5C4508A /* RobotoThin.ttf in Resources */,
 				740D392D664A4D12928F4632 /* RobotoThinItalic.ttf in Resources */,
+				AD32A0C0B5D340F5A8ECAFF0 /* LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,8 +9,7 @@ export default FancyBackground = ({children}) => {
     overlay: {
       flex: 1,
         ...StyleSheet.absoluteFillObject,
-        // backgroundColor: Colors.primary,
-        opacity: 0.7,
+        opacity: 0.65,
         zIndex: 9
     },
     container: {

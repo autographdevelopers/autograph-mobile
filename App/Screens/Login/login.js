@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
   },
   error: {
     textAlign: 'center',
-    color: Colors.salmon
+    color: Colors.salmon,
+    fontWeight: 'bold',
+
   },
   resetPassword: {
     textAlign: 'center',
@@ -62,9 +64,14 @@ class LoginScreen extends Component {
       position: 'absolute',
       backgroundColor: 'transparent',
       zIndex: 99999,
+      paddingLeft: 0,
       top: 0,
       left: 0,
-      right: 0
+      right: 0,
+      margin: 0
+    },
+    headerLeftStyle: {
+      padding: 0
     }
   };
 
@@ -140,7 +147,7 @@ const mapStateToProps = (state, _) => {
     errorMessage: state.session.errorMessage,
     user: state.user
   }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
 

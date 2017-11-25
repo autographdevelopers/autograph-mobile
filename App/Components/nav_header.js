@@ -1,38 +1,53 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
-import { StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {Text, TouchableOpacity, View, TextInput} from 'react-native';
+import {StyleSheet} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {Fonts, Colors, Metrics} from '../Themes/'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-export default NavHeader = (props) => {
+export default NavHeader = ({navigation, title}) => {
 
   const styles = StyleSheet.create({
     mainContainer: {
-      flex: 1,
-      flexDirection: 'row',
+      height: 64,
+      paddingBottom: 12,
+      alignItems: 'flex-end',
       justifyContent: 'space-between',
-      height: 80,
-      backgroundColor: 'red'
+      flexDirection: 'row',
     },
     leftContainer: {
       width: 25,
-      backgroundColor: 'green'
+      backgroundColor: 'transparent'
     },
     rightContainer: {
       width: 25,
-      backgroundColor: 'blue'
+      backgroundColor: 'transparent'
     },
-    middleContainer: {
+    title: {
+      textAlign: 'center',
+      color: Colors.snow,
+      fontSize: Fonts.size.regular,
+      backgroundColor: 'transparent'
+    },
+    wrapper: {
       flex: 1,
-      backgroundColor: 'pink'
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 15
     }
-
   });
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.leftContainer}></View>
-      <View style={styles.middleContainer}></View>
-      <View style={styles.rightContainer}></View>
-    </View>
+    <LinearGradient start={{x: 0.0, y: 0.5}} end={{x: 1, y: 0.5}}
+                    colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.mainContainer}>
+      <View style={styles.wrapper}>
+        <View style={styles.leftContainer}>
+          <TouchableOpacity onPress={()=>navigation.goBack()}><Icon name={'angle-left'} size={30} color={Colors.snow}/></TouchableOpacity>
+        </View>
+        <Text style={styles.title}>{title}</Text>
+        <View style={styles.rightContainer}/>
+      </View>
+    </LinearGradient>
   );
 }
