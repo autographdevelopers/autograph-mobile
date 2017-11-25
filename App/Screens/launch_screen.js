@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   actionWrapperLast: {
-    marginTop: 35
+    marginTop: 34
   }
 });
 

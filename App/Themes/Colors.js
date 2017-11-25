@@ -1,9 +1,9 @@
 const colors = {
   primary: '#00E1C9',
-  primary_transparent: 'rgba(27, 241, 205, 0.7215686274509804)',
+
+  primaryWarm: '#00C098',
+  primaryCold: '#00E1C9',
   salmon: '#FA5C78',
-  primaryGradient: 'linear-gradient(-90deg, #00E1C9 2%, #00C098 100%)',
-  primary_transparent: '',
   lightGrey: '#EFEFF4',
   mediumGrey: '#CECED2',
   strongGrey: '#8E8E93',

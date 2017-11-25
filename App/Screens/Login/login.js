@@ -100,7 +100,7 @@ class LoginScreen extends Component {
                            handleTextChange={this.setField('email')}
                            placeholder={'Type in your email address.'}
                            label={'EMAIL'}
-                           icon={'envelope'}
+                           icon={'md-mail'}
                            secure={false}
           />
           <LoginInputField value={password}

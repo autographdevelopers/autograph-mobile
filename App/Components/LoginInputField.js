@@ -3,8 +3,7 @@ import { Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors, Metrics } from '../Themes/';
 
-import IconE from 'react-native-vector-icons/FontAwesome';
-import IconP from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default LoginInputField = ({label, icon, value, handleTextChange, placeholder, secure}) => {
@@ -58,10 +57,7 @@ export default LoginInputField = ({label, icon, value, handleTextChange, placeho
         <Text style={styles.label}>{label}</Text>
         <View style={styles.inputRow}>
           <View style={styles.iconBox}>
-            {
-              secure ? <IconP name={icon} size={24} color={Colors.strongGrey}/>
-                : <IconE name={icon} size={24} color={Colors.strongGrey}/>
-            }
+            <Icon name={icon} size={24} color={Colors.strongGrey}/>
           </View>
           <TextInput style={styles.input}
                      value={value}

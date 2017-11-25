@@ -2,14 +2,16 @@ import React, {Component} from 'react'
 import {View, Image, Text} from 'react-native'
 import {StyleSheet} from 'react-native'
 import {Fonts, Colors, Metrics} from '../Themes/'
+import LinearGradient from 'react-native-linear-gradient';
 
 export default FancyBackground = ({children}) => {
   const styles = StyleSheet.create({
     overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: Colors.primary,
-      opacity: 0.78,
-      zIndex: 1
+      flex: 1,
+        ...StyleSheet.absoluteFillObject,
+        // backgroundColor: Colors.primary,
+        opacity: 0.7,
+        zIndex: 9
     },
     container: {
       flex: 1
@@ -20,12 +22,11 @@ export default FancyBackground = ({children}) => {
     }
   });
 
-  const resizeMode = 'center';
-
   return (
     <View style={styles.container}>
       <Image resizeMode={'stretch'} source={require('../Images/login_pic.jpg')} style={StyleSheet.absoluteFillObject}/>
-      <View style={styles.overlay}/>
+      <LinearGradient start={{x: 0.0, y: 0.5}} end={{x: 1, y: 0.5}}
+                      colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.overlay}/>
       <View style={styles.children}>{children}</View>
     </View>
   )
