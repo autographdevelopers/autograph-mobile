@@ -18,26 +18,25 @@ export default InputField = ({input, meta, label, required=false, placeholder}) 
       color: Colors.strongGrey
     },
     input: {
-      paddingVertical: 11,
+      paddingVertical: 5,
       borderBottomWidth: 1,
       borderBottomColor: meta.error ? Colors.salmon : Colors.mediumGrey,
       fontSize: Fonts.size.medium,
       color: meta.error ? Colors.salmon : 'black'
     },
-    footer: {
-      height: 25
-
-    },
     errorZone: {
       color: Colors.salmon,
       fontSize: Fonts.size.small
+    },
+    space: {
+      height: 15
     },
     asterix: {
       color: Colors.salmon,
       fontSize: Fonts.size.small,
       lineHeight: Fonts.size.small,
       marginLeft: 3
-    }
+    },
   });
 
   return (
@@ -49,10 +48,8 @@ export default InputField = ({input, meta, label, required=false, placeholder}) 
       </View>
 
       <TextInput value={input.value} style={styles.input} placeholder={placeholder}/>
-
-      <View style={styles.footer}>
-        {meta.error && <Text style={styles.errorZone}>{meta.error}</Text> }
-      </View>
+      {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
+      <View style={styles.space}/>
     </View>
   );
 }
