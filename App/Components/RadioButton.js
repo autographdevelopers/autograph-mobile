@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {StyleSheet} from 'react-native';
-import {Fonts, Colors} from '../Themes/';
+import {Colors} from '../Themes/';
+import Reactotron from 'reactotron-react-native'
 
+export default RadioButton = ({input, meta, boundValue, setValue}) => {
+  const RADIUS_OUTER = 25;
+  const RADIUS_INNER = 15;
 
-export default RadioButton = ({input, meta, value}) => {
   const styles = StyleSheet.create({
     outline: {
-      width: 25,
-      height: 25,
+      width: RADIUS_OUTER,
+      height: RADIUS_OUTER,
       borderRadius: 50,
       borderWidth: 2,
       borderColor: Colors.primaryWarm,
@@ -16,16 +19,17 @@ export default RadioButton = ({input, meta, value}) => {
       alignItems: 'center'
     },
     fill: {
-      width: 15,
-      height: 15,
+      width: RADIUS_INNER,
+      height: RADIUS_INNER,
       borderRadius: 50,
       backgroundColor: Colors.primaryWarm
     }
   });
-
+  Reactotron.log("VALUE: " + boundValue);
+  Reactotron.log("STORE VALUE: " + input.value);
   return (
-    <View style={styles.outline}>
-      { value === input.value && <View style={styles.fill}/> }
-    </View>
+    <TouchableOpacity style={styles.outline} onPress={setValue}>
+      { boundValue === input.value && <View style={styles.fill}/> }
+    </TouchableOpacity>
   );
 }
