@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {Fonts, Colors} from '../Themes/';
 
 /** This component was originally designed to work with redux-form library.
- * It can be customized to work on his own thought, by providing onTextChange handler
+ It receives input and meta object props(check docs) from redux form Field wrapper and also other props you pass to Field component
 **/
 
 export default InputField = ({input, meta, label, required = false, placeholder}) => {
@@ -24,7 +24,7 @@ export default InputField = ({input, meta, label, required = false, placeholder}
       marginLeft: 3
     },
     input: {
-      paddingVertical: 5,
+      paddingVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: meta.error ? Colors.salmon : Colors.mediumGrey,
       fontSize: Fonts.size.medium,
@@ -46,7 +46,11 @@ export default InputField = ({input, meta, label, required = false, placeholder}
         { required && <Text style={styles.asterix}>*</Text>}
       </View>
 
-      <TextInput value={input.value} style={styles.input} placeholder={placeholder}/>
+      <TextInput value={input.value}
+                 style={styles.input}
+                 placeholder={placeholder}
+                 onChangeText={input.onChange}
+      />
 
       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
       <View style={styles.space}/>
