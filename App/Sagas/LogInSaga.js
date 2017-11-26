@@ -28,7 +28,7 @@ const getUserData = response => {
   user['timeZone'] = user.time_zone;
   user['birthDate'] = user.birth_date;
   return user;
-}
+};
 
 const getUserSession = response => {
   const sessionMetadata = {}
@@ -37,4 +37,4 @@ const getUserSession = response => {
   sessionMetadata['clientId'] = response.headers['client'];
   sessionMetadata['expirationDate'] = response.headers['expiry'];
   return sessionMetadata;
-}
+};

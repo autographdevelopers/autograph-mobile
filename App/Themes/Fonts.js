@@ -9,12 +9,6 @@ const type = {
 }
 
 const size = {
-  h1: 38,
-  h2: 34,
-  h3: 30,
-  h4: 26,
-  h5: 20,
-  h6: 19,
   big: 45,
   input: 18,
   regular: 17,
