@@ -5,8 +5,8 @@ import RadioButton from './RadioButton';
 
 storiesOf('InputField')
   .add('selected', () => (
-    <RadioButton value={'a'} input={{value: 'a'}}/>
+    <RadioButton boundValue={'a'} input={{value: 'a'}}/>
   ))
   .add('NOT selected', () => (
-    <RadioButton value={'a'} input={{value: 'b'}} />
+    <RadioButton boundValue={'a'} input={{value: 'b'}} />
   ));
