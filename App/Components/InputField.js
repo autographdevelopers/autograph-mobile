@@ -14,6 +14,7 @@ export default InputField = ({input, meta, label, required=false, placeholder}) 
     },
     label: {
       fontSize: Fonts.size.small,
+      lineHeight: Fonts.size.small,
       color: Colors.strongGrey
     },
     input: {
@@ -33,6 +34,8 @@ export default InputField = ({input, meta, label, required=false, placeholder}) 
     },
     asterix: {
       color: Colors.salmon,
+      fontSize: Fonts.size.small,
+      lineHeight: Fonts.size.small,
       marginLeft: 3
     }
   });
