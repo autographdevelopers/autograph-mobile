@@ -2,18 +2,18 @@ import { Text, ScrollView, Image, View } from 'react-native';
 import React, { Component } from 'react';
 import FancyBackground from '../Components/FancyBackground';
 import { Fonts, Metrics, Colors } from '../Themes/'
-import {StyleSheet} from 'react-native'
+import { StyleSheet } from 'react-native'
 import ButtonOutline from '../Components/ButtonOutline'
 import ButtonWhiteFill from '../Components/ButtonWhiteFill';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 const styles = StyleSheet.create({
   section: {
-    flex: 1,
+    flex: 1
   },
-  brandSection :{
+  brandSection: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   brand: {
     alignItems: 'center'
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 11,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 13
   },
   actions: {
     justifyContent: 'flex-end',

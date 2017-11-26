@@ -1,4 +1,4 @@
-import {StackNavigator} from 'react-navigation'
+import { StackNavigator } from 'react-navigation'
 import LoginScreen from '../Screens/LoginScreen'
 import LaunchScreen from '../Screens/LaunchScreen';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
@@ -8,10 +8,10 @@ import React, { Component } from 'react'
 
 // Manifest of possible screens
 const routeConfigs = {
-  login: {screen: LoginScreen},
-  launchScreen: {screen: LaunchScreen},
-  resetPassword: {screen: ResetPasswordScreen},
-  main: {screen: TabNavigation}
+  login: { screen: LoginScreen },
+  launchScreen: { screen: LaunchScreen },
+  resetPassword: { screen: ResetPasswordScreen },
+  main: { screen: TabNavigation }
 };
 
 const navigationConfigs = {

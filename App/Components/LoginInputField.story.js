@@ -3,10 +3,9 @@ import { View } from 'react-native'
 import { storiesOf } from '@storybook/react-native'
 import { StyleSheet } from 'react-native'
 import { Colors } from '../Themes/'
-
 import Input from './LoginInputField';
 
-const styles = StyleSheet.create({bg: {backgroundColor: Colors.primaryWarm, flex: 1}})
+const styles = StyleSheet.create({ bg: { backgroundColor: Colors.primaryWarm, flex: 1 } });
 
 storiesOf('Login Input Field')
   .add('Email(on primary bg)', () => (
@@ -48,4 +47,4 @@ storiesOf('Login Input Field')
         icon={'md-lock'}
         secure={true}/>
     </View>
-  ))
+  ));

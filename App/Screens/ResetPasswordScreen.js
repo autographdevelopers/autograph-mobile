@@ -5,14 +5,14 @@ import NavHeader from '../Components/NavHeader';
 export default class ResetPasswordScreen extends Component {
 
   static navigationOptions = {
-    header: (props) => <NavHeader navigation={props.navigation} title={'Odzyskaj haslo'} />
+    header: (props) => <NavHeader navigation={props.navigation} title={'Odzyskaj haslo'}/>
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     return (
       <View/>
     )

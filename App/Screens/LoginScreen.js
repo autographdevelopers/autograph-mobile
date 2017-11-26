@@ -1,22 +1,22 @@
-import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, TextInput} from 'react-native'
-import {connect} from 'react-redux'
-import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux'
+import React, { Component } from 'react'
+import { Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { connect } from 'react-redux'
+import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux'
 import ButtonOutline from '../Components/ButtonOutline'
 import LoginInputField from '../Components/LoginInputField'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {StyleSheet} from 'react-native'
-import {Fonts, Colors} from '../Themes/index'
+import { StyleSheet } from 'react-native'
+import { Fonts, Colors } from '../Themes/index'
 
 const styles = StyleSheet.create({
   inputsSection: {
     justifyContent: 'flex-end',
-    flex: 1,
+    flex: 1
   },
   titleSection: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
 
   },
   actionsSection: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   error: {
     textAlign: 'center',
     color: Colors.salmon,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
 
   },
   resetPassword: {
@@ -66,13 +66,13 @@ class LoginScreen extends Component {
       zIndex: 99999,
       top: 0,
       left: 0,
-      right: 0,
+      right: 0
     }
   };
 
   constructor(props) {
     super(props);
-    this.state = {email: '', password: ''}
+    this.state = { email: '', password: '' }
   }
 
   setField(field) {
@@ -84,8 +84,8 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const {errorMessage, handleSubmit, navigation: {navigate}} = this.props;
-    const {email, password} = this.state;
+    const { errorMessage, handleSubmit, navigation: { navigate } } = this.props;
+    const { email, password } = this.state;
 
     return (
       <FancyBackground>
@@ -130,7 +130,7 @@ class LoginScreen extends Component {
 const mapDispatchToProps = dispatch => ({
   handleSubmit: (email, password) => {
     return () => {
-      dispatch({type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: {email, password}})
+      dispatch({ type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: { email, password } })
     };
   }
 });

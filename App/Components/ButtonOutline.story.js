@@ -3,11 +3,10 @@ import { View } from 'react-native'
 import { storiesOf } from '@storybook/react-native'
 import { StyleSheet } from 'react-native'
 import { Colors } from '../Themes/'
-
 import ButtonOutline from './ButtonOutline'
 
-const styles = StyleSheet.create({bg: {backgroundColor: Colors.primaryWarm, flex: 1}})
-const styles2 = StyleSheet.create({bg: {backgroundColor: 'violet', flex: 1}})
+const styles = StyleSheet.create({ bg: { backgroundColor: Colors.primaryWarm, flex: 1 } })
+const styles2 = StyleSheet.create({ bg: { backgroundColor: 'violet', flex: 1 } })
 
 storiesOf('ButtonOutline')
   .add('Default(on primary bg)', () => (
@@ -39,4 +38,4 @@ storiesOf('ButtonOutline')
       <ButtonOutline>LOG IN</ButtonOutline>
     </View>
 
-  ))
+  ));
