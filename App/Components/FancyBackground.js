@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { View, Image, Text } from 'react-native'
-import { StyleSheet } from 'react-native'
-import { Fonts, Colors, Metrics } from '../Themes/'
+import React, { Component } from 'react';
+import { View, Image, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors, Metrics } from '../Themes/';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default FancyBackground = ({ children }) => {

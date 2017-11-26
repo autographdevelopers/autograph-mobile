@@ -1,11 +1,11 @@
 import { Text, ScrollView, Image, View } from 'react-native';
 import React, { Component } from 'react';
 import FancyBackground from '../Components/FancyBackground';
-import { Fonts, Metrics, Colors } from '../Themes/'
-import { StyleSheet } from 'react-native'
-import ButtonOutline from '../Components/ButtonOutline'
+import { Fonts, Metrics, Colors } from '../Themes/';
+import { StyleSheet } from 'react-native';
+import ButtonOutline from '../Components/ButtonOutline';
 import ButtonWhiteFill from '../Components/ButtonWhiteFill';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   section: {
@@ -85,6 +85,5 @@ class LaunchScreen extends Component {
     )
   }
 };
-
 
 export default connect()(LaunchScreen);

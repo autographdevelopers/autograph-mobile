@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, TextInput } from 'react-native'
-import { connect } from 'react-redux'
-import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux'
-import ButtonOutline from '../Components/ButtonOutline'
-import LoginInputField from '../Components/LoginInputField'
+import React, { Component } from 'react';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { connect } from 'react-redux';
+import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
+import ButtonOutline from '../Components/ButtonOutline';
+import LoginInputField from '../Components/LoginInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import { StyleSheet } from 'react-native'
-import { Fonts, Colors } from '../Themes/index'
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors } from '../Themes/index';
 
 const styles = StyleSheet.create({
   inputsSection: {
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
 });
 
 class LoginScreen extends Component {
-
   static navigationOptions = {
     headerTintColor: Colors.snow,
     headerStyle: {

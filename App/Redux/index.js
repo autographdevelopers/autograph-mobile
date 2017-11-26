@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux'
-import configureStore from './CreateStore'
-import rootSaga from '../Sagas/'
-import { reducer as formReducer } from 'redux-form'
+import { combineReducers } from 'redux';
+import configureStore from './CreateStore';
+import rootSaga from '../Sagas/';
+import { reducer as formReducer } from 'redux-form';
 import { sessionReducer } from './SessionRedux';
 import { userReducer } from './UserRedux';
 
@@ -29,5 +29,5 @@ export default () => {
     })
   }
 
-  return store
+  return store;
 }

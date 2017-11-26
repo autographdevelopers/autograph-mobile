@@ -1,8 +1,8 @@
-import React from 'react'
-import { View } from 'react-native'
-import { storiesOf } from '@storybook/react-native'
-import { StyleSheet } from 'react-native'
-import { Colors } from '../Themes/'
+import React from 'react';
+import { View } from 'react-native';
+import { storiesOf } from '@storybook/react-native';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../Themes/';
 import Input from './LoginInputField';
 
 const styles = StyleSheet.create({ bg: { backgroundColor: Colors.primaryWarm, flex: 1 } });
