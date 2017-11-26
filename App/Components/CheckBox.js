@@ -10,11 +10,11 @@ export default CheckBox = ({input, meta, boundValue, setValue}) => {
   const styles = StyleSheet.create({
     container: {
       borderRadius: 5,
-      backgroundColor: Colors.mediumGrey,
+      backgroundColor: input.value ? Colors.primaryWarm : Colors.mediumGrey,
       width: SIZE,
       height: SIZE
     },
-    box: {
+    button: {
       flex: 1,
       width: '100%',
       justifyContent: 'center',
@@ -22,12 +22,12 @@ export default CheckBox = ({input, meta, boundValue, setValue}) => {
       backgroundColor: 'transparent'
     },
   });
-  
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.box} onPress={setValue}>
-        <Icon name={'check'} color={Colors.snow} size={12}/>
+      <TouchableOpacity style={styles.button} onPress={setValue(!input.value)}>
+        {input.value && <Icon name={'check'} color={Colors.snow} size={12}/>}
       </TouchableOpacity>
     </View>
   );
-}
+};
