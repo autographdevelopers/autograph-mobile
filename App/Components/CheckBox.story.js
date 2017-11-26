@@ -7,6 +7,3 @@ storiesOf('CHECKBOX')
   .add('Default', () => (
     <CheckBox/>
   ))
-  .add('dsad', () => (
-    <CheckBox/>
-  ));

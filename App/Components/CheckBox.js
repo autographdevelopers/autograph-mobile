@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default CheckBox = ({input, meta, boundValue, setValue}) => {
+export default CheckBox = ({input, setValue}) => {
   const SIZE = 16;
 
   const styles = StyleSheet.create({
