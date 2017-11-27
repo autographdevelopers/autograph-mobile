@@ -2,27 +2,14 @@ import React, {Component} from 'react';
 import {Text, View, TextInput} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {Fonts, Colors} from '../Themes/';
+import InputLabel from './InputLabel';
 
 /** This component was originally designed to work with redux-form library.
  It receives input and meta object props(check docs) from redux form Field wrapper and also other props you pass to Field component
 **/
 
-export default InputField = ({input, meta, label, required = false, placeholder}) => {
+export default InputField = ({input, meta, label, required = false, placeholder, options={}}) => {
   const styles = StyleSheet.create({
-    labelContainer: {
-      flexDirection: 'row'
-    },
-    label: {
-      fontSize: Fonts.size.small,
-      lineHeight: Fonts.size.small,
-      color: Colors.strongGrey
-    },
-    asterix: {
-      color: Colors.salmon,
-      fontSize: Fonts.size.small,
-      lineHeight: Fonts.size.small,
-      marginLeft: 3
-    },
     input: {
       paddingVertical: 10,
       borderBottomWidth: 1,
@@ -41,15 +28,13 @@ export default InputField = ({input, meta, label, required = false, placeholder}
 
   return (
     <View>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>{label}</Text>
-        { required && <Text style={styles.asterix}>*</Text>}
-      </View>
+      <InputLabel required={required} label={label}/>
 
       <TextInput value={input.value}
                  style={styles.input}
                  placeholder={placeholder}
                  onChangeText={input.onChange}
+                 {...options}
       />
 
       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
