@@ -1,19 +1,19 @@
 import { Text, ScrollView, Image, View } from 'react-native';
 import React, { Component } from 'react';
 import FancyBackground from '../Components/FancyBackground';
-import { Fonts, Metrics, Colors } from '../Themes/'
-import {StyleSheet} from 'react-native'
-import ButtonOutline from '../Components/ButtonOutline'
+import { Fonts, Metrics, Colors } from '../Themes/';
+import { StyleSheet } from 'react-native';
+import ButtonOutline from '../Components/ButtonOutline';
 import ButtonWhiteFill from '../Components/ButtonWhiteFill';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   section: {
-    flex: 1,
+    flex: 1
   },
-  brandSection :{
+  brandSection: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   brand: {
     alignItems: 'center'
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 11,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 13
   },
   actions: {
     justifyContent: 'flex-end',
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     marginTop: 34
   }
 });
-
 
 class LaunchScreen extends Component {
   static navigationOptions = {
@@ -65,14 +64,11 @@ class LaunchScreen extends Component {
             <Text style={styles.brandName}>AutoGraph</Text>
             <Text style={styles.slogan}>Profesjonalne narzędzie do zarządzania szkołami jazdy.</Text>
           </View>
-
           <View style={[styles.section, styles.actions]}>
-
             <View style={styles.actionWrapper}>
               <Text style={styles.label}>Nie masz jeszcze konta?</Text>
               <ButtonWhiteFill>ZAREJESTRUJ SIĘ</ButtonWhiteFill>
             </View>
-
             <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
               <Text style={styles.label}>Masz już konto?</Text>
               <ButtonOutline onPress={() => {
@@ -85,6 +81,5 @@ class LaunchScreen extends Component {
     )
   }
 };
-
 
 export default connect()(LaunchScreen);

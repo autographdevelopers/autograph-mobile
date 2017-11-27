@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { Text, ScrollView } from 'react-native';
 
 export default class ActivitiesScreen extends Component {
-
   static navigationOptions = {
     header: null
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     return (
       <ScrollView>
         <Text>Activities</Text>

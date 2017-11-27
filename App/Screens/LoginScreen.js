@@ -1,23 +1,21 @@
-import React, {Component} from 'react'
-import {Text, View, TouchableOpacity, TextInput} from 'react-native'
-import {connect} from 'react-redux'
-import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux'
-import ButtonOutline from '../Components/ButtonOutline'
-import LoginInputField from '../Components/LoginInputField'
+import React, { Component } from 'react';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { connect } from 'react-redux';
+import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
+import ButtonOutline from '../Components/ButtonOutline';
+import LoginInputField from '../Components/LoginInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import {StyleSheet} from 'react-native'
-import {Fonts, Colors} from '../Themes/index'
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors } from '../Themes/index';
 
 const styles = StyleSheet.create({
   inputsSection: {
     justifyContent: 'flex-end',
-    flex: 1,
+    flex: 1
   },
   titleSection: {
     flex: 1,
-    justifyContent: 'center',
-
+    justifyContent: 'center'
   },
   actionsSection: {
     flex: 1,
@@ -38,8 +36,7 @@ const styles = StyleSheet.create({
   error: {
     textAlign: 'center',
     color: Colors.salmon,
-    fontWeight: 'bold',
-
+    fontWeight: 'bold'
   },
   resetPassword: {
     textAlign: 'center',
@@ -57,7 +54,6 @@ const styles = StyleSheet.create({
 });
 
 class LoginScreen extends Component {
-
   static navigationOptions = {
     headerTintColor: Colors.snow,
     headerStyle: {
@@ -66,26 +62,24 @@ class LoginScreen extends Component {
       zIndex: 99999,
       top: 0,
       left: 0,
-      right: 0,
+      right: 0
     }
   };
 
   constructor(props) {
     super(props);
-    this.state = {email: '', password: ''}
+    this.state = { email: '', password: '' };
   }
 
   setField(field) {
     return text => {
-      let changedField = {};
-      changedField[field] = text;
-      this.setState(changedField);
+      this.setState({[field]: text});
     }
   }
 
   render() {
-    const {errorMessage, handleSubmit, navigation: {navigate}} = this.props;
-    const {email, password} = this.state;
+    const { errorMessage, handleSubmit, navigation: { navigate } } = this.props;
+    const { email, password } = this.state;
 
     return (
       <FancyBackground>
@@ -112,7 +106,6 @@ class LoginScreen extends Component {
                            secure={true}
           />
         </View>
-
         <View style={styles.actionsSection}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
           <View style={styles.resetPasswordContainer}>
@@ -130,7 +123,7 @@ class LoginScreen extends Component {
 const mapDispatchToProps = dispatch => ({
   handleSubmit: (email, password) => {
     return () => {
-      dispatch({type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: {email, password}})
+      dispatch({ type: SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, payload: { email, password } })
     };
   }
 });
@@ -143,4 +136,3 @@ const mapStateToProps = (state, _) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
-
