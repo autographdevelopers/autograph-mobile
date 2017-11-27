@@ -67,7 +67,9 @@ class LaunchScreen extends Component {
           <View style={[styles.section, styles.actions]}>
             <View style={styles.actionWrapper}>
               <Text style={styles.label}>Nie masz jeszcze konta?</Text>
-              <ButtonWhiteFill>ZAREJESTRUJ SIĘ</ButtonWhiteFill>
+              <ButtonWhiteFill onPress={() => {this.props.navigation.navigate('signUp')}}>
+                ZAREJESTRUJ SIĘ
+              </ButtonWhiteFill>
             </View>
             <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
               <Text style={styles.label}>Masz już konto?</Text>
