@@ -6,6 +6,7 @@ const colors = {
   mediumGrey: '#CECED2',
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
+  black: '#000000',
 
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
