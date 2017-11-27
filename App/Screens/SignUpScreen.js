@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import React, { Component } from 'react';
 import NavHeader from '../Components/NavHeader';
 import {reduxForm, Field } from 'redux-form';
@@ -10,6 +10,7 @@ import {StyleSheet} from 'react-native';
 import {Fonts, Colors} from '../Themes/';
 import PrimaryButton from '../Components/ButtonPrimary';
 import Layout from '../Components/Layout';
+import DatePicker from 'react-native-datepicker';
 
 const styles = StyleSheet.create({
   selectRow: {
@@ -40,6 +41,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginTop: 43
+  },
+  datepicker: {
+    marginBottom: 15,
+    borderWidth: 0
   }
 });
 
@@ -49,14 +54,14 @@ class SignUpScreen extends Component {
   };
 
   constructor (props) {
-    super(props)
+    super(props);
+    this.state = {date:"2016-05-15"};
   }
 
   render () {
-    // Testing components in practice when connected to redux-form
     return (
       <Layout>
-        <InputLabel label={'Kim jestes?'}/>
+        <InputLabel label={'Kim jestes?'} required={true}/>
         <View style={styles.selectRow} >
           <View style={styles.selectOption}>
             <Field name={'role'} boundValue={'employee'} setValue={ ()=> this.props.change('role', 'employee') } component={RadioButton} />
@@ -74,7 +79,6 @@ class SignUpScreen extends Component {
         <Field name={'password'} component={InputField} label={'Haslo'} required={true} options={{secureTextEntry: true}} />
         <Field name={'passwordConfirmation'} component={InputField} label={'Potwierdź haslo '} required={true} options={{secureTextEntry: true}} />
 
-
         <InputLabel label={'Plec'}/>
         <View style={styles.selectRow} >
           <View style={styles.selectOption}>
@@ -86,6 +90,19 @@ class SignUpScreen extends Component {
             <Text style={styles.selectLabel}>Kobieta</Text>
           </View>
         </View>
+
+
+        <DatePicker
+          style={styles.datepicker}
+          date={this.state.date}
+          showIcon={false}
+          mode="date"
+          placeholder="Kliknij aby prowadzic date"
+          format="YYYY-MM-DD"
+          confirmBtnText="Potwierdz"
+          cancelBtnText="Anuluj"
+          onDateChange={(date) => {this.setState({date: date})}}
+        />
 
         <View style={styles.acceptTermsRow}>
           <Field name={'accepted'} setValue={ (value)=> () => this.props.change('accepted', value) } component={CheckBox} />

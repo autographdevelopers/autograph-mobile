@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {StyleSheet} from 'react-native';
 
 export default Layout = ({children}) => {
@@ -12,6 +12,6 @@ export default Layout = ({children}) => {
   });
 
   return (
-    <View style={styles.layout}>{children}</View>
+    <ScrollView style={styles.layout}>{children}</ScrollView>
   );
 }
