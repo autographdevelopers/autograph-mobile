@@ -44,9 +44,19 @@ const styles = StyleSheet.create({
   },
   datepicker: {
     marginBottom: 15,
-    borderWidth: 0
-  }
+  },
 });
+
+const datepickerCustom = {
+  dateInput: {
+    borderWidth: 0,
+    alignItems: 'flex-start'
+  },
+  dateText: {
+    textAlign: 'left',
+    fontSize: Fonts.size.medium
+  }
+};
 
 class SignUpScreen extends Component {
   static navigationOptions = {
@@ -91,9 +101,10 @@ class SignUpScreen extends Component {
           </View>
         </View>
 
-
+        <InputLabel label={'Data urodzenia'} required={true}/>
         <DatePicker
           style={styles.datepicker}
+          customStyles={datepickerCustom}
           date={this.state.date}
           showIcon={false}
           mode="date"

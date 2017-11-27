@@ -17,7 +17,7 @@ export default InputLable = ({required, label}) => {
       color: Colors.salmon,
       fontSize: Fonts.size.small,
       lineHeight: Fonts.size.small,
-      marginLeft: 3
+      marginLeft: 2
     }
   });
   return(

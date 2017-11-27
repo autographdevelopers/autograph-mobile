@@ -4,8 +4,8 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../Themes/';
 
 export default RadioButton = ({input, meta, boundValue, setValue}) => {
-  const RADIUS_OUTER = 25;
-  const RADIUS_INNER = 15;
+  const RADIUS_OUTER = 20;
+  const RADIUS_INNER = 10;
 
   const styles = StyleSheet.create({
     outline: {
