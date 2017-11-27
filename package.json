@@ -2,6 +2,11 @@
   "name": "mobile",
   "version": "0.0.1",
   "private": true,
+  "rnpm": {
+    "assets": [
+      "App/Fonts/Roboto"
+    ]
+  },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
@@ -37,14 +42,17 @@
     "react-native-device-info": "0.11.0",
     "react-native-drawer": "^2.3.0",
     "react-native-i18n": "1.0.0",
+    "react-native-linear-gradient": "^2.3.0",
     "react-native-vector-icons": "4.3.0",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
+    "redux-form": "^7.1.2",
     "redux-persist": "^4.1.0",
     "redux-saga": "^0.15.6",
     "reduxsauce": "0.4.1",
-    "seamless-immutable": "^7.0.1"
+    "seamless-immutable": "^7.0.1",
+    "styled-components": "^2.2.3"
   },
   "devDependencies": {
     "@storybook/addon-storyshots": "^3.2.3",

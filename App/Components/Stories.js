@@ -1,4 +1,2 @@
-import './AlertMessage.story'
-import './DrawerButton.story'
-import './FullButton.story'
-import './RoundedButton.story'
+import './ButtonOutline.story'
+import './LoginInputField.story'

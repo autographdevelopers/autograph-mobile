@@ -1,7 +1,11 @@
 const type = {
-  base: 'Avenir-Book',
-  bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic'
+  // TODO  fix Roboto font doesn't load
+  base: 'RobotoRegular',
+  bold: 'RobotoBold',
+  // emphasis: 'HelveticaNeue-Italic',
+  // base: 'Avenir-Book',
+  // bold: 'Avenir-Black',
+  // emphasis: 'HelveticaNeue-Italic'
 }
 
 const size = {
@@ -11,12 +15,13 @@ const size = {
   h4: 26,
   h5: 20,
   h6: 19,
+  big: 45,
   input: 18,
   regular: 17,
-  medium: 14,
-  small: 12,
+  medium: 15,
+  small: 11,
   tiny: 8.5
-}
+};
 
 const style = {
   h1: {
