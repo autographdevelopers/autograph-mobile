@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {Fonts, Colors} from '../Themes/';
+import React, { Component } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors } from '../Themes/';
 
-export default ButtonOutline = ({color, children, onPress}) => {
-
+export default ButtonOutline = ({ color, children, onPress }) => {
   const styles = StyleSheet.create({
     button: {
       borderColor: color || Colors.snow,

@@ -1,22 +1,21 @@
 import { Text, View } from 'react-native';
 import React, { Component } from 'react';
 import NavHeader from '../Components/NavHeader';
-import {reduxForm, Field } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import RadioButton from '../Components/RadioButton';
 import InputField from '../Components/InputField';
 import CheckBox from '../Components/CheckBox';
 
 class SignUpScreen extends Component {
-
   static navigationOptions = {
-    header: (props) => <NavHeader navigation={props.navigation} title={'Załóż konto'} />
+    header: (props) => <NavHeader navigation={props.navigation} title={'Załóż konto'}/>
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     // Testing components in practice when connected to redux-form
     return (
       <View>
