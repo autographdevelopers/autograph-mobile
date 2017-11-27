@@ -5,37 +5,32 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../Themes/';
 import ButtonOutline from './ButtonOutline';
 
-const styles = StyleSheet.create({ bg: { backgroundColor: Colors.primaryWarm, flex: 1 } })
+const styles1 = StyleSheet.create({ bg: { backgroundColor: Colors.primaryWarm, flex: 1 } })
 const styles2 = StyleSheet.create({ bg: { backgroundColor: 'violet', flex: 1 } })
 
 storiesOf('ButtonOutline')
   .add('Default(on primary bg)', () => (
-    <View style={styles.bg}>
+    <View style={styles1.bg}>
       <ButtonOutline>default</ButtonOutline>
     </View>
   ))
   .add('long text(on primary bg)', () => (
-    <View style={styles.bg}>
+    <View style={styles1.bg}>
       <ButtonOutline>Lorem ipsum dolo</ButtonOutline>
     </View>
-
   ))
   .add('custom color(on primary bg)', () => (
-    <View style={styles.bg}>
+    <View style={styles1.bg}>
       <ButtonOutline color={'red'}>Lorem ipsum dolor sit ne</ButtonOutline>
     </View>
-
   ))
   .add('capitalized(on primary bg)', () => (
-    <View style={styles.bg}>
+    <View style={styles1.bg}>
       <ButtonOutline>LOG IN</ButtonOutline>
     </View>
-
-
   ))
   .add('capitalized(on custom bg)', () => (
     <View style={styles2.bg}>
       <ButtonOutline>LOG IN</ButtonOutline>
     </View>
-
   ));

@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   titleSection: {
     flex: 1,
     justifyContent: 'center'
-
   },
   actionsSection: {
     flex: 1,
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.salmon,
     fontWeight: 'bold'
-
   },
   resetPassword: {
     textAlign: 'center',
@@ -70,14 +68,12 @@ class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' }
+    this.state = { email: '', password: '' };
   }
 
   setField(field) {
     return text => {
-      let changedField = {};
-      changedField[field] = text;
-      this.setState(changedField);
+      this.setState({[field]: text});
     }
   }
 
@@ -110,7 +106,6 @@ class LoginScreen extends Component {
                            secure={true}
           />
         </View>
-
         <View style={styles.actionsSection}>
           <ButtonOutline onPress={handleSubmit(email, password)}>ZALOGUJ SIE</ButtonOutline>
           <View style={styles.resetPasswordContainer}>
@@ -141,4 +136,3 @@ const mapStateToProps = (state, _) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
-

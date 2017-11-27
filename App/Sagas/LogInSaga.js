@@ -27,6 +27,7 @@ const getUserData = response => {
   // override sneak cased keys
   user['timeZone'] = user.time_zone;
   user['birthDate'] = user.birth_date;
+  
   return user;
 };
 
@@ -36,5 +37,6 @@ const getUserSession = response => {
   sessionMetadata['tokenType'] = response.headers['token-type'];
   sessionMetadata['clientId'] = response.headers['client'];
   sessionMetadata['expirationDate'] = response.headers['expiry'];
+
   return sessionMetadata;
 };

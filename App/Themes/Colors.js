@@ -7,7 +7,6 @@ const colors = {
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
 
-
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
   transparent: 'rgba(0,0,0,0)',

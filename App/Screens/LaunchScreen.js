@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   }
 });
 
-
 class LaunchScreen extends Component {
   static navigationOptions = {
     header: null
@@ -65,14 +64,11 @@ class LaunchScreen extends Component {
             <Text style={styles.brandName}>AutoGraph</Text>
             <Text style={styles.slogan}>Profesjonalne narzędzie do zarządzania szkołami jazdy.</Text>
           </View>
-
           <View style={[styles.section, styles.actions]}>
-
             <View style={styles.actionWrapper}>
               <Text style={styles.label}>Nie masz jeszcze konta?</Text>
               <ButtonWhiteFill>ZAREJESTRUJ SIĘ</ButtonWhiteFill>
             </View>
-
             <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
               <Text style={styles.label}>Masz już konto?</Text>
               <ButtonOutline onPress={() => {
