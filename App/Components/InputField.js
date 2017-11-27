@@ -34,13 +34,13 @@ export default InputField = ({input, meta, label, required = false, placeholder}
       color: Colors.salmon,
       fontSize: Fonts.size.small
     },
-    space: {
-      height: 15
+    container: {
+      marginBottom: 15
     }
   });
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.labelContainer}>
         <Text style={styles.label}>{label}</Text>
         { required && <Text style={styles.asterix}>*</Text>}
@@ -51,9 +51,7 @@ export default InputField = ({input, meta, label, required = false, placeholder}
                  placeholder={placeholder}
                  onChangeText={input.onChange}
       />
-
       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
-      <View style={styles.space}/>
     </View>
   );
 }

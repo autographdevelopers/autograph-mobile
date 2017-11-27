@@ -1,4 +1,4 @@
-import { createReducer, createActions } from 'reduxsauce'
+import { createReducer, createActions } from 'reduxsauce';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -24,12 +24,12 @@ export const INITIAL_STATE = {
 
 /* ------------- Handlers ------------- */
 
-export const setUserHandler = (state, {user: {name, surname, email, gender, type, birthDay, timeZone}}) => {
-  return {...state, name, surname, email, gender, type, birthDay, timeZone}
+export const setUserHandler = (state, { user: { name, surname, email, gender, type, birthDay, timeZone } }) => {
+  return { ...state, name, surname, email, gender, type, birthDay, timeZone }
 };
 
 export const clearUserHandler = (state, _) => {
-  return {...state, ...INITIAL_STATE}
+  return { ...state, ...INITIAL_STATE }
 };
 
 /* ------------- Gather all handlers to create single reducer ------------- */

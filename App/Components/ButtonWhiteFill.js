@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { Fonts, Colors, Metrics } from '../Themes/';
+import { Fonts, Colors } from '../Themes/';
 
-export default ButtonWhiteFill = ({color, children, onPress}) => {
-
+export default ButtonWhiteFill = ({ color, children, onPress }) => {
   const styles = StyleSheet.create({
     button: {
       borderColor: color || Colors.snow,
