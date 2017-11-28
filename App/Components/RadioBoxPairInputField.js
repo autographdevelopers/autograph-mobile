@@ -5,7 +5,7 @@ import RadioButton from './RadioButton';
 import { Fonts, Colors } from '../Themes/';
 import InputFieldLayout from './InputFieldLayout';
 
-export default RadioButtonPairInputField = ({ input, meta, data, setValue, label, required }) => {
+export default RadioButtonPairInputField = ({ input, meta, data, setValue, inputLabel, required }) => {
   const styles = StyleSheet.create({
     selectRow: {
       flexDirection: 'row',
@@ -27,7 +27,7 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue, label
   });
 
   return (
-    <InputFieldLayout errors={meta.error} label={'Who are you?'} required={required} >
+    <InputFieldLayout errors={meta.error} label={inputLabel} required={required} >
       <View style={styles.selectRow}>
         {data.map((element, index) => {
           return (
