@@ -86,6 +86,10 @@ class SignUpScreen extends Component {
         component={RadioButtonsCollection}/>
 
 
+        <Field name={'email'} component={InputField} label={'Email'} required={true}/>
+        <Field name={'name'} component={InputField} label={'Imię'} required={true}/>
+
+
 
         {/*<InputLabel label={'Kim jestes?'} required={true}/>*/}
         {/*<View style={styles.selectRow}>*/}

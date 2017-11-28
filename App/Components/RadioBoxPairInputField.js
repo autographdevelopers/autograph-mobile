@@ -3,8 +3,9 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import RadioButton from './RadioButton';
 import { Fonts, Colors } from '../Themes/';
+import InputFieldLayout from './InputFieldLayout';
 
-export default RadioButtonPairInputField = ({ input, meta, data, setValue }) => {
+export default RadioButtonPairInputField = ({ input, meta, data, setValue, label, required }) => {
   const styles = StyleSheet.create({
     selectRow: {
       flexDirection: 'row',
@@ -26,15 +27,17 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue }) => 
   });
 
   return (
-    <View style={styles.selectRow}>
-      {data.map((element, index) => {
-        return (
-          <View style={styles.selectOption} key={`option-${index}`}>
-            <RadioButton value={input.value} boundValue={element.boundValue} setValue={setValue(element.boundValue)}/>
-            <Text style={styles.selectLabel}>{element.label}</Text>
-          </View>
-        );
-      }) }
-    </View>
+    <InputFieldLayout errors={meta.error} label={'Who are you?'} required={required} >
+      <View style={styles.selectRow}>
+        {data.map((element, index) => {
+          return (
+            <View style={styles.selectOption} key={`option-${index}`}>
+              <RadioButton value={input.value} boundValue={element.boundValue} setValue={setValue(element.boundValue)}/>
+              <Text style={styles.selectLabel}>{element.label}</Text>
+            </View>
+          );
+        })}
+      </View>
+    </InputFieldLayout>
   );
 }
