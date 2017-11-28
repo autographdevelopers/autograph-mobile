@@ -10,8 +10,6 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue, input
     selectRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      // marginBottom: 15,
-      // paddingTop: 10,
       flexWrap: 'wrap' // TODO why doesnt wrap?
     },
     selectOption: {
@@ -27,7 +25,7 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue, input
   });
 
   return (
-    <InputFieldLayout errors={meta.error} label={inputLabel} required={required} >
+    <InputFieldLayout meta={meta} label={inputLabel} required={required} >
       <View style={styles.selectRow}>
         {data.map((element, index) => {
           return (

@@ -12,39 +12,20 @@ import InputFieldLayout from './InputFieldLayout';
 export default InputField = ({ input, meta, label, required = false, placeholder, options = {} }) => {
   const styles = StyleSheet.create({
     input: {
-
       fontSize: Fonts.size.medium,
       color: meta.error ? Colors.salmon : Colors.black
     }
   });
 
   return (
-    <InputFieldLayout errors={meta.error} required={required} label={label}>
+    <InputFieldLayout meta={meta} required={required} label={label}>
       <TextInput value={input.value}
                  style={styles.input}
+                 onBlur={ val => input.onBlur(val) }
                  placeholder={placeholder}
                  onChangeText={input.onChange}
                  {...options}
       />
     </InputFieldLayout>
-
-    // <WrapperComponent error={meta.error}>
-    //     <TextInput value={input.value}
-    //   style={styles.input}
-    //   placeholder={placeholder}
-    //   onChangeText={input.onChange}
-    //   {...options}
-    //   />
-    // </WrapperComponent>
-
-  // View
-  //     {
-  //       children
-  //     }
-  //     {
-  //       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
-  //
-  //     }
-  // </View>
   );
 }

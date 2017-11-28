@@ -41,7 +41,7 @@ export default RadioButtonPairInputField = ({ input, meta, setValue, inputLabel,
   };
 
   return (
-    <InputFieldLayout errors={meta.error} label={inputLabel} required={required}>
+    <InputFieldLayout meta={meta} label={inputLabel} required={required}>
       <View style={styles.datepickerRow}>
         <DatePicker
           style={styles.datepicker}
