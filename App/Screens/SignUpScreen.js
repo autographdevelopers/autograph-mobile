@@ -89,5 +89,6 @@ class SignUpScreen extends Component {
 
 export default reduxForm({
   form: 'signUp',
-  initialValues: { accepted: false, type: 'employee', gender: 'male' }
+  destroyOnUnmount: false
+  ,initialValues: { accepted: false, type: 'employee', gender: 'male'}
 })(SignUpScreen);
