@@ -27,7 +27,7 @@ export default InputField = ({ input, meta, label, required = false, placeholder
   });
 
   return (
-    <View>
+    <View style={styles.container}>
       <InputLabel required={required} label={label}/>
       <TextInput value={input.value}
                  style={styles.input}
@@ -37,5 +37,24 @@ export default InputField = ({ input, meta, label, required = false, placeholder
       />
       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
     </View>
+
+    // <WrapperComponent error={meta.error}>
+    //     <TextInput value={input.value}
+    //   style={styles.input}
+    //   placeholder={placeholder}
+    //   onChangeText={input.onChange}
+    //   {...options}
+    //   />
+    // </WrapperComponent>
+
+  // View
+  //     {
+  //       children
+  //     }
+  //     {
+  //       {meta.error && <Text style={styles.errorZone}>{meta.error}</Text>}
+  //
+  //     }
+  // </View>
   );
 }

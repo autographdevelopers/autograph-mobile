@@ -3,7 +3,7 @@ import {View, TouchableOpacity} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {Colors} from '../Themes/';
 
-export default RadioButton = ({input, meta, boundValue, setValue}) => {
+export default RadioButton = ({value, boundValue, setValue}) => {
   const RADIUS_OUTER = 20;
   const RADIUS_INNER = 10;
 
@@ -24,9 +24,10 @@ export default RadioButton = ({input, meta, boundValue, setValue}) => {
       backgroundColor: Colors.primaryWarm
     }
   });
+
   return (
     <TouchableOpacity style={styles.outline} onPress={setValue}>
-      { boundValue === input.value && <View style={styles.fill}/> }
+      { boundValue === value && <View style={styles.fill}/> }
     </TouchableOpacity>
   );
 }
