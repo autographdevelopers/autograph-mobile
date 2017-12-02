@@ -8,20 +8,27 @@ import InputLabel from './InputLabel';
  It receives input and meta object props(check docs) from redux form Field wrapper and also other props you pass to Field component
  **/
 
-export default InputFieldLayout = ({ children, label, required, meta }) => {
+export default InputFieldLayout = ({ children, label, required, meta, line = true, customErrorStyles = {} }) => {
+  const errors = typeof(meta.error) === 'object' ? meta.error.all : [meta.error].filter(item => item);
+  const errorsPresent = errors.length > 0;
+  const renderErrors = () => {
+    return errors.map((error, index) => { return <Text style={styles.errorZone} key={`error-${index}`}>{error}</Text> });
+  };
+
   const styles = StyleSheet.create({
     errorZone: {
       color: Colors.salmon,
       fontSize: Fonts.size.small,
-      marginTop: 5
+      marginTop: 5,
+      ...customErrorStyles
     },
     container: {
       marginBottom: 15
     },
     childrenWrapper: {
       paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: meta.error && meta.touched ? Colors.salmon : Colors.mediumGrey,
+      borderBottomWidth: line ? 1 : 0,
+      borderBottomColor:  errorsPresent && meta.touched ? Colors.salmon : Colors.mediumGrey
     }
   });
 
@@ -31,7 +38,7 @@ export default InputFieldLayout = ({ children, label, required, meta }) => {
       <View style={styles.childrenWrapper}>
         {children}
       </View>
-      {meta.error && meta.touched && <Text style={styles.errorZone}>{meta.error}</Text>}
+      {errorsPresent && meta.touched && renderErrors()}
     </View>
   );
 }

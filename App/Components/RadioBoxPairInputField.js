@@ -25,7 +25,7 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue, input
   });
 
   return (
-    <InputFieldLayout meta={meta} label={inputLabel} required={required} >
+    <InputFieldLayout meta={meta} label={inputLabel} required={required} line={false}>
       <View style={styles.selectRow}>
         {data.map((element, index) => {
           return (

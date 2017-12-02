@@ -37,7 +37,8 @@ const create = (baseURL = 'http://localhost:3000/api/v1/') => {
   const getRoot = () => api.get('');
   const getRate = () => api.get('rate_limit');
   const getUser = (username) => api.get('search/users', {q: username});
-  const logIn = (email, password) => api.post('auth/sign_in', {email, password})
+  const logIn = (email, password) => api.post('auth/sign_in', {email, password});
+  const signUp = userData => api.post('auth', userData);
 
   // ------
   // STEP 3
@@ -56,7 +57,8 @@ const create = (baseURL = 'http://localhost:3000/api/v1/') => {
     getRoot,
     getRate,
     getUser,
-    logIn
+    logIn,
+    signUp
   }
 };
 

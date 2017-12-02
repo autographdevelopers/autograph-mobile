@@ -7,6 +7,8 @@ const { Types, Creators } = createActions({
   clearUser: null
 });
 
+Types['REQUEST_REGISTRATION_PROCEDURE'] = 'REQUEST_REGISTRATION_PROCEDURE';
+
 export const USER_ACTION_TYPES = Types;
 export const userActionCreators = Creators;
 

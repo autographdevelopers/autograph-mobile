@@ -4,13 +4,13 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default CheckBox = ({input, setValue}) => {
+export default CheckBox = ({value, setValue}) => {
   const SIZE = 16;
 
   const styles = StyleSheet.create({
     container: {
       borderRadius: 5,
-      backgroundColor: input.value ? Colors.primaryWarm : Colors.mediumGrey,
+      backgroundColor: value ? Colors.primaryWarm : Colors.mediumGrey,
       width: SIZE,
       height: SIZE
     },
@@ -20,13 +20,13 @@ export default CheckBox = ({input, setValue}) => {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'transparent'
-    },
+    }
   });
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={setValue(!input.value)}>
-        {input.value && <Icon name={'check'} color={Colors.snow} size={12}/>}
+      <TouchableOpacity style={styles.button} onPress={setValue}>
+        { value && <Icon name={'check'} color={Colors.snow} size={12}/> }
       </TouchableOpacity>
     </View>
   );
