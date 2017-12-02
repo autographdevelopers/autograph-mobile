@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
+
 import RadioButton from './RadioButton';
 import { Fonts, Colors } from '../Themes/';
 import InputFieldLayout from './InputFieldLayout';
 
-export default RadioButtonPairInputField = ({ input, meta, data, setValue, inputLabel, required }) => {
+export default RadioButtonPairInputField = ({ input, meta, data, setValue, label, required }) => {
   const styles = StyleSheet.create({
     selectRow: {
       flexDirection: 'row',
@@ -25,7 +26,7 @@ export default RadioButtonPairInputField = ({ input, meta, data, setValue, input
   });
 
   return (
-    <InputFieldLayout meta={meta} label={inputLabel} required={required} line={false}>
+    <InputFieldLayout meta={meta} label={label} required={required} line={false}>
       <View style={styles.selectRow}>
         {data.map((element, index) => {
           return (

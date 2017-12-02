@@ -70,7 +70,7 @@ class SignUpScreen extends Component {
     return (
       <Layout>
         <Field name={'type'} data={typeData} setValue={val => () => this.props.change('type', val)}
-               component={RadioButtonsCollection} inputLabel={'Kim jestes?'} required={true} validate={required}/>
+               component={RadioButtonsCollection} label={'Kim jestes?'} required={true} validate={required}/>
 
         <Field name={'email'} component={InputField} label={'Email'} required={true} validate={[required, email]}/>
 
@@ -85,7 +85,7 @@ class SignUpScreen extends Component {
                options={{ secureTextEntry: true }} validate={[required, passwordsMatch]}/>
 
         <Field name={'gender'} data={genderData} setValue={val => () => change('gender', val)}
-               component={RadioButtonsCollection} inputLabel={'Plec'} required={true} validate={required}/>
+               component={RadioButtonsCollection} label={'Plec'} required={true} validate={required}/>
 
         <Field name={'birth_date'} setValue={val => change('birth_date', val)} maxDate={new Date()}
                component={DateSelector} inputLabel={'Data urodzenia'} required={true} validate={required}/>
