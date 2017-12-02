@@ -10,8 +10,8 @@ import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux';
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas'
-import { LogIn } from './LogInSaga'
+import { startup } from './StartupSagas';
+import { LogIn } from './LogInSaga';
 
 /* ------------- API ------------- */
 
@@ -25,7 +25,6 @@ export default function * root () {
   yield all([
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
-
     takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api)
   ])
 }
