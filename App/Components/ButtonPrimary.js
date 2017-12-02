@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {Fonts, Colors} from '../Themes/';
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors } from '../Themes/';
 import LinearGradient from 'react-native-linear-gradient';
 
-export default ButtonPrimary = ({onPress, children}) => {
+export default ButtonPrimary = ({ onPress, children }) => {
 
   const styles = StyleSheet.create({
     container: {
@@ -33,7 +33,7 @@ export default ButtonPrimary = ({onPress, children}) => {
   });
 
   return (
-    <LinearGradient start={{x: 0.0, y: 0.5}} end={{x: 1, y: 0.5}}
+    <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1, y: 0.5 }}
                     colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.text}>{children}</Text>

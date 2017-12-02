@@ -5,7 +5,7 @@ import { Fonts, Colors } from '../Themes/';
 import InputFieldLayout from './InputFieldLayout';
 import DatePicker from 'react-native-datepicker';
 
-export default RadioButtonPairInputField = ({ input, meta, setValue, inputLabel, required, maxDate }) => {
+export default DateSelector = ({ input, meta, setValue, inputLabel, required, maxDate }) => {
   const styles = StyleSheet.create({
     datepicker: {
       flex: 1,
@@ -14,7 +14,7 @@ export default RadioButtonPairInputField = ({ input, meta, setValue, inputLabel,
     datepickerRow: {
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     datepickerLabel: {
       fontSize: Fonts.size.medium,
