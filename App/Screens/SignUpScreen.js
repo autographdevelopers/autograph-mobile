@@ -8,13 +8,10 @@ import PrimaryButton from '../Components/ButtonPrimary';
 import Layout from '../Components/Layout';
 import DateSelector from '../Components/DateSelector';
 import RadioButtonsCollection from '../Components/RadioBoxPairInputField';
-import { required, acceptTerms, passwordsMatch } from '../Lib/validators';
-import { USER_ACTION_TYPES } from '../Redux/UserRedux';
-import { connect } from 'react-redux';
+import { required, acceptTerms, passwordsMatch, email } from '../Lib/validators';
 import AcceptTerms from '../Components/AcceptTerms';
 import API from '../Services/Api';
 import { NavigationActions } from 'react-navigation';
-import PrimaryNavigation from '../Navigation/AppNavigation';
 
 const styles = StyleSheet.create({
   btnWrapper: {
@@ -32,14 +29,18 @@ const submit = navigation => values => {
       if (response.ok) {
         const title = 'Congratulations!';
         const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
-        const goToLogin  = NavigationActions.reset({
+        const goToLogin = NavigationActions.reset({
           index: 1,
           actions: [
-            NavigationActions.navigate({ routeName: 'launchScreen'}),
-            NavigationActions.navigate({ routeName: 'login'})
+            NavigationActions.navigate({ routeName: 'launchScreen' }),
+            NavigationActions.navigate({ routeName: 'login' })
           ]
         });
-        const buttons = [{ text: 'OK', onPress: () => {navigation.dispatch(goToLogin)}}];
+        const buttons = [{
+          text: 'OK', onPress: () => {
+            navigation.dispatch(goToLogin)
+          }
+        }];
         Alert.alert(title, message, buttons);
       } else {
         const errors = {};
@@ -79,7 +80,7 @@ class SignUpScreen extends Component {
         <Field name={'type'} data={typeData} setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} inputLabel={'Who are you?'} required={true} validate={required}/>
 
-        <Field name={'email'} component={InputField} label={'Email'} required={true}/>
+        <Field name={'email'} component={InputField} label={'Email'} required={true} validate={email}/>
 
         <Field name={'name'} component={InputField} label={'Imię'} required={true}/>
 
@@ -112,14 +113,6 @@ class SignUpScreen extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  submit: values => {
-    dispatch({ type: USER_ACTION_TYPES.REQUEST_REGISTRATION_PROCEDURE, payload: values })
-  }
-});
-
-SignUpScreen = connect(null, mapDispatchToProps)(SignUpScreen);
-
 export default reduxForm({
   form: 'signUp',
   destroyOnUnmount: false,
@@ -127,7 +120,6 @@ export default reduxForm({
     accepted: true,
     time_zone: 'UTC+01:00',
     type: 'Student',
-    email: '@@l',
     name: '',
     surname: '',
     password: 'a',

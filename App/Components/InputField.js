@@ -11,11 +11,10 @@ import InputFieldLayout from './InputFieldLayout';
 export default InputField = ({ input, meta, label, required = false, placeholder, options = {}}) => {
   const errors = typeof(meta.error) === 'object' ? meta.error.all : [meta.error].filter(item => item);
   const errorsPresent = errors.length > 0;
-
   const styles = StyleSheet.create({
     input: {
       fontSize: Fonts.size.medium,
-      color: errorsPresent ? Colors.salmon : Colors.black
+      color: errorsPresent && meta.touched ? Colors.salmon : Colors.black
     }
   });
 
