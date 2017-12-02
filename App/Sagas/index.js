@@ -7,13 +7,11 @@ import DebugConfig from '../Config/DebugConfig';
 
 import { StartupTypes } from '../Redux/StartupRedux'
 import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux';
-import {USER_ACTION_TYPES} from '../Redux/UserRedux';
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
-import { SignUp } from './SignUpSaga';
 
 /* ------------- API ------------- */
 
@@ -27,9 +25,6 @@ export default function * root () {
   yield all([
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
-
-    takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api),
-    takeLatest(USER_ACTION_TYPES.REQUEST_REGISTRATION_PROCEDURE, SignUp, api)
-
+    takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api)
   ])
 }

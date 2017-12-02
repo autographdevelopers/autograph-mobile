@@ -14,7 +14,9 @@ export default ButtonPrimary = ({onPress, children}) => {
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 5,
-      paddingHorizontal: 5
+      paddingHorizontal: 5,
+      alignSelf: 'center',
+      marginBottom: 40
     },
     button: {
       flex: 1,
