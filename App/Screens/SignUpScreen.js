@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import React, { Component } from 'react';
 import NavHeader from '../Components/NavHeader';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
@@ -13,6 +13,7 @@ import { USER_ACTION_TYPES } from '../Redux/UserRedux';
 import { connect } from 'react-redux';
 import AcceptTerms from '../Components/AcceptTerms';
 import API from '../Services/Api';
+import { NavigationActions } from 'react-navigation';
 import PrimaryNavigation from '../Navigation/AppNavigation';
 
 const styles = StyleSheet.create({
@@ -23,21 +24,28 @@ const styles = StyleSheet.create({
   }
 });
 
-api = API.create();
-const submit = values => {
+const api = API.create();
+
+const submit = navigation => values => {
   return api.signUp(values)
     .then(response => {
-      console.tron.log('EMAIL');
-      console.tron.log(response.data.email);
       if (response.ok) {
-
-      } else {
-        let errors = {};
-        Object.keys(response.data).forEach( field => {
-          errors[field] = {all: response.data[field]}
+        const title = 'Congratulations!';
+        const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
+        const goToLogin  = NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'launchScreen'}),
+            NavigationActions.navigate({ routeName: 'login'})
+          ]
         });
-        console.tron.log('ERRORS');
-        console.tron.log(errors);
+        const buttons = [{ text: 'OK', onPress: () => {navigation.dispatch(goToLogin)}}];
+        Alert.alert(title, message, buttons);
+      } else {
+        const errors = {};
+        Object.keys(response.data).forEach(field => {
+          errors[field] = { all: response.data[field] }
+        });
         throw new SubmissionError(errors);
       }
     })
@@ -63,38 +71,41 @@ class SignUpScreen extends Component {
       { boundValue: 'female', label: 'Female' }
     ];
 
+    const { handleSubmit, change, submitting, navigation } = this.props;
+
     return (
       <Layout>
 
         <Field name={'type'} data={typeData} setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} inputLabel={'Who are you?'} required={true} validate={required}/>
 
-        <Field name={'email'} component={InputField} label={'Email'} required={true} validate={required}/>
+        <Field name={'email'} component={InputField} label={'Email'} required={true}/>
 
-        <Field name={'name'} component={InputField} label={'Imię'} required={true} validate={required}/>
+        <Field name={'name'} component={InputField} label={'Imię'} required={true}/>
 
-        <Field name={'surname'} component={InputField} label={'Nazwisko'} required={true} validate={required}/>
+        <Field name={'surname'} component={InputField} label={'Nazwisko'} required={true}/>
 
         <Field name={'password'} component={InputField} label={'Haslo'} required={true}
-               options={{ secureTextEntry: true }} validate={required}/>
+               options={{ secureTextEntry: true }}/>
 
         <Field name={'passwordConfirmation'} component={InputField} label={'Potwierdź haslo '} required={true}
-               options={{ secureTextEntry: true }} validate={passwordsMatch}/>
+               options={{ secureTextEntry: true }}/>
 
-        <Field name={'gender'} data={genderData} setValue={val => () => this.props.change('gender', val)}
+        <Field name={'gender'} data={genderData} setValue={val => () => change('gender', val)}
                component={RadioButtonsCollection} inputLabel={'Gender'} required={true} validate={required}/>
 
-        <Field name={'birth_date'} setValue={val => this.props.change('birth_date', val)}
+        <Field name={'birth_date'} setValue={val => change('birth_date', val)}
                component={DateSelector} inputLabel={'Date of birth'} required={true} validate={required}/>
 
         <Field name={'time_zone'} component={InputField} label={'Time Zone'} required={true} validate={required}/>
 
         <Field name={'accepted'} component={AcceptTerms} label={''} validate={acceptTerms}
                text={'Zgadzam się na zasady i warunki serwisu AutoGraph.'}
-               setValue={value => () => this.props.change('accepted', value)}/>
+               setValue={value => () => change('accepted', value)}/>
 
         <View style={styles.btnWrapper}>
-          <PrimaryButton onPress={this.props.handleSubmit(submit)}>Zarejestruj</PrimaryButton>
+          <PrimaryButton
+            onPress={handleSubmit(submit(navigation))}>{submitting ? 'Wysylanie..' : 'Zarejestruj'}</PrimaryButton>
         </View>
       </Layout>
     )
@@ -112,5 +123,16 @@ SignUpScreen = connect(null, mapDispatchToProps)(SignUpScreen);
 export default reduxForm({
   form: 'signUp',
   destroyOnUnmount: false,
-  initialValues: { accepted: false, time_zone: 'UTC+01:00' }
+  initialValues: {
+    accepted: true,
+    time_zone: 'UTC+01:00',
+    type: 'Student',
+    email: '@@l',
+    name: '',
+    surname: '',
+    password: 'a',
+    passwordConfirmation: '',
+    gender: 'male',
+    birth_date: new Date()
+  }
 })(SignUpScreen);
