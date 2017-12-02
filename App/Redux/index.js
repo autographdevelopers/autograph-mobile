@@ -4,13 +4,15 @@ import rootSaga from '../Sagas/';
 import { reducer as formReducer } from 'redux-form';
 import { sessionReducer } from './SessionRedux';
 import { userReducer } from './UserRedux';
+import { resetPasswordReducer } from './ResetPasswordRedux'
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
   session: sessionReducer,
   user: userReducer,
-  form: formReducer
+  form: formReducer,
+  resetPassword: resetPasswordReducer
 });
 
 export default () => {

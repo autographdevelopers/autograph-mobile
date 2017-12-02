@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {Text, View, TextInput} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {Fonts, Colors} from '../Themes/';
+import { StyleSheet } from 'react-native';
+import { Fonts, Colors } from '../Themes/';
 
 export default InputLable = ({required, label}) => {
   const styles = StyleSheet.create({

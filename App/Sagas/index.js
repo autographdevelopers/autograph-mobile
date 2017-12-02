@@ -5,13 +5,15 @@ import DebugConfig from '../Config/DebugConfig';
 
 /* ------------- Types ------------- */
 
-import { StartupTypes } from '../Redux/StartupRedux'
-import {SESSION_ACTION_TYPES} from '../Redux/SessionRedux';
+import { StartupTypes } from '../Redux/StartupRedux';
+import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
+import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
+import { resetPassword } from './ResetPasswordSaga';
 
 /* ------------- API ------------- */
 
@@ -25,6 +27,7 @@ export default function * root () {
   yield all([
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
-    takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api)
+    takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api),
+    takeLatest(resetPasswordTypes.RESET_PASSWORD_REQUEST, resetPassword, api)
   ])
 }
