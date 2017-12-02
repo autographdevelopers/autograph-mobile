@@ -11,6 +11,10 @@ export default class ActivitiesScreen extends Component {
   }
 
   render() {
-    return (<ScrollView/>
+    return (
+      <ScrollView>
+        <Text>dsadsa</Text>
+      </ScrollView>
+    )
   }
 }
