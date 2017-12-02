@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {Colors} from '../Themes/';
+import React, { Component } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default CheckBox = ({value, setValue}) => {
+export default CheckBox = ({ value, setValue }) => {
   const SIZE = 16;
 
   const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ export default CheckBox = ({value, setValue}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={setValue}>
-        { value && <Icon name={'check'} color={Colors.snow} size={12}/> }
+        {value && <Icon name={'check'} color={Colors.snow} size={12}/>}
       </TouchableOpacity>
     </View>
   );
