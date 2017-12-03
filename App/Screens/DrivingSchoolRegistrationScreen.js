@@ -13,13 +13,11 @@ const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
     <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0}
            key={index}/>
-    <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>
+    { index > 0 && <TouchableOpacity onPress={() => {fields.remove(index)}}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
   </View>
 );
 
-const renderPhoneNumbers = ({ fields, meta: { error } }) => {
+const renderPhoneNumbersCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderPhoneNumber)}
@@ -32,14 +30,12 @@ const renderPhoneNumbers = ({ fields, meta: { error } }) => {
 const renderEmail = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
     <Field component={InputField} name={`email-${index}`} label={`Email - ${index + 1}`} required={index === 0}/>
-    <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>
+    { index > 0 && <TouchableOpacity onPress={() => {fields.remove(index)}}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
   </View>
 );
 
 
-const renderEmails = ({ fields, meta: { error } }) => {
+const renderEmailsCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderEmail)}
@@ -67,8 +63,8 @@ class DrivingSchoolRegistrationScreen extends Component {
   render() {
     return (
       <Layout>
-        <FieldArray name={"phone_numbers"} component={renderPhoneNumbers}/>
-        <FieldArray name={"emails"} component={renderEmails}/>
+        <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
+        <FieldArray name={"emails"} component={renderEmailsCollection}/>
         <View>
           <CellSwitch label={'Some label'}
                       description={'Lorem ipsum dolor sit melt some very interesing description siaba siaba da mydelko fa'}
@@ -89,5 +85,9 @@ class DrivingSchoolRegistrationScreen extends Component {
 }
 
 export default reduxForm({
-  form: 'newDrivingSchool'
+  form: 'newDrivingSchool',
+  initialValues: {
+    emails: [{}],
+    phone_numbers: [{}]
+  }
 })(DrivingSchoolRegistrationScreen);
