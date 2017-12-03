@@ -4,17 +4,13 @@ import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
 export default StepsIndicators = ({ labels, current }) => {
-  const TOTAL_WIDTH = 325;
-  const BULLET_RADIUS = 0.2 * (TOTAL_WIDTH / labels.length);
+  const BULLET_RADIUS = 20;
 
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      // flex: 1,
-      width: TOTAL_WIDTH,
       alignSelf: 'center',
-      borderWidth: 1
-    },
+      },
     box: {
       flex: 1,
       flexDirection: 'column'
@@ -22,7 +18,8 @@ export default StepsIndicators = ({ labels, current }) => {
     bottomContainer: {
       textAlign: 'center',
       padding: 5,
-      fontSize: Fonts.size.small
+      fontSize: Fonts.size.small,
+      color: Colors.strongGrey
     },
     upperContainer: {
       flexDirection: 'row',
@@ -33,6 +30,7 @@ export default StepsIndicators = ({ labels, current }) => {
       height: BULLET_RADIUS,
       borderRadius: 50,
       borderWidth: 2,
+      borderColor: Colors.strongGrey,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -42,7 +40,8 @@ export default StepsIndicators = ({ labels, current }) => {
     number: {
       backgroundColor: 'transparent',
       textAlign: 'center',
-      fontSize: Fonts.size.small
+      fontSize: Fonts.size.small,
+      color: Colors.strongGrey
     },
     textActive: {
       color: Colors.primaryWarm
@@ -53,7 +52,7 @@ export default StepsIndicators = ({ labels, current }) => {
     },
     line: {
       height: 2,
-      backgroundColor: Colors.black
+      backgroundColor: Colors.strongGrey
     },
     lineHidden: {
       height: 0
