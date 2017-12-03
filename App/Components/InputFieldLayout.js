@@ -23,7 +23,9 @@ export default InputFieldLayout = ({ children, label, required, meta, line = tru
       ...customErrorStyles
     },
     container: {
-      marginBottom: 15
+      marginBottom: 15,
+      flexGrow: 1, // test if doesnt brak anything
+      flex:1 // test if doesnt brak anything
     },
     childrenWrapper: {
       paddingVertical: 10,

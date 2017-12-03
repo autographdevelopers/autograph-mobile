@@ -8,7 +8,6 @@ export default CellWithSwitch = ({ label, value, onChangeHandler, description })
     container: {
       paddingVertical: 5,
       flexDirection: 'row',
-      justifyContent: 'space-between',
       minHeight:   64,
       borderBottomColor: Colors.lightGrey,
       borderBottomWidth: 1
