@@ -5,6 +5,7 @@ import InputField from '../Components/InputField';
 import ButtonPrimary from '../Components/ButtonPrimary';
 import Layout from '../Components/Layout';
 import CellSwitch from '../Components/CellWithSwitch';
+import ButtonText from '../Components/ButtonText';
 
 const renderPhoneNumber = (member, index, fields) => (
   <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index===0} key={index}/>
@@ -13,8 +14,8 @@ const renderPhoneNumber = (member, index, fields) => (
 const renderPhoneNumbers = ({ fields, meta: { error } }) => {
   return (
     <View>
-      <ButtonPrimary onPress={() => (fields.push({}))}>Add phone number</ButtonPrimary>
       {fields.map(renderPhoneNumber)}
+      <ButtonText onPress={() => (fields.push({}))} position={'flex-end'}>Add phone number +</ButtonText>
     </View>
   );
 };
@@ -28,8 +29,8 @@ const renderEmail = (member, index, fields) => (
 const renderEmails = ({ fields, meta: { error } }) => {
   return (
     <View>
-      <ButtonPrimary onPress={() => (fields.push({}))}>Add Email</ButtonPrimary>
       {fields.map(renderEmail)}
+      <ButtonText onPress={() => (fields.push({}))} position={'flex-end'}>Add Email +</ButtonText>
     </View>
   );
 };
