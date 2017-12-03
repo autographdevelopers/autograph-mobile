@@ -8,6 +8,7 @@ import CellSwitch from '../Components/CellWithSwitch';
 import ButtonText from '../Components/ButtonText';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Fonts, Colors } from '../Themes/';
+import StepsIndicators from '../Components/StepsIndicators';
 
 const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
@@ -57,12 +58,16 @@ class DrivingSchoolRegistrationScreen extends Component {
   };
 
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      currentStep: 0
+    }
   }
 
   render() {
     return (
       <Layout>
+        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={this.state.currentStep}/>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
         <FieldArray name={"emails"} component={renderEmailsCollection}/>
         <View>
