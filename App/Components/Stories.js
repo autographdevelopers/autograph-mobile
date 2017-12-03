@@ -5,4 +5,5 @@
 // import './ButtonPrimary.story';
 // import './CheckBox.story';
 // import './ButtonPrimary.story';
-import './StepsIndicators.story';
+// import './StepsIndicators.story';
+import './CellWithSwitch.story';

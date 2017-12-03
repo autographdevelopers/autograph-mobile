@@ -4,6 +4,7 @@ import { FieldArray, Field, reduxForm } from 'redux-form';
 import InputField from '../Components/InputField';
 import ButtonPrimary from '../Components/ButtonPrimary';
 import Layout from '../Components/Layout';
+import CellSwitch from '../Components/CellWithSwitch';
 
 const renderPhoneNumber = (member, index, fields) => (
   <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index===0} key={index}/>
@@ -47,6 +48,14 @@ class DrivingSchoolRegistrationScreen extends Component {
       <Layout>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbers}/>
         <FieldArray name={"emails"} component={renderEmails}/>
+        <View>
+          <CellSwitch label={'Some label'} description={'Lorem ipsum dolor sit melt some very interesing description siaba siaba da mydelko fa'} value={true}/>
+          <CellSwitch label={'Some laSome labelSome labelSome labelSome labelSome labelSome labelbel'} description={'Lorem ipsum dolor sit melt some very interesing '}/>
+          <CellSwitch label={'Some label'} description={'Lorem ipsum dolor sit melt'} value={true}/>
+          <CellSwitch label={'Some label'} />
+          <CellSwitch label={'Some label'} description={'Lorem ipsum dolor sit melt some very interesing description siaba siaba da mydelko fLorem ipsum dolor sit melt some very interesing description siaba siaba da mydelko fa'}/>
+          <CellSwitch label={'Some label'} description={'Lorem ipsum dolor sit melt some very interesing description siaba siaba da mydelko fa'} value={true}/>
+        </View>
       </Layout>
     )
   }
