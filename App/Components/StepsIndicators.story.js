@@ -5,21 +5,21 @@ import StepsIndicators from './StepsIndicators';
 
 storiesOf('StepsIndicators')
   .add('2 steps', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Informacje']} current={0} />
+    <StepsIndicators labels={['Powiadomienia', 'Informacje']} activeIndex={0} />
   ))
   .add('3 steps', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} current={1}  />
+    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} activeIndex={1}  />
   ))
   .add('4 steps', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje', 'Zaawansowane']} current={2} />
+    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje', 'Zaawansowane']} activeIndex={2} />
   ))
   .add('On the first step', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} current={0} />
+    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} activeIndex={0} />
   ))
-  .add('On the middle step', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} current={1} />
+  .add('On the second step', () => (
+    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje']} activeIndex={1} />
   ))
   .add('On the last step', () => (
-    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje', 'Zaawansowane']} current={3} />
+    <StepsIndicators labels={['Powiadomienia', 'Kalendarz', 'Informacje', 'Zaawansowane']} activeIndex={3} />
   ));
 

@@ -3,14 +3,15 @@ import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default StepsIndicators = ({ labels, current }) => {
-  const BULLET_RADIUS = 20;
+export default StepsIndicators = ({ labels, activeIndex }) => {
+  const BULLET_RADIUS = 25;
 
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignSelf: 'center',
-      },
+      marginBottom: 25
+    },
     box: {
       flex: 1,
       flexDirection: 'column'
@@ -32,7 +33,7 @@ export default StepsIndicators = ({ labels, current }) => {
       borderWidth: 2,
       borderColor: Colors.strongGrey,
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     bulletActive: {
       borderColor: Colors.primaryWarm
@@ -41,9 +42,13 @@ export default StepsIndicators = ({ labels, current }) => {
       backgroundColor: 'transparent',
       textAlign: 'center',
       fontSize: Fonts.size.small,
-      color: Colors.strongGrey
+      color: Colors.strongGrey,
     },
-    textActive: {
+    numberActive: {
+      fontWeight: 'bold',
+      color: Colors.primaryWarm
+    },
+    labelActive: {
       color: Colors.primaryWarm
     },
     lineContainer: {
@@ -51,7 +56,7 @@ export default StepsIndicators = ({ labels, current }) => {
       justifyContent: 'center'
     },
     line: {
-      height: 2,
+      height: 1,
       backgroundColor: Colors.strongGrey
     },
     lineHidden: {
@@ -62,22 +67,53 @@ export default StepsIndicators = ({ labels, current }) => {
     }
   });
 
+  const LeftLine = ({ index }) => (
+    <View style={styles.lineContainer}>
+      <View style={[styles.line, index <= activeIndex && styles.lineActive, index === 0 && styles.lineHidden]}/>
+    </View>
+  );
+
+  const RightLine = ({ index }) => (
+    <View style={styles.lineContainer}>
+      <View
+        style={[styles.line, index < activeIndex && styles.lineActive, index === (labels.length - 1) && styles.lineHidden]}/>
+    </View>
+  );
+
+  const Bullet = ({ index }) => (
+    <View style={[styles.bullet, index <= activeIndex && styles.bulletActive]}>
+      <Text style={[styles.number, index <= activeIndex && styles.numberActive]}>{index + 1}</Text>
+    </View>
+  );
+
+  const BoxTop = ({ children }) => (
+    <View style={styles.upperContainer}>
+      {children}
+    </View>
+  );
+
+  const BoxBottom = ({ label, index }) => (
+    <Text style={[styles.bottomContainer, index <= activeIndex && styles.labelActive]}>
+      {label}
+    </Text>
+  );
+
+  const Box = ({children}) => (
+    <View style={styles.box}>
+      {children}
+    </View>
+  );
+
   const renderIndicators = () => (
     labels.map((label, index) => (
-      <View style={styles.box} key={`box-${index}`}>
-        <View style={styles.upperContainer}>
-          <View style={styles.lineContainer}>
-            <View style={[styles.line, index <= current && styles.lineActive, index === 0 && styles.lineHidden]}/>
-          </View>
-          <View style={[styles.bullet, index <= current && styles.bulletActive]}>
-            <Text style={[styles.number, index <= current && styles.textActive]}>{index + 1}</Text>
-          </View>
-          <View style={styles.lineContainer}>
-            <View style={[styles.line, index < current && styles.lineActive, index === (labels.length-1) && styles.lineHidden]}/>
-          </View>
-        </View>
-        <Text style={[styles.bottomContainer, index <= current && styles.textActive]}>{label}</Text>
-      </View>
+      <Box key={`box-${index}`}>
+        <BoxTop style={styles.upperContainer}>
+          <LeftLine index={index}/>
+          <Bullet index={index}/>
+          <RightLine index={index}/>
+        </BoxTop>
+        <BoxBottom label={label} index={index}/>
+      </Box>
     ))
   );
 
