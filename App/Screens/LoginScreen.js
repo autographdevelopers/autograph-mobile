@@ -73,7 +73,7 @@ class LoginScreen extends Component {
 
   setField(field) {
     return text => {
-      this.setState({[field]: text});
+      this.setState({ [field]: text });
     }
   }
 
@@ -128,7 +128,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const mapStateToProps = (state, _) => {
+const mapStateToProps = (state) => {
   return {
     errorMessage: state.session.errorMessage,
     user: state.user

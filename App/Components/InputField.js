@@ -15,7 +15,7 @@ export default InputField = ({ input, meta, label, required = false, placeholder
   const styles = StyleSheet.create({
     input: {
       fontSize: Fonts.size.medium,
-      color: errorsPresent && meta.touched ? Colors.salmon : Colors.black
+      color: Colors.black
     }
   });
 
