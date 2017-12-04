@@ -7,6 +7,7 @@ import Layout from '../Components/Layout';
 import { Fonts, Colors } from '../Themes/index';
 import { connect } from 'react-redux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
+import { STATUS } from '../Redux/ResetPasswordRedux'
 
 const styles = StyleSheet.create({
   instructionText: {
@@ -31,10 +32,30 @@ class ResetPasswordScreen extends Component {
     this.state = { email: '' }
   }
 
-  setField(field) {
+  setEmail() {
     return text => {
       this.props.resetPasswordResetState();
-      this.setState({ [field]: text });
+      this.setState({ email: text });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { status } = nextProps.resetPassword
+
+    const title = 'Sukces!';
+    const message = 'Email z linkiem do zresetowania Twojego hasła został wysłany.';
+    const buttons = [
+      {
+        text: 'OK', onPress: () => {
+          this.props.resetPasswordResetState();
+          this.props.navigation.goBack();
+        }
+      },
+    ];
+    const options = { cancelable: false };
+
+    if (status === STATUS.SUCCESS) {
+      Alert.alert(title, message, buttons, options);
     }
   }
 
@@ -42,39 +63,17 @@ class ResetPasswordScreen extends Component {
     this.props.resetPasswordResetState();
   }
 
-
-  renderSuccesAlert () {
-    const { emailSent } = this.props.resetPassword
-
-    if (emailSent) {
-      Alert.alert(
-        'Sukces',
-        'Email z linkiem do zresetowania Twojego hasła został wysłany.',
-        [
-          {
-            text: 'OK', onPress: () => {
-              this.props.resetPasswordResetState();
-              this.props.navigation.goBack();
-            }
-          },
-        ],
-        { cancelable: false }
-      )
-    }
-  }
-
   render () {
-    this.renderSuccesAlert();
-    const email = this.state.email
-    const error = this.props.resetPassword.error
-    const handleSubmit = this.props.handleSubmit
+    const { email } = this.state
+    const { error } = this.props.resetPassword
+    const { handleSubmit } = this.props
 
     return (
       <Layout>
         <Text style={styles.instructionText}>
           Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.
         </Text>
-        <InputField input={{ onChange: this.setField('email'), onBlur: () => {} }}
+        <InputField input={{ onChange: this.setEmail(), onBlur: () => {} }}
                     meta={{ error: error, touched: error }}
                     label={'Email'}
                     required={true}

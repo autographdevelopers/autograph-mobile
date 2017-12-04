@@ -1,5 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce';
 
+export const STATUS = { READY: 'READY', FETCHING: 'FETCHING', SUCCESS: 'SUCCESS' }
+
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
@@ -16,22 +18,21 @@ export const resetPasswordCreators = Creators;
 
 export const INITIAL_STATE = {
   error: '',
-  isFetching: false,
-  emailSent: false
+  status: STATUS.READY,
 };
 
 /* ------------- Reducers ------------- */
 
 export const resetPasswordRequest = state => {
-  return { ...state, isFetching: true, error: '' }
+  return { ...state, status: STATUS.FETCHING, error: '' }
 }
 
 export const resetPasswordSuccess = state => {
-  return { ...state, isFetching: false, error: '', emailSent: true }
+  return { ...state, status: STATUS.SUCCESS, error: '' }
 }
 
 export const resetPasswordFailure = (state, { error }) => {
-  return { ...state, isFetching: false, error: error }
+  return { ...state, status: STATUS.READY, error: error }
 }
 
 export const resetPasswordResetState = (state) => {

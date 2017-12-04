@@ -12,10 +12,15 @@ export function* resetPassword (api, action) {
   } else {
     let error = ''
 
-    if (response.data.errors) {
-      error = response.data.errors[0]
-    }else{
-      error = 'Unexpected error. Please try again'
+    switch (response.problem) {
+      case 'CLIENT_ERROR':
+        error = response.data.errors[0];
+        break;
+      case 'SERVER_ERROR':
+        error = 'Server error occured';
+        break;
+      default:
+        error = 'Unexpected error occured';
     }
 
     yield put(resetPasswordCreators.resetPasswordFailure(error))
