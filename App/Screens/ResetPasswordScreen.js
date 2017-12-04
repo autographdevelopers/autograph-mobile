@@ -32,29 +32,27 @@ class ResetPasswordScreen extends Component {
     this.state = { email: '' }
   }
 
-  setEmail() {
-    return text => {
-      this.props.resetPasswordResetState();
-      this.setState({ email: text });
-    }
+  handleEmailChange = email => {
+    this.props.resetPasswordResetState();
+    this.setState({ email });
   }
 
   componentWillReceiveProps(nextProps) {
     const { status } = nextProps.resetPassword
 
-    const title = 'Sukces!';
-    const message = 'Email z linkiem do zresetowania Twojego hasła został wysłany.';
-    const buttons = [
-      {
-        text: 'OK', onPress: () => {
+    if (status === STATUS.SUCCESS) {
+      const title = 'Sukces!';
+      const message = 'Email z linkiem do zresetowania Twojego hasła został wysłany.';
+      const buttons = [
+        {
+          text: 'OK', onPress: () => {
           this.props.resetPasswordResetState();
           this.props.navigation.goBack();
         }
-      },
-    ];
-    const options = { cancelable: false };
+        },
+      ];
+      const options = { cancelable: false };
 
-    if (status === STATUS.SUCCESS) {
       Alert.alert(title, message, buttons, options);
     }
   }
@@ -73,7 +71,7 @@ class ResetPasswordScreen extends Component {
         <Text style={styles.instructionText}>
           Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.
         </Text>
-        <InputField input={{ onChange: this.setEmail(), onBlur: () => {} }}
+        <InputField input={{ onChange: this.handleEmailChange, onBlur: () => {} }}
                     meta={{ error: error, touched: error }}
                     label={'Email'}
                     required={true}

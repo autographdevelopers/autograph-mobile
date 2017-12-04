@@ -32,7 +32,7 @@ export const resetPasswordSuccess = state => {
 }
 
 export const resetPasswordFailure = (state, { error }) => {
-  return { ...state, status: STATUS.READY, error: error }
+  return { ...state, status: STATUS.READY, error }
 }
 
 export const resetPasswordResetState = (state) => {
