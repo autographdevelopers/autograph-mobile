@@ -7,7 +7,8 @@ export default Layout = ({children}) => {
     layout: {
       flex:1,
       paddingHorizontal: 15,
-      paddingTop: 20
+      paddingTop: 20,
+      backgroundColor: 'white' //?
     }
   });
 

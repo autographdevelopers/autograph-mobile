@@ -34,6 +34,9 @@ export default InputFieldLayout = ({ children, label, required, meta, line = tru
     }
   });
 
+  console.tron.log('CHILDREN');
+  console.tron.log(children);
+
   return (
     <View style={styles.container}>
       <InputLabel required={required} label={label}/>

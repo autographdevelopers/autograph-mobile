@@ -3,7 +3,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import LaunchScreen from '../Screens/LaunchScreen';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
-import DrivingSchoolRegistrationScreen from '../Screens/DrivingSchoolRegistrationScreen';
+import newDrivingSchool from '../Screens/NewDrivingSchool/index';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
 import React, { Component } from 'react';
@@ -15,12 +15,12 @@ const routeConfigs = {
   launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
   main: { screen: TabNavigation },
-  drivingSchoolRegistrationScreen: { screen: DrivingSchoolRegistrationScreen }
+  newDrivingSchool: { screen: newDrivingSchool }
 };
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'drivingSchoolRegistrationScreen',
+  initialRouteName: 'newDrivingSchool',
   cardStyle: styles.card
 };
 
