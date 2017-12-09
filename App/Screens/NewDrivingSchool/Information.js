@@ -11,8 +11,11 @@ import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 
 const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
-    <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0} key={index}/>
-    {index > 0 && <TouchableOpacity onPress={() => {fields.remove(index)}}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
+    <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0}
+           key={index}/>
+    {index > 0 && <TouchableOpacity onPress={() => {
+      fields.remove(index)
+    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
   </View>
 );
 
@@ -48,7 +51,7 @@ const renderEmailsCollection = ({ fields, meta: { error } }) => {
 const styles = StyleSheet.create({
   removableInputRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   }
 });
 
@@ -69,15 +72,20 @@ class InformationStep extends Component {
     return (
       <View>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-        {/*<Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>*/}
+        {/*<Field name={'address'} component={PlacesAutocom plete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>*/}
         {/*<FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>*/}
         {/*<FieldArray name={"emails"} component={renderEmailsCollection}/>*/}
         {/*<Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>*/}
         {/*<Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>*/}
 
-        {/*<View style={{borderColor: 'green', borderWidth: 2, minHeight: 10}}>*/}
-          {/*<View style={{backgroundColor: 'red', height: 20}}/>*/}
-        {/*</View>*/}
+        <View style={{ borderColor: 'black', borderWidth: 2}}>
+            <View style={{ backgroundColor: 'red', height: 25}}/>
+            <View style={{ backgroundColor: 'red', height: 25}}/>
+            <View style={{ backgroundColor: 'red', height: 25}}/>
+            <View style={{ backgroundColor: 'blue', height: 25}}/>
+            <View style={{ backgroundColor: 'orange', height: 25}}/>
+            <View style={{ backgroundColor: 'pink', height: 25}}/>
+        </View>
       </View>
     )
   }
