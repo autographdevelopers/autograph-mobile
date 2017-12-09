@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
-import { Colors } from '../../Themes';
+import { Colors, Fonts } from '../../Themes';
+import InputField from '../../Components/InputField';
+import { required } from '../../Lib/validators';
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -47,6 +49,10 @@ class NotificationsStep extends Component {
                description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
                onChangeHandler: value => change('monthly_reports', value)
                }}/>
+
+
+
+        <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
       </View>
     )
   }

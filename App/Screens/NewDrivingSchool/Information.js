@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { FieldArray, Field, reduxForm } from 'redux-form';
 import InputField from '../../Components/InputField';
 import ButtonPrimary from '../../Components/ButtonPrimary';
@@ -69,11 +69,15 @@ class InformationStep extends Component {
     return (
       <View>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-        <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>
-        <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
-        <FieldArray name={"emails"} component={renderEmailsCollection}/>
-        <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
-        <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>
+        {/*<Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>*/}
+        {/*<FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>*/}
+        {/*<FieldArray name={"emails"} component={renderEmailsCollection}/>*/}
+        {/*<Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>*/}
+        {/*<Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>*/}
+
+        {/*<View style={{borderColor: 'green', borderWidth: 2, minHeight: 10}}>*/}
+          {/*<View style={{backgroundColor: 'red', height: 20}}/>*/}
+        {/*</View>*/}
       </View>
     )
   }

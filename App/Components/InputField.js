@@ -15,7 +15,9 @@ export default InputField = ({ input, meta, label, required = false, placeholder
   const styles = StyleSheet.create({
     input: {
       fontSize: Fonts.size.medium,
-      color: Colors.black
+      color: Colors.black,
+      borderWidth: 1,
+      // flex: 1
     }
   });
   return (

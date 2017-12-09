@@ -43,7 +43,7 @@ class NewDrivingSchoolScreen extends Component {
       <Layout>
         <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={this.state.currentStep}/>
         <StepFormNavigator navigation={this.props.navigation} />
-        <ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>
+        {/*<ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>*/}
       </Layout>
     )
   }
