@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
 
 class InformationStep extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    headerStyle: { elevation: 0, shadowOpacity: 0, }
   };
 
   constructor(props) {
@@ -70,23 +71,23 @@ class InformationStep extends Component {
   render() {
     const { change } = this.props;
     return (
-      <View>
+      <Layout>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-        {/*<Field name={'address'} component={PlacesAutocom plete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>*/}
-        {/*<FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>*/}
-        {/*<FieldArray name={"emails"} component={renderEmailsCollection}/>*/}
-        {/*<Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>*/}
-        {/*<Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>*/}
+        <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>
+        <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
+        <FieldArray name={"emails"} component={renderEmailsCollection}/>
+        <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
+        <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>
 
-        <View style={{ borderColor: 'black', borderWidth: 2}}>
-            <View style={{ backgroundColor: 'red', height: 25}}/>
-            <View style={{ backgroundColor: 'red', height: 25}}/>
-            <View style={{ backgroundColor: 'red', height: 25}}/>
-            <View style={{ backgroundColor: 'blue', height: 25}}/>
-            <View style={{ backgroundColor: 'orange', height: 25}}/>
-            <View style={{ backgroundColor: 'pink', height: 25}}/>
-        </View>
-      </View>
+        {/*<View style={{ borderColor: 'black', borderWidth: 2}}>*/}
+            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
+            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
+            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
+            {/*<View style={{ backgroundColor: 'blue', height: 25}}/>*/}
+            {/*<View style={{ backgroundColor: 'orange', height: 25}}/>*/}
+            {/*<View style={{ backgroundColor: 'pink', height: 25}}/>*/}
+        {/*</View>*/}
+      </Layout>
     )
   }
 }
@@ -94,5 +95,9 @@ class InformationStep extends Component {
 export default reduxForm({
   form: 'newDrivingSchool',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true
+  forceUnregisterOnUnmount: true,
+  initialValues: {
+    phone_numbers: [''],
+    emails: ['']
+  }
 })(InformationStep);

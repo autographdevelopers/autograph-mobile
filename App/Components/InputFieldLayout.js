@@ -24,27 +24,21 @@ export default InputFieldLayout = ({ children, label, required, meta, line = tru
     },
     container: {
       marginBottom: 15,
-      // flexGrow: 1, // test if doesnt brak anything
+      flexGrow: 1, // test if doesnt brak anything
        // flex:1// test if doesnt brak anything
     },
     childrenWrapper: {
       paddingVertical: 10,
       borderBottomWidth: line ? 1 : 0,
       borderBottomColor:  errorsPresent && meta.touched ? Colors.salmon : Colors.mediumGrey
-    },
-    input: {
-      fontSize: Fonts.size.medium,
-      color: Colors.black
     }
   });
+
   return (
     <View style={styles.container}>
       <InputLabel required={required} label={label}/>
       <View style={styles.childrenWrapper}>
-        <TextInput value={'dsadsa'}
-                   style={styles.input}
-                   onChangeText={()=>{}}
-        />
+        {children}
       </View>
       {errorsPresent && meta.touched && renderErrors()}
     </View>

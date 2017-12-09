@@ -13,12 +13,21 @@ export default InputField = ({ input, meta, label, required = false, placeholder
   const errors = typeof(meta.error) === 'object' ? meta.error.all : [meta.error].filter(item => item);
   const errorsPresent = errors.length > 0;
   const styles = StyleSheet.create({
-
+    input: {
+      fontSize: Fonts.size.medium,
+      color: Colors.black
+    }
   });
 
   return (
     <InputFieldLayout meta={meta} required={required} label={label}>
-
+      <TextInput value={input.value}
+                 style={styles.input}
+                 onBlur={val => input.onBlur(val)}
+                 placeholder={placeholder}
+                 onChangeText={input.onChange}
+                 {...options}
+      />
     </InputFieldLayout>
   );
 }

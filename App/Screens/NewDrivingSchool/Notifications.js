@@ -34,7 +34,7 @@ class NotificationsStep extends Component {
     const { change } = this.props;
 
     return (
-      <View style={styles.container}>
+      <Layout style={styles.container}>
         <Field name={'push_notification'} component={renderSwitch}
                componentProps={{label: 'Otrzymuj powiadomienia push',
                description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
@@ -49,17 +49,13 @@ class NotificationsStep extends Component {
                description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
                onChangeHandler: value => change('monthly_reports', value)
                }}/>
-
-
-
-        <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-      </View>
+      </Layout>
     )
   }
 }
 
 export default reduxForm({
-  form: 'newDrivingSchool',
+  form: 'notificationSettings',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
