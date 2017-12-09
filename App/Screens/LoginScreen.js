@@ -7,6 +7,7 @@ import LoginInputField from '../Components/LoginInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/index';
+import FancyBackground from '../Components/FancyBackground';
 
 const styles = StyleSheet.create({
   inputsSection: {

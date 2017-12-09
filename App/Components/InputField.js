@@ -18,7 +18,6 @@ export default InputField = ({ input, meta, label, required = false, placeholder
       color: Colors.black
     }
   });
-
   return (
     <InputFieldLayout meta={meta} required={required} label={label}>
       <TextInput value={input.value}

@@ -11,11 +11,8 @@ import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 
 const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
-    <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0}
-           key={index}/>
-    {index > 0 && <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
+    <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0} key={index}/>
+    {index > 0 && <TouchableOpacity onPress={() => {fields.remove(index)}}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
   </View>
 );
 
@@ -51,7 +48,7 @@ const renderEmailsCollection = ({ fields, meta: { error } }) => {
 const styles = StyleSheet.create({
   removableInputRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 });
 
@@ -69,17 +66,14 @@ class InformationStep extends Component {
 
   render() {
     const { change } = this.props;
-    console.tron.log('rendered step1');
-    console.tron.log(this.props);
     return (
       <View>
-        <Text>Lorem </Text>
-        {/*<Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>*/}
-        {/*<Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>*/}
-        {/*<FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>*/}
-        {/*<FieldArray name={"emails"} component={renderEmailsCollection}/>*/}
-        {/*<Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>*/}
-        {/*<Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>*/}
+        <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
+        <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>
+        <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
+        <FieldArray name={"emails"} component={renderEmailsCollection}/>
+        <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
+        <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>
       </View>
     )
   }

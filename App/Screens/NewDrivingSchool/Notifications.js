@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import { Text, ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
+import { Colors } from '../../Themes';
 
 const styles = StyleSheet.create({
   removableInputRow: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  container: {
+    // backgroundColor: Colors.snow,
+    // flex: 1
   }
 });
 
-// const Switch
+const renderSwitch = ({input, meta, componentProps}) => (
+  <CellSwitch value={input.value} {...componentProps}/>
+);
 
 class NotificationsStep extends Component {
   static navigationOptions = {
@@ -25,14 +32,21 @@ class NotificationsStep extends Component {
     const { change } = this.props;
 
     return (
-      <View>
-        <CellSwitch label={'Otrzymuj powiadomienia push'}
-                    description={'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.'}
-                    value={true}/>
-        <CellSwitch label={'Otrzymuj raporty tygodniowe'}
-                    description={'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.'}/>
-        <CellSwitch label={'Otrzymuj raporty miesieczne'}
-                    description={'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.'} value={true}/>
+      <View style={styles.container}>
+        <Field name={'push_notification'} component={renderSwitch}
+               componentProps={{label: 'Otrzymuj powiadomienia push',
+               description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
+               onChangeHandler: value => change('push_notification', value)
+               }}/>
+        <Field name={'weekly_reports'} component={renderSwitch}
+               componentProps={{label: 'Otrzymuj raporty tygodniowe',
+               description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
+               onChangeHandler: value => change('weekly_reports', value)}}/>
+        <Field name={'monthly_reports'} component={renderSwitch}
+               componentProps={{label: 'Otrzymuj raporty miesieczne',
+               description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
+               onChangeHandler: value => change('monthly_reports', value)
+               }}/>
       </View>
     )
   }
@@ -41,5 +55,10 @@ class NotificationsStep extends Component {
 export default reduxForm({
   form: 'newDrivingSchool',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true
+  forceUnregisterOnUnmount: true,
+  initialValues: {
+    push_notification: true,
+    weekly_reports: false,
+    monthly_reports: true
+  }
 })(NotificationsStep);

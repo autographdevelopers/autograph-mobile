@@ -4,8 +4,6 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import Layout from '../../Components/Layout';
 import { Fonts, Colors } from '../../Themes/index';
 import StepsIndicators from '../../Components/StepsIndicators';
-import { required, isAccepted, minLength, passwordsMatch, email } from '../../Lib/validators';
-import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import { StackNavigator } from 'react-navigation';
 import InformationStep from './Information';
 import NotificationsStep from './Notifications';
@@ -15,7 +13,7 @@ import navStyles from '../../Navigation/Styles/NavigationStyles';
 const routeConfigs = {
   step1: { screen: InformationStep },
   step2: { screen: NotificationsStep },
-  // step3: { screen: CalendarStep }
+  step3: { screen: CalendarStep }
 };
 
 const navigationConfigs = {
@@ -26,12 +24,6 @@ const navigationConfigs = {
 
 export const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
-const styles = StyleSheet.create({
-  removableInputRow: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
 
 class NewDrivingSchoolScreen extends Component {
   static navigationOptions = {
@@ -42,18 +34,16 @@ class NewDrivingSchoolScreen extends Component {
     super(props);
     this.state = { currentStep: 0 };
   }
-  nextStep = () => {
+  nextStep = () => { /* this function declaration autobind this in oppose to func(){} */
     this.setState({currentStep: this.state.currentStep + 1});
-    this.navigator.navigate(`step${this.state.currentStep + 2}`);
+    this.props.navigation.navigate(`step${this.state.currentStep + 2}`);
   };
-
   render() {
     return (
       <Layout>
-        {/*<StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={this.state.currentStep}/>*/}
-        {/*<StepFormNavigator navigation={this.props.navigation} ref={nav => { this.navigator = nav; }}/>*/}
-        {/*/!*<ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>*!/*/}
-        {/*<InformationStep/>*/}
+        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={this.state.currentStep}/>
+        <StepFormNavigator navigation={this.props.navigation} />
+        <ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>
       </Layout>
     )
   }
