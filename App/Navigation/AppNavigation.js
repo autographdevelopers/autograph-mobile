@@ -20,7 +20,7 @@ const routeConfigs = {
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'newDrivingSchool',
+  initialRouteName: 'launchScreen',
   cardStyle: styles.card
 };
 
