@@ -12,14 +12,14 @@ import navStyles from '../../Navigation/Styles/NavigationStyles';
 import {NavigationActions} from 'react-navigation';
 
 const routeConfigs = {
-  step1: { screen: InformationStep },
-  step2: { screen: NotificationsStep },
-  step3: { screen: CalendarStep }
+  step0: { screen: InformationStep },
+  step1: { screen: NotificationsStep },
+  step2: { screen: CalendarStep }
 };
 
 const navigationConfigs = {
   // headerMode: 'none ',
-  initialRouteName: 'step1',
+  initialRouteName: 'step0',
   cardStyle: navStyles.card
 };
 
@@ -33,13 +33,11 @@ class NewDrivingSchoolScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { currentStep: 0 };
   }
   nextStep = () => { /* this function declaration autobind this in oppose to func(){} */
-    this.setState({currentStep: this.state.currentStep + 1});
-    console.log(this.navigator);
+    const nextRoute = this.navigator.state.nav.index + 1;
     this.navigator && this.navigator.dispatch(
-      NavigationActions.navigate({ routeName: `step${this.state.currentStep + 2}` })
+      NavigationActions.navigate({ routeName: `step${nextRoute}`})
     );
   };
   render() {
