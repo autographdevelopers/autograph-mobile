@@ -10,7 +10,7 @@ export default CellWithSwitch = ({ label, value, onChangeHandler, description })
       flexDirection: 'row',
       minHeight:   64,
       borderBottomColor: Colors.lightGrey,
-      borderBottomWidth: 1
+      // borderBottomWidth: 1
     },
     infoBox: {
       flexDirection: 'column',

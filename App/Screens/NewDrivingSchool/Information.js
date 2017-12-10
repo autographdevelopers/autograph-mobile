@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { Fonts, Colors } from '../../Themes/index';
 import { required, minLength, email } from '../../Lib/validators';
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
+import NavHeader from '../../Components/NavHeader';
+import StepsIndicators from '../../Components/StepsIndicators';
 
 const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
 
 class InformationStep extends Component {
   static navigationOptions = {
-    header: null,
+    header: props => <View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>,
     headerStyle: { elevation: 0, shadowOpacity: 0, }
   };
 
@@ -70,6 +72,7 @@ class InformationStep extends Component {
 
   render() {
     const { change } = this.props;
+    // TODO add ActivityIndicator spinner form react-native module
     return (
       <Layout>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>

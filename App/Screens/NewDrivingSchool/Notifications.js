@@ -5,6 +5,9 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import { Colors, Fonts } from '../../Themes';
 import InputField from '../../Components/InputField';
 import { required } from '../../Lib/validators';
+import NavHeader from '../../Components/NavHeader';
+import StepsIndicators from '../../Components/StepsIndicators';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -23,7 +26,14 @@ const renderSwitch = ({input, meta, componentProps}) => (
 
 class NotificationsStep extends Component {
   static navigationOptions = {
-    header: null
+    header: props => {
+      console.log('NAVIGATION IN HEADER');
+      console.log(props.navigation);
+
+      // console.tron.log('NAVIGATION IN HEADER');
+      // console.tron.log(props.navigation);
+      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={1}/></View>)
+    },
   };
 
     constructor(props) {
@@ -32,6 +42,12 @@ class NotificationsStep extends Component {
 
   render() {
     const { change } = this.props;
+
+    console.log('NAVIGATION IN COMPONENT');
+    console.log(this.props.navigation );
+
+    // console.tron.log('NAVIGATION IN COMPONENT');
+    // console.tron.log(this.props.navigation );
 
     return (
       <Layout style={styles.container}>

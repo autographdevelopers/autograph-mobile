@@ -10,7 +10,7 @@ export default StepsIndicators = ({ labels, activeIndex }) => {
     container: {
       flexDirection: 'row',
       alignSelf: 'center',
-      marginBottom: 25
+      marginVertical: 25
     },
     box: {
       flex: 1,

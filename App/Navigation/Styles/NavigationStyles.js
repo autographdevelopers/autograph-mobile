@@ -3,7 +3,7 @@ import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
   card: {
-    backgroundColor: Colors.snow, // TODO check it to improve
+    backgroundColor: 'transparent', // TODO check why needed
     shadowColor: 'transparent' // REMOVES default shadows applied by react navigation
   }
 })

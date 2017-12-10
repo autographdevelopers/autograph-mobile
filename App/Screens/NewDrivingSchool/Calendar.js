@@ -3,6 +3,9 @@ import { Text, ScrollView, View, StyleSheet, TouchableOpacity } from 'react-nati
 import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
 import { Colors } from '../../Themes';
+import NavHeader from '../../Components/NavHeader';
+import StepsIndicators from '../../Components/StepsIndicators';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -17,7 +20,7 @@ const styles = StyleSheet.create({
 
 class Calendar extends Component {
   static navigationOptions = {
-    header: null
+    header: props => <View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={2}/></View>,
   };
 
   constructor(props) {
