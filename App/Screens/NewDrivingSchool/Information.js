@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
 class InformationStep extends Component {
   static navigationOptions = {
-    header: props => <View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>,
+    header: props => <View><NavHeader navigation={props.screenProps.parentNav} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>,
     headerStyle: { elevation: 0, shadowOpacity: 0, }
   };
 

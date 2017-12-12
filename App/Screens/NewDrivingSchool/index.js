@@ -34,6 +34,10 @@ class NewDrivingSchoolScreen extends Component {
   constructor(props) {
     super(props);
   }
+  nextStep2 =() => {
+    this.props.navigation.goBack()
+  }
+
   nextStep = () => { /* this function declaration autobind this in oppose to func(){} */
     const nextRoute = this.navigator.state.nav.index + 1;
     this.navigator && this.navigator.dispatch(
@@ -43,7 +47,7 @@ class NewDrivingSchoolScreen extends Component {
   render() {
     return (
       <View style={{flex:1}}>
-        <StepFormNavigator ref={ref => this.navigator = ref}/>
+        <StepFormNavigator ref={ref => this.navigator = ref} screenProps={{parentNav: this.props.navigation }}/>
         <ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>
       </View>
     )
