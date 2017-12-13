@@ -5,18 +5,7 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import { Colors } from '../../Themes';
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
-import ButtonPrimary from '../../Components/ButtonPrimary';
 
-const styles = StyleSheet.create({
-  removableInputRow: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  container: {
-    // backgroundColor: Colors.snow,
-    // flex: 1
-  }
-});
 
 class Calendar extends Component {
   static navigationOptions = {
@@ -29,7 +18,7 @@ class Calendar extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Text>Calendar</Text>
       </View>
     )

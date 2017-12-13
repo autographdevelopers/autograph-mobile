@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { FieldArray, Field, reduxForm } from 'redux-form';
-import InputField from '../../Components/InputField';
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import ButtonText from '../../Components/ButtonText';
 import Icon from 'react-native-vector-icons/Ionicons'
+
+import InputField from '../../Components/InputField';
+import ButtonText from '../../Components/ButtonText';
 import { Fonts, Colors } from '../../Themes/index';
 import { required, minLength, email } from '../../Lib/validators';
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
@@ -81,15 +81,6 @@ class InformationStep extends Component {
         <FieldArray name={"emails"} component={renderEmailsCollection}/>
         <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
         <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>
-
-        {/*<View style={{ borderColor: 'black', borderWidth: 2}}>*/}
-            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
-            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
-            {/*<View style={{ backgroundColor: 'red', height: 25}}/>*/}
-            {/*<View style={{ backgroundColor: 'blue', height: 25}}/>*/}
-            {/*<View style={{ backgroundColor: 'orange', height: 25}}/>*/}
-            {/*<View style={{ backgroundColor: 'pink', height: 25}}/>*/}
-        {/*</View>*/}
       </Layout>
     )
   }
