@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import CellSwitch from '../../Components/CellWithSwitch';
 import { Colors } from '../../Themes';
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
-
+import ScheduleBoundaries from '../../Components/ScheduleBoundariesView';
 
 class Calendar extends Component {
   static navigationOptions = {
@@ -19,7 +18,7 @@ class Calendar extends Component {
   render() {
     return (
       <View>
-        <Text>Calendar</Text>
+        <ScheduleBoundaries/>
       </View>
     )
   }
