@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react-native'
 
 import ScheduleBoundariesModal from './ScheduleBoundariesModal'
 
-storiesOf('ScheduleBoundariesModal')
+storiesOf('bounds')
   .add('Default', () => (
     <ScheduleBoundariesModal/>
   ))

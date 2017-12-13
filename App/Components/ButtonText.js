@@ -3,11 +3,10 @@ import { Text, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default CellWithSwitch = ({ children, position, onPress }) => {
+export default CellWithSwitch = ({ children, position, onPress, customStyle={} }) => {
   const styles = StyleSheet.create({
     text: {
       color: Colors.primaryWarm,
-      // fontWeight: 'bold',
       fontSize: Fonts.size.medium
     },
     button: {
@@ -16,7 +15,7 @@ export default CellWithSwitch = ({ children, position, onPress }) => {
   });
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, customStyle]} onPress={onPress}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );

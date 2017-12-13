@@ -4,21 +4,20 @@ import { StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
 import { Fonts, Colors, Metrics } from '../Themes/';
-import Modal from './ModalLayout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from './CheckBox';
-import ButtonPrimary from './ButtonPrimary';
 import ButtonText from './ButtonText';
+import Layout from './Layout';
 
 const styles = StyleSheet.create({
   title: {
-    textAlign: 'center',
-    color: Colors.strongGrey,
-    marginBottom: 15
+    color: Colors.black,
+    marginBottom: 15,
+    fontSize: Fonts.size.regular
   },
   description: {
-    textAlign: 'center',
-    color: Colors.strongGrey
+    color: Colors.strongGrey,
+    marginBottom: 15
   },
   currentWeekdayRow: {
     flexDirection: 'row',
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    marginTop: 20
+    marginVertical: 10
   },
   hour: {
     marginHorizontal: 10,
@@ -43,33 +42,27 @@ const styles = StyleSheet.create({
   },
   timeIntervalRow: {
     justifyContent: 'center'
-    // marginVertical: 15
   },
   dayRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   weekdaysColumn: {
-    marginRight: 15
-  },
-  weekSummarySection: {
-    marginBottom: 40
+    marginRight: 20
   },
   datepicker: {
-    flex: 1,
-    width: 70,
-    height: Fonts.size.medium
-  }
-});
-
-const datePickerCustom = {
-  dateInput: {
     height: 0,
     opacity: 0,
     borderWidth: 0,
-    fontSize: Fonts.size.medium,
-    height: Fonts.size.medium
+  },
+  weekdayItem: {
+    marginVertical: 10,
+    marginLeft: 15
+  },
+  applyToAllDays: {
+    marginVertical: 10
   }
-};
+});
 
 const WEEKDAYS = [
   'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota', 'Niedziela'
@@ -147,20 +140,17 @@ export default class ModalLayout extends Component {
   currentStartEndTime = startend => (this.state.weekdays[this.state.currentWeekday][startend] || '-:-');
 
   render() {
-    const { options } = this.props;
     return (
-      <Modal {...options} >
-        <Text style={styles.title}>Ustaw domyślne godziny pracy</Text>
+      <Layout>
+        <Text style={styles.title}>Ustaw domyślne godziny pracy.</Text>
         <Text style={styles.description}>Ramy czasowe, które teraz wybierzesz umożliwią Tobie oraz twoim pracownikom
           biurowym ustalanie harmonogramu tylko w tym przedziale.</Text>
 
-        <View style={styles.currentWeekdayRow}>
+        <View style={[styles.currentWeekdayRow, styles.row]}>
           <TouchableOpacity onPress={this.prevDay}>
             <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
           </TouchableOpacity>
-
           <Text style={styles.currentWeekday}>{WEEKDAYS[this.state.currentWeekday]}</Text>
-
           <TouchableOpacity onPress={this.nextDay}>
             <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
           </TouchableOpacity>
@@ -176,17 +166,15 @@ export default class ModalLayout extends Component {
             style={styles.hour}>{this.currentStartEndTime('end_time')}</Text></TouchableOpacity>
         </View>
 
-        <ButtonText onPress={this.applyToAllDays}>Zastosuj dla kazego dnia</ButtonText>
+        <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays}>Zastosuj dla kazego dnia</ButtonText>
 
-        <Text>Dni tygodnia: </Text>
-
-        <View style={[styles.row, styles.weekSummarySection]}>
+        <View style={styles.row}>
           <View style={styles.weekdaysColumn}>
             {
               WEEKDAYS.map((element, index) => (
                 <View style={styles.dayRow} key={`day-${index}`}>
                   <CheckBox value={this.isIntervalSet(index)} setValue={this.clearDay(index)}/>
-                  <Text>{element}</Text>
+                  <Text style={styles.weekdayItem}>{element}</Text>
                 </View>)
               )
             }
@@ -195,15 +183,14 @@ export default class ModalLayout extends Component {
             {
               WEEKDAYS.map((_, index) => {
                 const { start_time, end_time } = this.state.weekdays[index];
-                return (<Text key={`interval-${index}`}>{start_time || '-:-'} - {end_time || '-:-'}</Text>)
+                return (<Text key={`interval-${index}`} style={styles.weekdayItem}>{start_time || '-:-'}   -   {end_time || '-:-'}</Text>)
               })
             }
           </View>
         </View>
-        <ButtonPrimary>Zatwierdź</ButtonPrimary>
+
         <DatePicker
           style={styles.datepicker}
-          customStyles={datePickerCustom}
           ref={picker => this.datePicker = picker}
           date={this.state.weekdays[this.state.currentWeekday][this.state.startend]}
           showIcon={false}
@@ -213,7 +200,7 @@ export default class ModalLayout extends Component {
           cancelBtnText='Anuluj'
           onDateChange={ date => this.setTime(date) }
         />
-      </Modal>
+      </Layout>
     );
   }
 }
