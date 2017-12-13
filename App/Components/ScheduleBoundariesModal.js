@@ -10,8 +10,6 @@ import CheckBox from './CheckBox';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonText from './ButtonText';
 
-import Moment from 'moment';
-
 const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
@@ -184,19 +182,22 @@ export default class ModalLayout extends Component {
 
         <View style={[styles.row, styles.weekSummarySection]}>
           <View style={styles.weekdaysColumn}>
-            {WEEKDAYS.map((element, index) => {
-              return (<View style={styles.dayRow} key={`day-${index}`}>
-                <CheckBox value={this.isIntervalSet(index)} setValue={this.clearDay(index)}/>
-                <Text>{element}</Text>
-              </View>)
-            })}
+            {
+              WEEKDAYS.map((element, index) => (
+                <View style={styles.dayRow} key={`day-${index}`}>
+                  <CheckBox value={this.isIntervalSet(index)} setValue={this.clearDay(index)}/>
+                  <Text>{element}</Text>
+                </View>)
+              )
+            }
           </View>
           <View>
-            {WEEKDAYS.map((element, index) => {
-              const { start_time, end_time } = this.state.weekdays[index];
-              return (<Text
-                key={`interval-${index}`}>{start_time !== null ? start_time.toString() : '-:-'} - {end_time !== null ? end_time.toString() : '-:-'}</Text>)
-            })}
+            {
+              WEEKDAYS.map((_, index) => {
+                const { start_time, end_time } = this.state.weekdays[index];
+                return (<Text key={`interval-${index}`}>{start_time || '-:-'} - {end_time || '-:-'}</Text>)
+              })
+            }
           </View>
         </View>
         <ButtonPrimary>Zatwierdź</ButtonPrimary>
@@ -207,12 +208,10 @@ export default class ModalLayout extends Component {
           date={this.state.weekdays[this.state.currentWeekday][this.state.startend]}
           showIcon={false}
           mode='time'
+          minuteInterval={30}
           confirmBtnText='Potwierdz'
           cancelBtnText='Anuluj'
-          onDateChange={date => {
-            console.log(date);
-            this.setTime(date)
-          }}
+          onDateChange={ date => this.setTime(date) }
         />
       </Modal>
     );
