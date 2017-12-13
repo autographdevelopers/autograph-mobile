@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.medium
   },
   timeIntervalRow: {
-    justifyContent: 'center',
+    justifyContent: 'center'
     // marginVertical: 15
   },
   dayRow: {
@@ -57,22 +57,13 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   datepicker: {
-    flex:1,
+    flex: 1,
     width: 70,
     height: Fonts.size.medium
   }
 });
 
-const datePickerCustom =  {
-  dateText: {
-    color: Colors.primaryWarm,
-    // flex: 1
-  },
-  dateTouchBody: {
-    // paddingHorizontal: 0,
-    // flex: 1
-    height: Fonts.size.medium
-  },
+const datePickerCustom = {
   dateInput: {
     height: 0,
     opacity: 0,
@@ -93,30 +84,28 @@ export default class ModalLayout extends Component {
       startend: 'start_time',
       currentWeekday: 0,
       weekdays: [
-        {weekday: 'monday', start_time: null, end_time: null},
-        {weekday: 'tuesday', start_time: null, end_time: null},
-        {weekday: 'wednesday', start_time: null, end_time: null},
-        {weekday: 'thursday', start_time: null, end_time: null},
-        {weekday: 'friday', start_time: null, end_time: null},
-        {weekday: 'saturday', start_time: null, end_time: null},
-        {weekday: 'sunday', start_time: null, end_time: null}
+        { weekday: 'monday', start_time: null, end_time: null },
+        { weekday: 'tuesday', start_time: null, end_time: null },
+        { weekday: 'wednesday', start_time: null, end_time: null },
+        { weekday: 'thursday', start_time: null, end_time: null },
+        { weekday: 'friday', start_time: null, end_time: null },
+        { weekday: 'saturday', start_time: null, end_time: null },
+        { weekday: 'sunday', start_time: null, end_time: null }
       ]
     };
-    this.nextDay = this.nextDay.bind(this);
-    this.prevDay = this.prevDay.bind(this);
   }
 
-  nextDay() {
+  nextDay = () => {
     this.setState({
       currentWeekday: (this.state.currentWeekday + 1) % WEEKDAYS.length
     });
-  }
+  };
 
-  prevDay() {
+  prevDay = () => {
     this.setState({
       currentWeekday: (this.state.currentWeekday - 1) === -1 ? WEEKDAYS.length - 1 : (this.state.currentWeekday - 1)
     });
-  }
+  };
 
   setTime = time => {
     const newWeekdays = [].concat(this.state.weekdays);
@@ -134,7 +123,7 @@ export default class ModalLayout extends Component {
   };
 
   isIntervalSet = index => {
-    const {start_time, end_time} = this.state.weekdays[index];
+    const { start_time, end_time } = this.state.weekdays[index];
     return start_time && end_time;
   };
 
@@ -148,12 +137,13 @@ export default class ModalLayout extends Component {
   };
 
   applyToAllDays = () => {
-    if(this.isIntervalSet(this.state.currentWeekday)) {
-      const newWeekdays = this.state.weekdays.map((element, index) => (this.state.weekdays[this.state.currentWeekday]));
-      this.setState({
-        weekdays: newWeekdays
-      })
-    }
+    const newWeekdays = this.state.weekdays.map((element, index) => ({
+      ...this.state.weekdays[this.state.currentWeekday],
+      weekday: element.weekday
+    }));
+    this.setState({
+      weekdays: newWeekdays
+    })
   };
 
   currentStartEndTime = startend => (this.state.weekdays[this.state.currentWeekday][startend] || '-:-');
@@ -180,10 +170,12 @@ export default class ModalLayout extends Component {
 
         <View style={[styles.row, styles.timeIntervalRow]}>
           <Text>od</Text>
-          <TouchableOpacity onPress={this.openDatePicker('start_time')}><Text style={styles.hour}>{this.currentStartEndTime('start_time')}</Text></TouchableOpacity>
+          <TouchableOpacity onPress={this.openDatePicker('start_time')}><Text
+            style={styles.hour}>{this.currentStartEndTime('start_time')}</Text></TouchableOpacity>
 
           <Text>do</Text>
-        <TouchableOpacity onPress={this.openDatePicker('end_time')}><Text style={styles.hour}>{this.currentStartEndTime('end_time')}</Text></TouchableOpacity>
+          <TouchableOpacity onPress={this.openDatePicker('end_time')}><Text
+            style={styles.hour}>{this.currentStartEndTime('end_time')}</Text></TouchableOpacity>
         </View>
 
         <ButtonText onPress={this.applyToAllDays}>Zastosuj dla kazego dnia</ButtonText>
@@ -201,8 +193,9 @@ export default class ModalLayout extends Component {
           </View>
           <View>
             {WEEKDAYS.map((element, index) => {
-              const {start_time, end_time} = this.state.weekdays[index];
-              return (<Text key={`interval-${index}`}>{start_time !== null ? start_time.toString() : '-:-'}  -  {end_time !== null ? end_time.toString() : '-:-'}</Text>)
+              const { start_time, end_time } = this.state.weekdays[index];
+              return (<Text
+                key={`interval-${index}`}>{start_time !== null ? start_time.toString() : '-:-'} - {end_time !== null ? end_time.toString() : '-:-'}</Text>)
             })}
           </View>
         </View>
@@ -210,13 +203,13 @@ export default class ModalLayout extends Component {
         <DatePicker
           style={styles.datepicker}
           customStyles={datePickerCustom}
-          ref={ picker => this.datePicker = picker }
+          ref={picker => this.datePicker = picker}
           date={this.state.weekdays[this.state.currentWeekday][this.state.startend]}
           showIcon={false}
           mode='time'
           confirmBtnText='Potwierdz'
           cancelBtnText='Anuluj'
-          onDateChange={ date => {
+          onDateChange={date => {
             console.log(date);
             this.setTime(date)
           }}
