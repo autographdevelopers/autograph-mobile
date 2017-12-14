@@ -65,9 +65,6 @@ class InformationStep extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      currentStep: 0
-    }
   }
 
   render() {
@@ -76,10 +73,12 @@ class InformationStep extends Component {
     return (
       <Layout customStyles={{paddingTop: 0}}>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
+        {/*TODO bind address raletd data like address lat lng to redux store*/}
         <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
         <FieldArray name={"emails"} component={renderEmailsCollection}/>
         <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
+        {/*TODO add multiline true and prevent keyboard overlapping the input field*/}
         <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}/>
       </Layout>
     )
