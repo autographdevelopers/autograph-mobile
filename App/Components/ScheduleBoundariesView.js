@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
@@ -73,16 +73,7 @@ export default class ModalLayout extends Component {
     super(props);
     this.state = {
       startend: 'start_time',
-      currentWeekday: 0,
-      weekdays: [
-        { weekday: 'monday', start_time: null, end_time: null },
-        { weekday: 'tuesday', start_time: null, end_time: null },
-        { weekday: 'wednesday', start_time: null, end_time: null },
-        { weekday: 'thursday', start_time: null, end_time: null },
-        { weekday: 'friday', start_time: null, end_time: null },
-        { weekday: 'saturday', start_time: null, end_time: null },
-        { weekday: 'sunday', start_time: null, end_time: null }
-      ]
+      currentWeekday: 0
     };
   }
 
@@ -99,11 +90,9 @@ export default class ModalLayout extends Component {
   };
 
   setTime = time => {
-    const newWeekdays = [].concat(this.state.weekdays);
+    const newWeekdays = [].concat(this.props.value);
     newWeekdays[this.state.currentWeekday][this.state.startend] = time;
-    this.setState({
-      weekdays: newWeekdays
-    })
+    this.props.setValue(newWeekdays);
   };
 
   openDatePicker = startend => () => {
@@ -114,38 +103,34 @@ export default class ModalLayout extends Component {
   };
 
   isIntervalSet = index => {
-    const { start_time, end_time } = this.state.weekdays[index];
+    const { start_time, end_time } = this.props.value[index];
     return start_time && end_time;
   };
 
   clearDay = index => () => {
-    const newWeekdays = [].concat(this.state.weekdays);
+    const newWeekdays = [].concat(this.props.value);
     newWeekdays[index]['start_time'] = null;
     newWeekdays[index]['end_time'] = null;
-    this.setState({
-      weekdays: newWeekdays
-    })
+
+    this.props.setValue(newWeekdays);
   };
 
   applyToAllDays = () => {
-    const newWeekdays = this.state.weekdays.map((element, index) => ({
-      ...this.state.weekdays[this.state.currentWeekday],
+    const newWeekdays = this.props.value.map((element, index) => ({
+      ...this.props.value[this.state.currentWeekday],
       weekday: element.weekday
     }));
-    this.setState({
-      weekdays: newWeekdays
-    })
+
+    this.props.setValue(newWeekdays);
   };
 
-  currentStartEndTime = startend => (this.state.weekdays[this.state.currentWeekday][startend] || '-:-');
+  currentStartEndTime = (startend, value) => (value[this.state.currentWeekday][startend] || '-:-');
 
   render() {
+    const {value} = this.props;
+
     return (
       <Layout>
-        <Text style={styles.title}>Ustaw domyślne godziny pracy.</Text>
-        <Text style={styles.description}>Ramy czasowe, które teraz wybierzesz umożliwią Tobie oraz twoim pracownikom
-          biurowym ustalanie harmonogramu tylko w tym przedziale.</Text>
-
         <View style={[styles.currentWeekdayRow, styles.row]}>
           <TouchableOpacity onPress={this.prevDay}>
             <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
@@ -159,15 +144,16 @@ export default class ModalLayout extends Component {
         <View style={[styles.row, styles.timeIntervalRow]}>
           <Text>od</Text>
           <TouchableOpacity onPress={this.openDatePicker('start_time')}><Text
-            style={styles.hour}>{this.currentStartEndTime('start_time')}</Text></TouchableOpacity>
+            style={styles.hour}>{this.currentStartEndTime('start_time', value)}</Text></TouchableOpacity>
 
           <Text>do</Text>
           <TouchableOpacity onPress={this.openDatePicker('end_time')}><Text
-            style={styles.hour}>{this.currentStartEndTime('end_time')}</Text></TouchableOpacity>
+            style={styles.hour}>{this.currentStartEndTime('end_time', value)}</Text></TouchableOpacity>
         </View>
 
-        <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays}>Zastosuj dla kazego dnia</ButtonText>
-
+        <View>
+          <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays} position={'flex-start'}>Zastosuj dla kazego dnia</ButtonText>
+        </View>
         <View style={styles.row}>
           <View style={styles.weekdaysColumn}>
             {
@@ -182,7 +168,7 @@ export default class ModalLayout extends Component {
           <View>
             {
               WEEKDAYS.map((_, index) => {
-                const { start_time, end_time } = this.state.weekdays[index];
+                const { start_time, end_time } =  value[index];
                 return (<Text key={`interval-${index}`} style={styles.weekdayItem}>{start_time || '-:-'}   -   {end_time || '-:-'}</Text>)
               })
             }
@@ -192,7 +178,7 @@ export default class ModalLayout extends Component {
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={this.state.weekdays[this.state.currentWeekday][this.state.startend]}
+          date={value[this.state.currentWeekday][this.state.startend]}
           showIcon={false}
           mode='time'
           minuteInterval={30}
