@@ -5,6 +5,7 @@ import { Colors } from '../../Themes';
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import ScheduleBoundaries from '../../Components/ScheduleBoundariesView';
+import Layout from '../../Components/Layout';
 
 const renderScheduleBoundaries = ({input, meta, setValue}) => {
  return <ScheduleBoundaries value={input.value} meta={meta} setValue={setValue} />
@@ -24,9 +25,9 @@ class Calendar extends Component {
   render() {
     const { change } = this.props;
     return (
-      <View>
+      <Layout customStyles={{paddingTop: 0}}>
         <Field name={'schedule_boundaries'} component={renderScheduleBoundaries} setValue={/*see @1*/ newValue => { change('schedule_boundaries', newValue); this.forceUpdate(); }}/>
-      </View>
+      </Layout>
     )
   }
 }

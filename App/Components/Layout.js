@@ -3,7 +3,7 @@ import {ScrollView} from 'react-native';
 import {StyleSheet} from 'react-native';
 import { Colors } from '../Themes';
 
-export default Layout = ({children}) => {
+export default Layout = ({children, customStyles = {}}) => {
   const styles = StyleSheet.create({
     layout: {
       // flex:1, // needed? breaks step form
@@ -14,6 +14,6 @@ export default Layout = ({children}) => {
   });
 
   return (
-    <ScrollView style={styles.layout}>{children}</ScrollView>
+    <ScrollView style={[styles.layout, customStyles]}>{children}</ScrollView>
   );
 }

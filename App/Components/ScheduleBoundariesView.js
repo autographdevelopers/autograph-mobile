@@ -7,7 +7,6 @@ import { Fonts, Colors, Metrics } from '../Themes/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from './CheckBox';
 import ButtonText from './ButtonText';
-import Layout from './Layout';
 import moment from 'moment';
 
 const styles = StyleSheet.create({
@@ -145,7 +144,7 @@ export default class ModalLayout extends Component {
     const {value} = this.props;
 
     return (
-      <Layout>
+      <ScrollView>
         <View style={[styles.currentWeekdayRow, styles.row]}>
           <TouchableOpacity onPress={this.prevDay}>
             <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
@@ -202,7 +201,7 @@ export default class ModalLayout extends Component {
           cancelBtnText='Anuluj'
           onDateChange={ date => this.setTime(date) }
         />
-      </Layout>
+      </ScrollView>
     );
   }
 }

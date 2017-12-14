@@ -34,11 +34,8 @@ class NewDrivingSchoolScreen extends Component {
   constructor(props) {
     super(props);
   }
-  nextStep2 =() => {
-    this.props.navigation.goBack()
-  }
 
-  nextStep = () => { /* this function declaration autobind this in oppose to func(){} */
+  nextStep = () => { /* this function declaration autobind this in oppose to func(){}  really? i thought arrows does NOT autobind*/
     const nextRoute = this.navigator.state.nav.index + 1;
     this.navigator && this.navigator.dispatch(
       NavigationActions.navigate({ routeName: `step${nextRoute}`})

@@ -74,7 +74,7 @@ class InformationStep extends Component {
     const { change } = this.props;
     // TODO add ActivityIndicator spinner form react-native module
     return (
-      <Layout>
+      <Layout customStyles={{paddingTop: 0}}>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
         <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={val=>change('address', val)} validate={required}/>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>

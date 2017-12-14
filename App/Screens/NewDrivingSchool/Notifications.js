@@ -21,7 +21,7 @@ class NotificationsStep extends Component {
     const { change } = this.props;
 
     return (
-      <Layout>
+      <Layout customStyles={{paddingTop: 0}}>
         <Field name={'push_notification'} component={renderSwitch}
                componentProps={{label: 'Otrzymuj powiadomienia push',
                description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
