@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from './CheckBox';
 import ButtonText from './ButtonText';
 import Layout from './Layout';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   title: {
@@ -68,6 +69,8 @@ const WEEKDAYS = [
   'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota', 'Niedziela'
 ];
 
+const TIME_FORMAT = 'HH:mm';
+
 export default class ModalLayout extends Component {
   constructor(props) {
     super(props);
@@ -90,8 +93,16 @@ export default class ModalLayout extends Component {
   };
 
   setTime = time => {
-    const newWeekdays = [].concat(this.props.value);
-    newWeekdays[this.state.currentWeekday][this.state.startend] = time;
+    const newWeekdays = [].concat(this.props.value),
+    timeArray = time.split(':'),
+    minutes = timeArray[1],
+    hours = timeArray[0],
+    datetime = moment();
+
+    datetime.hours(hours);
+    datetime.minutes(minutes);
+    newWeekdays[this.state.currentWeekday][this.state.startend] = datetime;
+
     this.props.setValue(newWeekdays);
   };
 
@@ -124,7 +135,11 @@ export default class ModalLayout extends Component {
     this.props.setValue(newWeekdays);
   };
 
-  currentStartEndTime = (startend, value) => (value[this.state.currentWeekday][startend] || '-:-');
+  currentStartEndTime = (startend, value) => ( this.displayTime(value[this.state.currentWeekday][startend]) );
+
+  displayTime = datetime => (
+    datetime ? datetime.format(TIME_FORMAT) : '-:-'
+  );
 
   render() {
     const {value} = this.props;
@@ -169,7 +184,7 @@ export default class ModalLayout extends Component {
             {
               WEEKDAYS.map((_, index) => {
                 const { start_time, end_time } =  value[index];
-                return (<Text key={`interval-${index}`} style={styles.weekdayItem}>{start_time || '-:-'}   -   {end_time || '-:-'}</Text>)
+                return (<Text key={`interval-${index}`} style={styles.weekdayItem}>{this.displayTime(start_time)}   -   {this.displayTime(end_time)}</Text>)
               })
             }
           </View>
@@ -178,9 +193,10 @@ export default class ModalLayout extends Component {
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={value[this.state.currentWeekday][this.state.startend]}
+          date={this.displayTime(value[this.state.currentWeekday][this.state.startend])}
           showIcon={false}
           mode='time'
+          format={TIME_FORMAT}
           minuteInterval={30}
           confirmBtnText='Potwierdz'
           cancelBtnText='Anuluj'

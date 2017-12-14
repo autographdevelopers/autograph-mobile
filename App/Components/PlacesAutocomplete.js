@@ -19,7 +19,6 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
         fetchDetails={true}
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
           setValue(data)
-          // console.log(data, details);
         }}
         textInputProps={{
           onBlur: val => input.onBlur(input.value)
