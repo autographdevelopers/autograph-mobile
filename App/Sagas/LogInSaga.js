@@ -9,10 +9,10 @@ export function* LogIn(api, action) {
   const response = yield call(api.logIn, email, password);
 
   if (response.ok) {
-    const user = getUserData(response),
-      sessionMetadata = getUserSession(response);
+    const user = getUserData(response);
+      // sessionMetadata = getUserSession(response);
 
-    yield put(sessionActionCreators.setUserSession(sessionMetadata));
+    // yield put(sessionActionCreators.setUserSession(sessionMetadata));
     yield put(userActionCreators.setUser(user));
     yield put(PrimaryNavigation.router.getActionForPathAndParams('newDrivingSchool'));
   } else {
@@ -31,12 +31,12 @@ const getUserData = response => {
   return user;
 };
 
-const getUserSession = response => {
-  const sessionMetadata = {};
-  sessionMetadata['accessToken'] = response.headers['access-token'];
-  sessionMetadata['tokenType'] = response.headers['token-type'];
-  sessionMetadata['clientId'] = response.headers['client'];
-  sessionMetadata['expirationDate'] = response.headers['expiry'];
-
-  return sessionMetadata;
-};
+// const getUserSession = response => {
+//   const sessionMetadata = {};
+//   sessionMetadata['accessToken'] = response.headers['access-token'];
+//   sessionMetadata['tokenType'] = response.headers['token-type'];
+//   sessionMetadata['clientId'] = response.headers['client'];
+//   sessionMetadata['expirationDate'] = response.headers['expiry'];
+//
+//   return sessionMetadata;
+// };

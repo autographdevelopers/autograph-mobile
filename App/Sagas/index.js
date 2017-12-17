@@ -2,11 +2,13 @@ import { takeLatest, all } from 'redux-saga/effects';
 import API from '../Services/Api';
 import FixtureAPI from '../Services/FixtureApi';
 import DebugConfig from '../Config/DebugConfig';
+import {store} from '../Containers/App';
 
 /* ------------- Types ------------- */
 
 import { StartupTypes } from '../Redux/StartupRedux';
-import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
+import { SESSION_ACTION_TYPES, sessionActionCreators } from '../Redux/SessionRedux';
+
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 
 /* ------------- Sagas ------------- */
@@ -18,9 +20,32 @@ import { resetPassword } from './ResetPasswordSaga';
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
-// to the sagas which need it.
-const api = DebugConfig.useFixtures ? FixtureAPI : API.create();
+// to the sagas which need it('should ', function() {
 
+
+
+/** @ Automatic auth token management **/
+
+const responseHook = response => {
+   const sessionMetadata = {};
+   sessionMetadata['accessToken'] = response.headers['access-token'];
+   sessionMetadata['tokenType'] = response.headers['token-type'];
+   sessionMetadata['clientId'] = response.headers['client'];
+   sessionMetadata['expirationDate'] = response.headers['expiry'];
+
+   store.dispatch(sessionActionCreators.setUserSession(sessionMetadata));
+};
+
+const requestHook = request => {
+   const {accessToken, tokenType, clientId, expirationDate} = store.getState().session;
+
+   request.headers['access-token'] = accessToken;
+   request.headers['token-type'] = tokenType;
+   request.headers['client'] = clientId;
+   request.headers['expiry'] = expirationDate;
+};
+
+const api = API.create(requestHook, responseHook);
 /* ------------- Connect Types To Sagas ------------- */
 
 export default function * root () {

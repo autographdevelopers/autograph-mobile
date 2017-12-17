@@ -2,7 +2,7 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'http://localhost:3000/api/v1/') => {
+const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/v1/') => {
   // ------
   // STEP 1
   // ------
@@ -19,6 +19,10 @@ const create = (baseURL = 'http://localhost:3000/api/v1/') => {
     // 10 second timeout...
     timeout: 10000
   });
+
+  api.addResponseTransform(responseHook);
+
+  api.addRequestTransform(requestHook);
 
   // ------
   // STEP 2
