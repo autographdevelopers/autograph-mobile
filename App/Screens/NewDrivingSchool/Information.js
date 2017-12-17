@@ -17,8 +17,16 @@ const api = API.create();
 
 const renderPhoneNumber = (member, index, fields) => (
   <View style={styles.removableInputRow} key={index}>
-    <Field component={InputField} name={`phone-${index}`} label={`Phone - ${index + 1}`} required={index === 0}
+    <Field component={InputField} name={member} label={`Phone - ${index + 1}`} required={index === 0}
            key={index}/>
+    {index > 0 && <TouchableOpacity onPress={() => {
+      fields.remove(index)
+    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
+  </View>
+);
+const renderEmail = (member, index, fields) => (
+  <View style={styles.removableInputRow} key={index}>
+    <Field component={InputField} name={member} label={`Email - ${index + 1}`} required={index === 0}/>
     {index > 0 && <TouchableOpacity onPress={() => {
       fields.remove(index)
     }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
@@ -29,30 +37,22 @@ const renderPhoneNumbersCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderPhoneNumber)}
-      <ButtonText onPress={() => (fields.push({}))} position={'flex-end'}>Add phone number +</ButtonText>
+      <ButtonText onPress={() => (fields.push())} position={'flex-end'}>Add phone number +</ButtonText>
     </View>
   );
 };
-
-
-const renderEmail = (member, index, fields) => (
-  <View style={styles.removableInputRow} key={index}>
-    <Field component={InputField} name={`email-${index}`} label={`Email - ${index + 1}`} required={index === 0}/>
-    {index > 0 && <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}><Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
-  </View>
-);
-
 
 const renderEmailsCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderEmail)}
-      <ButtonText onPress={() => (fields.push({}))} position={'flex-end'}>Add Email +</ButtonText>
+      <ButtonText onPress={() => (fields.push())} position={'flex-end'}>Add Email +</ButtonText>
     </View>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -83,7 +83,6 @@ class InformationStep extends Component {
     return (
       <Layout customStyles={{paddingTop: 0}}>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-        {/*TODO bind address raletd data like address lat lng to redux store*/}
         <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={change} /*validate={required}*//>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
         <FieldArray name={"emails"} component={renderEmailsCollection}/>
@@ -103,10 +102,9 @@ export default reduxForm({
     name: 'Agra',
     city: 'lodz',
     address: 'Pokatna 99',
-    phone_numbers: ['99999999', '888888888'],
-    emails: ['a@a.a', 'b@b.b'],
+    phone_numbers: [undefined],
+    emails: [undefined],
     website: 'www.google.com',
     additional_info: 'Loremipsum dolor sit melt'
-
   }
 })(InformationStep);
