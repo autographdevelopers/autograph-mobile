@@ -136,10 +136,12 @@ export default reduxForm({
   forceUnregisterOnUnmount: true,
   initialValues: {
     name: 'Agra',
+    city: 'lodz',
     address: 'Pokatna 99',
     phone_numbers: ['99999999', '888888888'],
     emails: ['a@a.a', 'b@b.b'],
     website: 'www.google.com',
     additional_info: 'Loremipsum dolor sit melt'
+
   }
 })(InformationStep);

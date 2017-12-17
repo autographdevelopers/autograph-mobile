@@ -1,5 +1,11 @@
 // a library to wrap and simplify api calls
-import apisauce from 'apisauce'
+import apisauce, {
+  SERVER_ERROR,
+  CLIENT_ERROR,
+  NETWORK_ERROR,
+  TIMEOUT_ERROR,
+  CONNECTION_ERROR
+} from 'apisauce'
 
 // our "constructor"
 const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/v1/') => {
@@ -38,13 +44,22 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
+  const problemCodes = {
+    SERVER_ERROR,
+    CLIENT_ERROR,
+    NETWORK_ERROR,
+    TIMEOUT_ERROR,
+    CONNECTION_ERROR
+  };
+
+
   const getRoot = () => api.get('');
   const getRate = () => api.get('rate_limit');
   const getUser = (username) => api.get('search/users', { q: username });
   const logIn = (email, password) => api.post('auth/sign_in', { email, password });
   const signUp = userData => api.post('auth', userData);
   const resetPassword = email => api.post('auth/password', { email });
-  const createDrivingSchool = params => api.post('driving_schools', params.data);
+  const createDrivingSchool = params => api.post('driving_schools', params);
   const updateScheduleBoundaries = params => api.put(`driving_schools/${params.id}/schedule_boundaries`, params.data);
   const updateEmployeeNotifications = params => api.put(`driving_schools/${params.id}/employee_notifications_settings_set`, params.data);
   // ------
@@ -61,6 +76,7 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
   //
   return {
     // a list of the API functions from step 2
+    problemCodes,
     getRoot,
     getRate,
     getUser,

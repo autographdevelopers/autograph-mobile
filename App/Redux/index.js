@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 import { sessionReducer } from './SessionRedux';
 import { userReducer } from './UserRedux';
 import { resetPasswordReducer } from './ResetPasswordRedux'
+import {drivingSchoolReducer} from './DrivingSchoolRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -12,7 +13,8 @@ export const reducers = combineReducers({
   session: sessionReducer,
   user: userReducer,
   form: formReducer,
-  resetPassword: resetPasswordReducer
+  resetPassword: resetPasswordReducer,
+  drivingSchool: drivingSchoolReducer
 });
 
 export default () => {

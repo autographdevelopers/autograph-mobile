@@ -10,8 +10,7 @@ import NotificationsStep from './Notifications';
 import CalendarStep from './Calendar';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import {NavigationActions} from 'react-navigation';
-import API from '../../Services/Api';
-import { SubmissionError } from 'redux-form';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const routeConfigs = {
   step0: { screen: InformationStep },
@@ -39,12 +38,10 @@ class NewDrivingSchoolScreen extends Component {
       /*screen1, screen2, screen3*/
     };
 
-    const api = API.create();
-
-    this.screenSubmitRequests = {
-      step0: api.createDrivingSchool,
-      step1: api.updateEmployeeNotifications,
-      step2: api.updateScheduleBoundaries
+    this.screenSubmitActions = {
+      step0: (values, formId, redirect) => ( drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect) ),
+      step1: () => ({type: 'dupa'}),
+      step2: () => ({type: 'dupa'})
     };
 
     this.bindScreenRef = this.bindScreenRef.bind(this);
@@ -54,42 +51,17 @@ class NewDrivingSchoolScreen extends Component {
     this.screensRefs[key] = ref
   };
 
-  submitCurrentForm = (currentRouteName, redirect) => {
-    console.log('API function');
-    console.log(this.screenSubmitRequests);
-
-    this.screensRefs[currentRouteName].props.handleSubmit( values => {
-      console.log(values);
-      console.log(currentRouteName);
-      return this.screenSubmitRequests[currentRouteName]({id: 1, data: values})
-        .then(response => {
-          if (response.ok) {
-            console.log('response OK');
-            redirect();
-          } else {
-            console.log('response not OK');
-            const errors = {};
-            Object.keys(response.data).forEach(field => {
-              errors[field] = { all: response.data[field] }
-            });
-            throw new SubmissionError(errors);
-          }
-        })
-    })();
-  };
-
   nextStep = () => { /* this function declaration autobind this in oppose to func(){}  really? i thought arrows does NOT autobind*/
+    console.log('in next step');
     const {index, routes} = this.navigator.state.nav;
     const currentRouteName = routes[index].routeName;
+    const nextRouteIndex = index + 1;
+    const redirectAction = NavigationActions.navigate({ routeName: `step${nextRouteIndex}`});
 
-    const redirectCallback = () => {
-      const nextRouteIndex = index + 1;
-      this.navigator && this.navigator.dispatch(
-        NavigationActions.navigate({ routeName: `step${nextRouteIndex}`})
-      );
-    };
-
-    this.submitCurrentForm(currentRouteName, redirectCallback);
+    this.screensRefs[currentRouteName].props.handleSubmit( values => {
+      console.log('in handle submit');
+      this.props.navigation.dispatch(this.screenSubmitActions[currentRouteName](values, 'newDrivingSchool', redirectAction));
+    })();
   };
 
   render() {
