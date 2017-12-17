@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 
 import CellSwitch from '../../Components/CellWithSwitch';
@@ -20,10 +20,6 @@ class NotificationsStep extends Component {
   componentDidMount() {
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
-  }
-
-  submitForm() {
-    console.log(`Submitting ${this.props.navigation.state.routeName}..`);
   }
 
   render() {

@@ -64,6 +64,8 @@ class NewDrivingSchoolScreen extends Component {
     })();
   };
 
+  // TODO add ActivityIndicator spinner form react-native module
+
   render() {
     return (
       <View style={{flex:1}}>

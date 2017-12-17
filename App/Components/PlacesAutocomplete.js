@@ -25,9 +25,6 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
         listViewDisplayed={false}    // true/false/undefined
         fetchDetails={true}
         onPress={(data, details) => { // 'details' is provided when fetchDetails = true
-          console.log('..:Autocomplete:..');
-          console.log(data);
-          console.log(details);
           setValue('lat', details.geometry.location.lat);
           setValue('lng', details.geometry.location.lng);
 
