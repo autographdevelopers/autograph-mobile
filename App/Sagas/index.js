@@ -29,23 +29,27 @@ import { create as createDrivingSchool } from './DrivingSchoolSagas';
 
 const responseHook = response => {
   const sessionMetadata = {};
-  sessionMetadata['accessToken'] = response.headers['access-token'];
-  sessionMetadata['tokenType'] = response.headers['token-type'];
-  sessionMetadata['clientId'] = response.headers['client'];
-  sessionMetadata['expirationDate'] = response.headers['expiry'];
+  // QUESTION: why response doesnt not return access token wehn validation on server falied?
+  // QUESTION why lack of zip code triggers 500 error
+  if(response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
+    sessionMetadata['accessToken'] = response.headers['access-token'];
+    sessionMetadata['tokenType'] = response.headers['token-type'];
+    sessionMetadata['clientId'] = response.headers['client'];
+    sessionMetadata['expirationDate'] = response.headers['expiry'];
+    sessionMetadata['uid'] = response.headers['uid'];
 
-  store.dispatch(sessionActionCreators.setUserSession(sessionMetadata));
+    store.dispatch(sessionActionCreators.setUserSession(sessionMetadata));
+  }
 };
 
 const requestHook = request => {
-  const { accessToken, tokenType, clientId, expirationDate } = store.getState().session;
-  const { email } = store.getState().user;
+  const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
 
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;
   request.headers['expiry'] = expirationDate;
-  request.headers['uid'] = email;
+  request.headers['uid'] = uid;
 };
 
 const api = API.create(requestHook, responseHook);

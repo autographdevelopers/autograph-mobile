@@ -7,14 +7,14 @@ import Label from './InputLabel';
 import InputFieldLayout from './InputFieldLayout';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const googlePlacesAPIResponseKeys = {
-  city: ['locality', 'administrative_area_level_3'],
-  country: ['country'],
+const googlePlacesAPIResponseKeys = [
+  { fieldName: 'city', keys: ['locality', 'administrative_area_level_3'] },
+  { fieldName: 'country', keys: ['country'] },
+  { fieldName: 'zip_code', keys: ['postal_code'] }
+];
 
-};
 
-
-export default PlacesAutocomplete = ({ input, meta, label, required = false, setValue}) => {
+export default PlacesAutocomplete = ({ input, meta, label, required = false, setValue }) => {
   return (
     <InputFieldLayout meta={meta} required={required} label={label}>
       <GooglePlacesAutocomplete
@@ -28,7 +28,20 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
           console.log('..:Autocomplete:..');
           console.log(data);
           console.log(details);
-          setValue('address', { lat: details.geometry.location.lat, lng: details.geometry.location.lng })
+          setValue('lat', details.geometry.location.lat);
+          setValue('lng', details.geometry.location.lng);
+
+          details.address_components.forEach(component => {
+            googlePlacesAPIResponseKeys.forEach(field => {
+              field.keys.forEach( key => {
+                if(component.types.includes(key)) {
+                  setValue(field.fieldName, component.long_name);
+                }
+              })
+            })
+
+          });
+          setValue('street', details.formatted_address);
         }}
         textInputProps={{
           onBlur: val => input.onBlur(input.value)

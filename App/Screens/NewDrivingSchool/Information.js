@@ -76,41 +76,6 @@ class InformationStep extends Component {
     this.props.screenProps.bindScreenRef(key, this);
   }
 
-  submitForm() {
-    console.log(`Submitting ${this.props.navigation.state.routeName}..`);
-  }
-
-  submitForm2 = () => {
-    this.props.handleSubmit(values => {
-      return api.createDrivingSchool(values)
-        .then(response => {
-          if (response.ok) {
-            const title = 'Congratulations!';
-            const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
-            const goToLogin = NavigationActions.reset({
-              index: 1,
-              actions: [
-                NavigationActions.navigate({ routeName: 'launchScreen' }),
-                NavigationActions.navigate({ routeName: 'login' })
-              ]
-            });
-            const buttons = [{
-              text: 'OK', onPress: () => {
-                navigation.dispatch(goToLogin);
-                navigation.dispatch(reset('signUp'));
-              }
-            }];
-            Alert.alert(title, message, buttons);
-          } else {
-            const errors = {};
-            Object.keys(response.data).forEach(field => {
-              errors[field] = { all: response.data[field] }
-            });
-            throw new SubmissionError(errors);
-          }
-        });
-    });
-  };
 
   render() {
     const { change } = this.props;
@@ -119,7 +84,7 @@ class InformationStep extends Component {
       <Layout customStyles={{paddingTop: 0}}>
         <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
         {/*TODO bind address raletd data like address lat lng to redux store*/}
-        <Field name={'address'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={change} validate={required}/>
+        <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={change} /*validate={required}*//>
         <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
         <FieldArray name={"emails"} component={renderEmailsCollection}/>
         <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
