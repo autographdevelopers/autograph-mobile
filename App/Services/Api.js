@@ -39,8 +39,10 @@ const create = (baseURL = 'http://localhost:3000/api/v1/') => {
   const getUser = (username) => api.get('search/users', { q: username });
   const logIn = (email, password) => api.post('auth/sign_in', { email, password });
   const signUp = userData => api.post('auth', userData);
-  const resetPassword = email => api.post('auth/password', { email })
-
+  const resetPassword = email => api.post('auth/password', { email });
+  const createDrivingSchool = params => api.post('driving_schools', params.data);
+  const updateScheduleBoundaries = params => api.put(`driving_schools/${params.id}/schedule_boundaries`, params.data);
+  const updateEmployeeNotifications = params => api.put(`driving_schools/${params.id}/employee_notifications_settings_set`, params.data);
   // ------
   // STEP 3
   // ------
@@ -60,7 +62,10 @@ const create = (baseURL = 'http://localhost:3000/api/v1/') => {
     getUser,
     logIn,
     signUp,
-    resetPassword
+    resetPassword,
+    createDrivingSchool,
+    updateScheduleBoundaries,
+    updateEmployeeNotifications
   }
 };
 

@@ -7,6 +7,13 @@ import Label from './InputLabel';
 import InputFieldLayout from './InputFieldLayout';
 import Icon from 'react-native-vector-icons/Ionicons'
 
+const googlePlacesAPIResponseKeys = {
+  city: ['locality', 'administrative_area_level_3'],
+  country: ['country'],
+
+};
+
+
 export default PlacesAutocomplete = ({ input, meta, label, required = false, setValue}) => {
   return (
     <InputFieldLayout meta={meta} required={required} label={label}>
@@ -17,8 +24,11 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
         returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
         listViewDisplayed={false}    // true/false/undefined
         fetchDetails={true}
-        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          setValue(data)
+        onPress={(data, details) => { // 'details' is provided when fetchDetails = true
+          console.log('..:Autocomplete:..');
+          console.log(data);
+          console.log(details);
+          setValue('address', { lat: details.geometry.location.lat, lng: details.geometry.location.lng })
         }}
         textInputProps={{
           onBlur: val => input.onBlur(input.value)
@@ -27,7 +37,8 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: 'AIzaSyDltvzJvuLGlYVDx5iPEHQTHraLWCAF5LM',
-          language: 'pl' // language of the results
+          language: 'pl', // language of the results
+          types: 'address'
         }}
 
         // renderRightButton={() => <TouchableOpacity><Icon name="md-close" color={Colors.mediumGrey} size={20}/></TouchableOpacity>}

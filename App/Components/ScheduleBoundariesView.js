@@ -70,7 +70,7 @@ const WEEKDAYS = [
 
 const TIME_FORMAT = 'HH:mm';
 
-export default class ModalLayout extends Component {
+export default class ScheduleBoundariesView extends Component {
   constructor(props) {
     super(props);
     this.state = {

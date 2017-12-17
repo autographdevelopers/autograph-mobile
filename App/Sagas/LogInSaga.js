@@ -14,7 +14,7 @@ export function* LogIn(api, action) {
 
     yield put(sessionActionCreators.setUserSession(sessionMetadata));
     yield put(userActionCreators.setUser(user));
-    yield put(PrimaryNavigation.router.getActionForPathAndParams('main'));
+    yield put(PrimaryNavigation.router.getActionForPathAndParams('newDrivingSchool'));
   } else {
     // TODO :how to handle server turned off or 500 errors
     const errorMessage = response.data.errors[0];
@@ -27,7 +27,7 @@ const getUserData = response => {
   // override sneak cased keys
   user['timeZone'] = user.time_zone;
   user['birthDate'] = user.birth_date;
-  
+
   return user;
 };
 
