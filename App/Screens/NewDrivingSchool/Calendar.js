@@ -19,16 +19,13 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
+    const key = this.props.navigation.state.routeName;
+    this.props.screenProps.bindScreenRef(key, this);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.submitting !== this.props.submitting)
       this.props.screenProps.toggleSubmitting();
-  }
-
-  componentDidMount() {
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
   }
 
   render() {
@@ -44,7 +41,6 @@ class Calendar extends Component {
 export default reduxForm({
   form: 'scheduleBoundaries',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true,
   initialValues: {
     schedule_boundaries: [
       { weekday: 'monday', start_time: null, end_time: null },

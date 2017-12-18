@@ -78,8 +78,7 @@ class InformationStep extends Component {
 
   render() {
     const { change } = this.props;
-    console.log("FORM PROPS..");
-    console.log(this.props);
+    // TODO: add general error info above all forms
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>
@@ -98,7 +97,6 @@ class InformationStep extends Component {
 export default reduxForm({
   form: 'newDrivingSchool',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true,
   initialValues: {
     phone_numbers: [undefined],
     emails: [undefined]

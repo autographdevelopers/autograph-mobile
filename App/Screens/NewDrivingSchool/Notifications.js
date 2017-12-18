@@ -19,19 +19,13 @@ class NotificationsStep extends Component {
 
   constructor(props) {
     super(props);
+    const key = this.props.navigation.state.routeName;
+    this.props.screenProps.bindScreenRef(key, this);
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.submitting !== this.props.submitting)
       this.props.screenProps.toggleSubmitting();
-  }
-
-  componentDidUpdate() {
-    console.log('step1 -- navigation prop');
-    console.log(this.props.navigation);
-
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
   }
 
   render() {
@@ -61,10 +55,9 @@ class NotificationsStep extends Component {
 export default reduxForm({
   form: 'notificationSettings',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true,
   initialValues: {
-    push_notification: true,
-    weekly_reports: false,
-    monthly_reports: true
+    push_notifications_enabled: true,
+    weekly_emails_reports_enabled: false,
+    monthly_emails_reports_enabled: true
   }
 })(NotificationsStep);
