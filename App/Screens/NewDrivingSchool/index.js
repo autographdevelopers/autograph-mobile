@@ -48,7 +48,7 @@ class NewDrivingSchoolScreen extends Component {
     this.screenSubmitActions = {
       step0: (values, formId, redirect) => (drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)),
       step1: (values, formId, redirect) => (drivingSchoolActionCreators.updateEmployeeNotificationsRequest(values, formId, redirect)),
-      step2: () => ({ type: 'dupa' })
+      step2: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleBoundariesRequest(values, formId, redirect))
     };
 
     this.bindScreenRef = this.bindScreenRef.bind(this);
@@ -66,14 +66,10 @@ class NewDrivingSchoolScreen extends Component {
     const { index, routes } = this.props.navigation.state;
     const currentRouteName = routes[index].routeName;
     const nextRouteIndex = index + 1;
-    const redirectAction = NavigationActions.navigate({ routeName: `step${nextRouteIndex}` });
+    const nextRoute = currentRouteName === 'step2' ? 'main' : `step${nextRouteIndex}`;
+    const redirectAction = NavigationActions.navigate({ routeName: nextRoute });
 
     this.screensRefs[currentRouteName].props.handleSubmit(values => {
-      console.log('params:::');
-      console.log(values);
-      console.log(FormIDs[currentRouteName]);
-      console.log(redirectAction);
-
       this.props.navigation.dispatch(this.screenSubmitActions[currentRouteName](values, FormIDs[currentRouteName], redirectAction));
     })();
   };

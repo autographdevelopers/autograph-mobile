@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from './CheckBox';
 import ButtonText from './ButtonText';
 import moment from 'moment';
+import {roundTimeToHalfHourInterval} from '../Lib/timeHandlers';
 
 const styles = StyleSheet.create({
   title: {
@@ -94,11 +95,25 @@ export default class ScheduleBoundariesView extends Component {
   setTime = time => {
     const newWeekdays = [].concat(this.props.value),
     timeArray = time.split(':'),
-    minutes = timeArray[1],
-    hours = timeArray[0],
-    datetime = moment();
+    m = timeArray[1],
+    h = timeArray[0];
+    console.log(time);
+    console.log(m);
+    console.log(h);
 
-    datetime.hours(hours);
+    const {hour, minutes} = roundTimeToHalfHourInterval(h, m);
+
+    console.log('*****');
+    console.log('helper result:');
+    console.log(roundTimeToHalfHourInterval(h, m));
+    console.log('hour');
+    console.log(hour);
+    console.log('minutes');
+    console.log(minutes);
+
+    const datetime = moment();
+
+    datetime.hours(hour);
     datetime.minutes(minutes);
     newWeekdays[this.state.currentWeekday][this.state.startend] = datetime;
 

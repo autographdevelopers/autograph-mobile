@@ -6,7 +6,8 @@ import { createReducer, createActions } from 'reduxsauce';
 const { Types, Creators } = createActions({
   saveDrivingSchool: ['data'],
   createDrivingSchoolRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
-  updateEmployeeNotificationsRequest: ['params', 'fromID', 'redirectionAction'] /* SAGA */
+  updateEmployeeNotificationsRequest: ['params', 'fromID', 'redirectionAction'], /* SAGA */
+  updateScheduleBoundariesRequest: ['params', 'fromID', 'redirectionAction'], /* SAGA */
 });
 
 export const drivingSchoolActionTypes = Types;

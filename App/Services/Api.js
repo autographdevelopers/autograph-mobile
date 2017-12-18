@@ -60,7 +60,7 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
   const signUp = userData => api.post('auth', userData);
   const resetPassword = email => api.post('auth/password', { email });
   const createDrivingSchool = params => api.post('driving_schools', params);
-  const updateScheduleBoundaries = params => api.put(`driving_schools/${params.id}/schedule_boundaries`, params.data);
+  const updateScheduleBoundaries = (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params); //schould be put on server
   const updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params);
   // ------
   // STEP 3
