@@ -21,6 +21,11 @@ class Calendar extends Component {
     super(props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.submitting !== this.props.submitting)
+      this.props.screenProps.toggleSubmitting();
+  }
+
   componentDidMount() {
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);

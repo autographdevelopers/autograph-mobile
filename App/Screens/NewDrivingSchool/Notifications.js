@@ -17,7 +17,19 @@ class NotificationsStep extends Component {
     },
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.submitting !== this.props.submitting)
+      this.props.screenProps.toggleSubmitting();
+  }
+
+  componentDidUpdate() {
+    console.log('step1 -- navigation prop');
+    console.log(this.props.navigation);
+
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
   }
@@ -27,19 +39,19 @@ class NotificationsStep extends Component {
 
     return (
       <Layout customStyles={{paddingTop: 0}}>
-        <Field name={'push_notification'} component={renderSwitch}
+        <Field name={'push_notifications_enabled'} component={renderSwitch}
                componentProps={{label: 'Otrzymuj powiadomienia push',
                description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
-               onChangeHandler: value => change('push_notification', value)
+               onChangeHandler: value => change('push_notifications_enabled', value)
                }}/>
-        <Field name={'weekly_reports'} component={renderSwitch}
+        <Field name={'weekly_emails_reports_enabled'} component={renderSwitch}
                componentProps={{label: 'Otrzymuj raporty tygodniowe',
                description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-               onChangeHandler: value => change('weekly_reports', value)}}/>
-        <Field name={'monthly_reports'} component={renderSwitch}
+               onChangeHandler: value => change('weekly_emails_reports_enabled', value)}}/>
+        <Field name={'monthly_emails_reports_enabled'} component={renderSwitch}
                componentProps={{label: 'Otrzymuj raporty miesieczne',
                description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-               onChangeHandler: value => change('monthly_reports', value)
+               onChangeHandler: value => change('monthly_emails_reports_enabled', value)
                }}/>
       </Layout>
     )

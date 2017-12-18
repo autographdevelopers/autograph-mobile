@@ -58,22 +58,28 @@ const styles = StyleSheet.create({
 
 class InformationStep extends Component {
   static navigationOptions = {
-    header: props => <View><NavHeader navigation={props.screenProps.parentNav} title={'Information'}/><StepsIndicators
-    Zlabels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>,
+    header: props => {
+      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>)
+    },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   };
 
   constructor(props) {
     super(props);
+    const key = this.props.navigation.state.routeName;
+    console.log('binding...');
+    this.props.screenProps.bindScreenRef(key, this);
   }
 
-  componentDidMount() {
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.submitting !== this.props.submitting)
+      this.props.screenProps.toggleSubmitting();
   }
 
   render() {
     const { change } = this.props;
+    console.log("FORM PROPS..");
+    console.log(this.props);
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>

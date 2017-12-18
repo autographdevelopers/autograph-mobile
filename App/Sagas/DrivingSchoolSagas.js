@@ -1,43 +1,41 @@
-import {startSubmit, stopSubmit} from 'redux-form'
+import { startSubmit, stopSubmit } from 'redux-form'
 import { call, put } from 'redux-saga/effects';
-import {drivingSchoolActionCreators} from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { contextActionCreators } from '../Redux/ContextRedux';
+import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 
 export function* create(api, action) {
-  console.log('action');
-  console.log(action);
   yield put(startSubmit(action.formID));
-  const response = yield call(api.createDrivingSchool, {driving_school: action.params});
-  if(response.ok) {
-    console.log('response ok');
+  const response = yield call(api.createDrivingSchool, { driving_school: action.params });
+  if (response.ok) {
     yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
+    yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(stopSubmit(action.formID));
     yield put(action.redirectionAction);
   } else {
-    console.log('response error');
+    const errors = gatherErrorsFromResponse(response, api);
+    yield put(stopSubmit(action.formID, errors));
+  }
+}
 
-    const errors = {}; // or set to undefined
+export function* updateEmployeesNotificationSettings(api, action) {
+  yield put(startSubmit(action.formID));
+  console.log('saga before api call');
 
-    // TODO: extract and use as generic handler for api response errors everywhere
-    switch (response.problem) {
-      case api.problemCodes.CLIENT_ERROR:
-        Object.keys(response.data).forEach(field => errors[field] = { all: response.data[field] } );
-        break;
-      case api.problemCodes.SERVER_ERROR:
-        errors['_error'] = 'Upps server error occured - it\'s probably our fault, please try again later.';
-        break;
-      case api.problemCodes.TIMEOUT_ERROR:
-        errors['_error'] = 'Timeout error occured - it took too long to respond to your request, please try again later.';
-        break;
-      case api.problemCodes.CONNECTION_ERROR:
-        errors['_error'] = 'Connection error occured - server is not available or bad DNS..';
-        break;
-      case api.problemCodes.NETWORK_ERROR:
-        errors['_error'] = 'Network error occured - please check your connection.';
-        break;
-      default:
-        errors['_error'] = 'Unexpected error occured, please try again later.';
-        break;
-    }
+  console.log('action');
+  console.log(action);
+  const response = yield call(api.updateEmployeeNotifications, { employee_notifications_settings_set: action.params });
+  console.log('saga after api call');
+  if (response.ok) {
+    console.log('response OK');
+
+    // yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
+    // yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
+    yield put(stopSubmit(action.formID));
+    yield put(action.redirectionAction);
+  } else {
+    console.log('response Error');
+    const errors = gatherErrorsFromResponse(response, api);
     yield put(stopSubmit(action.formID, errors));
   }
 }

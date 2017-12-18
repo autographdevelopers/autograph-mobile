@@ -18,6 +18,7 @@ import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
 import { create as createDrivingSchool } from './DrivingSchoolSagas';
+import { updateEmployeesNotificationSettings } from './DrivingSchoolSagas';
 
 /* ------------- API ------------- */
 
@@ -31,7 +32,7 @@ const responseHook = response => {
   const sessionMetadata = {};
   // QUESTION: why response doesnt not return access token wehn validation on server falied?
   // QUESTION why lack of zip code triggers 500 error
-  if(response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
+  if (response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
     sessionMetadata['accessToken'] = response.headers['access-token'];
     sessionMetadata['tokenType'] = response.headers['token-type'];
     sessionMetadata['clientId'] = response.headers['client'];
@@ -44,12 +45,14 @@ const responseHook = response => {
 
 const requestHook = request => {
   const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-
+  const { currentDrivingSchoolID } = store.getState().context;
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;
   request.headers['expiry'] = expirationDate;
   request.headers['uid'] = uid;
+  //
+  request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
 };
 
 const api = API.create(requestHook, responseHook);
@@ -61,6 +64,7 @@ export default function* root() {
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api),
     takeLatest(resetPasswordTypes.RESET_PASSWORD_REQUEST, resetPassword, api),
-    takeLatest(drivingSchoolActionTypes.CREATE_DRIVING_SCHOOL_REQUEST, createDrivingSchool, api)
+    takeLatest(drivingSchoolActionTypes.CREATE_DRIVING_SCHOOL_REQUEST, createDrivingSchool, api),
+    takeLatest(drivingSchoolActionTypes.UPDATE_EMPLOYEE_NOTIFICATIONS_REQUEST, updateEmployeesNotificationSettings, api)
   ])
 }
