@@ -71,11 +71,6 @@ class InformationStep extends Component {
     this.props.screenProps.bindScreenRef(key, this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.submitting !== this.props.submitting)
-      this.props.screenProps.toggleSubmitting();
-  }
-
   render() {
     const { change } = this.props;
     // TODO: add general error info above all forms

@@ -23,7 +23,7 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
       'Cache-Control': 'no-cache'
     },
     // 10 second timeout...
-    timeout: 10000
+    timeout: 60000
   });
 
   api.addResponseTransform(responseHook);

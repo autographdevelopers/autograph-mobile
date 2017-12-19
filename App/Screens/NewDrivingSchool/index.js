@@ -11,6 +11,7 @@ import CalendarStep from './Calendar';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import { NavigationActions } from 'react-navigation';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import { connect } from 'react-redux'
 
 const routeConfigs = {
   step0: { screen: InformationStep },
@@ -39,7 +40,7 @@ class NewDrivingSchoolScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.screensRefs = { /*step1, step2, step3*/};
+    this.screensRefs = { /*step1, step2, step3*/ };
 
     this.state = {
       submitting: false
@@ -55,7 +56,7 @@ class NewDrivingSchoolScreen extends Component {
   }
 
   toggleSubmitting = () => {
-    this.setState({submitting: !this.state.submitting})
+    this.setState({ submitting: !this.state.submitting })
   };
 
   bindScreenRef = (key, ref) => {
@@ -69,19 +70,32 @@ class NewDrivingSchoolScreen extends Component {
     const nextRoute = currentRouteName === 'step2' ? 'main' : `step${nextRouteIndex}`;
     const redirectAction = NavigationActions.navigate({ routeName: nextRoute });
 
+    console.log('current route name: ');
+    console.log(FormIDs[currentRouteName]);
+
+    // TODO: why doesnt work with loader??
+
     this.screensRefs[currentRouteName].props.handleSubmit(values => {
       this.props.navigation.dispatch(this.screenSubmitActions[currentRouteName](values, FormIDs[currentRouteName], redirectAction));
     })();
+
   };
 
   render() {
+    const { index, routes } = this.props.navigation.state;
+    const currentRouteName = routes[index].routeName;
+    const currentForm = FormIDs[currentRouteName];
+
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{bindScreenRef: this.bindScreenRef, toggleSubmitting: this.toggleSubmitting }}/>
+        <StepFormNavigator navigation={this.props.navigation} screenProps={{
+          bindScreenRef: this.bindScreenRef,
+          toggleSubmitting: this.toggleSubmitting
+        }}/>
 
-        { this.state.submitting
+        {this.props.form[currentForm] && this.props.form[currentForm].submitting
           ?
-          <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
+          <View style={{ marginBottom: 40 }}><ActivityIndicator size={'large'} color={Colors.primaryWarm}/></View>
           :
           <ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>
         }
@@ -92,4 +106,6 @@ class NewDrivingSchoolScreen extends Component {
 
 NewDrivingSchoolScreen.router = StepFormNavigator.router;
 
-export default NewDrivingSchoolScreen;
+const mapStateToProps = state => ({form: state.form});
+
+export default connect(mapStateToProps, null)(NewDrivingSchoolScreen);
