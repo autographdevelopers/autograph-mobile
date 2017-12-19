@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { FieldArray, Field, reduxForm, reset, SubmissionError } from 'redux-form';
+import { FieldArray, Field, reduxForm } from 'redux-form';
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import InputField from '../../Components/InputField';
@@ -66,8 +66,8 @@ class InformationStep extends Component {
 
   constructor(props) {
     super(props);
+
     const key = this.props.navigation.state.routeName;
-    console.log('binding...');
     this.props.screenProps.bindScreenRef(key, this);
   }
 

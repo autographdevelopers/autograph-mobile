@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import Layout from '../../Components/Layout';
 import { Fonts, Colors } from '../../Themes/index';
-import StepsIndicators from '../../Components/StepsIndicators';
 import { StackNavigator } from 'react-navigation';
 import InformationStep from './Information';
 import NotificationsStep from './Notifications';
@@ -25,12 +23,6 @@ const navigationConfigs = {
   cardStyle: navStyles.card
 };
 
-const FormIDs = {
-  step0: 'newDrivingSchool',
-  step1: 'notificationSettings',
-  step2: 'scheduleBoundaries'
-};
-
 export const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class NewDrivingSchoolScreen extends Component {
@@ -40,58 +32,56 @@ class NewDrivingSchoolScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.screensRefs = { /*step1, step2, step3*/ };
 
-    this.state = {
-      submitting: false
-    };
-
-    this.screenSubmitActions = {
-      step0: (values, formId, redirect) => (drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)),
-      step1: (values, formId, redirect) => (drivingSchoolActionCreators.updateEmployeeNotificationsRequest(values, formId, redirect)),
-      step2: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleBoundariesRequest(values, formId, redirect))
+    this.screensInfo = {
+      step0: {
+        formID: 'newDrivingSchool',
+        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)),
+        title: 'Information',
+        ref: null
+      },
+      step1: {
+        formID: 'notificationSettings',
+        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateEmployeeNotificationsRequest(values, formId, redirect)),
+        title: 'Notifications',
+        ref: null
+      },
+      step2: {
+        formID: 'scheduleBoundaries',
+        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleBoundariesRequest(values, formId, redirect)),
+        title: 'Schedule Boundaries',
+        ref: null
+      }
     };
 
     this.bindScreenRef = this.bindScreenRef.bind(this);
   }
 
-  toggleSubmitting = () => {
-    this.setState({ submitting: !this.state.submitting })
-  };
-
   bindScreenRef = (key, ref) => {
-    this.screensRefs[key] = ref;
+    this.screensInfo[key].ref = ref;
   };
 
-  nextStep = () => { /* this function declaration autobind this in oppose to func(){}  really? i thought arrows does NOT autobind*/
-    const { index, routes } = this.props.navigation.state;
-    const currentRouteName = routes[index].routeName;
-    const nextRouteIndex = index + 1;
-    const nextRoute = currentRouteName === 'step2' ? 'main' : `step${nextRouteIndex}`;
-    const redirectAction = NavigationActions.navigate({ routeName: nextRoute });
+  nextStep = () => {
+    const { index, routes } = this.props.navigation.state,
+      currentRouteName = routes[index].routeName,
+      nextRouteIndex = index + 1,
+      nextRoute = currentRouteName === 'step2' ? 'main' : `step${nextRouteIndex}`,
+      redirectAction = NavigationActions.navigate({ routeName: nextRoute });
 
-    console.log('current route name: ');
-    console.log(FormIDs[currentRouteName]);
-
-    // TODO: why doesnt work with loader??
-
-    this.screensRefs[currentRouteName].props.handleSubmit(values => {
-      this.props.navigation.dispatch(this.screenSubmitActions[currentRouteName](values, FormIDs[currentRouteName], redirectAction));
+    this.screensInfo[currentRouteName].ref.props.handleSubmit(values => {
+      const {formID} = this.screensInfo[currentRouteName];
+      this.props.navigation.dispatch(this.screensInfo[currentRouteName].submitAction(values, formID, redirectAction));
     })();
-
   };
 
   render() {
     const { index, routes } = this.props.navigation.state;
     const currentRouteName = routes[index].routeName;
-    const currentForm = FormIDs[currentRouteName];
+    const currentForm = this.screensInfo[currentRouteName].formID;
 
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{
-          bindScreenRef: this.bindScreenRef,
-          toggleSubmitting: this.toggleSubmitting
-        }}/>
+        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef}}/>
 
         {this.props.form[currentForm] && this.props.form[currentForm].submitting
           ?

@@ -6,6 +6,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import Label from './InputLabel';
 import InputFieldLayout from './InputFieldLayout';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const googlePlacesAPIResponseKeys = [
   { fieldName: 'city', keys: ['locality', 'administrative_area_level_3'] },
