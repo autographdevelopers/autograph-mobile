@@ -1,9 +1,5 @@
 import { takeLatest, all } from 'redux-saga/effects';
-import API from '../Services/Api';
-import FixtureAPI from '../Services/FixtureApi';
-import DebugConfig from '../Config/DebugConfig';
-import { store } from '../Containers/App';
-
+import {API as api} from '../Services/Api';
 /* ------------- Types ------------- */
 
 import { StartupTypes } from '../Redux/StartupRedux';
@@ -24,40 +20,6 @@ import { updateScheduleSettings} from './DrivingSchoolSagas';
 
 /* ------------- API ------------- */
 
-// The API we use is only used from Sagas, so we create it here and pass along
-// to the sagas which need it('should ', function() {
-
-
-/** @ Automatic auth token management **/
-
-const responseHook = response => {
-  const sessionMetadata = {};
-  // QUESTION: why response doesnt not return access token wehn validation on server falied?
-  // QUESTION why lack of zip code triggers 500 error
-  if (response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
-    sessionMetadata['accessToken'] = response.headers['access-token'];
-    sessionMetadata['tokenType'] = response.headers['token-type'];
-    sessionMetadata['clientId'] = response.headers['client'];
-    sessionMetadata['expirationDate'] = response.headers['expiry'];
-    sessionMetadata['uid'] = response.headers['uid'];
-
-    store.dispatch(sessionActionCreators.setUserSession(sessionMetadata));
-  }
-};
-
-const requestHook = request => {
-  const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-  const { currentDrivingSchoolID } = store.getState().context;
-  request.headers['access-token'] = accessToken;
-  request.headers['token-type'] = tokenType;
-  request.headers['client'] = clientId;
-  request.headers['expiry'] = expirationDate;
-  request.headers['uid'] = uid;
-  //
-  request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
-};
-
-export const api = API.create(requestHook, responseHook);
 /* ------------- Connect Types To Sagas ------------- */
 
 export default function* root() {

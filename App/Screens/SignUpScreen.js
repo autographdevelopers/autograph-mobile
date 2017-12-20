@@ -11,7 +11,7 @@ import DateSelector from '../Components/DateSelector';
 import InputField from '../Components/InputField';
 import NavHeader from '../Components/NavHeader';
 import Layout from '../Components/Layout';
-import {api} from '../Sagas/index';
+import {API as api} from '../Services/Api';
 
 const submit = navigation => values => {
   return api.signUp(values)
