@@ -13,8 +13,8 @@ const renderScheduleBoundaries = ({input, meta, setValue}) => {
 
 class Calendar extends Component {
   static navigationOptions = {
-    header: props => <View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
-      labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={2}/></View>
+    header: props => <View><NavHeader navigation={props.navigation} title={'Calendar'}/><StepsIndicators
+      labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
   };
 
   constructor(props) {

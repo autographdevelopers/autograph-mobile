@@ -17,9 +17,10 @@ import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
-import { create as createDrivingSchool } from './DrivingSchoolSagas';
+import { create as createDrivingSchool, update as updateDrivingSchool } from './DrivingSchoolSagas';
 import { updateEmployeesNotificationSettings } from './DrivingSchoolSagas';
 import { updateScheduleBoundaries} from './DrivingSchoolSagas';
+import { updateScheduleSettings} from './DrivingSchoolSagas';
 
 /* ------------- API ------------- */
 
@@ -56,7 +57,7 @@ const requestHook = request => {
   request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
 };
 
-const api = API.create(requestHook, responseHook);
+export const api = API.create(requestHook, responseHook);
 /* ------------- Connect Types To Sagas ------------- */
 
 export default function* root() {
@@ -67,6 +68,8 @@ export default function* root() {
     takeLatest(resetPasswordTypes.RESET_PASSWORD_REQUEST, resetPassword, api),
     takeLatest(drivingSchoolActionTypes.CREATE_DRIVING_SCHOOL_REQUEST, createDrivingSchool, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_EMPLOYEE_NOTIFICATIONS_REQUEST, updateEmployeesNotificationSettings, api),
-    takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_BOUNDARIES_REQUEST, updateScheduleBoundaries, api)
+    takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_BOUNDARIES_REQUEST, updateScheduleBoundaries, api),
+    takeLatest(drivingSchoolActionTypes.UPDATE_DRIVING_SCHOOL_REQUEST, updateDrivingSchool, api),
+    takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_SETTINGS_REQUEST, updateScheduleSettings, api)
   ])
 }

@@ -13,7 +13,7 @@ const renderSwitch = ({input, meta, componentProps}) => (
 class NotificationsStep extends Component {
   static navigationOptions = {
     header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={1}/></View>)
+      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
     },
   };
 

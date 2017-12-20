@@ -3,7 +3,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import LaunchScreen from '../Screens/LaunchScreen';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
-import newDrivingSchool from '../Screens/NewDrivingSchool/index';
+import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
 import React, { Component } from 'react';
@@ -14,8 +14,12 @@ const routeConfigs = {
   signUp: { screen: SignUpScreen },
   launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
-  main: { screen: TabNavigation },
-  newDrivingSchool: { screen: newDrivingSchool }
+  main: {
+    screen: TabNavigation, navigationOptions: {
+      header: null
+    }
+  },
+  newDrivingSchool: { screen: NewDrivingSchoolWizardForm }
 };
 
 const navigationConfigs = {

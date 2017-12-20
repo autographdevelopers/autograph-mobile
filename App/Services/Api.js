@@ -53,15 +53,17 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
   };
 
 
-  const getRoot = () => api.get('');
-  const getRate = () => api.get('rate_limit');
-  const getUser = (username) => api.get('search/users', { q: username });
-  const logIn = (email, password) => api.post('auth/sign_in', { email, password });
-  const signUp = userData => api.post('auth', userData);
-  const resetPassword = email => api.post('auth/password', { email });
-  const createDrivingSchool = params => api.post('driving_schools', params);
-  const updateScheduleBoundaries = (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params); //schould be put on server
-  const updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params);
+  const getRoot = () => api.get(''),
+        getRate = () => api.get('rate_limit'),
+        getUser = (username) => api.get('search/users', { q: username }),
+        logIn = (email, password) => api.post('auth/sign_in', { email, password }),
+        signUp = userData => api.post('auth', userData),
+        resetPassword = email => api.post('auth/password', { email }),
+        createDrivingSchool = params => api.post('driving_schools', params),
+        updateDrivingSchool = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
+        updateScheduleBoundaries = (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
+        updateScheduleSettings = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params), //schould be put on server
+        updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params);
   // ------
   // STEP 3
   // ------
@@ -85,7 +87,9 @@ const create = (requestHook, responseHook, baseURL = 'http://localhost:3000/api/
     resetPassword,
     createDrivingSchool,
     updateScheduleBoundaries,
-    updateEmployeeNotifications
+    updateEmployeeNotifications,
+    updateDrivingSchool,
+    updateScheduleSettings
   }
 };
 

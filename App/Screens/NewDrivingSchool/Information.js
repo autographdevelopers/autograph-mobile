@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 class InformationStep extends Component {
   static navigationOptions = {
     header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={0}/></View>)
+      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
     },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   };
@@ -78,7 +78,7 @@ class InformationStep extends Component {
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} required={true} validate={required}/>
-          <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={change} validate={required}/>
+            <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} required={true} setValue={change} validate={required}/>
           <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
           <FieldArray name={"emails"} component={renderEmailsCollection}/>
           <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>

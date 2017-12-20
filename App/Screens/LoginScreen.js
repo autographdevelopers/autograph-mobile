@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   brandName: {
     color: Colors.snow,
-    fontSize: Fonts.size.big,
+    fontSize: Fonts.size.big2,
     textAlign: 'center',
     fontWeight: '500'
   },

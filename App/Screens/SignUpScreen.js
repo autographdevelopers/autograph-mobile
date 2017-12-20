@@ -11,13 +11,13 @@ import DateSelector from '../Components/DateSelector';
 import InputField from '../Components/InputField';
 import NavHeader from '../Components/NavHeader';
 import Layout from '../Components/Layout';
-import API from '../Services/Api';
-
-const api = API.create();
+import {api} from '../Sagas/index';
 
 const submit = navigation => values => {
   return api.signUp(values)
     .then(response => {
+      console.log('DUPA');
+      console.log(response);
       if (response.ok) {
         const title = 'Congratulations!';
         const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
@@ -36,6 +36,7 @@ const submit = navigation => values => {
         }];
         Alert.alert(title, message, buttons);
       } else {
+        console.log(response);
         const errors = {};
         Object.keys(response.data).forEach(field => {
           errors[field] = { all: response.data[field] }
@@ -66,6 +67,9 @@ class SignUpScreen extends Component {
     ];
 
     const { handleSubmit, change, submitting, navigation } = this.props;
+
+    console.log('api');
+    console.log(api);
 
     return (
       <Layout>

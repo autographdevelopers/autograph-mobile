@@ -6,26 +6,52 @@ import { StackNavigator } from 'react-navigation';
 import InformationStep from './Information';
 import NotificationsStep from './Notifications';
 import CalendarStep from './Calendar';
+import ScheduleSettings from './ScheduleSettings';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import { NavigationActions } from 'react-navigation';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { connect } from 'react-redux'
+import StepsIndicators from '../../Components/StepsIndicators';
 
 const routeConfigs = {
-  step0: { screen: InformationStep },
-  step1: { screen: NotificationsStep },
-  step2: { screen: CalendarStep }
+  step0: {
+    screen: InformationStep,
+    params: {
+      title: 'Information' // no need for params reomve
+    }
+  },
+  step1: {
+    screen: NotificationsStep,
+    params: {
+      title: 'Notification'
+    }
+  },
+  step2: { screen: CalendarStep,
+    params: {
+      title: 'Schedule Boundaries'
+    }
+  },
+  step3: { screen: ScheduleSettings,
+    params: {
+      title: 'Schedule Settings'
+    }
+  }
 };
 
 const navigationConfigs = {
-  // headerMode: 'none ',
+  navigationOptions: {
+    header: props => (<View><NavHeader navigation={props.navigation} title={props.navigation.state.params.title}/>
+      <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={props.navigation.state.index}/>
+    </View>),
+    headerStyle: { elevation: 0, shadowOpacity: 0 }
+  },
   initialRouteName: 'step0',
   cardStyle: navStyles.card
 };
 
 export const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
-class NewDrivingSchoolScreen extends Component {
+class NewDrivingSchoolWizardForm extends Component {
   static navigationOptions = {
     header: null
   };
@@ -36,20 +62,28 @@ class NewDrivingSchoolScreen extends Component {
     this.screensInfo = {
       step0: {
         formID: 'newDrivingSchool',
-        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)),
-        title: 'Information',
+        submitAction: (values, formId, redirect) => {
+          if(this.props.drivingSchool) {
+            return drivingSchoolActionCreators.updateDrivingSchoolRequest(values, formId, redirect)
+          } else {
+            return drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)
+          }
+        },
         ref: null
       },
       step1: {
         formID: 'notificationSettings',
         submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateEmployeeNotificationsRequest(values, formId, redirect)),
-        title: 'Notifications',
         ref: null
       },
       step2: {
         formID: 'scheduleBoundaries',
         submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleBoundariesRequest(values, formId, redirect)),
-        title: 'Schedule Boundaries',
+        ref: null
+      },
+      step3: {
+        formID: 'scheduleSettings',
+        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleSettingsRequest(values, formId, redirect)),
         ref: null
       }
     };
@@ -65,8 +99,8 @@ class NewDrivingSchoolScreen extends Component {
     const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
       nextRouteIndex = index + 1,
-      nextRoute = currentRouteName === 'step2' ? 'main' : `step${nextRouteIndex}`,
-      redirectAction = NavigationActions.navigate({ routeName: nextRoute });
+      nextRoute = currentRouteName === 'step3' ? 'main' : `step${nextRouteIndex}`,
+      redirectAction = NavigationActions.navigate({ routeName: nextRoute});
 
     this.screensInfo[currentRouteName].ref.props.handleSubmit(values => {
       const {formID} = this.screensInfo[currentRouteName];
@@ -94,8 +128,8 @@ class NewDrivingSchoolScreen extends Component {
   }
 }
 
-NewDrivingSchoolScreen.router = StepFormNavigator.router;
+NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
-const mapStateToProps = state => ({form: state.form});
+const mapStateToProps = state => ({form: state.form, drivingSchool: state.context.currentDrivingSchoolID});
 
-export default connect(mapStateToProps, null)(NewDrivingSchoolScreen);
+export default connect(mapStateToProps, null)(NewDrivingSchoolWizardForm);
