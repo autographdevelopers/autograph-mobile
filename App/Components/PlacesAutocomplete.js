@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { StyleSheet, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Colors } from '../Themes/';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import InputFieldLayout from './InputFieldLayout';
@@ -12,10 +11,10 @@ const googlePlacesAPIResponseKeys = [
 ];
 
 
-export default PlacesAutocomplete = ({ input, meta, label, required = false, setValue }) => {
+export default PlacesAutocomplete  = ({ input, meta, label, asterix, setValue } ) => {
   return (
-    <InputFieldLayout meta={meta} required={required} label={label}>
-      <ScrollView keyboardShouldPersistTaps={"always"}>
+    <InputFieldLayout meta={meta} required={asterix} label={label}>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <GooglePlacesAutocomplete
           placeholder='Search'
           minLength={3} // minimum length of text to search
@@ -39,10 +38,6 @@ export default PlacesAutocomplete = ({ input, meta, label, required = false, set
             });
             setValue('street', details.formatted_address);
           }}
-          textInputProps={{
-            onBlur: val => input.onBlur(input.value)
-          }}
-
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: 'AIzaSyDltvzJvuLGlYVDx5iPEHQTHraLWCAF5LM',
