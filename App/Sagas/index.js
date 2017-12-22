@@ -17,6 +17,7 @@ import { create as createDrivingSchool, update as updateDrivingSchool } from './
 import { updateEmployeesNotificationSettings } from './DrivingSchoolSagas';
 import { updateScheduleBoundaries} from './DrivingSchoolSagas';
 import { updateScheduleSettings} from './DrivingSchoolSagas';
+import { index as fetchDrivingSchools } from './DrivingSchoolSagas';
 
 /* ------------- API ------------- */
 
@@ -24,14 +25,13 @@ import { updateScheduleSettings} from './DrivingSchoolSagas';
 
 export default function* root() {
   yield all([
-    // some sagas only receive an action
-    takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(SESSION_ACTION_TYPES.REQUEST_LOGIN_PROCEDURE, LogIn, api),
     takeLatest(resetPasswordTypes.RESET_PASSWORD_REQUEST, resetPassword, api),
     takeLatest(drivingSchoolActionTypes.CREATE_DRIVING_SCHOOL_REQUEST, createDrivingSchool, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_EMPLOYEE_NOTIFICATIONS_REQUEST, updateEmployeesNotificationSettings, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_BOUNDARIES_REQUEST, updateScheduleBoundaries, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_DRIVING_SCHOOL_REQUEST, updateDrivingSchool, api),
-    takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_SETTINGS_REQUEST, updateScheduleSettings, api)
+    takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_SETTINGS_REQUEST, updateScheduleSettings, api),
+    takeLatest(drivingSchoolActionTypes.FETCH_DRIVING_SCHOOLS_REQUEST, fetchDrivingSchools, api)
   ])
 }

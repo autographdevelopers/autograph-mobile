@@ -15,7 +15,7 @@ export const reducers = combineReducers({
   user: userReducer,
   form: formReducer,
   resetPassword: resetPasswordReducer,
-  drivingSchool: drivingSchoolReducer,
+  drivingSchools: drivingSchoolReducer,
   context: contextReducer
 });
 

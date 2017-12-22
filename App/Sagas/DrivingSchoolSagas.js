@@ -1,6 +1,6 @@
 import { startSubmit, stopSubmit } from 'redux-form'
 import { call, put } from 'redux-saga/effects';
-import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators, STATUS } from '../Redux/DrivingSchoolRedux';
 import { contextActionCreators } from '../Redux/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 
@@ -69,7 +69,6 @@ export function* updateEmployeesNotificationSettings(api, action) {
 export function* updateScheduleBoundaries(api, action) {
   yield put(startSubmit(action.formID));
 
-
   const response = yield call(api.updateScheduleBoundaries, action.params);
 
   if (response.ok) {
@@ -83,5 +82,19 @@ export function* updateScheduleBoundaries(api, action) {
 
     const errors = gatherErrorsFromResponse(response, api);
     yield put(stopSubmit(action.formID, errors));
+  }
+}
+
+export function* index (api, action) {
+
+  yield put(drivingSchoolActionCreators.changeStatus(STATUS.FETCHING));
+
+  const response = yield call(api.fetchDrivingSchools);
+
+  if (response.ok) {
+    yield put(drivingSchoolActionCreators.saveDrivingSchools(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeStatus(STATUS.SUCCESS));
+  } else {
+    yield put(drivingSchoolActionCreators.changeStatus(STATUS.ERROR));
   }
 }

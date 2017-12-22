@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { sessionActionCreators } from '../Redux/SessionRedux';
 import { userActionCreators } from '../Redux/UserRedux';
-import PrimaryNavigation from '../Navigation/AppNavigation';
+import { NavigationActions } from 'react-navigation';
 
 export function* LogIn(api, action) {
   const { email, password } = action.payload;
@@ -10,9 +10,14 @@ export function* LogIn(api, action) {
 
   if (response.ok) {
     const user = getUserData(response);
-
     yield put(userActionCreators.setUser(user));
-    yield put(PrimaryNavigation.router.getActionForPathAndParams('newDrivingSchool'));
+    const resetNav = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'startScreen'})
+      ]
+    });
+    yield put(resetNav);
   } else {
     // TODO :how to handle server turned off or 500 errors
     const errorMessage = response.data.errors[0];

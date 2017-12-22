@@ -1,12 +1,14 @@
+import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+
 import LoginScreen from '../Screens/LoginScreen';
 import LaunchScreen from '../Screens/LaunchScreen';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
+import StartScreen from '../Screens/StartScreen';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
-import React, { Component } from 'react';
 
 // Manifest of possible screens
 const routeConfigs = {
@@ -14,6 +16,7 @@ const routeConfigs = {
   signUp: { screen: SignUpScreen },
   launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
+  startScreen: { screen: StartScreen},
   main: {
     screen: TabNavigation, navigationOptions: {
       header: null
