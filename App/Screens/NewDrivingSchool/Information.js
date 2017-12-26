@@ -14,35 +14,37 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
-  return(<View style={styles.removableInputRow} key={index}>
-    <Field component={InputField}
-           name={member}
-           label={`Phone - ${index + 1}`}
-           asterix={index === 0}
-           validate={[validateFirstInstancePresent, digitsOnly]}
-    />
-    {index > 0 && <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}>
-      <Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
-  </View>
-)};
+  return (<View style={styles.removableInputRow} key={index}>
+      <Field component={InputField}
+             name={member}
+             label={`Phone - ${index + 1}`}
+             asterix={index === 0}
+             validate={[validateFirstInstancePresent, digitsOnly]}
+      />
+      {index > 0 && <TouchableOpacity onPress={() => {
+        fields.remove(index)
+      }}>
+        <Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
+    </View>
+  )
+};
 
 const renderEmail = (member, index, fields) => {
-const validateFirstInstancePresent = index === 0 ? required : optional;
+  const validateFirstInstancePresent = index === 0 ? required : optional;
   return (<View style={styles.removableInputRow} key={index}>
-    <Field component={InputField}
-           name={member}
-           label={`Email - ${index + 1}`}
-           asterix={index === 0}
-           validate={[email, validateFirstInstancePresent]}
-    />
-    {index > 0 && <TouchableOpacity onPress={() => {
-      fields.remove(index)
-    }}>
-      <Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
-  </View>
-)};
+      <Field component={InputField}
+             name={member}
+             label={`Email - ${index + 1}`}
+             asterix={index === 0}
+             validate={[email, validateFirstInstancePresent]}
+      />
+      {index > 0 && <TouchableOpacity onPress={() => {
+        fields.remove(index)
+      }}>
+        <Icon name="md-close" color={Colors.salmon} size={20}/></TouchableOpacity>}
+    </View>
+  )
+};
 
 
 const renderPhoneNumbersCollection = ({ fields, meta: { error } }) => {
@@ -93,11 +95,13 @@ class InformationStep extends Component {
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
-          <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change} validate={[required, address]}/>
+          <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
+                 validate={[required, address]}/>
           <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
           <FieldArray name={"emails"} component={renderEmailsCollection}/>
           <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
-          <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'} options={{ multiline: true }} />
+          <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}
+                 options={{ multiline: true }}/>
         </KeyboardAwareScrollView>
       </Layout>
     )

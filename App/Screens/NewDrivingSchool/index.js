@@ -13,7 +13,6 @@ import NotificationsStep from './Notifications';
 import ScheduleSettings from './ScheduleSettings';
 
 /** Other */
-import { Colors } from '../../Themes/index';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import StepsIndicators from '../../Components/StepsIndicators';
@@ -45,7 +44,7 @@ const navigationConfigs = {
       console.log(props);
       return (<View>
         <NavHeader navigation={props.navigation} title={'dsas'}/>
-        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']}
+        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']}
                          activeIndex={props.navigation.state.index}/>
       </View>)
     },
