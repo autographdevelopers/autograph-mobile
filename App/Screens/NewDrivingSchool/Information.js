@@ -72,12 +72,12 @@ const styles = StyleSheet.create({
 });
 
 class InformationStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  };
+  // static navigationOptions = {
+  //   header: props => {
+  //     return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
+  //   },
+  //   headerStyle: { elevation: 0, shadowOpacity: 0 }
+  // };
 
   constructor(props) {
     super(props);
@@ -105,8 +105,9 @@ class InformationStep extends Component {
 }
 
 export default reduxForm({
-  form: 'newDrivingSchool',
+  form: 'basicInformation',
   destroyOnUnmount: false,
+  // forceUnregisterOnUnmount: true,
   initialValues: {
     phone_numbers: [undefined],
     emails: [undefined]

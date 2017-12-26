@@ -1,89 +1,92 @@
+/** Built in modules */
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import { Fonts, Colors } from '../../Themes/index';
+import { View, ActivityIndicator } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import InformationStep from './Information';
-import NotificationsStep from './Notifications';
-import CalendarStep from './Calendar';
-import ScheduleSettings from './ScheduleSettings';
-import navStyles from '../../Navigation/Styles/NavigationStyles';
 import { NavigationActions } from 'react-navigation';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-import { connect } from 'react-redux'
+import { reset } from 'redux-form';
+import { connect } from 'react-redux';
+
+/** Form steps */
+import InformationStep from './Information';
+import CalendarStep from './Calendar';
+import NotificationsStep from './Notifications';
+import ScheduleSettings from './ScheduleSettings';
+
+/** Other */
+import { Colors } from '../../Themes/index';
+import navStyles from '../../Navigation/Styles/NavigationStyles';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 import StepsIndicators from '../../Components/StepsIndicators';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const routeConfigs = {
   step0: {
     screen: InformationStep,
-    params: {
-      title: 'Information' // no need for params reomve
-    }
+    navigationOptions: {title: 'Information'}
   },
   step1: {
     screen: NotificationsStep,
-    params: {
-      title: 'Notification'
-    }
+    title: 'Notification'
   },
-  step2: { screen: CalendarStep,
-    params: {
-      title: 'Schedule Boundaries'
-    }
+  step2: {
+    screen: CalendarStep,
+    title: 'Schedule Boundaries'
   },
-  step3: { screen: ScheduleSettings,
-    params: {
-      title: 'Schedule Settings'
-    }
+  step3: {
+    screen: ScheduleSettings,
+    title: 'Schedule Settings'
   }
 };
 
 const navigationConfigs = {
   navigationOptions: {
-    header: props => (<View><NavHeader navigation={props.navigation} title={props.navigation.state.params.title}/>
-      <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']} activeIndex={props.navigation.state.index}/>
-    </View>),
+    header: props => {
+      console.log('header::');
+      console.log(props);
+      return (<View>
+        <NavHeader navigation={props.navigation} title={'dsas'}/>
+        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz']}
+                         activeIndex={props.navigation.state.index}/>
+      </View>)
+    },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',
   cardStyle: navStyles.card
 };
 
-export const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
+const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class NewDrivingSchoolWizardForm extends Component {
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = { header: null };
 
   constructor(props) {
     super(props);
 
+    const { drivingSchool } = this.props;
+
     this.screensInfo = {
       step0: {
-        formID: 'newDrivingSchool',
-        submitAction: (values, formId, redirect) => {
-          if(this.props.drivingSchool) {
-            return drivingSchoolActionCreators.updateDrivingSchoolRequest(values, formId, redirect)
-          } else {
-            return drivingSchoolActionCreators.createDrivingSchoolRequest(values, formId, redirect)
-          }
+        formID: 'basicInformation',
+        submitAction: (...args) => {
+          const action = drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
+          return drivingSchoolActionCreators[action](...args);
         },
         ref: null
       },
       step1: {
         formID: 'notificationSettings',
-        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateEmployeeNotificationsRequest(values, formId, redirect)),
+        submitAction: drivingSchoolActionCreators.updateEmployeeNotificationsRequest,
         ref: null
       },
       step2: {
         formID: 'scheduleBoundaries',
-        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleBoundariesRequest(values, formId, redirect)),
+        submitAction: drivingSchoolActionCreators.updateScheduleBoundariesRequest,
         ref: null
       },
       step3: {
         formID: 'scheduleSettings',
-        submitAction: (values, formId, redirect) => (drivingSchoolActionCreators.updateScheduleSettingsRequest(values, formId, redirect)),
+        submitAction: drivingSchoolActionCreators.updateScheduleSettingsRequest,
         ref: null
       }
     };
@@ -91,38 +94,40 @@ class NewDrivingSchoolWizardForm extends Component {
     this.bindScreenRef = this.bindScreenRef.bind(this);
   }
 
-  bindScreenRef = (key, ref) => {
-    this.screensInfo[key].ref = ref;
-  };
+  bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
   nextStep = () => {
     const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
       nextRouteIndex = index + 1,
       nextRoute = currentRouteName === 'step3' ? 'main' : `step${nextRouteIndex}`,
-      redirectAction = NavigationActions.navigate({ routeName: nextRoute});
+      redirectAction = NavigationActions.navigate({ routeName: nextRoute }),
+      { formID, ref, submitAction } = this.screensInfo[currentRouteName],
+      { navigation } = this.props;
 
-    this.screensInfo[currentRouteName].ref.props.handleSubmit(values => {
-      const {formID} = this.screensInfo[currentRouteName];
-      this.props.navigation.dispatch(this.screensInfo[currentRouteName].submitAction(values, formID, redirectAction));
-    })();
+    ref.props.handleSubmit(values => navigation.dispatch(submitAction(values, formID, redirectAction)))();
+
+    if (currentRouteName === 'step3') this.resetForm();
+  };
+
+  resetForm = () => Object.keys(this.screensInfo).forEach(step => this.props.resetForm(this.screensInfo[step].formID));
+
+  isSubmitting = () => {
+    const { index, routes } = this.props.navigation.state,
+      currentRouteName = routes[index].routeName,
+      { formID } = this.screensInfo[currentRouteName],
+      { form } = this.props;
+
+    return form[formID] && form[formID].submitting
   };
 
   render() {
-    const { index, routes } = this.props.navigation.state;
-    const currentRouteName = routes[index].routeName;
-    const currentForm = this.screensInfo[currentRouteName].formID;
 
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef}}/>
+        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
 
-        {this.props.form[currentForm] && this.props.form[currentForm].submitting
-          ?
-          <View style={{ marginBottom: 40 }}><ActivityIndicator size={'large'} color={Colors.primaryWarm}/></View>
-          :
-          <ButtonPrimary onPress={this.nextStep}>Dalej</ButtonPrimary>
-        }
+        <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
       </View>
     )
   }
@@ -130,6 +135,11 @@ class NewDrivingSchoolWizardForm extends Component {
 
 NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
-const mapStateToProps = state => ({form: state.form, drivingSchool: state.context.currentDrivingSchoolID});
+const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
+const mapDispatchToProps = dispatch => ({
+  resetForm: formID => {
+    dispatch(reset(formID))
+  }
+});
 
-export default connect(mapStateToProps, null)(NewDrivingSchoolWizardForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewDrivingSchoolWizardForm);

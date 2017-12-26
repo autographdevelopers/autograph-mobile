@@ -12,10 +12,10 @@ const renderScheduleBoundaries = ({input, meta, setValue}) => {
 
 
 class Calendar extends Component {
-  static navigationOptions = {
-    header: props => <View><NavHeader navigation={props.navigation} title={'Calendar'}/><StepsIndicators
-      labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
-  };
+  // static navigationOptions = {
+  //   header: props => <View><NavHeader navigation={props.navigation} title={'Calendar'}/><StepsIndicators
+  //     labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
+  // };
 
   constructor(props) {
     super(props);
@@ -36,6 +36,7 @@ class Calendar extends Component {
 export default reduxForm({
   form: 'scheduleBoundaries',
   destroyOnUnmount: false,
+  // forceUnregisterOnUnmount: true,
   initialValues: {
     schedule_boundaries: [
       { weekday: 'monday', start_time: null, end_time: null },

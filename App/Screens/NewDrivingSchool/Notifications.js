@@ -11,11 +11,11 @@ const renderSwitch = ({input, meta, componentProps}) => (
 );
 
 class NotificationsStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
-    },
-  };
+  // static navigationOptions = {
+  //   header: props => {
+  //     return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
+  //   },
+  // };
 
   constructor(props) {
     super(props);
@@ -50,6 +50,7 @@ class NotificationsStep extends Component {
 export default reduxForm({
   form: 'notificationSettings',
   destroyOnUnmount: false,
+  // forceUnregisterOnUnmount: true,
   initialValues: {
     push_notifications_enabled: true,
     weekly_emails_reports_enabled: false,

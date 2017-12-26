@@ -11,11 +11,11 @@ const renderSwitch = ({input, meta, componentProps}) => (
 );
 
 class ScheduleSettings extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
-    },
-  };
+  // static navigationOptions = {
+  //   header: props => {
+  //     return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
+  //   },
+  // };
 
   constructor(props) {
     super(props);
@@ -45,6 +45,7 @@ class ScheduleSettings extends Component {
 export default reduxForm({
   form: 'scheduleSettings',
   destroyOnUnmount: false,
+  // forceUnregisterOnUnmount: true,
   initialValues: {
     last_minute_booking_enabled: true,
     holidays_enrollment_enabled: false,
