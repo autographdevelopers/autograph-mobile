@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Avatar from './Avatar';
 
 export default UniversalCell = ({ title, subtitle, avatar, customTitle, CustomRightBtn = undefined, separator = 'full', topLine = false }) => {
   const DEFAULT_HEIGHT = 43,
@@ -45,6 +46,7 @@ export default UniversalCell = ({ title, subtitle, avatar, customTitle, CustomRi
 
   return <TouchableOpacity style={styles.container}>
     <View style={styles.body}>
+      { avatar && <Avatar src={avatar}/> }
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}

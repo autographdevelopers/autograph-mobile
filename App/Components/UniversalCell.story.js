@@ -37,17 +37,92 @@ storiesOf('Uni. cell')
   .add('Custom heading2', () => (
     <UniversalCell/>
   ))
-  .add('avat.+title1', () => (
-    <UniversalCell/>
+  .add('avat.def+title1', () => (
+    <View>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }}/>
+    </View>
   ))
-  .add('avat.+title12', () => (
-    <UniversalCell/>
+  .add('avat.def+title12', () => (
+    <View>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+    </View>
+  ))
+  .add('avat.cust+title12', () => (
+    <View>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}
+                     subtitle={'Very interesting subtitle'}/>
+    </View>
+  ))
+  .add('avat.cust+title1', () => (
+    <View>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+      <UniversalCell title={'Interesting title'}
+                     avatar={{ uri: "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg" }}/>
+    </View>
   ))
   .add('noavat.+title1', () => (
-    <UniversalCell title={'Interesting title'}/>
+    <View>
+      <UniversalCell title={'Interesting title'}/>
+      <UniversalCell title={'Interesting title'}/>
+      <UniversalCell title={'Interesting title'}/>
+      <UniversalCell title={'Interesting title'}/>
+      <UniversalCell title={'Interesting title'}/>
+      <UniversalCell title={'Interesting title'}/>
+    </View>
   ))
   .add('noavat.+title12', () => (
-    <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+    <View>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell title={'Interesting title'} subtitle={'Very interesting subtitle'}/>
+    </View>
   ))
   .add('l cust. right btn', () => (
     <View>
