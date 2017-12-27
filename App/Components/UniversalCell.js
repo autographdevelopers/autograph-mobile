@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default UniversalCell = ({ title, subtitle, avatar, customTitle, customRightBtn, separator='full', topLine=false }) => {
+export default UniversalCell = ({ title, subtitle, avatar, customTitle, CustomRightBtn = undefined, separator = 'full', topLine = false }) => {
   const DEFAULT_HEIGHT = 43,
     LARGER_HEIGHT = 60;
 
@@ -14,8 +14,8 @@ export default UniversalCell = ({ title, subtitle, avatar, customTitle, customRi
       height: !!!subtitle && !!!avatar ? DEFAULT_HEIGHT : LARGER_HEIGHT,
       width: '100%',
       borderColor: Colors.mediumGrey,
-      borderBottomWidth: separator === 'full' ? 1: 0,
-      borderTopWidth: separator === 'full' && topLine ? 1: 0,
+      borderBottomWidth: separator === 'full' ? 1 : 0,
+      borderTopWidth: separator === 'full' && topLine ? 1 : 0
     },
     body: {
       flex: 1,
@@ -23,11 +23,11 @@ export default UniversalCell = ({ title, subtitle, avatar, customTitle, customRi
       alignItems: 'center',
       paddingVertical: 5,
       borderColor: Colors.mediumGrey,
-      borderBottomWidth: separator === 'padded' ? 1: 0,
-      borderTopWidth: separator === 'padded'  && topLine ? 1: 0
+      borderBottomWidth: separator === 'padded' ? 1 : 0,
+      borderTopWidth: separator === 'padded' && topLine ? 1 : 0
     },
     textContainer: {
-      flex: 1,
+      flex: 1
     },
     rightBtnWrapper: {
       paddingLeft: 15
@@ -49,7 +49,10 @@ export default UniversalCell = ({ title, subtitle, avatar, customTitle, customRi
         <Text style={styles.title}>{title}</Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
-      <View style={styles.rightBtnWrapper}><Icon name={'angle-right'} size={25} color={Colors.strongGrey}/></View>
+      <View style={styles.rightBtnWrapper}>
+        {CustomRightBtn !== null && CustomRightBtn !== undefined && <CustomRightBtn/>}
+        {CustomRightBtn === undefined && <Icon name={'angle-right'} size={25} color={Colors.strongGrey}/>}
+      </View>
     </View>
   </TouchableOpacity>
 }
