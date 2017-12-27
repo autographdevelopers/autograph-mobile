@@ -14,7 +14,7 @@ const size = {
   input: 18,
   regular: 17,
   medium: 15,
-  small: 11,
+  small: 13,
   tiny: 8.5
 };
 

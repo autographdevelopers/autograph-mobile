@@ -7,4 +7,5 @@
 // import './ButtonPrimary.story';
 // import './StepsIndicators.story';
 // import './CellWithSwitch.story';
-import './ScheduleBoundariesView.story';
+// import './ScheduleBoundariesView.story';
+import './UniversalCell.story';
