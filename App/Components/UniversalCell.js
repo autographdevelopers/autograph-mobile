@@ -5,7 +5,7 @@ import { Fonts, Colors } from '../Themes/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Avatar from './Avatar';
 
-export default UniversalCell = ({ title, subtitle, avatar, customTitle, CustomRightBtn = undefined, separator = 'full', topLine = false }) => {
+export default UniversalCell = ({ title, subtitle, avatar, CustomTitle, CustomRightBtn = undefined, separator = 'full', topLine = false }) => {
   const DEFAULT_HEIGHT = 43,
     LARGER_HEIGHT = 60;
 
@@ -48,7 +48,7 @@ export default UniversalCell = ({ title, subtitle, avatar, customTitle, CustomRi
     <View style={styles.body}>
       { avatar && <Avatar src={avatar}/> }
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{title}</Text>
+        {CustomTitle ? <CustomTitle/> : <Text style={styles.title}>{title}</Text> }
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
       <View style={styles.rightBtnWrapper}>

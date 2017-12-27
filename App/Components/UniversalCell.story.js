@@ -8,6 +8,13 @@ const CustomRightBtn = () => (
   <TouchableOpacity><Text style={{ color: 'red', fontSize: 15 }}>Usun</Text></TouchableOpacity>
 );
 
+const CustomTitle = () => {
+  const cont = {flexDirection: 'row', alignItems: 'center'}
+  const dot = {width: 7, height: 7, backgroundColor: 'red', borderRadius: 50, marginRight: 10}
+  return(<View style={cont}><View style={dot}/><Text>Agra II - Oddzial Sienkiewicza</Text></View>)
+};
+
+
 storiesOf('Uni. cell')
   .add('separator full-width', () => (
     <View>
@@ -31,8 +38,16 @@ storiesOf('Uni. cell')
       <UniversalCell separator={'padded'} title={'Interesting title'}/>
     </View>
   ))
-  .add('Custom heading1', () => (
-    <UniversalCell/>
+  .add('Custom title', () => (
+    <View>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+      <UniversalCell CustomTitle={CustomTitle} avatar={{ uri: null }} subtitle={'Very interesting subtitle'}/>
+    </View>
   ))
   .add('Custom heading2', () => (
     <UniversalCell/>
