@@ -27,7 +27,7 @@ const routeConfigs = {
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'launchScreen',
+  initialRouteName: 'main',
   cardStyle: styles.card
 };
 

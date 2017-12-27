@@ -9,3 +9,4 @@
 // import './CellWithSwitch.story';
 // import './ScheduleBoundariesView.story';
 import './UniversalCell.story';
+import './CollectionGroup.story';
