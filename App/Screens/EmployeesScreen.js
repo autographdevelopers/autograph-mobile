@@ -9,79 +9,6 @@ import { StackNavigator } from 'react-navigation';
 import navStyles from '../Navigation/Styles/NavigationStyles';
 import UniversalCell from '../Components/UniversalCell';
 
-const data = [
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  },
-  {
-    title: 'Wojciech Pospieszynski',
-    subtitle: 'Instructor - Agra',
-    url: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAmjAAAAJDU0YjI2NTlkLTUyMzktNDk5Yy05YmQxLTQyZmIyNjA1Mjk4MA.jpg'
-  }
-];
-
 const styles = StyleSheet.create({
   container: {
     // flex: 1, height: '100%'
@@ -102,13 +29,7 @@ const styles = StyleSheet.create({
     color: Colors.strongGrey,
     fontSize: Fonts.size.medium,
     backgroundColor: 'transparent'
-  },
-  footer: {
-    paddingVertical: 5,
-    // borderTopWidth: 1,
-    borderColor: Colors.mediumGrey
   }
-
 });
 
 class InvitedEmployeesList extends Component {
@@ -226,7 +147,7 @@ class InvitedEmployeesList extends Component {
             onEndReached={this.handleLoadMore}
           />
         </List>
-        <ButtonPrimary float={true}>Dodaj pracownika</ButtonPrimary>
+        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
       </View>
     )
   }

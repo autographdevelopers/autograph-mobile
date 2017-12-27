@@ -90,7 +90,7 @@ class InformationStep extends Component {
 
   render() {
     const { change } = this.props;
-    // TODO: add general error info above all forms
+    // TODO: add general error info above all forms add Layout to import
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>
