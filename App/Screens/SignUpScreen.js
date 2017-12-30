@@ -68,9 +68,6 @@ class SignUpScreen extends Component {
 
     const { handleSubmit, change, submitting, navigation } = this.props;
 
-    console.log('api');
-    console.log(api);
-
     return (
       <Layout>
         <Field name={'type'} data={typeData} setValue={val => () => this.props.change('type', val)}

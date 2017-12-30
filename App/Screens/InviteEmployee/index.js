@@ -2,16 +2,13 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import DataScreen from './Data';
 import PrivilegesScreen from './Privileges';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { connect } from 'react-redux';
-import { reset } from 'redux-form';
+import { destroy } from 'redux-form';
 
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import StepsIndicators from '../../Components/StepsIndicators';
-
 
 const routeConfigs = {
   step0: {
@@ -42,15 +39,10 @@ class InviteEmployeeWizardForm extends Component {
     this.screensInfo = {
       step0: {
         formID: 'InviteEmployeePersonalDataStep',
-        // submitAction: (...args) => {
-        //   const action = drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
-        //   return drivingSchoolActionCreators[action](...args);
-        // },
         ref: null
       },
       step1: {
         formID: 'InviteEmployeePrivilegesStep',
-        // submitAction: drivingSchoolActionCreators.updateEmployeeNotificationsRequest,
         ref: null
       }
     };
@@ -60,68 +52,62 @@ class InviteEmployeeWizardForm extends Component {
 
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
-  nextStep = () => {
-
-    const {navigation} = this.props,
+  handleStepSubmission = () => {
+    const { navigation } = this.props,
       { index, routes } = navigation.state,
-      currentRouteName = routes[index].routeName,
-      nextRouteIndex = index + 1,
-      redirectAction = currentRouteName === 'step0' ?
-       NavigationActions.navigate({ routeName: 'step1' })
+      currentRouteName = routes[index].routeName;
 
+    const {ref} = this.screensInfo[currentRouteName];
 
-        :
-
-
-
-
-
-        // NavigationActions.reset({
-        //   index: 0,
-        //   key: null,
-        //   actions: [
-        //     NavigationActions.navigate({
-        //       routeName: 'main',
-        //       actions: [NavigationActions.navigate({ routeName: 'settings' })]
-        //     }),
-        //   ]
-        // });
-
-
-         NavigationActions.back({
-          key: this.props.navigation.state.key
-        });
-
-
-    console.log('navigation in wrapper');
-    console.log(navigation);
-
-
-     const  { formID, ref, submitAction } = this.screensInfo[currentRouteName];
-
-      ref.props.handleSubmit(values => navigation.dispatch(redirectAction))();
-
-    if (currentRouteName === 'step1') this.resetForm();
+    ref.submitForm();
   };
 
-  resetForm = () => Object.keys(this.screensInfo).forEach(step => this.props.resetForm(this.screensInfo[step].formID));
+  destroyForm = () => Object.keys(this.screensInfo).forEach(step => this.props.destroyForm(this.screensInfo[step].formID));
 
   isSubmitting = () => {
+    return this.currentForm() && this.currentForm().submitting
+  };
+
+  finalSubmitSucceeded = () => {
+    const form = this.props.form['InviteEmployeePrivilegesStep'];
+
+    return form && form.submitSucceeded
+  };
+
+  currentForm = () => {
     const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
       { formID } = this.screensInfo[currentRouteName],
       { form } = this.props;
 
-    return form[formID] && form[formID].submitting
+    return form[formID];
+  };
+
+  showSuccessDialog = () => {
+    if (this.finalSubmitSucceeded()) {
+      // this.destroyForm(); // do this in saga
+      console.log('final submit succeed');
+      const title = 'Congratulations!';
+      const message = 'Your Invitation has been sent to given email address.';
+
+      const buttons = [{
+        text: 'OK', onPress: () => {
+          this.props.navigation.dispatch(NavigationActions.back({ key: this.props.navigation.state.key }));
+        }
+      }];
+
+      Alert.alert(title, message, buttons);
+    }
   };
 
   render() {
+    this.showSuccessDialog();
 
     return (
       <View style={{ flex: 1 }}>
         <WizardFormNav navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
 
-        <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
+        <ButtonPrimary onPress={this.handleStepSubmission} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
       </View>
     )
   }
@@ -131,8 +117,8 @@ InviteEmployeeWizardForm.router = WizardFormNav.router;
 
 const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
 const mapDispatchToProps = dispatch => ({
-  resetForm: formID => {
-    dispatch(reset(formID))
+  destroyForm: formID => {
+    dispatch(destroy(formID))
   }
 });
 

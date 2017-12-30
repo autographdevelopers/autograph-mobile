@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { FieldArray, Field, reduxForm } from 'redux-form';
-import Icon from 'react-native-vector-icons/Ionicons';
-import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
+import { ScrollView, View } from 'react-native';
+import { Field, reduxForm } from 'redux-form';
 import InputField from '../../Components/InputField';
-import { address, email, required } from '../../Lib/validators';
+import { email, required } from '../../Lib/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NavHeader from '../../Components/NavHeader';
+import StepsIndicators from '../../Components/StepsIndicators';
 
 class DataScreen extends Component {
   static navigationOptions = {
@@ -21,12 +20,16 @@ class DataScreen extends Component {
 
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
-
-    console.log('Navigation in data step');
-    console.log(props.navigation);
   }
 
+  submitForm = () => {
+    this.props.handleSubmit( values => {
+      this.props.navigation.navigate('step1');
+    })();
+  };
+
   render() {
+
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
         <KeyboardAwareScrollView>
