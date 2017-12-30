@@ -21,6 +21,9 @@ class DataScreen extends Component {
 
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
+
+    console.log('Navigation in data step');
+    console.log(props.navigation);
   }
 
   render() {
@@ -40,4 +43,7 @@ export default reduxForm({
   form: 'InviteEmployeePersonalDataStep',
   destroyOnUnmount: false,
   // forceUnregisterOnUnmount: true,
+  initialValues: {
+    name: 'dsas',surnname: 'dsadsa', email: 'dsadsa@dsdsa.dsadsa'
+  }
 })(DataScreen);

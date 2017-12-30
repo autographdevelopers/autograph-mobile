@@ -61,16 +61,45 @@ class InviteEmployeeWizardForm extends Component {
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
   nextStep = () => {
-    const { index, routes } = this.props.navigation.state,
+
+    const {navigation} = this.props,
+      { index, routes } = navigation.state,
       currentRouteName = routes[index].routeName,
       nextRouteIndex = index + 1,
-      nextRoute = currentRouteName === 'step3' ? 'main' : `step${nextRouteIndex}`,
-      redirectAction = NavigationActions.navigate({ routeName: nextRoute }),
-      { ref } = this.screensInfo[currentRouteName],
-      // { formID, ref, submitAction } = this.screensInfo[currentRouteName],
-      { navigation } = this.props;
+      redirectAction = currentRouteName === 'step0' ?
+       NavigationActions.navigate({ routeName: 'step1' })
 
-    ref.props.handleSubmit(values => navigation.dispatch(redirectAction))();
+
+        :
+
+
+
+
+
+        // NavigationActions.reset({
+        //   index: 0,
+        //   key: null,
+        //   actions: [
+        //     NavigationActions.navigate({
+        //       routeName: 'main',
+        //       actions: [NavigationActions.navigate({ routeName: 'settings' })]
+        //     }),
+        //   ]
+        // });
+
+
+         NavigationActions.back({
+          key: this.props.navigation.state.key
+        });
+
+
+    console.log('navigation in wrapper');
+    console.log(navigation);
+
+
+     const  { formID, ref, submitAction } = this.screensInfo[currentRouteName];
+
+      ref.props.handleSubmit(values => navigation.dispatch(redirectAction))();
 
     if (currentRouteName === 'step1') this.resetForm();
   };

@@ -40,8 +40,6 @@ const routeConfigs = {
 const navigationConfigs = {
   navigationOptions: {
     header: props => {
-      console.log('header::');
-      console.log(props);
       return (<View>
         <NavHeader navigation={props.navigation} title={'dsas'}/>
         <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']}
