@@ -71,8 +71,6 @@ class InviteEmployeeWizardForm extends Component {
 
   renderSuccessDialog = () => {
     if(this.props.status === INVITATION_STATUS.SUCCESS) {
-      console.log('status')
-      console.log(this.props.status)
 
       const title = 'Congratulations!';
       const message = 'Your Invitation has been sent to given email address.';

@@ -29,7 +29,7 @@ class PrivilegesScreen extends Component {
 
   submitForm = () => {
     this.props.handleSubmit(values => {
-      this.props.dispatch(invitationActionCreators.inviteUserRequest(values));
+      this.props.dispatch(invitationActionCreators.inviteUserRequest(values, 'InviteEmployee'));
     })();
   };
 

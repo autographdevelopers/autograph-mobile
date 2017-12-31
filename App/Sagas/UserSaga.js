@@ -6,8 +6,7 @@ import { invitationActionCreators } from '../Redux/InvitationsRedux';
 import { STATUS } from '../Redux/InvitationsRedux';
 
 export function* invite(api, action) {
-  console.log('action');
-  console.log(action);
+  yield put(startSubmit(action.formID));
   yield put(invitationActionCreators.changeInvitationStatus(STATUS.SENDING));
   const response = yield call(api.inviteUser, action.params);
   if (response.ok) {

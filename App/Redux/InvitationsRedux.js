@@ -5,7 +5,7 @@ import { createReducer, createActions } from 'reduxsauce';
 export const STATUS = { READY: 'READY', SENDING: 'SENDING', SUCCESS: 'SUCCESS', ERROR: 'ERROR' };
 
 const { Types, Creators } = createActions({
-  inviteUserRequest: ['params', 'formID', 'redirectAction'], /* SAGA */
+  inviteUserRequest: ['params', 'formID'], /* SAGA */
   changeInvitationStatus: ['status']
 });
 
