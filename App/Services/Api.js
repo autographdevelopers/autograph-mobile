@@ -81,8 +81,9 @@ const getRoot = () => api.get(''),
       updateDrivingSchool = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
       updateScheduleBoundaries = (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
       updateScheduleSettings = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params), //schould be put on server
-      updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params);
-      fetchDrivingSchools = () => api.get('driving_schools');
+      updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
+      fetchDrivingSchools = () => api.get('driving_schools'),
+      inviteUser = (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params);
   // ------
   // STEP 3
   // ------
@@ -109,6 +110,7 @@ export const API = {
   updateEmployeeNotifications,
   updateDrivingSchool,
   updateScheduleSettings,
-  fetchDrivingSchools
+  fetchDrivingSchools,
+  inviteUser
 };
 

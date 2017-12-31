@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, FormSection } from 'redux-form';
 import InputField from '../../Components/InputField';
 import { email, required } from '../../Lib/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -10,7 +10,8 @@ import StepsIndicators from '../../Components/StepsIndicators';
 class DataScreen extends Component {
   static navigationOptions = {
     header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Uprawnienia']} activeIndex={0}/></View>)
+      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
+        labels={['Informacje', 'Uprawnienia']} activeIndex={0}/></View>)
     },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   };
@@ -32,21 +33,25 @@ class DataScreen extends Component {
 
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
-        <KeyboardAwareScrollView>
-          <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
-          <Field name={'surnname'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
-          <Field name={'email'} component={InputField} label={'Email'} asterix={true} validate={[required, email]}/>
-        </KeyboardAwareScrollView>
+        <FormSection name={'user'}>
+          <KeyboardAwareScrollView>
+            <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
+            <Field name={'surnname'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
+            <Field name={'email'} component={InputField} label={'Email'} asterix={true} validate={[required, email]}/>
+          </KeyboardAwareScrollView>
+        </FormSection>
       </Layout>
     )
   }
 }
 
 export default reduxForm({
-  form: 'InviteEmployeePersonalDataStep',
+  form: 'InviteEmployee',
   destroyOnUnmount: false,
-  // forceUnregisterOnUnmount: true,
+  forceUnregisterOnUnmount: true,
   initialValues: {
-    name: 'dsas',surnname: 'dsadsa', email: 'dsadsa@dsdsa.dsadsa'
+    user: {
+      name: 'dsas', surnname: 'dsadsa', email: 'dsadsa@dsdsa.dsadsa', type: 'Employee'
+    }
   }
 })(DataScreen);

@@ -29,7 +29,7 @@ const routeConfigs = {
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'main',
+  initialRouteName: 'launchScreen',
   cardStyle: styles.card
 };
 

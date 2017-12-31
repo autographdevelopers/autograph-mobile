@@ -3,12 +3,13 @@ import navStyles from '../../Navigation/Styles/NavigationStyles';
 import DataScreen from './Data';
 import PrivilegesScreen from './Privileges';
 import { connect } from 'react-redux';
-import { destroy } from 'redux-form';
 
 import React, { Component } from 'react';
 import { View, Alert } from 'react-native';
-
+import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { STATUS as INVITATION_STATUS } from '../../Redux/InvitationsRedux';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import { destroy } from 'redux-form';
 
 const routeConfigs = {
   step0: {
@@ -38,16 +39,18 @@ class InviteEmployeeWizardForm extends Component {
 
     this.screensInfo = {
       step0: {
-        formID: 'InviteEmployeePersonalDataStep',
         ref: null
       },
       step1: {
-        formID: 'InviteEmployeePrivilegesStep',
         ref: null
       }
     };
 
     this.bindScreenRef = this.bindScreenRef.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.setInvitationStatus(INVITATION_STATUS.READY)
   }
 
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
@@ -57,42 +60,28 @@ class InviteEmployeeWizardForm extends Component {
       { index, routes } = navigation.state,
       currentRouteName = routes[index].routeName;
 
-    const {ref} = this.screensInfo[currentRouteName];
+    const { ref } = this.screensInfo[currentRouteName];
 
     ref.submitForm();
   };
 
-  destroyForm = () => Object.keys(this.screensInfo).forEach(step => this.props.destroyForm(this.screensInfo[step].formID));
-
   isSubmitting = () => {
-    return this.currentForm() && this.currentForm().submitting
+    return this.props.form['InviteEmployee'] && this.props.form['InviteEmployee'].submitting
   };
 
-  finalSubmitSucceeded = () => {
-    const form = this.props.form['InviteEmployeePrivilegesStep'];
+  renderSuccessDialog = () => {
+    if(this.props.status === INVITATION_STATUS.SUCCESS) {
+      console.log('status')
+      console.log(this.props.status)
 
-    return form && form.submitSucceeded
-  };
-
-  currentForm = () => {
-    const { index, routes } = this.props.navigation.state,
-      currentRouteName = routes[index].routeName,
-      { formID } = this.screensInfo[currentRouteName],
-      { form } = this.props;
-
-    return form[formID];
-  };
-
-  showSuccessDialog = () => {
-    if (this.finalSubmitSucceeded()) {
-      // this.destroyForm(); // do this in saga
-      console.log('final submit succeed');
       const title = 'Congratulations!';
       const message = 'Your Invitation has been sent to given email address.';
 
       const buttons = [{
         text: 'OK', onPress: () => {
           this.props.navigation.dispatch(NavigationActions.back({ key: this.props.navigation.state.key }));
+          this.props.setInvitationStatus(INVITATION_STATUS.READY);
+          this.props.destroyForm();
         }
       }];
 
@@ -101,8 +90,7 @@ class InviteEmployeeWizardForm extends Component {
   };
 
   render() {
-    this.showSuccessDialog();
-
+    this.renderSuccessDialog();
     return (
       <View style={{ flex: 1 }}>
         <WizardFormNav navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
@@ -115,11 +103,14 @@ class InviteEmployeeWizardForm extends Component {
 
 InviteEmployeeWizardForm.router = WizardFormNav.router;
 
-const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
+const mapStateToProps = state => ({
+  form: state.form,
+  drivingSchool: state.context.currentDrivingSchoolID,
+  status: state.invitations.status
+});
 const mapDispatchToProps = dispatch => ({
-  destroyForm: formID => {
-    dispatch(destroy(formID))
-  }
+  setInvitationStatus: status => dispatch(invitationActionCreators.changeInvitationStatus(status)),
+  destroyForm: () => dispatch(destroy('InviteEmployee'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteEmployeeWizardForm);
