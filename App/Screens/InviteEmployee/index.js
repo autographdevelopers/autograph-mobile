@@ -104,7 +104,6 @@ InviteEmployeeWizardForm.router = WizardFormNav.router;
 
 const mapStateToProps = state => ({
   form: state.form,
-  drivingSchool: state.context.currentDrivingSchoolID,
   status: state.invitations.status
 });
 const mapDispatchToProps = dispatch => ({

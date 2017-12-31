@@ -7,11 +7,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import Layout from '../../Components/Layout';
 
 class DataScreen extends Component {
   static navigationOptions = {
     header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
+      return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
         labels={['Informacje', 'Uprawnienia']} activeIndex={0}/></View>)
     },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
@@ -37,8 +38,8 @@ class DataScreen extends Component {
         <FormErrorMessage>{error}</FormErrorMessage>
         <FormSection name={'user'}>
           <KeyboardAwareScrollView>
-            <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
-            <Field name={'surnname'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
+            <Field name={'name'} component={InputField} label={'Imie'} asterix={true} validate={required}/>
+            <Field name={'surname'} component={InputField} label={'Nazwisko'} asterix={true} validate={required}/>
             <Field name={'email'} component={InputField} label={'Email'} asterix={true} validate={[required, email]}/>
           </KeyboardAwareScrollView>
         </FormSection>
@@ -53,7 +54,7 @@ export default reduxForm({
   forceUnregisterOnUnmount: true,
   initialValues: {
     user: {
-      name: 'dsas', surnname: 'dsadsa', email: 'dsadsa@dsdsa.dsadsa', type: 'Employee'
+      name: '', surname: '', email: '', type: 'Employee'
     },
     employee_privilege_set: {
       can_manage_employees: true,

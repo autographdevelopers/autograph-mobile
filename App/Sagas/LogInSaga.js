@@ -27,6 +27,7 @@ export function* LogIn(api, action) {
 }
 
 const getUserData = response => {
+  // mutating here!! f not pure
   const user = response.data;
   // override sneak cased keys
   user['timeZone'] = user.time_zone;
