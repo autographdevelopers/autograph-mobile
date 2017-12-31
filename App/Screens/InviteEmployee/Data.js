@@ -6,6 +6,7 @@ import { email, required } from '../../Lib/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 class DataScreen extends Component {
   static navigationOptions = {
@@ -24,15 +25,16 @@ class DataScreen extends Component {
   }
 
   submitForm = () => {
-    this.props.handleSubmit( _ => {
+    this.props.handleSubmit(_ => {
       this.props.navigation.navigate('step1');
     })();
   };
 
   render() {
-
+    const { error } = this.props;
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
+        <FormErrorMessage>{error}</FormErrorMessage>
         <FormSection name={'user'}>
           <KeyboardAwareScrollView>
             <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>

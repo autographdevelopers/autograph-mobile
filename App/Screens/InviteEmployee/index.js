@@ -91,6 +91,7 @@ class InviteEmployeeWizardForm extends Component {
     this.renderSuccessDialog();
     return (
       <View style={{ flex: 1 }}>
+
         <WizardFormNav navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
 
         <ButtonPrimary onPress={this.handleStepSubmission} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>

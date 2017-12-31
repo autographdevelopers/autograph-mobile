@@ -6,6 +6,7 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import StepsIndicators from '../../Components/StepsIndicators';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
 import Layout from '../../Components/Layout';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
@@ -34,9 +35,10 @@ class PrivilegesScreen extends Component {
   };
 
   render() {
-    const { change } = this.props;
+    const { change, error } = this.props;
     return (
       <Layout customStyles={{ paddingTop: 0 }}>
+        <FormErrorMessage>{error}</FormErrorMessage>
         <FormSection name={'employee_privilege_set'}>
           <ScrollView>
             <Field name={'can_manage_employees'} component={renderSwitch}
