@@ -10,6 +10,7 @@ export function* invite(api, action) {
   yield put(invitationActionCreators.changeInvitationStatus(STATUS.SENDING));
   const response = yield call(api.inviteUser, action.params);
   if (response.ok) {
+    yield put(stopSubmit(action.formID));
     yield put(invitationActionCreators.changeInvitationStatus(STATUS.SUCCESS));
   } else {
     yield put(invitationActionCreators.changeInvitationStatus(STATUS.ERROR));
