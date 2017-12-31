@@ -24,7 +24,7 @@ class DataScreen extends Component {
   }
 
   submitForm = () => {
-    this.props.handleSubmit( values => {
+    this.props.handleSubmit( _ => {
       this.props.navigation.navigate('step1');
     })();
   };
@@ -52,6 +52,12 @@ export default reduxForm({
   initialValues: {
     user: {
       name: 'dsas', surnname: 'dsadsa', email: 'dsadsa@dsdsa.dsadsa', type: 'Employee'
+    },
+    employee_privilege_set: {
+      can_manage_employees: true,
+      can_manage_students: true,
+      can_modify_schedules: false,
+      is_driving: false
     }
   }
 })(DataScreen);
