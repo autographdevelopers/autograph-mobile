@@ -18,5 +18,6 @@ export function* invite(api, action) {
     yield put(stopSubmit(action.formID, errors));
   }
 }
-// TODO ADD start submit and verify if spinner works
+
+//shouldn't actions be in user saga?
 //Ask maciek Can I send multiple invitation to the same person????

@@ -11,7 +11,6 @@ import { invitationActionTypes } from '../Redux/InvitationsRedux';
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
 import { create as createDrivingSchool, update as updateDrivingSchool } from './DrivingSchoolSagas';

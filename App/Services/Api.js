@@ -48,20 +48,6 @@ const api = apisauce.create({
 api.addResponseTransform(responseHook);
 api.addRequestTransform(requestHook);
 
-  // ------
-  // STEP 2
-  // ------
-  //
-  // Define some functions that call the api.  The goal is to provide
-  // a thin wrapper of the api layer providing nicer feeling functions
-  // rather than "get", "post" and friends.
-  //
-  // I generally don't like wrapping the output at this level because
-  // sometimes specific actions need to be take on `403` or `401`, etc.
-  //
-  // Since we can't hide from that, we embrace it by getting out of the
-  // way at this level.
-  //
 const problemCodes = { // TODO check if these are not defined in api object
   SERVER_ERROR,
   CLIENT_ERROR,
@@ -70,47 +56,16 @@ const problemCodes = { // TODO check if these are not defined in api object
   CONNECTION_ERROR
 };
 
-
-const getRoot = () => api.get(''),
-      getRate = () => api.get('rate_limit'),
-      getUser = (username) => api.get('search/users', { q: username }),
-      logIn = (email, password) => api.post('auth/sign_in', { email, password }),
-      signUp = userData => api.post('auth', userData),
-      resetPassword = email => api.post('auth/password', { email }),
-      createDrivingSchool = params => api.post('driving_schools', params),
-      updateDrivingSchool = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
-      updateScheduleBoundaries = (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
-      updateScheduleSettings = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params), //schould be put on server
-      updateEmployeeNotifications = (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
-      fetchDrivingSchools = () => api.get('driving_schools'),
-      inviteUser = (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params);
-  // ------
-  // STEP 3
-  // ------
-  //
-  // Return back a collection of functions that we would consider our
-  // interface.  Most of the time it'll be just the list of all the
-  // methods in step 2.
-  //
-  // Notice we're not returning back the `api` created in step 1?  That's
-  // because it is scoped privately.  This is one way to create truly
-  // private scoped goodies in JavaScript.
-  //
 export const API = {
-  // a list of the API functions from step 2
   problemCodes,
-  getRoot,
-  getRate,
-  getUser,
-  logIn,
-  signUp,
-  resetPassword,
-  createDrivingSchool,
-  updateScheduleBoundaries,
-  updateEmployeeNotifications,
-  updateDrivingSchool,
-  updateScheduleSettings,
-  fetchDrivingSchools,
-  inviteUser
+  logIn: (email, password) => api.post('auth/sign_in', { email, password }),
+  signUp: userData => api.post('auth', userData),
+  resetPassword: email => api.post('auth/password', { email }),
+  createDrivingSchool: params => api.post('driving_schools', params),
+  updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
+  updateScheduleBoundaries: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
+  updateScheduleSettings: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params), //schould be put on server
+  updateEmployeeNotifications: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
+  fetchDrivingSchools: () => api.get('driving_schools'),
+  inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params)
 };
-
