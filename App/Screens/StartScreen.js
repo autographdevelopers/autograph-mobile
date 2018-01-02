@@ -21,7 +21,6 @@ class StartScreen extends Component {
   }
 
   displaySchoolsList = () => {
-    console.log(this.props);
     return this.props.drivingSchools.collection.map((school, index) => (
       <ButtonPrimary onPress={this.navigateToSchoolContext(school.id)} key={index}>{school.name}</ButtonPrimary>
     ));

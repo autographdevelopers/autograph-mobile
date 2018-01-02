@@ -106,6 +106,7 @@ const mapStateToProps = state => ({
   form: state.form,
   status: state.invitations.status
 });
+
 const mapDispatchToProps = dispatch => ({
   setInvitationStatus: status => dispatch(invitationActionCreators.changeInvitationStatus(status)),
   destroyForm: () => dispatch(destroy('InviteEmployee'))

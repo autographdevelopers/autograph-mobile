@@ -34,7 +34,7 @@ class DataScreen extends Component {
   render() {
     const { error } = this.props;
     return (
-      <Layout customStyles={{ paddingTop: 0 }}>
+      <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>
         <FormSection name={'user'}>
           <KeyboardAwareScrollView>
