@@ -94,7 +94,7 @@ class InformationStep extends Component {
 
   render() {
     const { change, error } = this.props;
-    // TODO: add general error info above all forms add Layout to import
+
     return (
       <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>
