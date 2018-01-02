@@ -13,6 +13,7 @@ import InputField from '../../Components/InputField';
 import StepsIndicators from '../../Components/StepsIndicators';
 import ButtonText from '../../Components/ButtonText';
 import Layout from '../../Components/Layout';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -92,10 +93,11 @@ class InformationStep extends Component {
   }
 
   render() {
-    const { change } = this.props;
+    const { change, error } = this.props;
     // TODO: add general error info above all forms add Layout to import
     return (
       <Layout>
+        <FormErrorMessage>{error}</FormErrorMessage>
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
           <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}

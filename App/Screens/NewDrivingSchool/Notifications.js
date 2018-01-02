@@ -6,6 +6,7 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
@@ -27,10 +28,11 @@ class NotificationsStep extends Component {
   }
 
   render() {
-    const { change } = this.props;
+    const { change, error } = this.props;
 
     return (
       <Layout>
+        <FormErrorMessage>{error}</FormErrorMessage>
         <Field name={'push_notifications_enabled'} component={renderSwitch}
                componentProps={{
                  label: 'Otrzymuj powiadomienia push',
