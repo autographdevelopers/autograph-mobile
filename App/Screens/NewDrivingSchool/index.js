@@ -8,32 +8,27 @@ import { connect } from 'react-redux';
 
 /** Form steps */
 import InformationStep from './Information';
-import CalendarStep from './Calendar';
+import CalendarStep from './ScheduleBoundaries';
 import NotificationsStep from './Notifications';
 import ScheduleSettings from './ScheduleSettings';
 
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import StepsIndicators from '../../Components/StepsIndicators';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const routeConfigs = {
   step0: {
-    screen: InformationStep,
-    navigationOptions: {title: 'Information'}
+    screen: InformationStep
   },
   step1: {
-    screen: NotificationsStep,
-    title: 'Notification'
+    screen: NotificationsStep
   },
   step2: {
-    screen: CalendarStep,
-    title: 'Schedule Boundaries'
+    screen: CalendarStep
   },
   step3: {
-    screen: ScheduleSettings,
-    title: 'Schedule Settings'
+    screen: ScheduleSettings
   }
 };
 
@@ -46,6 +41,7 @@ const navigationConfigs = {
                          activeIndex={props.navigation.state.index}/>
       </View>)
     },
+
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',
@@ -94,18 +90,19 @@ class NewDrivingSchoolWizardForm extends Component {
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
   nextStep = () => {
-    const { index, routes } = this.props.navigation.state,
+    const { index, routes, key } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
       nextRouteIndex = index + 1,
-      nextRoute = currentRouteName === 'step3' ? 'main' : `step${nextRouteIndex}`,
-      redirectAction = NavigationActions.navigate({ routeName: nextRoute }),
+      redirectAction = currentRouteName === 'step3' ? NavigationActions.back({ key }) : NavigationActions.navigate({ routeName: `step${nextRouteIndex}` }),
       { formID, ref, submitAction } = this.screensInfo[currentRouteName],
       { navigation } = this.props;
 
     ref.props.handleSubmit(values => navigation.dispatch(submitAction(values, formID, redirectAction)))();
-
-    if (currentRouteName === 'step3') this.resetForm();
   };
+
+  componentWillUnmount() {
+    this.resetForm();
+  }
 
   resetForm = () => Object.keys(this.screensInfo).forEach(step => this.props.resetForm(this.screensInfo[step].formID));
 

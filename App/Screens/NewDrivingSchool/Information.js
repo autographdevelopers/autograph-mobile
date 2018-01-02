@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { FieldArray, Field, reduxForm } from 'redux-form';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-import InputField from '../../Components/InputField';
-import ButtonText from '../../Components/ButtonText';
-import { Fonts, Colors } from '../../Themes/index';
-import { required, minLength, email, optional, address, digitsOnly } from '../../Lib/validators';
+import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
+import { Colors } from '../../Themes/index';
+
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import NavHeader from '../../Components/NavHeader';
+import InputField from '../../Components/InputField';
 import StepsIndicators from '../../Components/StepsIndicators';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ButtonText from '../../Components/ButtonText';
+import Layout from '../../Components/Layout';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -74,12 +76,13 @@ const styles = StyleSheet.create({
 });
 
 class InformationStep extends Component {
-  // static navigationOptions = {
-  //   header: props => {
-  //     return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
-  //   },
-  //   headerStyle: { elevation: 0, shadowOpacity: 0 }
-  // };
+  static navigationOptions = {
+    header: props => {
+      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
+        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
+    },
+    headerStyle: { elevation: 0, shadowOpacity: 0 }
+  };
 
   constructor(props) {
     super(props);
@@ -92,7 +95,7 @@ class InformationStep extends Component {
     const { change } = this.props;
     // TODO: add general error info above all forms add Layout to import
     return (
-      <Layout customStyles={{ paddingTop: 0 }}>
+      <Layout>
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
           <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
@@ -111,7 +114,7 @@ class InformationStep extends Component {
 export default reduxForm({
   form: 'basicInformation',
   destroyOnUnmount: false,
-  // forceUnregisterOnUnmount: true,
+  forceUnregisterOnUnmount: true,
   initialValues: {
     phone_numbers: [undefined],
     emails: [undefined]
