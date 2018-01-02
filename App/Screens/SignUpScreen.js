@@ -98,9 +98,7 @@ class SignUpScreen extends Component {
                setValue={value => () => change('accepted', value)}
                validate={isAccepted('Musisz zaakceptowac regulamin.')}/>
 
-        <PrimaryButton onPress={handleSubmit(submit(navigation))}>
-          {submitting ? 'Wysylanie..' : 'Zarejestruj'}
-        </PrimaryButton>
+        <PrimaryButton onPress={handleSubmit(submit(navigation))} submitting={submitting}>Zarejestruj</PrimaryButton>
       </Layout>
     )
   }
