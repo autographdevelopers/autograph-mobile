@@ -5,14 +5,19 @@ import { reducer as formReducer } from 'redux-form';
 import { sessionReducer } from './SessionRedux';
 import { userReducer } from './UserRedux';
 import { resetPasswordReducer } from './ResetPasswordRedux'
-
+import {drivingSchoolReducer} from './DrivingSchoolRedux';
+import {contextReducer} from './ContextRedux';
+import {invitationsReducer} from './InvitationsRedux';
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
   session: sessionReducer,
   user: userReducer,
   form: formReducer,
-  resetPassword: resetPasswordReducer
+  resetPassword: resetPasswordReducer,
+  drivingSchools: drivingSchoolReducer,
+  context: contextReducer,
+  invitations: invitationsReducer
 });
 
 export default () => {

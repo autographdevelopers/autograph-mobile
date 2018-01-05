@@ -42,7 +42,7 @@ export default NavHeader = ({ navigation, title }) => {
                     colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.mainContainer}>
       <View style={styles.wrapper}>
         <View style={styles.leftContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}><Icon name={'angle-left'} size={30}
+          <TouchableOpacity onPress={() => navigation.goBack(null)}><Icon name={'angle-left'} size={30}
                                                                       color={Colors.snow}/></TouchableOpacity>
         </View>
         <Text style={styles.title}>{title}</Text>

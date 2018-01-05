@@ -24,8 +24,8 @@ export const INITIAL_STATE = {
 
 /* ------------- Handlers ------------- */
 
-export const setUserHandler = (state, { user: { name, surname, email, gender, type, birthDay, timeZone } }) => {
-  return { ...state, name, surname, email, gender, type, birthDay, timeZone }
+export const setUserHandler = (state, { user: { id, name, surname, email, gender, type, birthDay, timeZone } }) => {
+  return { ...state, id, name, surname, email, gender, type, birthDay, timeZone }
 };
 
 export const clearUserHandler = (state, _) => {

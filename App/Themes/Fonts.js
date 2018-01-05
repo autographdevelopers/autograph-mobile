@@ -9,11 +9,12 @@ const type = {
 }
 
 const size = {
-  big: 45,
+  big2: 45,
+  big1: 35,
   input: 18,
   regular: 17,
   medium: 15,
-  small: 11,
+  small: 13,
   tiny: 8.5
 };
 

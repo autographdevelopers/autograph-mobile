@@ -5,10 +5,13 @@ import { connect } from 'react-redux';
 import StartupActions from '../Redux/StartupRedux';
 import ReduxPersist from '../Config/ReduxPersist';
 import {StyleSheet} from 'react-native';
+import { Colors } from '../Themes';
+
 
 const styles = StyleSheet.create({
   applicationView: {
     flex: 1,
+    backgroundColor: Colors.snow
   }
 });
 
@@ -31,7 +34,7 @@ class RootContainer extends Component {
 }
 
 // wraps dispatch to create nicer functions to call within our component
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   startup: () => dispatch(StartupActions.startup())
 });
 

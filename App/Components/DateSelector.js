@@ -5,7 +5,7 @@ import { Fonts, Colors } from '../Themes/';
 import InputFieldLayout from './InputFieldLayout';
 import DatePicker from 'react-native-datepicker';
 
-export default DateSelector = ({ input, meta, setValue, inputLabel, required, maxDate }) => {
+export default DateSelector = ({ input, meta, setValue, inputLabel, asterix = false, maxDate }) => {
   const styles = StyleSheet.create({
     datepicker: {
       flex: 1,
@@ -41,7 +41,7 @@ export default DateSelector = ({ input, meta, setValue, inputLabel, required, ma
   };
 
   return (
-    <InputFieldLayout meta={meta} label={inputLabel} required={required} line={false}>
+    <InputFieldLayout meta={meta} label={inputLabel} required={asterix} line={false}>
       <View style={styles.datepickerRow}>
         <DatePicker
           style={styles.datepicker}

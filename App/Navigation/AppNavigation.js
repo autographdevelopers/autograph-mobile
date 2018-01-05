@@ -1,11 +1,16 @@
+import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+
 import LoginScreen from '../Screens/LoginScreen';
 import LaunchScreen from '../Screens/LaunchScreen';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
+import InviteEmployeeWizardForm from '../Screens/InviteEmployee/index';
+import InviteStudentForm from '../Screens/Students/InviteForm';
+import StartScreen from '../Screens/StartScreen';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
-import React, { Component } from 'react';
 
 // Manifest of possible screens
 const routeConfigs = {
@@ -13,7 +18,15 @@ const routeConfigs = {
   signUp: { screen: SignUpScreen },
   launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
-  main: { screen: TabNavigation }
+  startScreen: { screen: StartScreen },
+  main: {
+    screen: TabNavigation, navigationOptions: {
+      header: null
+    }
+  },
+  newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
+  inviteEmployee: { screen: InviteEmployeeWizardForm },
+  inviteStudent: { screen: InviteStudentForm }
 };
 
 const navigationConfigs = {
