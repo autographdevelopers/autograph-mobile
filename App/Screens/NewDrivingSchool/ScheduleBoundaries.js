@@ -6,6 +6,7 @@ import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const renderScheduleBoundaries = ({ input, meta, setValue }) => {
   return <ScheduleBoundariesPicker value={input.value} meta={meta} setValue={setValue}/>
@@ -26,10 +27,11 @@ class ScheduleBoundaries extends Component {
   }
 
   render() {
-    const { change } = this.props;
+    const { change, error } = this.props;
 
     return (
       <Layout>
+        <FormErrorMessage>{error}</FormErrorMessage>
         <Field name={'schedule_boundaries'} component={renderScheduleBoundaries} setValue={/*see @1*/ newValue => {
           change('schedule_boundaries', newValue);
           this.forceUpdate();

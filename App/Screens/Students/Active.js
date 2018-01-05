@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import ButtonPrimary from '../Components/ButtonPrimary';
-import ButtonText from '../Components/ButtonText';
-import { Fonts, Colors } from '../Themes/';
-import SegmentsControl from '../Components/SegmentsControl';
-import { StackNavigator } from 'react-navigation';
-import navStyles from '../Navigation/Styles/NavigationStyles';
-import UniversalCell from '../Components/UniversalCell';
+import ButtonPrimary from '../../Components/ButtonPrimary';
+import { Fonts, Colors } from '../../Themes/';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,7 +27,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class InvitedEmployeesList extends Component {
+export default class ActiveStudentsList extends Component {
   constructor(props) {
     super(props);
 
@@ -49,7 +44,7 @@ class InvitedEmployeesList extends Component {
 
   header = () => {
     return (
-      <Text style={styles.header}>{`${data.length} aktywnych pracownikow`}</Text>
+      <Text style={styles.header}>{`${data.length} aktywnych studentow`}</Text>
     );
   };
 
@@ -121,7 +116,7 @@ class InvitedEmployeesList extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.header}>{`Zaproszeni pracownicy (${this.state.data.length})`}</Text>
+        <Text style={styles.header}>{`Aktywni studenci (${this.state.data.length})`}</Text>
         <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
           <FlatList
             contentContainerStyle={{
@@ -147,42 +142,8 @@ class InvitedEmployeesList extends Component {
             onEndReached={this.handleLoadMore}
           />
         </List>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteStudent')}>Dodaj Studenta</ButtonPrimary>
       </View>
     )
   }
 }
-
-const routeConfigs = {
-  ActiveEmployeesList: {
-    screen: InvitedEmployeesList
-  },
-  InvitedEmployeesList: {
-    screen: InvitedEmployeesList
-  }
-};
-const SEGMENTS = [
-  { name: 'Aktywni', component: 'ActiveEmployeesList' },
-  { name: 'Zaproszeni', component: 'InvitedEmployeesList' }
-];
-
-const navigationConfigs = {
-  navigationOptions: {
-    header: props => {
-      const handlePress = index => {
-        index === 1 ? props.navigation.navigate(SEGMENTS[index].component) : props.navigation.goBack(null);
-      };
-      return <SegmentsControl
-        componentProps={{
-          values: SEGMENTS.map(segment => segment.name),
-          selectedIndex: props.navigation.state.index,
-          onTabPress: handlePress
-        }}/>
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  },
-  initialRouteName: 'ActiveEmployeesList',
-  cardStyle: navStyles.card
-};
-
-export default StackNavigator(routeConfigs, navigationConfigs);

@@ -1,7 +1,7 @@
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import CalendarScreen from '../Screens/CalendarScreen';
 import EmployeesScreen from '../Screens/EmployeesScreen';
-import StudentsScreen from '../Screens/StudentsScreen';
+import StudentsScreen from '../Screens/Students/index';
 import SettingsScreen from '../Screens/SettingsScreen';
 import { TabNavigator } from 'react-navigation';
 import { Colors } from '../Themes';

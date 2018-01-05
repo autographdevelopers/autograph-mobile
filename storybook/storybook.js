@@ -1,7 +1,7 @@
 import { AppRegistry } from 'react-native'
 import { getStorybookUI, configure } from '@storybook/react-native'
 
-// import stories
+// import Stories
 configure(() => {
   require('../App/Components/Stories')
 }, module)

@@ -34,6 +34,14 @@ const routeConfigs = {
 
 const navigationConfigs = {
   navigationOptions: {
+    header: props => {
+      return (<View>
+        <NavHeader navigation={props.navigation} title={'dsas'}/>
+        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']}
+                         activeIndex={props.navigation.state.index}/>
+      </View>)
+    },
+
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',

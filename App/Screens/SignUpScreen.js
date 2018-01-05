@@ -68,9 +68,6 @@ class SignUpScreen extends Component {
 
     const { handleSubmit, change, submitting, navigation } = this.props;
 
-    console.log('api');
-    console.log(api);
-
     return (
       <Layout>
         <Field name={'type'} data={typeData} setValue={val => () => this.props.change('type', val)}
@@ -101,9 +98,7 @@ class SignUpScreen extends Component {
                setValue={value => () => change('accepted', value)}
                validate={isAccepted('Musisz zaakceptowac regulamin.')}/>
 
-        <PrimaryButton onPress={handleSubmit(submit(navigation))}>
-          {submitting ? 'Wysylanie..' : 'Zarejestruj'}
-        </PrimaryButton>
+        <PrimaryButton onPress={handleSubmit(submit(navigation))} submitting={submitting}>Zarejestruj</PrimaryButton>
       </Layout>
     )
   }

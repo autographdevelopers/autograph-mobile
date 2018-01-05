@@ -6,7 +6,7 @@ import { Colors } from '../Themes';
 export default Layout = ({children, customStyles = {}}) => {
   const styles = StyleSheet.create({
     layout: {
-      // flex:1, // needed? breaks step form
+      flex: 1,
       paddingHorizontal: 15,
       paddingTop: 20,
       backgroundColor: Colors.snow

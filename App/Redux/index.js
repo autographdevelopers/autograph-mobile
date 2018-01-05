@@ -7,7 +7,7 @@ import { userReducer } from './UserRedux';
 import { resetPasswordReducer } from './ResetPasswordRedux'
 import {drivingSchoolReducer} from './DrivingSchoolRedux';
 import {contextReducer} from './ContextRedux';
-
+import {invitationsReducer} from './InvitationsRedux';
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
@@ -16,7 +16,8 @@ export const reducers = combineReducers({
   form: formReducer,
   resetPassword: resetPasswordReducer,
   drivingSchools: drivingSchoolReducer,
-  context: contextReducer
+  context: contextReducer,
+  invitations: invitationsReducer
 });
 
 export default () => {

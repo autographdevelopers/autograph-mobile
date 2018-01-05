@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/index';
 import FancyBackground from '../Components/FancyBackground';
+import FormErrorMessage from '../Components/GenerealFormErrorMessage';
 
 const styles = StyleSheet.create({
   inputsSection: {
@@ -69,7 +70,7 @@ class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: 'w5@gmail.com', password: 'aaaaaaaa' };
+    this.state = { email: 'w@gmail.com', password: 'aaaaaaaa' };
   }
 
   setField(field) {
@@ -89,9 +90,7 @@ class LoginScreen extends Component {
         </View>
 
         <View style={styles.inputsSection}>
-          <View>
-            {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
-          </View>
+          <FormErrorMessage>{errorMessage}</FormErrorMessage>
           <LoginInputField value={email}
                            handleTextChange={this.setField('email')}
                            placeholder={'Type in your email address.'}

@@ -7,10 +7,10 @@ import { SESSION_ACTION_TYPES, sessionActionCreators } from '../Redux/SessionRed
 
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
+import { invitationActionTypes } from '../Redux/InvitationsRedux';
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas';
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
 import { create as createDrivingSchool, update as updateDrivingSchool } from './DrivingSchoolSagas';
@@ -18,6 +18,8 @@ import { updateEmployeesNotificationSettings } from './DrivingSchoolSagas';
 import { updateScheduleBoundaries} from './DrivingSchoolSagas';
 import { updateScheduleSettings} from './DrivingSchoolSagas';
 import { index as fetchDrivingSchools } from './DrivingSchoolSagas';
+
+import { invite as inviteUser } from './UserSaga';
 
 /* ------------- API ------------- */
 
@@ -32,6 +34,7 @@ export default function* root() {
     takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_BOUNDARIES_REQUEST, updateScheduleBoundaries, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_DRIVING_SCHOOL_REQUEST, updateDrivingSchool, api),
     takeLatest(drivingSchoolActionTypes.UPDATE_SCHEDULE_SETTINGS_REQUEST, updateScheduleSettings, api),
-    takeLatest(drivingSchoolActionTypes.FETCH_DRIVING_SCHOOLS_REQUEST, fetchDrivingSchools, api)
+    takeLatest(drivingSchoolActionTypes.FETCH_DRIVING_SCHOOLS_REQUEST, fetchDrivingSchools, api),
+    takeLatest(invitationActionTypes.INVITE_USER_REQUEST, inviteUser, api),
   ])
 }
