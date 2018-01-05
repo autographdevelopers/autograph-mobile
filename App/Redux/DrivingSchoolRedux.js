@@ -1,6 +1,6 @@
 // create driving school request, save driving school
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone } from '../Lib/utils';
+import { deepClone, arrayToHash, mergeArraysUniq } from '../Lib/utils';
 
 /* ------------- Types and Action Creators ------------- */
 export const STATUS = { READY: 'READY', FETCHING: 'FETCHING', SUCCESS: 'SUCCESS' };
@@ -24,25 +24,27 @@ export const drivingSchoolActionCreators = Creators;
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = {
-  collection: [],
+  hashMap: {},
+  allIDs: [],
   status: STATUS.READY
 };
 
 /* ------------- Handlers ------------- */
 
-export const saveDrivingSchoolHandler = (state, { data }) => ({
-  ...state,
-  collection: deepClone(state.collection).concat(data)
-});
+export const saveDrivingSchoolHandler = (state, { data }) => {
+  const hashMap = deepClone(state.hashMap);
+  hashMap[data.id] = data;
+  const allIDs = mergeArraysUniq(state.allIDs, [data.id]);
 
-export const updateDrivingSchoolHandler = (state, { data }) => {
   return {
     ...state,
-    collection: [...deepClone(state.collection).filter(element => element.id !== data.id), deepClone(data)]
+    hashMap,
+    allIDs
   }
 };
 
-export const saveDrivingSchoolsHandler = (state, { schools }) => ({ ...state, collection: schools });
+export const saveDrivingSchoolsHandler = (state, { schools }) =>
+  ({ ...state, hashMap: arrayToHash(schools), allIDs: schools.map( s => s.id) });
 
 export const changeStatusHandler = (state, { status }) => ({ ...state, status });
 
@@ -51,6 +53,5 @@ export const changeStatusHandler = (state, { status }) => ({ ...state, status })
 export const drivingSchoolReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_DRIVING_SCHOOL]: saveDrivingSchoolHandler,
   [Types.SAVE_DRIVING_SCHOOLS]: saveDrivingSchoolsHandler,
-  [Types.CHANGE_STATUS]: changeStatusHandler,
-  [Types.UPDATE_DRIVING_SCHOOL]: updateDrivingSchoolHandler
+  [Types.CHANGE_STATUS]: changeStatusHandler
 });

@@ -8,7 +8,7 @@ export function* create(api, action) {
   yield put(startSubmit(action.formID));
   const response = yield call(api.createDrivingSchool, { driving_school: action.params });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(stopSubmit(action.formID));
     yield put(action.redirectionAction);
@@ -22,7 +22,7 @@ export function* update(api, action) {
   yield put(startSubmit(action.formID));
   const response = yield call(api.updateDrivingSchool, { driving_school: action.params });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.updateDrivingSchool(response.data));
+    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(stopSubmit(action.formID));
     yield put(action.redirectionAction);

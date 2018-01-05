@@ -3,9 +3,9 @@ import { Text, ScrollView, ActivityIndicator } from 'react-native';
 import styles from './placeholderStyles';
 import { connect } from 'react-redux';
 import { Colors } from '../Themes';
-import {drivingSchoolActionCreators} from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
 import ButtonPrimary from '../Components/ButtonPrimary';
-import {contextActionCreators} from '../Redux/ContextRedux';
+import { contextActionCreators } from '../Redux/ContextRedux';
 
 class StartScreen extends Component {
   static navigationOptions = {
@@ -21,8 +21,10 @@ class StartScreen extends Component {
   }
 
   displaySchoolsList = () => {
-    return this.props.drivingSchools.collection.map((school, index) => (
-      <ButtonPrimary onPress={this.navigateToSchoolContext(school.id)} key={index}>{school.name}</ButtonPrimary>
+    const { drivingSchools } = this.props;
+    const { hashMap, allIDs } = drivingSchools;
+    return allIDs.map((id, index) => (
+      <ButtonPrimary onPress={this.navigateToSchoolContext(id)} key={index}>{hashMap[id].name}</ButtonPrimary>
     ));
   };
 
@@ -32,19 +34,19 @@ class StartScreen extends Component {
   };
 
   render() {
-    const {status, drivingSchools} = this.props;
+    const { status, drivingSchools } = this.props;
     return (
       <ScrollView>
-        { status === 'FETCHING' ? <ActivityIndicator size={'large'} color={Colors.primaryWarm} /> :
-          <ButtonPrimary onPress={()=> this.props.navigation.navigate('newDrivingSchool')}>NEW DRIVING SCHOOL</ButtonPrimary>}
+        {status === 'FETCHING' ? <ActivityIndicator size={'large'} color={Colors.primaryWarm}/> :
+          <ButtonPrimary onPress={() => this.props.navigation.navigate('newDrivingSchool')}>NEW DRIVING
+            SCHOOL</ButtonPrimary>}
         {this.displaySchoolsList()}
       </ScrollView>
     )
   }
 }
 
-const mapStateToProps = ({ drivingSchools, context: currentDrivingSchoolID }) =>
-  ({ currentDrivingSchoolID, drivingSchools, status: drivingSchools.status });
+const mapStateToProps = ({ drivingSchools }) => ({ drivingSchools });
 
 const mapDispatchToProps = dispatch => ({
   fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.fetchDrivingSchoolsRequest()),
