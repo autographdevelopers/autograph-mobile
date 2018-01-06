@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import ButtonPrimary from '../Components/ButtonPrimary';
-import ButtonText from '../Components/ButtonText';
-import { Fonts, Colors } from '../Themes/';
-import SegmentsControl from '../Components/SegmentsControl';
-import { StackNavigator } from 'react-navigation';
-import navStyles from '../Navigation/Styles/NavigationStyles';
-import UniversalCell from '../Components/UniversalCell';
+import ButtonPrimary from '../../Components/ButtonPrimary';
+import { Fonts, Colors } from '../../Themes/';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,7 +27,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class InvitedEmployeesList extends Component {
+export default class InvitedEmployeesList extends Component {
   constructor(props) {
     super(props);
 
@@ -153,36 +148,3 @@ class InvitedEmployeesList extends Component {
   }
 }
 
-const routeConfigs = {
-  ActiveEmployeesList: {
-    screen: InvitedEmployeesList
-  },
-  InvitedEmployeesList: {
-    screen: InvitedEmployeesList
-  }
-};
-const SEGMENTS = [
-  { name: 'Aktywni', component: 'ActiveEmployeesList' },
-  { name: 'Zaproszeni', component: 'InvitedEmployeesList' }
-];
-
-const navigationConfigs = {
-  navigationOptions: {
-    header: props => {
-      const handlePress = index => {
-        index === 1 ? props.navigation.navigate(SEGMENTS[index].component) : props.navigation.goBack(null);
-      };
-      return <SegmentsControl
-        componentProps={{
-          values: SEGMENTS.map(segment => segment.name),
-          selectedIndex: props.navigation.state.index,
-          onTabPress: handlePress
-        }}/>
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  },
-  initialRouteName: 'ActiveEmployeesList',
-  cardStyle: navStyles.card
-};
-
-export default StackNavigator(routeConfigs, navigationConfigs);

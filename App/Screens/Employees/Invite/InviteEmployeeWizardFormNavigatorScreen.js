@@ -1,13 +1,14 @@
 /** Built-in modules */
 import { NavigationActions, StackNavigator } from 'react-navigation';
-import navStyles from '../../Navigation/Styles/NavigationStyles';
-import { connect, destroy } from 'react-redux';
+import navStyles from '../../../Navigation/Styles/NavigationStyles';
+import { connect } from 'react-redux';
+import { destroy } from 'redux-form';
 import React, { Component } from 'react';
 import { View, Alert } from 'react-native';
 /** Custom components */
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import DataScreen from './Data';
-import PrivilegesScreen from './Privileges';
+import ButtonPrimary from '../../../Components/ButtonPrimary';
+import DataScreen from './PersonalDataStep';
+import PrivilegesScreen from './PrivilegesStep';
 
 const routeConfigs = {
   step0: {
@@ -74,7 +75,8 @@ class InviteEmployeeWizardForm extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <WizardFormNav navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef, takeMeBack: this.takeMeBack }}/>
+        <WizardFormNav navigation={this.props.navigation}
+                       screenProps={{ bindScreenRef: this.bindScreenRef, takeMeBack: this.takeMeBack }}/>
         <ButtonPrimary onPress={this.handleStepSubmission} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
       </View>
     )
@@ -84,11 +86,11 @@ class InviteEmployeeWizardForm extends Component {
 InviteEmployeeWizardForm.router = WizardFormNav.router;
 
 const mapStateToProps = state => ({
-  form: state.form['InviteEmployee'],
+  form: state.form['Employees']
 });
 
 const mapDispatchToProps = dispatch => ({
-  destroyForm: () => dispatch(destroy('InviteEmployee'))
+  destroyForm: () => dispatch(destroy('Employees'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteEmployeeWizardForm);

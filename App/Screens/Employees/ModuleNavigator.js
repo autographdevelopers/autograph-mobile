@@ -1,22 +1,20 @@
-import { StackNavigator } from 'react-navigation';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
-import InvitedStudents from './Invited';
-import ActiveStudents from './Active';
 import React, { Component } from 'react';
+import { StackNavigator } from 'react-navigation';
+import InvitedEmployeesList from './InvitedEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
 
 const routeConfigs = {
-  ActiveStudentsList: {
-    screen: ActiveStudents
+  ActiveEmployeesList: {
+    screen: InvitedEmployeesList
   },
-  InvitedStudentsList: {
-    screen: InvitedStudents
+  InvitedEmployeesList: {
+    screen: InvitedEmployeesList
   }
 };
-
 const SEGMENTS = [
-  { name: 'Aktywni', component: 'ActiveStudentsList' },
-  { name: 'Zaproszeni', component: 'InvitedStudentsList' }
+  { name: 'Aktywni', component: 'InvitedEmployeesList' },
+  { name: 'Zaproszeni', component: 'InvitedEmployeesList' }
 ];
 
 const navigationConfigs = {
@@ -34,7 +32,7 @@ const navigationConfigs = {
     },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
-  initialRouteName: 'ActiveStudentsList',
+  initialRouteName: 'ActiveEmployeesList',
   cardStyle: navStyles.card
 };
 

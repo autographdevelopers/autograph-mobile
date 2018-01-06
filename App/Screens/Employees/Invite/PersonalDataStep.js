@@ -4,15 +4,15 @@ import { ScrollView, View } from 'react-native';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 /** Custom components */
-import NavHeader from '../../Components/NavHeader';
-import StepsIndicators from '../../Components/StepsIndicators';
-import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
-import InputField from '../../Components/InputField';
-import Layout from '../../Components/Layout';
+import NavHeader from '../../../Components/NavHeader';
+import StepsIndicators from '../../../Components/StepsIndicators';
+import FormErrorMessage from '../../../Components/GenerealFormErrorMessage';
+import InputField from '../../../Components/InputField';
+import Layout from '../../../Components/Layout';
 /** Utilities */
-import { email, required } from '../../Lib/validators';
+import { email, required } from '../../../Lib/validators';
 
-class DataScreen extends Component {
+class PersonalDataStep extends Component {
   static navigationOptions = {
     header: props => {
       return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
@@ -53,7 +53,7 @@ class DataScreen extends Component {
 }
 
 export default reduxForm({
-  form: 'InviteEmployee',
+  form: 'Employees',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
@@ -67,4 +67,4 @@ export default reduxForm({
       is_driving: false
     }
   }
-})(DataScreen);
+})(PersonalDataStep);

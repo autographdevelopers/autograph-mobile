@@ -2,19 +2,19 @@
 import React, { Component } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { Field, reduxForm, FormSection } from 'redux-form';
-import { invite } from '../../Redux/InvitationsRedux';
+import { invite } from '../../../Redux/InvitationsRedux';
 /** Custom components */
-import NavHeader from '../../Components/NavHeader';
-import CellSwitch from '../../Components/CellWithSwitch';
-import StepsIndicators from '../../Components/StepsIndicators';
-import Layout from '../../Components/Layout';
-import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import NavHeader from '../../../Components/NavHeader';
+import CellSwitch from '../../../Components/CellWithSwitch';
+import StepsIndicators from '../../../Components/StepsIndicators';
+import Layout from '../../../Components/Layout';
+import FormErrorMessage from '../../../Components/GenerealFormErrorMessage';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
 );
 
-class PrivilegesScreen extends Component {
+class PrivilegesStep extends Component {
   static navigationOptions = {
     header: props => {
       return (<View><NavHeader navigation={props.navigation} title={'Uprawnienia'}/><StepsIndicators
@@ -92,7 +92,7 @@ class PrivilegesScreen extends Component {
 }
 
 export default reduxForm({
-  form: 'InviteEmployee',
+  form: 'Employees',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true
-})(PrivilegesScreen);
+})(PrivilegesStep);
