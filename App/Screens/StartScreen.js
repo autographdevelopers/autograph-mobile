@@ -33,13 +33,17 @@ class StartScreen extends Component {
     this.props.navigation.navigate('main');
   };
 
+  navigateToNewDrivingSchoolForm = () => {
+    this.props.setCurrentSchoolContext(null);
+    this.props.navigation.navigate('newDrivingSchool');
+  };
+
   render() {
     const { status, drivingSchools } = this.props;
     return (
       <ScrollView>
         {status === 'FETCHING' ? <ActivityIndicator size={'large'} color={Colors.primaryWarm}/> :
-          <ButtonPrimary onPress={() => this.props.navigation.navigate('newDrivingSchool')}>NEW DRIVING
-            SCHOOL</ButtonPrimary>}
+          <ButtonPrimary onPress={this.navigateToNewDrivingSchoolForm}>NEW DRIVING SCHOOL</ButtonPrimary>}
         {this.displaySchoolsList()}
       </ScrollView>
     )

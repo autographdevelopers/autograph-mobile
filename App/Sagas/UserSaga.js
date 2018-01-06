@@ -1,21 +1,17 @@
-import { startSubmit, stopSubmit } from 'redux-form'
 import { call, put } from 'redux-saga/effects';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
-import { View } from 'react-native';
-import { invitationActionCreators } from '../Redux/InvitationsRedux';
-import { STATUS } from '../Redux/InvitationsRedux';
+import { SubmissionError } from 'redux-form';
+import { invite } from '../Redux/InvitationsRedux';
 
-export function* invite(api, action) {
-  yield put(startSubmit(action.formID));
-  yield put(invitationActionCreators.changeInvitationStatus(STATUS.SENDING));
-  const response = yield call(api.inviteUser, action.params);
+export function* inviteUser(api, action) {
+  console.tron.log('IN SAGA:: INVITE USER');
+  const response = yield call(api.inviteUser, action.payload);
   if (response.ok) {
-    yield put(stopSubmit(action.formID));
-    yield put(invitationActionCreators.changeInvitationStatus(STATUS.SUCCESS));
+    yield put(invite.success());
   } else {
-    yield put(invitationActionCreators.changeInvitationStatus(STATUS.ERROR));
     const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
+    const formError = new SubmissionError(errors);
+    yield put(invite.failure(formError));
   }
 }
 

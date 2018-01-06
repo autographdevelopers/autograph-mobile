@@ -87,14 +87,14 @@ export function* updateScheduleBoundaries(api, action) {
 
 export function* index (api, action) {
 
-  yield put(drivingSchoolActionCreators.changeStatus(STATUS.FETCHING));
+  yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.FETCHING));
 
   const response = yield call(api.fetchDrivingSchools);
 
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveDrivingSchools(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeStatus(STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.SUCCESS));
   } else {
-    yield put(drivingSchoolActionCreators.changeStatus(STATUS.ERROR));
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.ERROR));
   }
 }

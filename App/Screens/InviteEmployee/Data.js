@@ -1,13 +1,16 @@
+/** Built-in modules */
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Field, reduxForm, FormSection } from 'redux-form';
-import InputField from '../../Components/InputField';
-import { email, required } from '../../Lib/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+/** Custom components */
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import InputField from '../../Components/InputField';
 import Layout from '../../Components/Layout';
+/** Utilities */
+import { email, required } from '../../Lib/validators';
 
 class DataScreen extends Component {
   static navigationOptions = {
@@ -26,13 +29,14 @@ class DataScreen extends Component {
   }
 
   submitForm = () => {
-    this.props.handleSubmit(_ => {
-      this.props.navigation.navigate('step1');
-    })();
+    const {valid, touch, navigation} = this.props;
+
+    valid ? navigation.navigate('step1') : touch('user.name', 'user.surname', 'user.email');
   };
 
   render() {
     const { error } = this.props;
+
     return (
       <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>

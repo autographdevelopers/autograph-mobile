@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
-import { connect } from 'react-redux';
-import { Field, reduxForm, FormSection } from 'redux-form';
-import InputField from '../../Components/InputField';
-import { email, required } from '../../Lib/validators';
+/** Built-in modules */
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import NavHeader from '../../Components/NavHeader';
+import { Field, reduxForm, FormSection } from 'redux-form';
+import { Alert, ScrollView, View } from 'react-native';
+import React, { Component } from 'react';
+/** Custom components */
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
-import { invitationActionCreators, STATUS as INVITATION_STATUS } from '../../Redux/InvitationsRedux';
+import InputField from '../../Components/InputField';
+import NavHeader from '../../Components/NavHeader';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import Layout from '../../Components/Layout'
+/** Utilities */
+import { invite } from '../../Redux/InvitationsRedux';
+import { email, required } from '../../Lib/validators';
 
 class InviteStudent extends Component {
   static navigationOptions = {
@@ -19,39 +21,29 @@ class InviteStudent extends Component {
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   submitForm = () => {
-    this.props.handleSubmit(values => {
-      this.props.dispatch(invitationActionCreators.inviteUserRequest(values, 'InviteStudent'));
-    })();
+    this.props.handleSubmit(invite)();
   };
 
-  componentWillMount() {
-    this.props.setInvitationStatus(INVITATION_STATUS.READY)
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.submitSucceeded && nextProps.submitSucceeded)
+      this.renderSuccessDialog();
   }
 
   renderSuccessDialog = () => {
-    if (this.props.status === INVITATION_STATUS.SUCCESS && this.props.submitSucceeded) {
-
       const title = 'Congratulations!';
       const message = 'Your Invitation has been sent to given email address.';
 
       const buttons = [{
         text: 'OK', onPress: () => {
-          this.props.setInvitationStatus(INVITATION_STATUS.READY);
           this.props.navigation.goBack();
         }
       }];
 
       Alert.alert(title, message, buttons);
-    }
   };
 
   render() {
-    this.renderSuccessDialog();
     const { error, submitting } = this.props;
 
     return (
@@ -72,17 +64,6 @@ class InviteStudent extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  setInvitationStatus: status => dispatch(invitationActionCreators.changeInvitationStatus(status))
-});
-
-const mapStateToProps = state => ({
-  form: state.form,
-  status: state.invitations.status
-});
-
-InviteStudent = connect(mapStateToProps, mapDispatchToProps)(InviteStudent);
-
 export default reduxForm({
   form: 'InviteStudent',
   initialValues: {
@@ -97,7 +78,6 @@ export default reduxForm({
  *  Order of connection to store through connect and redux form matters. Find out why.
  *  Abstract out lists logic and styles from employees and students module
  *  Pull button down, rethink and fix floating mode
- *  Rewrite all forms to use redux form and button with spinner mode
- *  Why server doesnt accept params when in form i dont provide initialValues?
- *  Why Dialog box sometime renders two times?
+ *  Rewrite all forms to use redux form, redux-form-saga and button with spinner mode
  * */
+

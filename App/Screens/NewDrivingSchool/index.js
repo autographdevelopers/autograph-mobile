@@ -16,6 +16,7 @@ import ScheduleSettings from './ScheduleSettings';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import { notificationActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
 
 const routeConfigs = {
   step0: {
@@ -56,20 +57,19 @@ class NewDrivingSchoolWizardForm extends Component {
   constructor(props) {
     super(props);
 
-    const { drivingSchool } = this.props;
 
     this.screensInfo = {
       step0: {
         formID: 'basicInformation',
         submitAction: (...args) => {
-          const action = drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
+          const action = this.createOrUpdateAction();
           return drivingSchoolActionCreators[action](...args);
         },
         ref: null
       },
       step1: {
         formID: 'notificationSettings',
-        submitAction: drivingSchoolActionCreators.updateEmployeeNotificationsRequest,
+        submitAction: notificationActionCreators.updateNotificationSettingsSetRequest,
         ref: null
       },
       step2: {
@@ -88,6 +88,11 @@ class NewDrivingSchoolWizardForm extends Component {
   }
 
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
+
+  createOrUpdateAction = () => {
+    const { drivingSchool } = this.props;
+    return drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
+  };
 
   nextStep = () => {
     const { index, routes, key } = this.props.navigation.state,
