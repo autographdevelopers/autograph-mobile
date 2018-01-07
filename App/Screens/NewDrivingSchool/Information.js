@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
+import LoadingHOC from  '../../Containers/LoadingHOC';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import InputField from '../../Components/InputField';
@@ -16,6 +17,7 @@ import FORM_IDS from './Constants';
 
 import { createDrivingSchool } from '../../Redux/DrivingSchoolRedux';
 import { updateDrivingSchool } from '../../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -83,8 +85,10 @@ class InformationStep extends Component {
   constructor(props) {
     super(props);
 
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+    if(this.props.screenProps && this.props.screenProps.bindScreenRef) {
+      const key = this.props.navigation.state.routeName;
+      this.props.screenProps.bindScreenRef(key, this);
+    }
   }
 
   submitForm() {
@@ -92,6 +96,12 @@ class InformationStep extends Component {
     const action = drivingSchool ? updateDrivingSchool : createDrivingSchool;
 
     handleSubmit(action)();
+  }
+
+  componentWillUnmount() {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
+      this.props.destroy();
+    }
   }
 
   render() {
@@ -115,13 +125,8 @@ class InformationStep extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  drivingSchool: state.context.currentDrivingSchoolID
-});
 
-InformationStep = connect(mapStateToProps, null)(InformationStep);
-
-export default reduxForm({
+InformationStep = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
@@ -140,3 +145,18 @@ export default reduxForm({
     }
   }
 })(InformationStep);
+
+const mapStateToProps = state => ({
+  drivingSchool: state.context.currentDrivingSchoolID,
+  initialValues: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  status: state.drivingSchools.status
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest())
+});
+
+InformationStep = LoadingHOC(InformationStep);
+
+export default connect(mapStateToProps, mapDispatchToProps)(InformationStep);

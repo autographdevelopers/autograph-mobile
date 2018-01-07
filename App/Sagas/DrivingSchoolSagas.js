@@ -1,5 +1,6 @@
 import { call, put } from 'redux-saga/effects';
-import { drivingSchoolActionCreators, STATUS } from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { FETCHING_STATUS } from '../Lib/utils';
 import { contextActionCreators } from '../Redux/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { SubmissionError } from 'redux-form';
@@ -33,15 +34,28 @@ export function* update(api, action) {
   }
 }
 
-export function* index (api, action) {
-  yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.FETCHING));
+export function* index(api, action) {
+  yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.fetchDrivingSchools);
 
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveDrivingSchools(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(STATUS.ERROR));
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.ERROR));
+  }
+}
+
+export function* show(api, action) {
+  yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.FETCHING));
+
+  const response = yield call(api.showDrivingSchool);
+
+  if (response.ok) {
+    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.SUCCESS));
+  } else {
+    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.ERROR));
   }
 }

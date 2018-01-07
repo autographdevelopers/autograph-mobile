@@ -13,11 +13,13 @@ import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
-import { create as createDrivingSchoolSaga, update as updateDrivingSchoolSaga } from './DrivingSchoolSagas';
+import { create as createDrivingSchoolSaga,
+         update as updateDrivingSchoolSaga,
+         index as fetchDrivingSchools,
+         show as showDrivingSchoolSaga } from './DrivingSchoolSagas';
 import { update as updateNotificationSettingsSaga, show as fetchNotificationSettingsSaga } from './NotificationSettingsSaga';
 import { update as updateScheduleBoundariesSaga } from './ScheduleBoundariesSaga';
 import { update as updateScheduleSettingsSaga } from './ScheduleSettingsSaga';
-import { index as fetchDrivingSchools } from './DrivingSchoolSagas';
 import { inviteUser } from './UserSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
@@ -37,7 +39,9 @@ export default function* root() {
 
     takeLatest(createDrivingSchool.REQUEST, createDrivingSchoolSaga, api),
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
+
     takeLatest(drivingSchoolActionTypes.FETCH_DRIVING_SCHOOLS_REQUEST, fetchDrivingSchools, api),
+    takeLatest(drivingSchoolActionTypes.SHOW_DRIVING_SCHOOL_REQUEST, showDrivingSchoolSaga, api),
 
     takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
 
