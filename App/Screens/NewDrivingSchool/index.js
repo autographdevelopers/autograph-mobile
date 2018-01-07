@@ -16,33 +16,49 @@ import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import StepsIndicators from '../../Components/StepsIndicators';
 import FORM_IDS from './Constants';
+import NavHeader from '../../Components/NavHeader';
 
 
 const routeConfigs = {
   step0: {
-    screen: InformationStep
+    screen: InformationStep,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
+      },
+      headerStyle: { elevation: 0, shadowOpacity: 0 }
+    }
   },
   step1: {
-    screen: NotificationsStep
+    screen: NotificationsStep,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Powiadomienia'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
+      }
+    }
   },
   step2: {
-    screen: CalendarStep
+    screen: CalendarStep,
+    navigationOptions: {
+      header: props => <View><NavHeader navigation={props.navigation} title={'Kalendarz'}/><StepsIndicators
+        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
+    }
   },
   step3: {
-    screen: ScheduleSettings
+    screen: ScheduleSettings,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
+      }
+    }
   }
 };
 
 const navigationConfigs = {
-  // TODO removeit
   navigationOptions: {
-    header: props => {
-      return (<View>
-        <NavHeader navigation={props.navigation} title={'dsas'}/>
-        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']}
-                         activeIndex={props.navigation.state.index}/>
-      </View>)
-    },
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',

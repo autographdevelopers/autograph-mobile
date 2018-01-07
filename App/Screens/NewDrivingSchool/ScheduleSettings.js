@@ -3,8 +3,6 @@ import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
 import CellSwitch from '../../Components/CellWithSwitch';
-import NavHeader from '../../Components/NavHeader';
-import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
@@ -17,13 +15,6 @@ const renderSwitch = ({ input, meta, componentProps }) => (
 const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 
 class ScheduleSettings extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
-    }
-  };
-
   constructor(props) {
     super(props);
 

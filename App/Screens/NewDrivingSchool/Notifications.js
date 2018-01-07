@@ -3,8 +3,6 @@ import { View } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 
 import CellSwitch from '../../Components/CellWithSwitch';
-import NavHeader from '../../Components/NavHeader';
-import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
@@ -19,13 +17,6 @@ const renderSwitch = ({ input, meta, componentProps }) => (
 const FORM_ID = FORM_IDS.USER_NOTIFICATIONS;
 
 class NotificationsStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
-    }
-  };
-
   constructor(props) {
     super(props);
 

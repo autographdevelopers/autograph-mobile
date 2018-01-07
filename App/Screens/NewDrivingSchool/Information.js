@@ -8,9 +8,7 @@ import { required, email, optional, address, digitsOnly } from '../../Lib/valida
 import { Colors } from '../../Themes/index';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
-import NavHeader from '../../Components/NavHeader';
 import InputField from '../../Components/InputField';
-import StepsIndicators from '../../Components/StepsIndicators';
 import ButtonText from '../../Components/ButtonText';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
@@ -82,14 +80,6 @@ const styles = StyleSheet.create({
 });
 
 class InformationStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  };
-
   constructor(props) {
     super(props);
 

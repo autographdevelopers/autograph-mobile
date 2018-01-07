@@ -3,8 +3,6 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import NavHeader from '../../Components/NavHeader';
-import StepsIndicators from '../../Components/StepsIndicators';
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
@@ -18,11 +16,6 @@ const renderScheduleBoundaries = ({ input, meta, setValue }) => {
 const FORM_ID = FORM_IDS.SCHEDULE_BOUNDARIES;
 
 class ScheduleBoundaries extends Component {
-  static navigationOptions = {
-    header: props => <View><NavHeader navigation={props.navigation} title={'Calendar'}/><StepsIndicators
-      labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
-  };
-
   constructor(props) {
     super(props);
 
@@ -56,7 +49,7 @@ const mapDispatchToProps = dispatch => ({
 ScheduleBoundaries = connect(null, mapDispatchToProps)(ScheduleBoundaries);
 
 export default reduxForm({
-  form: 'scheduleBoundaries',
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
