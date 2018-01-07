@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { FieldArray, Field, reduxForm } from 'redux-form';
 import Icon from 'react-native-vector-icons/Ionicons'
-
+import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
 
@@ -14,6 +14,10 @@ import StepsIndicators from '../../Components/StepsIndicators';
 import ButtonText from '../../Components/ButtonText';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import FORM_IDS from './Constants';
+
+import { createDrivingSchool } from '../../Redux/DrivingSchoolRedux';
+import { updateDrivingSchool } from '../../Redux/DrivingSchoolRedux';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -68,6 +72,7 @@ const renderEmailsCollection = ({ fields, meta: { error } }) => {
   );
 };
 
+const FORM_ID = FORM_IDS.BASIC_INFO;
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -92,6 +97,13 @@ class InformationStep extends Component {
     this.props.screenProps.bindScreenRef(key, this);
   }
 
+  submitForm() {
+    const { drivingSchool, handleSubmit } = this.props;
+    const action = drivingSchool ? updateDrivingSchool : createDrivingSchool;
+
+    handleSubmit(action)();
+  }
+
   render() {
     const { change, error } = this.props;
 
@@ -113,12 +125,23 @@ class InformationStep extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  drivingSchool: state.context.currentDrivingSchoolID
+});
+
+InformationStep = connect(mapStateToProps, null)(InformationStep);
+
 export default reduxForm({
-  form: 'basicInformation',
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
     phone_numbers: [undefined],
     emails: [undefined]
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    const {nextStep} = props.navigation.state.params;
+    const callback =  nextStep ? () => props.navigation.navigate(nextStep, {nextStep: 'step2'}) : props.handleSubmitSuccess;
+    callback();
   }
 })(InformationStep);

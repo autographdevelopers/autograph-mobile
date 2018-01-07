@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { NavigationActions } from 'react-navigation';
 import { reset } from 'redux-form';
 import { connect } from 'react-redux';
 
@@ -15,8 +14,9 @@ import ScheduleSettings from './ScheduleSettings';
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-import { notificationActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import StepsIndicators from '../../Components/StepsIndicators';
+import FORM_IDS from './Constants';
+
 
 const routeConfigs = {
   step0: {
@@ -42,10 +42,10 @@ const navigationConfigs = {
                          activeIndex={props.navigation.state.index}/>
       </View>)
     },
-
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',
+  initialRouteParams: { nextStep: 'step1' },
   cardStyle: navStyles.card
 };
 
@@ -57,30 +57,22 @@ class NewDrivingSchoolWizardForm extends Component {
   constructor(props) {
     super(props);
 
-
     this.screensInfo = {
       step0: {
-        formID: 'basicInformation',
-        submitAction: (...args) => {
-          const action = this.createOrUpdateAction();
-          return drivingSchoolActionCreators[action](...args);
-        },
-        ref: null
+        ref: null,
+        formID: FORM_IDS.BASIC_INFO
       },
       step1: {
-        formID: 'notificationSettings',
-        submitAction: notificationActionCreators.updateNotificationSettingsSetRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.USER_NOTIFICATIONS
       },
       step2: {
-        formID: 'scheduleBoundaries',
-        submitAction: drivingSchoolActionCreators.updateScheduleBoundariesRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.SCHEDULE_BOUNDARIES
       },
       step3: {
-        formID: 'scheduleSettings',
-        submitAction: drivingSchoolActionCreators.updateScheduleSettingsRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.SCHEDULE_SETTINGS
       }
     };
 
@@ -89,20 +81,12 @@ class NewDrivingSchoolWizardForm extends Component {
 
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
-  createOrUpdateAction = () => {
-    const { drivingSchool } = this.props;
-    return drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
-  };
-
   nextStep = () => {
-    const { index, routes, key } = this.props.navigation.state,
+    const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
-      nextRouteIndex = index + 1,
-      redirectAction = currentRouteName === 'step3' ? NavigationActions.back({ key }) : NavigationActions.navigate({ routeName: `step${nextRouteIndex}` }),
-      { formID, ref, submitAction } = this.screensInfo[currentRouteName],
-      { navigation } = this.props;
+      { ref } = this.screensInfo[currentRouteName];
 
-    ref.props.handleSubmit(values => navigation.dispatch(submitAction(values, formID, redirectAction)))();
+    ref.submitForm();
   };
 
   componentWillUnmount() {
@@ -124,7 +108,7 @@ class NewDrivingSchoolWizardForm extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
+        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef, navKey: this.props.navigation.state.key }}/>
 
         <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
       </View>

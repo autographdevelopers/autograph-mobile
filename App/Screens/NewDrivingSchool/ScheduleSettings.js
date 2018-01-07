@@ -7,10 +7,14 @@ import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
+import FORM_IDS from './Constants';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
 );
+
+const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 
 class ScheduleSettings extends Component {
   static navigationOptions = {
@@ -25,6 +29,28 @@ class ScheduleSettings extends Component {
 
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if(this.props.submitting && !nextProps.submitting && nextProps.submitSucceeded) {
+  //     const { navigation, screenProps } = this.props;
+  //     const { navKey } = screenProps;
+  //     const title = 'Congratulations!';
+  //     const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
+  //     const goToStartScreen = NavigationActions.back({
+  //       key: navKey,
+  //     });
+  //     const buttons = [{
+  //       text: 'OK', onPress: () => {
+  //         navigation.dispatch(goToStartScreen);
+  //       }
+  //     }];
+  //     Alert.alert(title, message, buttons);
+  //   }
+  // }
+
+  submitForm() {
+    this.props.handleSubmit(updateScheduleSettings)();
   }
 
   render() {
@@ -51,11 +77,11 @@ class ScheduleSettings extends Component {
 }
 
 export default reduxForm({
-  form: 'scheduleSettings',
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
-    last_minute_booking_enabled: false,
+    last_minute_booking_enabled: true,
     holidays_enrollment_enabled: false
   }
 })(ScheduleSettings);

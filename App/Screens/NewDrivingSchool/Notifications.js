@@ -7,10 +7,16 @@ import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import { connect } from 'react-redux';
+import FORM_IDS from './Constants';
+import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
 );
+
+const FORM_ID = FORM_IDS.USER_NOTIFICATIONS;
 
 class NotificationsStep extends Component {
   static navigationOptions = {
@@ -25,6 +31,10 @@ class NotificationsStep extends Component {
 
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
+  }
+
+  submitForm() {
+    this.props.handleSubmit(updateNotificationSettings)();
   }
 
   render() {
@@ -56,13 +66,24 @@ class NotificationsStep extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  updateEmployeeNotificationsRequest: (...params) => dispatch(drivingSchoolActionCreators.updateEmployeeNotificationsRequest(...params))
+});
+
+NotificationsStep = connect(null, mapDispatchToProps)(NotificationsStep);
+
 export default reduxForm({
-  form: 'notificationSettings',
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
     push_notifications_enabled: true,
     weekly_emails_reports_enabled: false,
     monthly_emails_reports_enabled: true
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    const {nextStep} = props.navigation.state.params;
+    const callback =  nextStep ? () => props.navigation.navigate(nextStep, {nextStep: 'step3'}) : props.handleSubmitSuccess;
+    callback();
   }
 })(NotificationsStep);

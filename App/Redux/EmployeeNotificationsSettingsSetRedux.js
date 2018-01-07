@@ -1,10 +1,12 @@
 import { createActions, createReducer } from 'reduxsauce';
 import { FETCHING_STATUS } from '../Lib/utils';
+import { createFormAction } from 'redux-form-saga';
+
+export const updateNotificationSettings = createFormAction('UPDATE_NOTIFICATION_SETTINGS');
 
 const { Types, Creators } = createActions({
   saveSettingsSet: ['data'],
   fetchNotificationSettingsSetRequest: null, /* SAGA */
-  updateNotificationSettingsSetRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
   changeNotificationsSettingsStatus: ['status'],
 });
 

@@ -1,6 +1,10 @@
 // create driving school request, save driving school
 import { createReducer, createActions } from 'reduxsauce';
 import { deepClone, arrayToHash, mergeArraysUniq } from '../Lib/utils';
+import { createFormAction } from 'redux-form-saga';
+
+export const createDrivingSchool = createFormAction('CREATE_DRIVING_SCHOOL');
+export const updateDrivingSchool = createFormAction('UPDATE_DRIVING_SCHOOL');
 
 /* ------------- Types and Action Creators ------------- */
 export const STATUS = { READY: 'READY', FETCHING: 'FETCHING', SUCCESS: 'SUCCESS', ERROR: 'ERROR' };
@@ -10,10 +14,6 @@ const { Types, Creators } = createActions({
   updateDrivingSchool: ['data'],
   saveDrivingSchools: ['schools'],
   changeSchoolsStatus: ['status'],
-  createDrivingSchoolRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
-  updateDrivingSchoolRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
-  updateScheduleBoundariesRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
-  updateScheduleSettingsRequest: ['params', 'formID', 'redirectionAction'], /* SAGA */
   fetchDrivingSchoolsRequest: null /* SAGA */
 });
 
