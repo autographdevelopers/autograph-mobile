@@ -7,15 +7,15 @@ import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
-import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import InviteStudentForm from '../Screens/Students/InviteForm';
 import StartScreen from '../Screens/StartScreen';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
+import NavHeader from '../Components/NavHeader';
+import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
+import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
+import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 
-
-const editSchoolHOC = LoadingHOC(DrivingSchoolInfo)
-// Manifest of possible screens
 const routeConfigs = {
   login: { screen: LoginScreen },
   signUp: { screen: SignUpScreen },
@@ -30,7 +30,24 @@ const routeConfigs = {
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
   inviteEmployee: { screen: InviteEmployeeWizardForm },
   inviteStudent: { screen: InviteStudentForm },
-  editSchoolInfo: { screen: DrivingSchoolInfo }
+  editSchoolInfo: {
+    screen: DrivingSchoolInfo,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Informacje'}/>
+    }
+  },
+  editScheduleBoundaries: {
+    screen: ScheduleBoundaries,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Godziny jazd'}/>
+    }
+  },
+  editScheduleSettings: {
+    screen: ScheduleSettings,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
+    }
+  }
 };
 
 const navigationConfigs = {

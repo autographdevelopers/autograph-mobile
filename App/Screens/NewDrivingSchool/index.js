@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { reset } from 'redux-form';
+import { destroy } from 'redux-form';
 import { connect } from 'react-redux';
 
 /** Form steps */
@@ -106,10 +106,10 @@ class NewDrivingSchoolWizardForm extends Component {
   };
 
   componentWillUnmount() {
-    this.resetForm();
+    this.destroyForms();
   }
 
-  resetForm = () => Object.keys(this.screensInfo).forEach(step => this.props.resetForm(this.screensInfo[step].formID));
+  destroyForms = () => Object.keys(this.screensInfo).forEach(step => this.props.destroyForms(this.screensInfo[step].formID));
 
   isSubmitting = () => {
     const { index, routes } = this.props.navigation.state,
@@ -136,8 +136,8 @@ NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
 const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
 const mapDispatchToProps = dispatch => ({
-  resetForm: formID => {
-    dispatch(reset(formID))
+  destroyForms: formID => {
+    dispatch(destroy(formID))
   }
 });
 

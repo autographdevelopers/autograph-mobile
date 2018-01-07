@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
-import LoadingHOC from  '../../Containers/LoadingHOC';
+import LoadingHOC from '../../Containers/LoadingHOC';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import InputField from '../../Components/InputField';
@@ -85,11 +85,27 @@ class InformationStep extends Component {
   constructor(props) {
     super(props);
 
-    if(this.props.screenProps && this.props.screenProps.bindScreenRef) {
+    if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
       const key = this.props.navigation.state.routeName;
       this.props.screenProps.bindScreenRef(key, this);
     }
+
+    this.state = {
+      listViewDisplayed: false
+    }
   }
+
+  closeListView = () => {
+    this.setState({
+      listViewDisplayed: false
+    });
+  };
+
+  openListView = () => {
+    this.setState({
+      listViewDisplayed: true
+    });
+  };
 
   submitForm() {
     const { drivingSchool, handleSubmit } = this.props;
@@ -113,7 +129,8 @@ class InformationStep extends Component {
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
           <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
-                 validate={[required, address]}/>
+                 validate={[required, address]} openListView={this.openListView} closeListView={this.closeListView}
+                 listViewDisplayed={this.state.listViewDisplayed}/>
           <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
           <FieldArray name={"emails"} component={renderEmailsCollection}/>
           <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
@@ -140,11 +157,14 @@ InformationStep = reduxForm({
     /** when there is no params passed, params key is undefined thus undefined.handleSubmitSuccess raises na error*/
     try {
       navigation.state.params.handleSubmitSuccess();
-    } catch(error) { /** default case */
+    } catch (error) {
+      /** default case */
       navigation.navigate('step1');
     }
   }
 })(InformationStep);
+
+InformationStep = LoadingHOC(InformationStep);
 
 const mapStateToProps = state => ({
   drivingSchool: state.context.currentDrivingSchoolID,
@@ -157,6 +177,5 @@ const mapDispatchToProps = dispatch => ({
   showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest())
 });
 
-InformationStep = LoadingHOC(InformationStep);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InformationStep);

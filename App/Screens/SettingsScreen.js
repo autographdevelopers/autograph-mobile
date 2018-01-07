@@ -25,8 +25,8 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            navigation.navigate('editSchoolInfo', { handleSubmitSuccess: ()=>{}} )
             showDrivingSchool();
+            navigation.navigate('editSchoolInfo', { handleSubmitSuccess: ()=>{}} )
           }}
         />
 
@@ -36,6 +36,8 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
+            navigation.navigate('editScheduleBoundaries', { handleSubmitSuccess: ()=>{}} )
+            // showDrivingSchool();
           }}
         />
 
@@ -45,6 +47,7 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
+            navigation.navigate('editScheduleSettings', { handleSubmitSuccess: ()=>{}} )
           }}
         />
       </Layout>
