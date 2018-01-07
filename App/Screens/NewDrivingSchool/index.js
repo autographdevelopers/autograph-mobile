@@ -1,6 +1,6 @@
 /** Built in modules */
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { reset } from 'redux-form';
 import { connect } from 'react-redux';
@@ -34,6 +34,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  // TODO removeit
   navigationOptions: {
     header: props => {
       return (<View>
@@ -45,7 +46,6 @@ const navigationConfigs = {
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',
-  initialRouteParams: { nextStep: 'step1' },
   cardStyle: navStyles.card
 };
 

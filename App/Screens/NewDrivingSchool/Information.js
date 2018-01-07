@@ -140,8 +140,13 @@ export default reduxForm({
     emails: [undefined]
   },
   onSubmitSuccess: (result, dispatch, props) => {
-    const {nextStep} = props.navigation.state.params;
-    const callback =  nextStep ? () => props.navigation.navigate(nextStep, {nextStep: 'step2'}) : props.handleSubmitSuccess;
-    callback();
+    const { navigation } = props;
+
+    /** when there is no params passed, params key is undefined thus undefined.handleSubmitSuccess raises na error*/
+    try {
+      navigation.state.params.handleSubmitSuccess();
+    } catch(error) { /** default case */
+      navigation.navigate('step1');
+    }
   }
 })(InformationStep);

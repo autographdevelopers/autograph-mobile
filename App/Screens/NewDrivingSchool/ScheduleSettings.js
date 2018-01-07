@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-
+import { NavigationActions } from 'react-navigation';
 import CellSwitch from '../../Components/CellWithSwitch';
 import NavHeader from '../../Components/NavHeader';
 import StepsIndicators from '../../Components/StepsIndicators';
@@ -30,24 +30,6 @@ class ScheduleSettings extends Component {
     const key = this.props.navigation.state.routeName;
     this.props.screenProps.bindScreenRef(key, this);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if(this.props.submitting && !nextProps.submitting && nextProps.submitSucceeded) {
-  //     const { navigation, screenProps } = this.props;
-  //     const { navKey } = screenProps;
-  //     const title = 'Congratulations!';
-  //     const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
-  //     const goToStartScreen = NavigationActions.back({
-  //       key: navKey,
-  //     });
-  //     const buttons = [{
-  //       text: 'OK', onPress: () => {
-  //         navigation.dispatch(goToStartScreen);
-  //       }
-  //     }];
-  //     Alert.alert(title, message, buttons);
-  //   }
-  // }
 
   submitForm() {
     this.props.handleSubmit(updateScheduleSettings)();
@@ -83,5 +65,23 @@ export default reduxForm({
   initialValues: {
     last_minute_booking_enabled: true,
     holidays_enrollment_enabled: false
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    const { navigation } = props;
+
+    try {
+      navigation.state.params.handleSubmitSuccess();
+    } catch (error) {
+      const { screenProps } = props;
+      const { navKey } = screenProps;
+      const title = 'Congratulations!';
+      const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
+      const goToStartScreen = NavigationActions.back({ key: navKey });
+      const buttons = [{
+        text: 'OK', onPress: () => { navigation.dispatch(goToStartScreen); }
+      }];
+
+      Alert.alert(title, message, buttons);
+    }
   }
 })(ScheduleSettings);

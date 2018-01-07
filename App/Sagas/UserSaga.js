@@ -17,3 +17,4 @@ export function* inviteUser(api, action) {
 
 //shouldn't actions be in user saga?
 //Ask maciek Can I send multiple invitation to the same person????
+//TODO utilize onsubmitsuccess callback in invotation forms

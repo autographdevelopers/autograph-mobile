@@ -71,9 +71,13 @@ export default reduxForm({
     ]
   },
   onSubmitSuccess: (result, dispatch, props) => {
-    const {nextStep} = props.navigation.state.params;
-    const callback =  nextStep ? () => props.navigation.navigate(nextStep, {nextStep: 'step3'}) : props.handleSubmitSuccess;
-    callback();
+    const { navigation } = props;
+
+    try {
+      navigation.state.params.handleSubmitSuccess();
+    } catch(error) {
+      navigation.navigate('step3');
+    }
   }
 })(ScheduleBoundaries);
 
