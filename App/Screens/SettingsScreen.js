@@ -4,6 +4,7 @@ import { List, ListItem } from 'react-native-elements';
 import Layout from '../Components/Layout'
 import { connect } from 'react-redux';
 import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
 
 class SettingsScreen extends Component {
   static navigationOptions = {
@@ -15,7 +16,7 @@ class SettingsScreen extends Component {
   }
 
   render() {
-    const { navigation, showDrivingSchool } = this.props;
+    const { navigation, showDrivingSchool, showScheduleSettings } = this.props;
 
     return (
       <Layout>
@@ -26,7 +27,10 @@ class SettingsScreen extends Component {
           keyExtractor={(item, index) => index}
           onPress={() => {
             showDrivingSchool();
-            navigation.navigate('editSchoolInfo', { handleSubmitSuccess: ()=>{}} )
+            navigation.navigate('editSchoolInfo', {
+              handleSubmitSuccess: () => {
+              }
+            })
           }}
         />
 
@@ -36,8 +40,11 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            navigation.navigate('editScheduleBoundaries', { handleSubmitSuccess: ()=>{}} )
-            // showDrivingSchool();
+            showDrivingSchool();
+            navigation.navigate('editScheduleBoundaries', {
+              handleSubmitSuccess: () => {
+              }
+            })
           }}
         />
 
@@ -47,7 +54,11 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            navigation.navigate('editScheduleSettings', { handleSubmitSuccess: ()=>{}} )
+            showScheduleSettings();
+            navigation.navigate('editScheduleSettings', {
+              handleSubmitSuccess: () => {
+              }
+            })
           }}
         />
       </Layout>
@@ -56,7 +67,8 @@ class SettingsScreen extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest())
+  showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest()),
+  showScheduleSettings: () => dispatch(scheduleSettingsActionCreators.showRequest())
 });
 
 export default connect(null, mapDispatchToProps)(SettingsScreen)

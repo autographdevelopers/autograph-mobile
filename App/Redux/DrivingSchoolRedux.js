@@ -11,7 +11,6 @@ export const updateDrivingSchool = createFormAction('UPDATE_DRIVING_SCHOOL');
 
 const { Types, Creators } = createActions({
   saveDrivingSchool: ['data'],
-  updateDrivingSchool: ['data'],
   saveDrivingSchools: ['schools'],
   changeSchoolsStatus: ['status'],
   fetchDrivingSchoolsRequest: null, /* SAGA */

@@ -9,17 +9,23 @@ import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
 
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
+import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
 /* ------------- Sagas ------------- */
 
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
-import { create as createDrivingSchoolSaga,
-         update as updateDrivingSchoolSaga,
-         index as fetchDrivingSchools,
-         show as showDrivingSchoolSaga } from './DrivingSchoolSagas';
-import { update as updateNotificationSettingsSaga, show as fetchNotificationSettingsSaga } from './NotificationSettingsSaga';
+import {
+  create as createDrivingSchoolSaga,
+  update as updateDrivingSchoolSaga,
+  index as fetchDrivingSchools,
+  show as showDrivingSchoolSaga
+} from './DrivingSchoolSagas';
+import {
+  update as updateNotificationSettingsSaga,
+  show as fetchNotificationSettingsSaga
+} from './NotificationSettingsSaga';
 import { update as updateScheduleBoundariesSaga } from './ScheduleBoundariesSaga';
-import { update as updateScheduleSettingsSaga } from './ScheduleSettingsSaga';
+import { update as updateScheduleSettingsSaga, show as  showScheduleSettingsSaga} from './ScheduleSettingsSaga';
 import { inviteUser } from './UserSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
@@ -49,6 +55,8 @@ export default function* root() {
 
     takeLatest(updateNotificationSettings.REQUEST, updateNotificationSettingsSaga, api),
 
-    takeLatest(invite.REQUEST, inviteUser, api)
+    takeLatest(invite.REQUEST, inviteUser, api),
+
+    takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api)
   ])
 }

@@ -93,7 +93,7 @@ class InformationStep extends Component {
     this.state = {
       listViewDisplayed: false
     }
-  }
+  }// TODO ask Maciek about his idea on how to display users which do not have avatar
 
   closeListView = () => {
     this.setState({

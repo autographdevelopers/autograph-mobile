@@ -64,9 +64,14 @@ export const API = {
   createDrivingSchool: params => api.post('driving_schools', params),
   updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
   updateScheduleBoundaries: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
-  updateScheduleSettings: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params), //schould be put on server
   updateEmployeeNotifications: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
   fetchDrivingSchools: () => api.get('driving_schools'),
   showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
-  inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params)
+  inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
+
+
+  scheduleSettings: {
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params),
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings_set`)
+  }
 };

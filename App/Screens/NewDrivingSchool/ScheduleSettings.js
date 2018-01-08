@@ -8,6 +8,11 @@ import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
 import FORM_IDS from './Constants';
 
+
+import { connect } from 'react-redux';
+import LoadingHOC from '../../Containers/LoadingHOC';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
 );
@@ -21,6 +26,12 @@ class ScheduleSettings extends Component {
     if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
       const key = this.props.navigation.state.routeName;
       this.props.screenProps.bindScreenRef(key, this);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
+      this.props.destroy();
     }
   }
 
@@ -51,7 +62,7 @@ class ScheduleSettings extends Component {
   }
 }
 
-export default reduxForm({
+ScheduleSettings = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
@@ -71,10 +82,28 @@ export default reduxForm({
       const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
       const goToStartScreen = NavigationActions.back({ key: navKey });
       const buttons = [{
-        text: 'OK', onPress: () => { navigation.dispatch(goToStartScreen); }
+        text: 'OK', onPress: () => {
+          navigation.dispatch(goToStartScreen);
+        }
       }];
 
       Alert.alert(title, message, buttons);
     }
   }
 })(ScheduleSettings);
+
+ScheduleSettings = LoadingHOC(ScheduleSettings);
+
+const mapStateToProps = state => {
+  const { currentDrivingSchoolID } = state.context,
+        { scheduleSettings } = state,
+        { hashMap } = scheduleSettings,
+        ID = Object.keys(hashMap).filter( item => hashMap[item].driving_school_id === currentDrivingSchoolID )[0];
+
+  return {
+    initialValues: state.scheduleSettings.hashMap[ID],
+    status: state.scheduleSettings.status
+  }
+};
+
+export default connect(mapStateToProps)(ScheduleSettings);
