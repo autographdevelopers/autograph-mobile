@@ -5,6 +5,7 @@ import Layout from '../Components/Layout'
 import { connect } from 'react-redux';
 import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
+import { scheduleBoundariesActionCreators } from '../Redux/ScheduleBoundariesRedux';
 
 class SettingsScreen extends Component {
   static navigationOptions = {
@@ -16,7 +17,7 @@ class SettingsScreen extends Component {
   }
 
   render() {
-    const { navigation, showDrivingSchool, showScheduleSettings } = this.props;
+    const { navigation, showDrivingSchool, showScheduleSettings, showScheduleBoundaries } = this.props;
 
     return (
       <Layout>
@@ -40,7 +41,7 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            showDrivingSchool();
+            showScheduleBoundaries();
             navigation.navigate('editScheduleBoundaries', {
               handleSubmitSuccess: () => {
               }
@@ -68,7 +69,8 @@ class SettingsScreen extends Component {
 
 const mapDispatchToProps = dispatch => ({
   showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest()),
-  showScheduleSettings: () => dispatch(scheduleSettingsActionCreators.showRequest())
+  showScheduleSettings: () => dispatch(scheduleSettingsActionCreators.showRequest()),
+  showScheduleBoundaries: () => dispatch(scheduleBoundariesActionCreators.showRequest())
 });
 
 export default connect(null, mapDispatchToProps)(SettingsScreen)

@@ -10,6 +10,7 @@ import { SESSION_ACTION_TYPES } from '../Redux/SessionRedux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
+import { scheduleBoundariesTypes } from '../Redux/ScheduleBoundariesRedux';
 /* ------------- Sagas ------------- */
 
 import { LogIn } from './LogInSaga';
@@ -24,8 +25,11 @@ import {
   update as updateNotificationSettingsSaga,
   show as fetchNotificationSettingsSaga
 } from './NotificationSettingsSaga';
-import { update as updateScheduleBoundariesSaga } from './ScheduleBoundariesSaga';
-import { update as updateScheduleSettingsSaga, show as  showScheduleSettingsSaga} from './ScheduleSettingsSaga';
+import {
+  update as updateScheduleBoundariesSaga,
+  show as  showScheduleBoundariesSaga
+} from './ScheduleBoundariesSaga';
+import { update as updateScheduleSettingsSaga, show as  showScheduleSettingsSaga } from './ScheduleSettingsSaga';
 import { inviteUser } from './UserSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
@@ -50,6 +54,8 @@ export default function* root() {
     takeLatest(drivingSchoolActionTypes.SHOW_DRIVING_SCHOOL_REQUEST, showDrivingSchoolSaga, api),
 
     takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
+
+    takeLatest(scheduleBoundariesTypes.SHOW_REQUEST, showScheduleBoundariesSaga, api),
 
     takeLatest(updateScheduleSettings.REQUEST, updateScheduleSettingsSaga, api),
 

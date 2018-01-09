@@ -5,9 +5,10 @@ import { Field, reduxForm } from 'redux-form';
 
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import FORM_IDS from './Constants';
 import { updateScheduleBoundaries } from '../../Redux/ScheduleBoundariesRedux';
+import LoadingHOC from '../../Containers/LoadingHOC';
+
 
 const renderScheduleBoundaries = ({ input, meta, setValue }) => {
   return <ScheduleBoundariesPicker value={input.value} meta={meta} setValue={setValue}/>
@@ -22,6 +23,12 @@ class ScheduleBoundaries extends Component {
     if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
       const key = this.props.navigation.state.routeName;
       this.props.screenProps.bindScreenRef(key, this);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
+      this.props.destroy();
     }
   }
 
@@ -44,13 +51,8 @@ class ScheduleBoundaries extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  updateScheduleBoundariesRequest: (...params) => dispatch(drivingSchoolActionCreators.updateScheduleBoundariesRequest(...params))
-});
 
-ScheduleBoundaries = connect(null, mapDispatchToProps)(ScheduleBoundaries);
-
-export default reduxForm({
+ScheduleBoundaries = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
@@ -75,6 +77,20 @@ export default reduxForm({
     }
   }
 })(ScheduleBoundaries);
+
+ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
+
+const mapStateToProps = state => {
+  const { currentDrivingSchoolID } = state.context;
+  const schedule_boundaries = state.scheduleBoundaries.collection.filter(item => item.driving_school_id === currentDrivingSchoolID);
+
+  return {
+    initialValues: { schedule_boundaries },
+    status: state.scheduleBoundaries.status
+  }
+};
+
+export default connect(mapStateToProps)(ScheduleBoundaries);
 
 /**
  @1 since arrow functions does NOT autobind context,

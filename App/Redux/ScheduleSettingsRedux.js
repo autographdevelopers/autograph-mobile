@@ -44,4 +44,3 @@ export const scheduleSettingsReducer = createReducer(INITIAL_STATE, {
 });
 
 // TODO add error field
-
