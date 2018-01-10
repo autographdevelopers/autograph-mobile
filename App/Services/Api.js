@@ -63,7 +63,6 @@ export const API = {
   resetPassword: email => api.post('auth/password', { email }),
   createDrivingSchool: params => api.post('driving_schools', params),
   updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
-  updateEmployeeNotifications: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
   fetchDrivingSchools: () => api.get('driving_schools'),
   showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
@@ -76,5 +75,10 @@ export const API = {
   scheduleBoundaries: {
     update: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_boundaries`)
+  },
+
+  notificationSettings: {
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings_set`),
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params)
   }
 };

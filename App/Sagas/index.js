@@ -11,6 +11,7 @@ import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
 import { scheduleBoundariesTypes } from '../Redux/ScheduleBoundariesRedux';
+import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsSettingsSetRedux';
 /* ------------- Sagas ------------- */
 
 import { LogIn } from './LogInSaga';
@@ -23,7 +24,7 @@ import {
 } from './DrivingSchoolSagas';
 import {
   update as updateNotificationSettingsSaga,
-  show as fetchNotificationSettingsSaga
+  show as showNotificationSettingsSaga
 } from './NotificationSettingsSaga';
 import {
   update as updateScheduleBoundariesSaga,
@@ -63,6 +64,8 @@ export default function* root() {
 
     takeLatest(invite.REQUEST, inviteUser, api),
 
-    takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api)
+    takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api),
+
+    takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api)
   ])
 }

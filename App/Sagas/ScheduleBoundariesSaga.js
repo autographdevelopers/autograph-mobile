@@ -19,6 +19,8 @@ export function* update(api, action) {
 export function* show(api, action) {
   yield put(scheduleBoundariesActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
   const response = yield call(api.scheduleBoundaries.show);
+  console.log(response.data);
+
   if (response.ok) {
     yield put(scheduleBoundariesActionCreators.save(response.data));
     yield put(scheduleBoundariesActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));

@@ -7,8 +7,20 @@ import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
 import FORM_IDS from './Constants';
 import { updateScheduleBoundaries } from '../../Redux/ScheduleBoundariesRedux';
+import { scheduleBoundariesActionCreators } from '../../Redux/ScheduleBoundariesRedux';
 import LoadingHOC from '../../Containers/LoadingHOC';
 
+const INITIAL_STATE = {
+  schedule_boundaries: [
+    { weekday: 'monday', start_time: null, end_time: null },
+    { weekday: 'tuesday', start_time: null, end_time: null },
+    { weekday: 'wednesday', start_time: null, end_time: null },
+    { weekday: 'thursday', start_time: null, end_time: null },
+    { weekday: 'friday', start_time: null, end_time: null },
+    { weekday: 'saturday', start_time: null, end_time: null },
+    { weekday: 'sunday', start_time: null, end_time: null }
+  ]
+}
 
 const renderScheduleBoundaries = ({ input, meta, setValue }) => {
   return <ScheduleBoundariesPicker value={input.value} meta={meta} setValue={setValue}/>
@@ -72,7 +84,7 @@ ScheduleBoundaries = reduxForm({
 
     try {
       navigation.state.params.handleSubmitSuccess();
-    } catch(error) {
+    } catch (error) {
       navigation.navigate('step3');
     }
   }
@@ -85,15 +97,20 @@ const mapStateToProps = state => {
   const schedule_boundaries = state.scheduleBoundaries.collection.filter(item => item.driving_school_id === currentDrivingSchoolID);
 
   return {
-    initialValues: { schedule_boundaries },
+    drivingSchool: state.context.currentDrivingSchoolID,
+    initialValues: schedule_boundaries.length !== 0 ? { schedule_boundaries } : INITIAL_STATE,
     status: state.scheduleBoundaries.status
   }
 };
 
-export default connect(mapStateToProps)(ScheduleBoundaries);
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(scheduleBoundariesActionCreators.showRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 
 /**
  @1 since arrow functions does NOT autobind context,
  the function will look for "this" in outside context frame which is React Component(ScheduleBoundaries).
  Alternatively one can use this.props.setValue.apply(this, [arg]) in mentioned component.
-**/
+ **/

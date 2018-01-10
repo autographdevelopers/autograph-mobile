@@ -5,10 +5,11 @@ import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { connect } from 'react-redux';
 import FORM_IDS from './Constants';
 import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import { notificationSettingsActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import LoadingHOC from '../../Containers/LoadingHOC';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
@@ -57,13 +58,8 @@ class NotificationsStep extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  updateEmployeeNotificationsRequest: (...params) => dispatch(drivingSchoolActionCreators.updateEmployeeNotificationsRequest(...params))
-});
 
-NotificationsStep = connect(null, mapDispatchToProps)(NotificationsStep);
-
-export default reduxForm({
+NotificationsStep = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
@@ -77,8 +73,22 @@ export default reduxForm({
 
     try {
       navigation.state.params.handleSubmitSuccess();
-    } catch(error) {
+    } catch (error) {
       navigation.navigate('step2');
     }
   }
 })(NotificationsStep);
+
+NotificationsStep = LoadingHOC(NotificationsStep);
+
+const mapStateToProps = state => ({
+  drivingSchool: state.context.currentDrivingSchoolID,
+  status: state.notificationsSettingsSet.status,
+  initialValues: state.notificationsSettingsSet.settings
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(notificationSettingsActionCreators.showRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsStep);

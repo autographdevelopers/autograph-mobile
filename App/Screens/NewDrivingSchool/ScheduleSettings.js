@@ -6,6 +6,7 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
+import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedux';
 import FORM_IDS from './Constants';
 
 
@@ -96,14 +97,19 @@ ScheduleSettings = LoadingHOC(ScheduleSettings);
 
 const mapStateToProps = state => {
   const { currentDrivingSchoolID } = state.context,
-        { scheduleSettings } = state,
-        { hashMap } = scheduleSettings,
-        ID = Object.keys(hashMap).filter( item => hashMap[item].driving_school_id === currentDrivingSchoolID )[0];
+    { scheduleSettings } = state,
+    { hashMap } = scheduleSettings,
+    ID = Object.keys(hashMap).filter(item => hashMap[item].driving_school_id === currentDrivingSchoolID)[0];
 
   return {
+    drivingSchool: currentDrivingSchoolID,
     initialValues: state.scheduleSettings.hashMap[ID],
     status: state.scheduleSettings.status
   }
 };
 
-export default connect(mapStateToProps)(ScheduleSettings);
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleSettings);
