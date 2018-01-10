@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import Layout from '../Components/Layout'
 
@@ -8,12 +8,21 @@ export default class SettingsScreen extends Component {
     header: null
   };
 
-  constructor(props) {
-    super(props)
-  }
+  saveSuccessCallback = () => {
+    const title = 'Congratulations!';
+    const message = 'Your changes have been saved.';
+    const buttons = [{
+      text: 'OK', onPress: () => {
+      this.props.navigation.goBack(null);
+      }
+    }];
+
+    Alert.alert(title, message, buttons);
+  };
 
   render() {
-    const { navigation, showDrivingSchool, showScheduleSettings, showScheduleBoundaries } = this.props;
+    const { navigation } = this.props;
+    const navParams = { handleSubmitSuccess: this.saveSuccessCallback, singleton: true };
 
     return (
       <Layout>
@@ -22,7 +31,7 @@ export default class SettingsScreen extends Component {
           subtitle={'Edit basic information about your school.'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
-          onPress={() => {navigation.navigate('editSchoolInfo', { handleSubmitSuccess: () => {} }) }}
+          onPress={() => {navigation.navigate('editSchoolInfo', navParams) }}
         />
 
         <ListItem
@@ -30,7 +39,7 @@ export default class SettingsScreen extends Component {
           subtitle={'Edit schedule boundaries'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
-          onPress={() => {navigation.navigate('editScheduleBoundaries', { handleSubmitSuccess: () => {} })}}
+          onPress={() => {navigation.navigate('editScheduleBoundaries', navParams)}}
         />
 
         <ListItem
@@ -38,7 +47,7 @@ export default class SettingsScreen extends Component {
           subtitle={'Edit calendar settings'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
-          onPress={() => {navigation.navigate('editScheduleSettings', { handleSubmitSuccess: () => {} })}}
+          onPress={() => {navigation.navigate('editScheduleSettings', navParams)}}
         />
       </Layout>
     )

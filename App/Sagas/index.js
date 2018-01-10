@@ -16,22 +16,29 @@ import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsS
 
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
+
 import {
   create as createDrivingSchoolSaga,
   update as updateDrivingSchoolSaga,
   index as fetchDrivingSchools,
   show as showDrivingSchoolSaga
 } from './DrivingSchoolSagas';
+
 import {
   update as updateNotificationSettingsSaga,
   show as showNotificationSettingsSaga
 } from './NotificationSettingsSaga';
+
 import {
   update as updateScheduleBoundariesSaga,
   show as  showScheduleBoundariesSaga
 } from './ScheduleBoundariesSaga';
-import { update as updateScheduleSettingsSaga, show as  showScheduleSettingsSaga } from './ScheduleSettingsSaga';
-import { inviteUser } from './UserSaga';
+
+import {
+  update as updateScheduleSettingsSaga,
+  show as  showScheduleSettingsSaga } from './ScheduleSettingsSaga';
+
+import { create as createInvitation } from './InvitationsSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
@@ -62,7 +69,7 @@ export default function* root() {
 
     takeLatest(updateNotificationSettings.REQUEST, updateNotificationSettingsSaga, api),
 
-    takeLatest(invite.REQUEST, inviteUser, api),
+    takeLatest(invite.REQUEST, createInvitation, api),
 
     takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api),
 

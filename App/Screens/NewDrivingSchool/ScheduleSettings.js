@@ -36,12 +36,12 @@ class ScheduleSettings extends Component {
     }
   }
 
-  submitForm() {
+  submitForm = () => {
     this.props.handleSubmit(updateScheduleSettings)();
-  }
+  };
 
   render() {
-    const { change, error } = this.props;
+    const { change, error, navigation, submitting } = this.props;
 
     return (
       <Layout>
@@ -58,6 +58,8 @@ class ScheduleSettings extends Component {
                  description: 'Zablokuj możliwoś zapisów w dnia ustawowo wolne od pracy.',
                  onChangeHandler: value => change('holidays_enrollment_enabled', value)
                }}/>
+        {navigation.state.params && navigation.state.params.singleton &&
+        <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </Layout>
     )
   }

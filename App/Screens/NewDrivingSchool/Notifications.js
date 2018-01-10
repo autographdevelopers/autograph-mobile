@@ -21,8 +21,10 @@ class NotificationsStep extends Component {
   constructor(props) {
     super(props);
 
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+    if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
+      const key = this.props.navigation.state.routeName;
+      this.props.screenProps.bindScreenRef(key, this);
+    }
   }
 
   submitForm() {

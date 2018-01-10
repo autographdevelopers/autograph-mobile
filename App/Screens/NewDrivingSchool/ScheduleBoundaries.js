@@ -44,12 +44,12 @@ class ScheduleBoundaries extends Component {
     }
   }
 
-  submitForm() {
+  submitForm = () => {
     this.props.handleSubmit(updateScheduleBoundaries)();
-  }
+  };
 
   render() {
-    const { change, error } = this.props;
+    const { change, error, navigation, submitting } = this.props;
 
     return (
       <Layout>
@@ -58,6 +58,9 @@ class ScheduleBoundaries extends Component {
           change('schedule_boundaries', newValue);
           this.forceUpdate();
         }}/>
+        {navigation.state.params && navigation.state.params.singleton &&
+          <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
+        }
       </Layout>
     )
   }
