@@ -207,7 +207,7 @@ export default class ScheduleBoundariesView extends Component {
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={value[this.state.currentWeekday][this.state.startend]}
+          date={this.displayTime(value[this.state.currentWeekday][this.state.startend])}
           showIcon={false}
           mode='time'
           format={TIME_FORMAT}
