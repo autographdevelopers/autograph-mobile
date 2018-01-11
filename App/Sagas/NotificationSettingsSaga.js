@@ -17,14 +17,11 @@ export function* update(api, action) {
 }
 
 export function* show(api, action) {
+  yield put(notificationSettingsActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
   const response = yield call(api.notificationSettings.show);
-  console.log('noti settings saga');
   if (response.ok) {
-    console.log('response ok');
     yield put(notificationSettingsActionCreators.save(response.data));
-    console.log('saved data');
     yield put(notificationSettingsActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
-    console.log('set status');
   } else {
     yield put(notificationSettingsActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }

@@ -112,12 +112,19 @@ class NewDrivingSchoolWizardForm extends Component {
   destroyForms = () => Object.keys(this.screensInfo).forEach(step => this.props.destroyForms(this.screensInfo[step].formID));
 
   isSubmitting = () => {
+    const form = this.currentForm();
+
+    return form && form.submitting
+  };
+
+  currentForm = () => {
     const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
-      { formID } = this.screensInfo[currentRouteName],
-      { form } = this.props;
+      { formID } = this.screensInfo[currentRouteName];
+    const { form } = this.props;
 
-    return form[formID] && form[formID].submitting
+
+    return form[formID];
   };
 
   render() {
@@ -126,7 +133,7 @@ class NewDrivingSchoolWizardForm extends Component {
       <View style={{ flex: 1 }}>
         <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef, navKey: this.props.navigation.state.key }}/>
 
-        <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
+        {this.currentForm() && <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>}
       </View>
     )
   }
