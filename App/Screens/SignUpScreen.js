@@ -1,6 +1,6 @@
 import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, {Component} from 'react';
-import {reduxForm, Field, SubmissionError, reset} from 'redux-form';
+import {reduxForm, Field, SubmissionError, destroy} from 'redux-form';
 import {NavigationActions} from 'react-navigation';
 
 import {
@@ -37,7 +37,7 @@ const submit = navigation => values => {
         {
           text: 'OK', onPress: () => {
             navigation.dispatch(goToLogin);
-            navigation.dispatch(reset('signUp'));
+            navigation.dispatch(destroy('signUp'));
           },
         }];
       Alert.alert(title, message, buttons);
