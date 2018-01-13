@@ -11,7 +11,7 @@ import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
 export function* create(api, action) {
   const response = yield call(api.createDrivingSchool, { driving_school: action.payload });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data));
+    yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(createDrivingSchool.success());
   } else {
@@ -24,7 +24,7 @@ export function* create(api, action) {
 export function* update(api, action) {
   const response = yield call(api.updateDrivingSchool, { driving_school: action.payload });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data));
+    yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(updateDrivingSchool.success());
   } else {
@@ -35,27 +35,27 @@ export function* update(api, action) {
 }
 
 export function* index(api, action) {
-  yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.FETCHING));
+  yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.fetchDrivingSchools);
 
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchools(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.saveCollection(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.ERROR));
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }
 
 export function* show(api, action) {
-  yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.FETCHING));
+  yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.showDrivingSchool);
 
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.saveSingle(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingSchoolActionCreators.changeSchoolsStatus(FETCHING_STATUS.ERROR));
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }

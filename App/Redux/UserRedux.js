@@ -18,14 +18,14 @@ export const INITIAL_STATE = {
   email: null,
   gender: null,
   type: null,
-  birthDate: null,
-  timeZone: null
+  birth_date: null,
+  time_zone: null
 };
 
 /* ------------- Handlers ------------- */
 
-export const setUserHandler = (state, { user: { id, name, surname, email, gender, type, birthDay, timeZone } }) => {
-  return { ...state, id, name, surname, email, gender, type, birthDay, timeZone }
+export const setUserHandler = (state, { user: { id, name, surname, email, gender, type, birthDay, time_zone } }) => {
+  return { ...state, id, name, surname, email, gender, type, birthDay, time_zone }
 };
 
 export const clearUserHandler = (state, _) => {

@@ -14,8 +14,7 @@ export default LoadingHOC = (WrappedComponent) => {
     }
 
     componentWillMount() {
-      console.log('xxxx');
-      if (this.props.drivingSchool) { // why latnecy on notification settings
+      if (this.props.drivingSchool) {
         this.props.requestData();
       } else {
         this.setState({

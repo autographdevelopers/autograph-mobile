@@ -177,7 +177,7 @@ const mapStateToProps = state => ({
 
 
 const mapDispatchToProps = dispatch => ({
-  requestData: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest())
+  requestData: () => dispatch(drivingSchoolActionCreators.showRequest())
 });
 
 

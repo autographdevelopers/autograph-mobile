@@ -23,15 +23,8 @@ export const scheduleBoundariesTypes = Types;
 /** Handlers */
 export const save = (state, { data }) => {
   const collection = data.map( element => {
-    console.log(element);
     const start_time = moment(element.start_time);
-    console.log(start_time);
-    console.log(start_time.get('hours'));
-    console.log(start_time.get('minutes'));
     const end_time = moment(element.end_time);
-    console.log(end_time);
-    console.log(end_time.get('hours'));
-    console.log(end_time.get('minutes'));
 
     return {...element, start_time, end_time}
   });
