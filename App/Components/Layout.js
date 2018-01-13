@@ -14,6 +14,8 @@ export default Layout = ({children, customStyles = {}}) => {
   });
 
   return (
-    <ScrollView contentContainerStyle={[styles.layout, customStyles]}>{children}</ScrollView>
+    <ScrollView contentContainerStyle={[styles.layout, customStyles]}>
+      {children}
+    </ScrollView>
   );
 }
