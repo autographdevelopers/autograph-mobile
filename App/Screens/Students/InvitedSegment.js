@@ -78,3 +78,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedStudentsList)
+
+// TODO abstract out common logic from employees/students list
+// TODO add invited employee to store once it has been saved on the server
+// TODO distinguish refresing and loading so that loader in header and list are not visible both while component mounting
