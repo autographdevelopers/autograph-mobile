@@ -80,5 +80,13 @@ export const API = {
   notificationSettings: {
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings_set`),
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params)
+  },
+
+  employees: {
+    index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employees`)
+  },
+
+  students: {
+    index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
   }
 };

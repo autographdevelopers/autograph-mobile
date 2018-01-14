@@ -3,6 +3,8 @@ import { Text, View, ScrollView, FlatList, TouchableOpacity, StyleSheet, Activit
 import { List, ListItem } from 'react-native-elements';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Fonts, Colors } from '../../Themes/';
+import { connect } from 'react-redux';
+import {studentsActionCreators} from '../../Redux/StudentsRedux';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class InvitedStudentsList extends Component {
+class InvitedStudentsList extends Component {
   constructor(props) {
     super(props);
 
@@ -65,28 +67,29 @@ export default class InvitedStudentsList extends Component {
   };
 
   componentDidMount() {
-    this.makeRemoteRequest();
+    this.props.fetchStudents();
+    // this.props.fetchStudents();
   }
 
-  makeRemoteRequest = () => {
-    const { page, seed } = this.state;
-    const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
-    this.setState({ loading: true });
-
-    fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          data: page === 1 ? res.results : [...this.state.data, ...res.results],
-          error: res.error || null,
-          loading: false,
-          refreshing: false
-        });
-      })
-      .catch(error => {
-        this.setState({ error, loading: false });
-      });
-  };
+  // props.fetchStudents = () => {
+  //   const { page, seed } = this.state;
+  //   const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
+  //   this.setState({ loading: true });
+  //
+  //   fetch(url)
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       this.setState({
+  //         data: page === 1 ? res.results : [...this.state.data, ...res.results],
+  //         error: res.error || null,
+  //         loading: false,
+  //         refreshing: false
+  //       });
+  //     })
+  //     .catch(error => {
+  //       this.setState({ error, loading: false });
+  //     });
+  // };
 
   handleRefresh = () => {
     this.setState(
@@ -96,7 +99,7 @@ export default class InvitedStudentsList extends Component {
         refreshing: true
       },
       () => {
-        this.makeRemoteRequest();
+        this.props.fetchStudents();
       }
     );
   };
@@ -107,7 +110,7 @@ export default class InvitedStudentsList extends Component {
         page: this.state.page + 1
       },
       () => {
-        this.makeRemoteRequest();
+        this.props.fetchStudents();
       }
     );
   };
@@ -116,23 +119,22 @@ export default class InvitedStudentsList extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.header}>{`Zaproszeni studenci (${this.state.data.length})`}</Text>
+        <Text style={styles.header}>{`Zaproszeni studenci (${this.props.students.length})`}</Text>
         <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
           <FlatList
             contentContainerStyle={{
               paddingBottom: 60
             }}
-            data={this.state.data}
+            data={this.props.students}
             renderItem={({ item }) => (
               <ListItem
-                roundAvatar
-                title={`${item.name.first} ${item.name.last}`}
+                // roundAvatar
+                title={`${item.name} ${item.surname}`}
                 subtitle={item.email}
-                avatar={{ uri: item.picture.thumbnail }}
+                // avatar={{ uri: item.picture.thumbnail }}
                 containerStyle={{ borderBottomWidth: 0 }}
                 keyExtractor={(item, index) => index}
-                onPress={() => {
-                }}
+                onPress={() => {}}
               />
             )}
             keyExtractor={(e, i) => i}
@@ -147,3 +149,13 @@ export default class InvitedStudentsList extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  students: state.students.pendingIds.map( id => state.students.pending[id])
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchStudents: () => dispatch(studentsActionCreators.indexRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InvitedStudentsList)

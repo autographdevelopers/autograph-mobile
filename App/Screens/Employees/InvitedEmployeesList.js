@@ -3,6 +3,8 @@ import { Text, View, FlatList, StyleSheet, ActivityIndicator } from 'react-nativ
 import { List, ListItem } from 'react-native-elements';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Fonts, Colors } from '../../Themes/';
+import { connect } from 'react-redux';
+import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class InvitedEmployeesList extends Component {
+class InvitedEmployeesList extends Component {
   constructor(props) {
     super(props);
 
@@ -41,12 +43,6 @@ export default class InvitedEmployeesList extends Component {
       expanded: false
     };
   }
-
-  header = () => {
-    return (
-      <Text style={styles.header}>{`${data.length} aktywnych pracownikow`}</Text>
-    );
-  };
 
   footer = () => {
     if (!this.state.loading) return null;
@@ -65,28 +61,28 @@ export default class InvitedEmployeesList extends Component {
   };
 
   componentDidMount() {
-    this.makeRemoteRequest();
+    this.props.fetchEmployees();
   }
 
-  makeRemoteRequest = () => {
-    const { page, seed } = this.state;
-    const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
-    this.setState({ loading: true });
-
-    fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          data: page === 1 ? res.results : [...this.state.data, ...res.results],
-          error: res.error || null,
-          loading: false,
-          refreshing: false
-        });
-      })
-      .catch(error => {
-        this.setState({ error, loading: false });
-      });
-  };
+  // props.fetchEmployees = () => {
+  //   const { page, seed } = this.state;
+  //   const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
+  //   this.setState({ loading: true });
+  //
+  //   fetch(url)
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       this.setState({
+  //         data: page === 1 ? res.results : [...this.state.data, ...res.results],
+  //         error: res.error || null,
+  //         loading: false,
+  //         refreshing: false
+  //       });
+  //     })
+  //     .catch(error => {
+  //       this.setState({ error, loading: false });
+  //     });
+  // };
 
   handleRefresh = () => {
     this.setState(
@@ -96,7 +92,7 @@ export default class InvitedEmployeesList extends Component {
         refreshing: true
       },
       () => {
-        this.makeRemoteRequest();
+        this.props.fetchEmployees();
       }
     );
   };
@@ -107,35 +103,35 @@ export default class InvitedEmployeesList extends Component {
         page: this.state.page + 1
       },
       () => {
-        this.makeRemoteRequest();
+        this.props.fetchEmployees();
       }
     );
   };
 
   render() {
 
+    console.log(this.props.employees);
+
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.header}>{`Zaproszeni pracownicy (${this.state.data.length})`}</Text>
+        <Text style={styles.header}>{`Zaproszeni pracownicy (${this.props.employees.length})`}</Text>
         <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
           <FlatList
             contentContainerStyle={{
               paddingBottom: 60
             }}
-            data={this.state.data}
+            data={this.props.employees}
             renderItem={({ item }) => (
               <ListItem
-                roundAvatar
-                title={`${item.name.first} ${item.name.last}`}
+                // roundAvatar
+                title={`${item.name} ${item.surname}`}
                 subtitle={item.email}
-                avatar={{ uri: item.picture.thumbnail }}
+                // avatar={{ uri: item.picture.thumbnail }}
                 containerStyle={{ borderBottomWidth: 0 }}
-                keyExtractor={(item, index) => index}
-                onPress={() => {
-                }}
+                onPress={() => {}}
               />
             )}
-            keyExtractor={(e, i) => i}
+            keyExtractor={(e, i) => e.id || i}
             ListFooterComponent={this.footer}
             refreshing={this.state.refreshing}
             onRefresh={this.handleRefresh}
@@ -148,3 +144,12 @@ export default class InvitedEmployeesList extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  employees: state.employees.pendingIds.map( id => state.employees.pending[id])
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchEmployees: () => dispatch(employeesActionCreators.indexRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InvitedEmployeesList)

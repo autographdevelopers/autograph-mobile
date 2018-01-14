@@ -2,21 +2,25 @@ import { takeLatest, all } from 'redux-saga/effects';
 import { API as api } from '../Services/Api';
 
 /* ------------- Types ------------- */
-
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
 import { scheduleBoundariesTypes } from '../Redux/ScheduleBoundariesRedux';
 import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsSettingsSetRedux';
-/* ------------- Sagas ------------- */
+import { employeesActionTypes } from '../Redux/EmployeesRedux';
+import { studentsActionTypes } from '../Redux/StudentsRedux';
 
+/* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
+
+import { index as employeesIndexSaga } from './EmployeesSaga';
+import { index as studentsIndexSaga } from './StudentsSaga';
 
 import {
   create as createDrivingSchoolSaga,
   update as updateDrivingSchoolSaga,
-  index as fetchDrivingSchools,
+  index as indexDrivingSchools,
   show as showDrivingSchoolSaga
 } from './DrivingSchoolSagas';
 
@@ -44,10 +48,8 @@ import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettin
 import { updateScheduleBoundaries } from '../Redux/ScheduleBoundariesRedux';
 import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
 import { login } from '../Redux/SessionRedux';
-/* ------------- API ------------- */
 
 /* ------------- Connect Types To Sagas ------------- */
-
 export default function* root() {
   yield all([
     takeLatest(login.REQUEST, LogIn, api),
@@ -55,7 +57,7 @@ export default function* root() {
 
     takeLatest(createDrivingSchool.REQUEST, createDrivingSchoolSaga, api),
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
-    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, fetchDrivingSchools, api),
+    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchools, api),
     takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
 
     takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
@@ -68,5 +70,8 @@ export default function* root() {
     takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api),
 
     takeLatest(invite.REQUEST, createInvitation, api),
+
+    takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
+    takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api)
   ])
 }

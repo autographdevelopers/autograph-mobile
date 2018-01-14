@@ -11,6 +11,8 @@ import { notificationsSettingsSetReducer } from './EmployeeNotificationsSettings
 import { scheduleSettingsReducer } from './ScheduleSettingsRedux';
 import { scheduleBoundariesReducer } from './ScheduleBoundariesRedux';
 import formActionSaga from 'redux-form-saga';
+import { employeesReducer } from './EmployeesRedux';
+import { studentsReducer } from './StudentsRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -23,7 +25,9 @@ export const reducers = combineReducers({
   context: contextReducer,
   notificationsSettingsSet: notificationsSettingsSetReducer,
   scheduleSettings: scheduleSettingsReducer,
-  scheduleBoundaries: scheduleBoundariesReducer
+  scheduleBoundaries: scheduleBoundariesReducer,
+  employees: employeesReducer,
+  students: studentsReducer
 });
 
 export default () => {
