@@ -4,7 +4,7 @@ import { List, ListItem } from 'react-native-elements';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Fonts, Colors } from '../../Themes/';
 import { connect } from 'react-redux';
-import { studentsActionCreators } from '../../Redux/StudentsRedux';
+import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class InvitedStudentsList extends Component {
+class InvitedEmployeesList extends Component {
   componentWillMount() {
     this.props.fetchEmployees();
   }
@@ -36,7 +36,7 @@ class InvitedStudentsList extends Component {
 
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
-        <Text style={styles.header}>{`Aktywni kursanci (${this.props.employees.length})`}</Text>
+        <Text style={styles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
         <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
           <FlatList
             contentContainerStyle={{
@@ -62,19 +62,19 @@ class InvitedStudentsList extends Component {
               />}
           />
         </List>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
+        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
       </Layout>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  employees: state.students.activeIds.map( id => state.students.active[id]),
-  status: state.students.status
+  employees: state.employees.activeIds.map( id => state.employees.active[id]),
+  status: state.employees.status
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchEmployees: () => dispatch(studentsActionCreators.indexRequest())
+  fetchEmployees: () => dispatch(employeesActionCreators.indexRequest())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvitedStudentsList)
+export default connect(mapStateToProps, mapDispatchToProps)(InvitedEmployeesList)

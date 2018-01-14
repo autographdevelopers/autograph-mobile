@@ -2,11 +2,12 @@ import navStyles from '../../Navigation/Styles/NavigationStyles';
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import InvitedEmployeesList from './InvitedEmployeesList';
+import ActiveEmployeesList from './ActiveEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
 
 const routeConfigs = {
   ActiveEmployeesList: {
-    screen: InvitedEmployeesList
+    screen: ActiveEmployeesList
   },
   InvitedEmployeesList: {
     screen: InvitedEmployeesList
