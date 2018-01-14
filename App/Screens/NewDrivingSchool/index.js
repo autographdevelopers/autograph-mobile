@@ -1,9 +1,8 @@
 /** Built in modules */
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { NavigationActions } from 'react-navigation';
-import { reset } from 'redux-form';
+import { destroy } from 'redux-form';
 import { connect } from 'react-redux';
 
 /** Form steps */
@@ -15,33 +14,51 @@ import ScheduleSettings from './ScheduleSettings';
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import StepsIndicators from '../../Components/StepsIndicators';
+import FORM_IDS from './Constants';
+import NavHeader from '../../Components/NavHeader';
+
 
 const routeConfigs = {
   step0: {
-    screen: InformationStep
+    screen: InformationStep,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
+      },
+      headerStyle: { elevation: 0, shadowOpacity: 0 }
+    }
   },
   step1: {
-    screen: NotificationsStep
+    screen: NotificationsStep,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Powiadomienia'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
+      }
+    }
   },
   step2: {
-    screen: CalendarStep
+    screen: CalendarStep,
+    navigationOptions: {
+      header: props => <View><NavHeader navigation={props.navigation} title={'Kalendarz'}/><StepsIndicators
+        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
+    }
   },
   step3: {
-    screen: ScheduleSettings
+    screen: ScheduleSettings,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
+          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
+      }
+    }
   }
 };
 
 const navigationConfigs = {
   navigationOptions: {
-    header: props => {
-      return (<View>
-        <NavHeader navigation={props.navigation} title={'dsas'}/>
-        <StepsIndicators labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']}
-                         activeIndex={props.navigation.state.index}/>
-      </View>)
-    },
-
     headerStyle: { elevation: 0, shadowOpacity: 0 }
   },
   initialRouteName: 'step0',
@@ -56,31 +73,22 @@ class NewDrivingSchoolWizardForm extends Component {
   constructor(props) {
     super(props);
 
-    const { drivingSchool } = this.props;
-
     this.screensInfo = {
       step0: {
-        formID: 'basicInformation',
-        submitAction: (...args) => {
-          const action = drivingSchool ? 'updateDrivingSchoolRequest' : 'createDrivingSchoolRequest';
-          return drivingSchoolActionCreators[action](...args);
-        },
-        ref: null
+        ref: null,
+        formID: FORM_IDS.BASIC_INFO
       },
       step1: {
-        formID: 'notificationSettings',
-        submitAction: drivingSchoolActionCreators.updateEmployeeNotificationsRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.USER_NOTIFICATIONS
       },
       step2: {
-        formID: 'scheduleBoundaries',
-        submitAction: drivingSchoolActionCreators.updateScheduleBoundariesRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.SCHEDULE_BOUNDARIES
       },
       step3: {
-        formID: 'scheduleSettings',
-        submitAction: drivingSchoolActionCreators.updateScheduleSettingsRequest,
-        ref: null
+        ref: null,
+        formID: FORM_IDS.SCHEDULE_SETTINGS
       }
     };
 
@@ -90,38 +98,42 @@ class NewDrivingSchoolWizardForm extends Component {
   bindScreenRef = (key, ref) => this.screensInfo[key].ref = ref;
 
   nextStep = () => {
-    const { index, routes, key } = this.props.navigation.state,
+    const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
-      nextRouteIndex = index + 1,
-      redirectAction = currentRouteName === 'step3' ? NavigationActions.back({ key }) : NavigationActions.navigate({ routeName: `step${nextRouteIndex}` }),
-      { formID, ref, submitAction } = this.screensInfo[currentRouteName],
-      { navigation } = this.props;
+      { ref } = this.screensInfo[currentRouteName];
 
-    ref.props.handleSubmit(values => navigation.dispatch(submitAction(values, formID, redirectAction)))();
+    ref.submitForm();
   };
 
   componentWillUnmount() {
-    this.resetForm();
+    this.destroyForms();
   }
 
-  resetForm = () => Object.keys(this.screensInfo).forEach(step => this.props.resetForm(this.screensInfo[step].formID));
+  destroyForms = () => Object.keys(this.screensInfo).forEach(step => this.props.destroyForms(this.screensInfo[step].formID));
 
   isSubmitting = () => {
+    const form = this.currentForm();
+
+    return form && form.submitting
+  };
+
+  currentForm = () => {
     const { index, routes } = this.props.navigation.state,
       currentRouteName = routes[index].routeName,
-      { formID } = this.screensInfo[currentRouteName],
-      { form } = this.props;
+      { formID } = this.screensInfo[currentRouteName];
+    const { form } = this.props;
 
-    return form[formID] && form[formID].submitting
+
+    return form[formID];
   };
 
   render() {
 
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef }}/>
+        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef, navKey: this.props.navigation.state.key }}/>
 
-        <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>
+        {this.currentForm() && <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>}
       </View>
     )
   }
@@ -131,8 +143,8 @@ NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
 const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
 const mapDispatchToProps = dispatch => ({
-  resetForm: formID => {
-    dispatch(reset(formID))
+  destroyForms: formID => {
+    dispatch(destroy(formID))
   }
 });
 

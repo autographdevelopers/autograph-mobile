@@ -3,17 +3,22 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { FieldArray, Field, reduxForm } from 'redux-form';
 import Icon from 'react-native-vector-icons/Ionicons'
-
+import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
+import LoadingHOC from '../../Containers/LoadingHOC';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
-import NavHeader from '../../Components/NavHeader';
 import InputField from '../../Components/InputField';
-import StepsIndicators from '../../Components/StepsIndicators';
 import ButtonText from '../../Components/ButtonText';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import FORM_IDS from './Constants';
+
+import { createDrivingSchool } from '../../Redux/DrivingSchoolRedux';
+import { updateDrivingSchool } from '../../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -68,6 +73,7 @@ const renderEmailsCollection = ({ fields, meta: { error } }) => {
   );
 };
 
+const FORM_ID = FORM_IDS.BASIC_INFO;
 
 const styles = StyleSheet.create({
   removableInputRow: {
@@ -77,23 +83,46 @@ const styles = StyleSheet.create({
 });
 
 class InformationStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Information'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  };
-
   constructor(props) {
     super(props);
 
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+    if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
+      const key = this.props.navigation.state.routeName;
+      this.props.screenProps.bindScreenRef(key, this);
+    }
+
+    this.state = {
+      listViewDisplayed: false
+    }
+  }
+
+  closeListView = () => {
+    this.setState({
+      listViewDisplayed: false
+    });
+  };
+
+  openListView = () => {
+    this.setState({
+      listViewDisplayed: true
+    });
+  };
+
+  submitForm = () => {
+    const { drivingSchool, handleSubmit } = this.props;
+    const action = drivingSchool ? updateDrivingSchool : createDrivingSchool;
+
+    handleSubmit(action)();
+  };
+
+  componentWillUnmount() {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
+      this.props.destroy();
+    }
   }
 
   render() {
-    const { change, error } = this.props;
+    const { change, error, navigation, submitting } = this.props;
 
     return (
       <Layout>
@@ -101,24 +130,55 @@ class InformationStep extends Component {
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
           <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
-                 validate={[required, address]}/>
+                 validate={[required, address]} openListView={this.openListView} closeListView={this.closeListView}
+                 listViewDisplayed={this.state.listViewDisplayed}/>
           <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
           <FieldArray name={"emails"} component={renderEmailsCollection}/>
           <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
           <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}
                  options={{ multiline: true }}/>
         </KeyboardAwareScrollView>
+        {navigation.state.params && navigation.state.params.singleton &&
+          <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </Layout>
     )
   }
 }
 
-export default reduxForm({
-  form: 'basicInformation',
+
+InformationStep = reduxForm({
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
     phone_numbers: [undefined],
     emails: [undefined]
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    const { navigation } = props;
+
+    /** when there is no params passed, params key is undefined thus undefined.handleSubmitSuccess raises na error*/
+    try {
+      navigation.state.params.handleSubmitSuccess();
+    } catch (error) {
+      /** default case */
+      navigation.navigate('step1');
+    }
   }
 })(InformationStep);
+
+InformationStep = LoadingHOC(InformationStep);
+
+const mapStateToProps = state => ({
+  drivingSchool: state.context.currentDrivingSchoolID,
+  initialValues: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  status: state.drivingSchools.status
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(drivingSchoolActionCreators.showRequest())
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(InformationStep);

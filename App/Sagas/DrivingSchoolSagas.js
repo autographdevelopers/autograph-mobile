@@ -1,100 +1,61 @@
-import { startSubmit, stopSubmit } from 'redux-form'
 import { call, put } from 'redux-saga/effects';
-import { drivingSchoolActionCreators, STATUS } from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { FETCHING_STATUS } from '../Lib/utils';
 import { contextActionCreators } from '../Redux/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
+import { SubmissionError } from 'redux-form';
+/** redux-form-sagas actions */
+import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
+import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
 
 export function* create(api, action) {
-  yield put(startSubmit(action.formID));
-  const response = yield call(api.createDrivingSchool, { driving_school: action.params });
+  const response = yield call(api.createDrivingSchool, { driving_school: action.payload });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
-    yield put(stopSubmit(action.formID));
-    yield put(action.redirectionAction);
+    yield put(createDrivingSchool.success());
   } else {
     const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
+    const formError = new SubmissionError(errors);
+    yield put(createDrivingSchool.failure(formError));
   }
 }
 
 export function* update(api, action) {
-  yield put(startSubmit(action.formID));
-  const response = yield call(api.updateDrivingSchool, { driving_school: action.params });
+  const response = yield call(api.updateDrivingSchool, { driving_school: action.payload });
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.updateDrivingSchool(response.data));
+    yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
-    yield put(stopSubmit(action.formID));
-    yield put(action.redirectionAction);
+    yield put(updateDrivingSchool.success());
   } else {
     const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
+    const formError = new SubmissionError(errors);
+    yield put(updateDrivingSchool.failure(formError));
   }
 }
 
-export function* updateScheduleSettings(api, action) {
-  yield put(startSubmit(action.formID));
-  const response = yield call(api.updateScheduleSettings, { schedule_settings_set: action.params });
-  if (response.ok) {
-    // yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
-    // yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
-    yield put(stopSubmit(action.formID));
-    yield put(action.redirectionAction);
-  } else {
-    const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
-    }
-}
-
-export function* updateEmployeesNotificationSettings(api, action) {
-  yield put(startSubmit(action.formID));
-
-
-  const response = yield call(api.updateEmployeeNotifications, { employee_notifications_settings_set: action.params });
-
-  if (response.ok) {
-
-
-    // yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
-    // yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
-    yield put(stopSubmit(action.formID));
-    yield put(action.redirectionAction);
-  } else {
-
-    const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
-  }
-}
-
-export function* updateScheduleBoundaries(api, action) {
-  yield put(startSubmit(action.formID));
-
-  const response = yield call(api.updateScheduleBoundaries, action.params);
-
-  if (response.ok) {
-
-
-    // yield put(drivingSchoolActionCreators.saveDrivingSchool(response.data)); // add in redux
-    // yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
-    yield put(stopSubmit(action.formID));
-    yield put(action.redirectionAction);
-  } else {
-
-    const errors = gatherErrorsFromResponse(response, api);
-    yield put(stopSubmit(action.formID, errors));
-  }
-}
-
-export function* index (api, action) {
-
-  yield put(drivingSchoolActionCreators.changeStatus(STATUS.FETCHING));
+export function* index(api, action) {
+  yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.fetchDrivingSchools);
 
   if (response.ok) {
-    yield put(drivingSchoolActionCreators.saveDrivingSchools(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeStatus(STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.saveCollection(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingSchoolActionCreators.changeStatus(STATUS.ERROR));
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+  }
+}
+
+export function* show(api, action) {
+  yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
+
+  const response = yield call(api.showDrivingSchool);
+
+  if (response.ok) {
+    yield put(drivingSchoolActionCreators.saveSingle(response.data)); // add in redux
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+  } else {
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }

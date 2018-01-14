@@ -10,17 +10,16 @@ const googlePlacesAPIResponseKeys = [
   { fieldName: 'zip_code', keys: ['postal_code'] }
 ];
 
-
-export default PlacesAutocomplete  = ({ input, meta, label, asterix, setValue } ) => {
+export default PlacesAutocomplete  = ({ input, meta, label, asterix, setValue, listViewDisplayed, closeListView, openListView } ) => {
   return (
     <InputFieldLayout meta={meta} required={asterix} label={label}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView >
         <GooglePlacesAutocomplete
           placeholder='Search'
           minLength={3} // minimum length of text to search
           autoFocus={false}
           returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-          listViewDisplayed={false}    // true/false/undefined
+          listViewDisplayed={listViewDisplayed}    // true/false/undefined
           fetchDetails={true}
           onPress={(data, details) => { // 'details' is provided when fetchDetails = true
             setValue('lat', details.geometry.location.lat);
@@ -36,8 +35,18 @@ export default PlacesAutocomplete  = ({ input, meta, label, asterix, setValue } 
               })
 
             });
+
             setValue('street', details.formatted_address);
+            closeListView();
+            console.log('On press handler finished!!');
           }}
+          textInputProps={{
+            value: input.value,
+            // onBlur: val => { closeListView() },
+            onFocus: openListView,
+            onChangeText: val => { setValue('street', val) },
+          }}
+
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: 'AIzaSyDltvzJvuLGlYVDx5iPEHQTHraLWCAF5LM',

@@ -7,6 +7,10 @@ const colors = {
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
   black: '#000000',
+  purple: '#9A66B0',
+  yellow: '#FFCC02',
+  blue: '#2DAAFE',
+
 
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',

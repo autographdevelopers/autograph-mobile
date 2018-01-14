@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react-native'
 import {View} from 'react-native';
-import InputField from './InputField';
+import InputField from '../InputField';
 
 storiesOf('InputField')
   .add('Default', () => (

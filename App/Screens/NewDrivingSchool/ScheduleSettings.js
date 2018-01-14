@@ -1,34 +1,47 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-
+import { NavigationActions } from 'react-navigation';
 import CellSwitch from '../../Components/CellWithSwitch';
-import NavHeader from '../../Components/NavHeader';
-import StepsIndicators from '../../Components/StepsIndicators';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
+import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedux';
+import FORM_IDS from './Constants';
+
+
+import { connect } from 'react-redux';
+import LoadingHOC from '../../Containers/LoadingHOC';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
 );
 
-class ScheduleSettings extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Notifications'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
-    }
-  };
+const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 
+class ScheduleSettings extends Component {
   constructor(props) {
     super(props);
 
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+    if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
+      const key = this.props.navigation.state.routeName;
+      this.props.screenProps.bindScreenRef(key, this);
+    }
   }
 
+  componentWillUnmount() {
+    if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
+      this.props.destroy();
+    }
+  }
+
+  submitForm = () => {
+    this.props.handleSubmit(updateScheduleSettings)();
+  };
+
   render() {
-    const { change, error } = this.props;
+    const { change, error, navigation, submitting } = this.props;
 
     return (
       <Layout>
@@ -45,17 +58,60 @@ class ScheduleSettings extends Component {
                  description: 'Zablokuj możliwoś zapisów w dnia ustawowo wolne od pracy.',
                  onChangeHandler: value => change('holidays_enrollment_enabled', value)
                }}/>
+        {navigation.state.params && navigation.state.params.singleton &&
+        <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </Layout>
     )
   }
 }
 
-export default reduxForm({
-  form: 'scheduleSettings',
+ScheduleSettings = reduxForm({
+  form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
-    last_minute_booking_enabled: false,
+    last_minute_booking_enabled: true,
     holidays_enrollment_enabled: false
+  },
+  onSubmitSuccess: (result, dispatch, props) => {
+    const { navigation } = props;
+
+    try {
+      navigation.state.params.handleSubmitSuccess();
+    } catch (error) {
+      const { screenProps } = props;
+      const { navKey } = screenProps;
+      const title = 'Congratulations!';
+      const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
+      const goToStartScreen = NavigationActions.back({ key: navKey });
+      const buttons = [{
+        text: 'OK', onPress: () => {
+          navigation.dispatch(goToStartScreen);
+        }
+      }];
+
+      Alert.alert(title, message, buttons);
+    }
   }
 })(ScheduleSettings);
+
+ScheduleSettings = LoadingHOC(ScheduleSettings);
+
+const mapStateToProps = state => {
+  const { currentDrivingSchoolID } = state.context,
+    { scheduleSettings } = state,
+    { hashMap } = scheduleSettings,
+    ID = Object.keys(hashMap).filter(item => hashMap[item].driving_school_id === currentDrivingSchoolID)[0];
+
+  return {
+    drivingSchool: currentDrivingSchoolID,
+    initialValues: state.scheduleSettings.hashMap[ID],
+    status: state.scheduleSettings.status
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleSettings);
