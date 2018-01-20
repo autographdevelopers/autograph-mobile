@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import {
-  Text,
-  View,
+  Alert,
   ScrollView,
-  FlatList,
   StyleSheet,
-  ActivityIndicator,
-  RefreshControl, Alert,
+  View,
 } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import { Fonts, Colors } from '../../Themes/';
+import { Colors, Fonts } from '../../Themes/';
 import { connect } from 'react-redux';
-import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import Layout from '../../Components/Layout';
 import ListHeader from '../../Components/ListHeader';
-import { Field, reduxForm, FormSection } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
-import { update } from '../../Redux/EmployeePrivileges';
+import {
+  employeePrivilegesActionCreators,
+  update,
+} from '../../Redux/EmployeePrivileges';
 import LoadingHOC from '../../Containers/LoadingHOC';
-import { employeePrivilegesActionCreators } from '../../Redux/EmployeePrivileges';
-import { NavigationActions } from 'react-navigation';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
@@ -32,14 +28,6 @@ class ManageEmployee extends Component {
     this.props.handleSubmit(update)();
   };
 
-  componentWillUnmount() {
-    NavigationActions.setParams({
-     animate: true
-    });
-    console.log('Unmounting...');
-    this.props.navigation.setParams({animate: true});
-  };
-
   render() {
     const { change, submitting } = this.props;
 
@@ -47,39 +35,37 @@ class ManageEmployee extends Component {
       <View style={{ flex: 1 }}>
         <ListHeader title={'Uprawnienia'}/>
         <Layout>
-            <ScrollView contentContainerStyle={{ flex: 1 }}>
-              <Field name={'can_manage_employees'} component={renderSwitch}
-                     componentProps={{
-                       label: 'Zarzadzanie pracownikami',
-                       description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.',
-                       onChangeHandler: value => change(
-                         'can_manage_employees', value),
-                     }}/>
-              <Field name={'can_manage_students'} component={renderSwitch}
-                     componentProps={{
-                       label: 'Zarzadzanie kursantami',
-                       description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..',
-                       onChangeHandler: value => change(
-                         'can_manage_students', value),
-                     }}/>
-              <Field name={'can_modify_schedules'} component={renderSwitch}
-                     componentProps={{
-                       label: 'Pozwalaj na ustalanie grafiku',
-                       description: 'Zaproszony uzytkownik bedzie mogl ustawiac grafik.',
-                       onChangeHandler: value => change(
-                         'can_modify_schedules', value),
-                     }}/>
-              <Field name={'is_driving'} component={renderSwitch}
-                     componentProps={{
-                       label: 'Jest instruktorem',
-                       description: 'Lorem ipsum dolor sit melt',
-                       onChangeHandler: value => change(
-                         'is_driving', value),
-                     }}/>
-            </ScrollView>
-          <ButtonPrimary submitting={submitting}
-                         onPress={this.submitForm}>Zapisz</ButtonPrimary>
+          <Field name={'can_manage_employees'} component={renderSwitch}
+                 componentProps={{
+                   label: 'Zarzadzanie pracownikami',
+                   description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.',
+                   onChangeHandler: value => change(
+                     'can_manage_employees', value),
+                 }}/>
+          <Field name={'can_manage_students'} component={renderSwitch}
+                 componentProps={{
+                   label: 'Zarzadzanie kursantami',
+                   description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..',
+                   onChangeHandler: value => change(
+                     'can_manage_students', value),
+                 }}/>
+          <Field name={'can_modify_schedules'} component={renderSwitch}
+                 componentProps={{
+                   label: 'Pozwalaj na ustalanie grafiku',
+                   description: 'Zaproszony uzytkownik bedzie mogl ustawiac grafik.',
+                   onChangeHandler: value => change(
+                     'can_modify_schedules', value),
+                 }}/>
+          <Field name={'is_driving'} component={renderSwitch}
+                 componentProps={{
+                   label: 'Jest instruktorem',
+                   description: 'Lorem ipsum dolor sit melt',
+                   onChangeHandler: value => change(
+                     'is_driving', value),
+                 }}/>
         </Layout>
+        <ButtonPrimary submitting={submitting}
+                       onPress={this.submitForm}>Zapisz</ButtonPrimary>
       </View>
     );
   }
@@ -94,12 +80,10 @@ ManageEmployee = reduxForm({
     const buttons = [
       {
         text: 'OK', onPress: () => {
-          // this.props.screenProps.takeMeBack();
         },
       }];
 
     Alert.alert(title, message, buttons);
-
   },
 })(ManageEmployee);
 
@@ -111,7 +95,7 @@ const mapStateToProps = state => {
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: {...data, currentEmployeeID}, //currentEmployeeID optional, will be hooked api api req hook
+    initialValues: { ...data, currentEmployeeID }, //currentEmployeeID optional, will be hooked api in reqest hook
     status: status,
   };
 };

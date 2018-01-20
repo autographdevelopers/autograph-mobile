@@ -19,10 +19,8 @@ const routeConfigs = {
 const navigationConfigs = {
   navigationOptions: (props) => {
     const { navigation } = props;
-    const { user, index, title, animate } = navigation.state.params;
+    const { user, index, title } = navigation.state.params;
 
-    console.log('header xxxprops');
-    console.log(props);
     return {
       header:
         <View>
@@ -33,7 +31,6 @@ const navigationConfigs = {
             avatarProps={{ name: user.name, index }}
             user={user}
             routeName={navigation.state.routeName}
-            animate={ animate || false}
           />
         </View>
       ,
