@@ -12,23 +12,81 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
 
+const DURATION = 350;
+const AVATAR_SMALL_SIZE = 50;
+const AVATAR_LARGE_SIZE = 80;
+const TEXT_HEIGHT = Fonts.size.medium;
+
 export default class ProfileHeader extends Component  {
 
-  variableSize = new Animated.Value(80);
-  variableFontSize = new Animated.Value(Fonts.size.medium);
+  variableSize = new Animated.Value(AVATAR_LARGE_SIZE);
+  variableFontSize = new Animated.Value(TEXT_HEIGHT);
   variableOpacity = new Animated.Value(1);
 
   constructor(props) {
     super(props);
 
     this.state = {
-      showDetails: true
+      showDetails: true,
+      avatarSizeGoal: AVATAR_SMALL_SIZE,
+      opacityGoal: 0,
+      textHeightGoal: 0,
+      animate: false
     };
   }
 
-  render() {
+  revertAnimationGoal = () => {
+    const newOpacityGoal = (this.state.opacityGoal + 1) % 2;
 
-    const { onManagePersonClick, avatarProps, user } = this.props;
+    this.setState({
+      avatarSizeGoal: [AVATAR_SMALL_SIZE, AVATAR_LARGE_SIZE][newOpacityGoal],
+      opacityGoal: newOpacityGoal,
+      textHeightGoal: [0, TEXT_HEIGHT][newOpacityGoal],
+      animate: false
+    })
+  };
+
+  handleAnimationEnd = () => {
+    this.revertAnimationGoal();
+  };
+
+  resizeHeaderAndRedirect = ( callback = ()=>{} ) => () => {
+    Animated.parallel([
+      Animated.timing(
+        this.variableSize,
+        {
+          toValue: this.state.avatarSizeGoal,
+          duration: DURATION,
+        },
+      ),
+      Animated.timing(
+        this.variableFontSize,
+        {
+          toValue: this.state.textHeightGoal,
+          duration: DURATION,
+        },
+      ),
+      Animated.timing(
+        this.variableOpacity,
+        {
+          toValue: this.state.textHeightGoal,
+          duration: DURATION,
+        },
+      )]).start(
+        ()=> {
+          this.handleAnimationEnd();
+          callback();
+        }
+    );
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if(nextProps.routeName === 'employeeProfile' && this.props.routeName === 'manageEmployee' )
+      this.resizeHeaderAndRedirect()();
+  };
+
+  render() {
+    const { avatarProps, user } = this.props;
 
     return (
       <View style={styles.container}>
@@ -52,39 +110,12 @@ export default class ProfileHeader extends Component  {
               height: this.variableFontSize,
               opacity: this.variableOpacity,
             }]}>{`email: ${user.email}`}</Animated.Text>
-          <ButtonText onPress={() => {
-            // onManagePersonClick();
-            Animated.parallel([
-              Animated.timing(                  // Animate over time
-                this.variableSize,            // The animated value to drive
-                {
-                  toValue: 50,                   // Animate to opacity: 1 (opaque)
-                  duration: 350,              // Make it take a while
-                },
-              ),
-              Animated.timing(                  // Animate over time
-                this.variableFontSize,            // The animated value to drive
-                {
-                  toValue: 0,                   // Animate to opacity: 1 (opaque)
-                  duration: 350,              // Make it take a while
-                },
-              ),
-              Animated.timing(                  // Animate over time
-                this.variableOpacity,            // The animated value to drive
-                {
-                  toValue: 0,                   // Animate to opacity: 1 (opaque)
-                  duration: 350,              // Make it take a while
-                },
-              )]).start(onManagePersonClick);
-          }} customTextStyle={{
+          <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onManagePersonClick)}
+            customTextStyle={{
             fontSize: this.variableFontSize,
             height: this.variableFontSize,
             opacity: this.variableOpacity
           }}>
-            {/*<View style={styles.row}>*/}
-            {/*<Icon name={'cog'} color={Colors.primaryWarm} size={15} />*/}
-            {/*<Text style={{flex:1}}>{`Manage ${user.type}`}</Text>*/}
-            {/*</View>*/}
             Zarzadzaj pracownikiem
           </ButtonText>
         </View>

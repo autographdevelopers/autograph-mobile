@@ -13,15 +13,14 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Fonts, Colors } from '../../Themes/';
 import { connect } from 'react-redux';
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
-import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
-import { FETCHING_STATUS } from '../../Lib/utils';
 import ListHeader from '../../Components/ListHeader';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
 import { update } from '../../Redux/EmployeePrivileges';
 import LoadingHOC from '../../Containers/LoadingHOC';
 import { employeePrivilegesActionCreators } from '../../Redux/EmployeePrivileges';
+import { NavigationActions } from 'react-navigation';
 
 const renderSwitch = ({ input, meta, componentProps }) => (
   <CellSwitch value={input.value} {...componentProps}/>
@@ -31,6 +30,14 @@ class ManageEmployee extends Component {
 
   submitForm = () => {
     this.props.handleSubmit(update)();
+  };
+
+  componentWillUnmount() {
+    NavigationActions.setParams({
+     animate: true
+    });
+    console.log('Unmounting...');
+    this.props.navigation.setParams({animate: true});
   };
 
   render() {
@@ -78,13 +85,8 @@ class ManageEmployee extends Component {
   }
 }
 
-//connect to store and apply Loading HOC
-
 ManageEmployee = reduxForm({
   form: 'editEmployeePrivileges',
-  initialValues: {
-    // add id!!!!
-  },
   onSubmitSuccess: (result, dispatch, props) => {
     const title = 'Congratulations!';
     const message = 'Your changes have been saved';
@@ -109,7 +111,7 @@ const mapStateToProps = state => {
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: {...data, currentEmployeeID},
+    initialValues: {...data, currentEmployeeID}, //currentEmployeeID optional, will be hooked api api req hook
     status: status,
   };
 };
