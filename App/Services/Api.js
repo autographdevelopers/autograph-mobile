@@ -25,7 +25,7 @@ const responseHook = response => {
 
 const requestHook = request => {
   const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-  const { currentDrivingSchoolID } = store.getState().context;
+  const { currentDrivingSchoolID, currentEmployeeID } = store.getState().context;
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;
@@ -33,6 +33,8 @@ const requestHook = request => {
   request.headers['uid'] = uid;
   //
   request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
+
+  request.url = request.url.replace(':employee_id', currentEmployeeID);
 };
 
 const api = apisauce.create({
@@ -88,5 +90,12 @@ export const API = {
 
   students: {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
+  },
+  employeePrivileges: {
+    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`),
+    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`, data)
   }
 };
+
+
+// TODO nest driving school like others

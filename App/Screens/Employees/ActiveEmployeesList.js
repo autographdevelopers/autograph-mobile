@@ -35,6 +35,9 @@ class InvitedEmployeesList extends Component {
 
   render() {
 
+    const { navigation } = this.props;
+    const { setCurrentEmployee } = this.props.screenProps;
+
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
         <Text style={styles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
@@ -50,7 +53,7 @@ class InvitedEmployeesList extends Component {
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
-                onPress={ () => this.props.navigation.navigate('userProfile', { user: item, index } ) }
+                onPress={ () => { setCurrentEmployee(item.id) ; navigation.navigate('userProfile', { user: item, index, setCurrentEmployee } ) } }
               />
             )}
             showsVerticalScrollIndicator={false}
@@ -63,7 +66,7 @@ class InvitedEmployeesList extends Component {
               />}
           />
         </List>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+        <ButtonPrimary float={true} onPress={()=> navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
       </Layout>
     )
   }

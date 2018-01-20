@@ -18,14 +18,11 @@ const routeConfigs = {
 
 const navigationConfigs = {
   navigationOptions: (props) => {
-    console.log('magic header');
-    console.log('magic header');
-    console.log(props);
     const { navigation } = props;
     const { user, index, title } = navigation.state.params;
     return {
       header:
-        ( <View>
+        <View>
           <NavHeader navigation={navigation} title={title}/>
           <ProfileHeader
             onManagePersonClick={() => navigation.navigate(
@@ -33,13 +30,13 @@ const navigationConfigs = {
             avatarProps={{ name: user.name, index }}
             aniamationable={true}
             user={user}/>
-        </View> )
+        </View>
       ,
       headerStyle: { elevation: 0, shadowOpacity: 0 },
     };
   },
   initialRouteName: 'employeeProfile',
-  initialRouteParams: {title: 'Profile'},
+  initialRouteParams: { title: 'Profile' },
   cardStyle: navStyles.card,
 };
 
@@ -49,15 +46,12 @@ export default class EmployeeProfileModule extends Component {
   static navigationOptions = { header: null };
 
   render() {
-    const { user, index } = this.props.navigation.state.params;
-
-    console.log('Wrapping Screen nav');
-    console.log(this.props.navigation);
+    const { user, index, setCurrentEmployee } = this.props.navigation.state.params;
 
     return (
       <View style={{ flex: 1 }}>
         <ProfileNavigation navigation={this.props.navigation}
-                           screenProps={{ user, index }}/>
+                           screenProps={{ user, index, setCurrentEmployee }}/>
       </View>
     );
   }

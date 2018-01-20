@@ -4,46 +4,63 @@ import { StackNavigator } from 'react-navigation';
 import InvitedEmployeesList from './InvitedEmployeesList';
 import ActiveEmployeesList from './ActiveEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
+import { connect } from 'react-redux';
+import { contextActionCreators } from '../../Redux/ContextRedux';
 
 const routeConfigs = {
   ActiveEmployeesList: {
-    screen: ActiveEmployeesList
+    screen: ActiveEmployeesList,
   },
   InvitedEmployeesList: {
-    screen: InvitedEmployeesList
-  }
+    screen: InvitedEmployeesList,
+  },
 };
 const SEGMENTS = [
   { name: 'Aktywni', component: 'InvitedEmployeesList' },
-  { name: 'Zaproszeni', component: 'InvitedEmployeesList' }
+  { name: 'Zaproszeni', component: 'InvitedEmployeesList' },
 ];
 
 const navigationConfigs = {
   navigationOptions: {
     header: props => {
       const handlePress = index => {
-        index === 1 ? props.navigation.navigate(SEGMENTS[index].component) : props.navigation.goBack(null);
+        index === 1 ?
+          props.navigation.navigate(SEGMENTS[index].component) :
+          props.navigation.goBack(null);
       };
       return <SegmentsControl
         componentProps={{
           values: SEGMENTS.map(segment => segment.name),
           selectedIndex: props.navigation.state.index,
-          onTabPress: handlePress
-        }}/>
+          onTabPress: handlePress,
+        }}/>;
     },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
+    headerStyle: { elevation: 0, shadowOpacity: 0 },
   },
   initialRouteName: 'ActiveEmployeesList',
-  cardStyle: navStyles.card
+  cardStyle: navStyles.card,
 };
 
-export default StackNavigator(routeConfigs, navigationConfigs);
+const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
-// export default class EmployeesModule extends Component {
-//
-//   render() {
-//     return(
-//       <ModuleNavigator screenProps={{parentNav: this.props.navigation}}/>
-//     )
-//   }
-// }
+class EmployeesModule extends Component {
+
+  render() {
+    const { setCurrentEmployee, navigation } = this.props;
+
+    return (
+      <ModuleNavigator
+        screenProps={{ parentNav: navigation, setCurrentEmployee }}
+        navigation={navigation}/>
+    );
+  }
+}
+
+EmployeesModule.router = ModuleNavigator.router;
+
+const mapDispatchToProps = dispatch => ( {
+  setCurrentEmployee: id => dispatch(
+    contextActionCreators.setCurrentEmployee(id)),
+} );
+
+export default connect(null, mapDispatchToProps)(EmployeesModule);

@@ -4,7 +4,7 @@ import rootSaga from '../Sagas/';
 import { reducer as formReducer } from 'redux-form';
 import { sessionReducer } from './SessionRedux';
 import { userReducer } from './UserRedux';
-import { resetPasswordReducer } from './ResetPasswordRedux'
+import { resetPasswordReducer } from './ResetPasswordRedux';
 import { drivingSchoolReducer } from './DrivingSchoolRedux';
 import { contextReducer } from './ContextRedux';
 import { notificationsSettingsSetReducer } from './EmployeeNotificationsSettingsSetRedux';
@@ -13,6 +13,7 @@ import { scheduleBoundariesReducer } from './ScheduleBoundariesRedux';
 import formActionSaga from 'redux-form-saga';
 import { employeesReducer } from './EmployeesRedux';
 import { studentsReducer } from './StudentsRedux';
+import { employeePrivilegesReducer } from './EmployeePrivileges';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -27,15 +28,17 @@ export const reducers = combineReducers({
   scheduleSettings: scheduleSettingsReducer,
   scheduleBoundaries: scheduleBoundariesReducer,
   employees: employeesReducer,
-  students: studentsReducer
+  students: studentsReducer,
+  employeePrivileges: employeePrivilegesReducer
 });
 
 export default () => {
-  let { store, sagasManager, sagaMiddleware } = configureStore(reducers, rootSaga);
+  let { store, sagasManager, sagaMiddleware } = configureStore(reducers,
+    rootSaga);
 
   sagaMiddleware.run(formActionSaga); // To integrate redux-from and redux-saga
 
-  if (module.hot) {
+  if ( module.hot ) {
     module.hot.accept(() => {
       const nextRootReducer = require('./').reducers;
       store.replaceReducer(nextRootReducer);
@@ -45,8 +48,8 @@ export default () => {
       sagasManager.done.then(() => {
         sagasManager = sagaMiddleware.run(newYieldedSagas);
         sagasManager = sagaMiddleware.run(formActionSaga);
-      })
-    })
+      });
+    });
   }
 
   return store;
