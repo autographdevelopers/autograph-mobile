@@ -8,6 +8,7 @@ import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
+import { NavigationActions } from 'react-navigation';
 
 const styles = StyleSheet.create({
   listContainer: {
@@ -49,7 +50,7 @@ class InvitedEmployeesList extends Component {
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
-                onPress={() => {}}
+                onPress={ () => this.props.navigation.navigate('userProfile', { user: item, index } ) }
               />
             )}
             showsVerticalScrollIndicator={false}

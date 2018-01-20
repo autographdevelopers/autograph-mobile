@@ -3,13 +3,13 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLetterStyle={} }) => {
+export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLetterStyle={}, aniamationable=false }) => {
   const COLORS_PIPELINE = [
     Colors.purple, Colors.yellow, Colors.blue, Colors.salmon, Colors.primaryWarm
   ];
 
   const pipeSize = COLORS_PIPELINE.length;
-  const SIZE = 40;
+  const SIZE = aniamationable ? '100%' : 40;
 
   const styles ={
     container: {
@@ -19,6 +19,7 @@ export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLe
       borderRadius: 50,
       justifyContent: 'center',
       alignItems: 'center',
+      alignSelf: 'flex-start',
       backgroundColor: COLORS_PIPELINE[index%pipeSize]
     },
     letter: {

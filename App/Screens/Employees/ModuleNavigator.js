@@ -38,3 +38,12 @@ const navigationConfigs = {
 };
 
 export default StackNavigator(routeConfigs, navigationConfigs);
+
+// export default class EmployeesModule extends Component {
+//
+//   render() {
+//     return(
+//       <ModuleNavigator screenProps={{parentNav: this.props.navigation}}/>
+//     )
+//   }
+// }

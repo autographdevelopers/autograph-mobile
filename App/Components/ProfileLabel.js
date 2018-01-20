@@ -40,7 +40,6 @@ export default ProfileLabel = ({ avatarProps, user }) => {
         <DefaultAvatar {...avatarProps} />
       </View>
       <View style={styles.rightCol}>
-        <Text style={styles.secondaryInfo}>{`Manage ${user.type}`}</Text>
         <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
       </View>
     </View>
