@@ -17,6 +17,7 @@ const routeConfigs = {
     screen: InvitedEmployeesList,
   },
 };
+
 const SEGMENTS = [
   { name: 'Aktywni', component: 'InvitedEmployeesList' },
   { name: 'Zaproszeni', component: 'InvitedEmployeesList' },

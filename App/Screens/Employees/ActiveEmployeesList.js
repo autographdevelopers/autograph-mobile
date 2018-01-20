@@ -1,32 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Fonts, Colors } from '../../Themes/';
 import { connect } from 'react-redux';
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import { NavigationActions } from 'react-navigation';
-
-const styles = StyleSheet.create({
-  listContainer: {
-    backgroundColor: Colors.snow,
-    shadowOpacity: 0.15,
-    shadowColor: Colors.black,
-    shadowOffset: { height: 0, width: 0 },
-    shadowRadius: 8,
-    borderRadius: 8,
-    marginBottom: 15
-  },
-  header: {
-    marginHorizontal: 15,
-    color: Colors.strongGrey,
-    fontSize: Fonts.size.medium,
-    backgroundColor: 'transparent'
-  }
-});
 
 class InvitedEmployeesList extends Component {
   componentWillMount() {
@@ -34,7 +14,6 @@ class InvitedEmployeesList extends Component {
   }
 
   render() {
-
     const { navigation } = this.props;
     const { setCurrentEmployee } = this.props.screenProps;
 
@@ -81,3 +60,21 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedEmployeesList)
+
+const styles = StyleSheet.create({
+  listContainer: {
+    backgroundColor: Colors.snow,
+    shadowOpacity: 0.15,
+    shadowColor: Colors.black,
+    shadowOffset: { height: 0, width: 0 },
+    shadowRadius: 8,
+    borderRadius: 8,
+    marginBottom: 15
+  },
+  header: {
+    marginHorizontal: 15,
+    color: Colors.strongGrey,
+    fontSize: Fonts.size.medium,
+    backgroundColor: 'transparent'
+  }
+});

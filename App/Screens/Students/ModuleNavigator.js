@@ -50,9 +50,9 @@ class StudentsModule extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ModuleNavigator
-          screenProps={{ parentNav: navigation }}
+          screenProps={{ parentNav: navigation }} //optional?
           navigation={navigation}/>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
+        <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
       </View>
     );
   }
