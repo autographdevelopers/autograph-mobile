@@ -6,6 +6,8 @@ import ActiveEmployeesList from './ActiveEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
 import { connect } from 'react-redux';
 import { contextActionCreators } from '../../Redux/ContextRedux';
+import { View } from 'react-native';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 
 const routeConfigs = {
   ActiveEmployeesList: {
@@ -49,9 +51,14 @@ class EmployeesModule extends Component {
     const { setCurrentEmployee, navigation } = this.props;
 
     return (
-      <ModuleNavigator
-        screenProps={{ parentNav: navigation, setCurrentEmployee }}
-        navigation={navigation}/>
+      <View style={{ flex: 1 }}>
+        <ModuleNavigator
+          screenProps={{ parentNav: navigation, setCurrentEmployee }}
+          navigation={navigation}/>
+        <ButtonPrimary float={true}
+                       onPress={() => this.props.navigation.navigate(
+                         'inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+      </View>
     );
   }
 }

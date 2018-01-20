@@ -62,7 +62,6 @@ class InvitedEmployeesList extends Component {
               />}
           />
         </List>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
       </Layout>
     )
   }

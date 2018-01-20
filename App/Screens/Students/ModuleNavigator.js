@@ -4,6 +4,8 @@ import InvitedStudents from './InvitedSegment';
 import ActiveStudents from './ActivesSegment';
 import React, { Component } from 'react';
 import SegmentsControl from '../../Components/SegmentsControl';
+import ButtonPrimary from '../../Components/ButtonPrimary';
+import { View } from 'react-native';
 
 const routeConfigs = {
   ActiveStudentsList: {
@@ -38,4 +40,25 @@ const navigationConfigs = {
   cardStyle: navStyles.card
 };
 
-export default StackNavigator(routeConfigs, navigationConfigs);
+const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
+
+class StudentsModule extends Component {
+
+  render() {
+    const { navigation } = this.props;
+
+    return (
+      <View style={{ flex: 1 }}>
+        <ModuleNavigator
+          screenProps={{ parentNav: navigation }}
+          navigation={navigation}/>
+        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
+      </View>
+    );
+  }
+}
+
+StudentsModule.router = ModuleNavigator.router;
+
+export default StudentsModule;
+

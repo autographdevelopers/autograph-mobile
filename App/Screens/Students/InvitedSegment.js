@@ -62,7 +62,6 @@ class InvitedStudentsList extends Component {
               />}
           />
         </List>
-        <ButtonPrimary float={true} onPress={()=>this.props.navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
       </Layout>
     )
   }
