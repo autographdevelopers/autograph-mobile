@@ -70,7 +70,7 @@ class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: 'w@gmail.com', password: 'aaaaaaaa' };
+    this.state = { email: 'employee@gmail.com', password: 'password' };
   }
 
   setField(field) {

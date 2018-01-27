@@ -15,13 +15,19 @@ import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
+import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 
 const routeConfigs = {
   login: { screen: LoginScreen },
   signUp: { screen: SignUpScreen },
   launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
-  startScreen: { screen: StartScreen },
+  mySchoolsScreen: { screen: MySchoolsScreen,
+    navigationOptions: {
+      header: null,
+      header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={true}/>
+    }
+  },
   main: {
     screen: TabNavigation, navigationOptions: {
       header: null

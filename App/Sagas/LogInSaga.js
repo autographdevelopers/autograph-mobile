@@ -15,7 +15,7 @@ export function* LogIn(api, action) {
     const resetNav = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'startScreen'})
+        NavigationActions.navigate({ routeName: 'mySchoolsScreen'})
       ]
     });
     yield put(resetNav);
