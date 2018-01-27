@@ -15,8 +15,8 @@ import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
-import EmployeeProfileModule from '../Screens/Profile/ModuleNavigator';
-import ManageEmployee from '../Screens/Profile/ManageEmployee';
+import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
+import ManageEmployee from '../Screens/EmployeeProfile/ManageEmployee';
 
 const routeConfigs = {
   login: { screen: LoginScreen },

@@ -50,10 +50,12 @@ export default class EmployeeProfileModule extends Component {
   render() {
     const { user, index, setCurrentEmployee } = this.props.navigation.state.params;
 
+    console.log(this.props);
+
     return (
       <View style={{ flex: 1 }}>
         <ProfileNavigation navigation={this.props.navigation}
-                           screenProps={{ user, index, setCurrentEmployee }}/>
+                           screenProps={{...this.props.screenProps, user, index }}/>
       </View>
     );
   }

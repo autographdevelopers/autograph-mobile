@@ -110,3 +110,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(ManageEmployee);
 // TODO apply onSubmitSuccess on invite forms instead reacting in component will receive props
 // TODO apply navigationOptions as a function in other navigators to remove redundancy
 // TODO clear currentEmployee on unMount
+// TODO fetch context from store in RootContainer and pass down to all children to avoid retriving it all the time
