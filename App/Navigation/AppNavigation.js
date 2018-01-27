@@ -15,7 +15,8 @@ import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
-import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
+import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
+import ManageEmployee from '../Screens/EmployeeProfile/ManageEmployee';
 
 const routeConfigs = {
   login: { screen: LoginScreen },
@@ -53,6 +54,9 @@ const routeConfigs = {
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
     }
+  },
+  userProfile: {
+    screen: EmployeeProfileModule,
   }
 };
 

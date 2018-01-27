@@ -7,17 +7,16 @@ import LinearGradient from 'react-native-linear-gradient';
 export default FancyBackground = ({ children }) => {
   const styles = StyleSheet.create({
     overlay: {
-      flex: 1,
       ...StyleSheet.absoluteFillObject,
       opacity: 0.65,
       zIndex: 9
     },
     container: {
-      flex: 1
+      flex: 1,
     },
     children: {
       flex: 1,
-      zIndex: 9999
+      zIndex: 9999,
     }
   });
 

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import { Colors } from '../Themes';
 
-export default Layout = ({children, customStyles = {}}) => {
+export default Layout = ({children, customStyles = {}, scroll=true}) => {
   const styles = StyleSheet.create({
     layout: {
       flex: 1,
@@ -13,7 +13,14 @@ export default Layout = ({children, customStyles = {}}) => {
     }
   });
 
-  return (
-    <ScrollView style={[styles.layout, customStyles]}>{children}</ScrollView>
-  );
+  const body = scroll ?
+    (<ScrollView contentContainerStyle={[styles.layout, customStyles]}>
+      {children}
+    </ScrollView>)
+    :
+    (<View style={[styles.layout, customStyles]}>
+      {children}
+    </View>);
+
+  return body;
 }

@@ -8,5 +8,9 @@
 // import './Stories/StepsIndicators.story';
 // import './Stories/CellWithSwitch.story';
 // import './Stories/ScheduleBoundariesView.story';
-import './Stories/UniversalCell.story';
-import './Stories/CollectionGroup.story';
+// import './Stories/UniversalCell.story';
+// import './Stories/CollectionGroup.story';
+// import './Stories/DefaultAvatar.story';
+import './Stories/ProfileHeader.story';
+import './Stories/ProfileLabel.story';
+import './Stories/ListHeader.story';

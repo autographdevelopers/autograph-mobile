@@ -53,7 +53,7 @@ class StartScreen extends Component {
 const mapStateToProps = ({ drivingSchools }) => ({ drivingSchools });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.fetchDrivingSchoolsRequest()),
+  fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.indexRequest()),
   setCurrentSchoolContext: id => dispatch(contextActionCreators.setCurrentDrivingSchool(id))
 });
 

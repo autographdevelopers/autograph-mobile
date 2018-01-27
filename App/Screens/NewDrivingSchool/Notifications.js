@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import { Field, reduxForm } from 'redux-form';
+import React, {Component} from 'react';
+import {View} from 'react-native';
+import {Field, reduxForm} from 'redux-form';
 
 import CellSwitch from '../../Components/CellWithSwitch';
 import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import FORM_IDS from './Constants';
-import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import {updateNotificationSettings} from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import {notificationSettingsActionCreators} from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import LoadingHOC from '../../Containers/LoadingHOC';
 
-const renderSwitch = ({ input, meta, componentProps }) => (
-  <CellSwitch value={input.value} {...componentProps}/>
+const renderSwitch = ({input, meta, componentProps}) => (
+  <CellSwitch value={input.value} {...componentProps} />
 );
 
 const FORM_ID = FORM_IDS.USER_NOTIFICATIONS;
@@ -20,8 +21,10 @@ class NotificationsStep extends Component {
   constructor(props) {
     super(props);
 
-    const key = this.props.navigation.state.routeName;
-    this.props.screenProps.bindScreenRef(key, this);
+    if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
+      const key = this.props.navigation.state.routeName;
+      this.props.screenProps.bindScreenRef(key, this);
+    }
   }
 
   submitForm() {
@@ -29,56 +32,76 @@ class NotificationsStep extends Component {
   }
 
   render() {
-    const { change, error } = this.props;
+    const {change, error} = this.props;
 
     return (
       <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>
-        <Field name={'push_notifications_enabled'} component={renderSwitch}
-               componentProps={{
-                 label: 'Otrzymuj powiadomienia push',
-                 description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
-                 onChangeHandler: value => change('push_notifications_enabled', value)
-               }}/>
-        <Field name={'weekly_emails_reports_enabled'} component={renderSwitch}
-               componentProps={{
-                 label: 'Otrzymuj raporty tygodniowe',
-                 description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-                 onChangeHandler: value => change('weekly_emails_reports_enabled', value)
-               }}/>
-        <Field name={'monthly_emails_reports_enabled'} component={renderSwitch}
-               componentProps={{
-                 label: 'Otrzymuj raporty miesieczne',
-                 description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-                 onChangeHandler: value => change('monthly_emails_reports_enabled', value)
-               }}/>
+        <Field
+          name="push_notifications_enabled"
+          component={renderSwitch}
+          componentProps={{
+            label: 'Otrzymuj powiadomienia push',
+            description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
+            onChangeHandler: value => change('push_notifications_enabled',
+              value),
+          }}
+        />
+        <Field
+          name="weekly_emails_reports_enabled"
+          component={renderSwitch}
+          componentProps={{
+            label: 'Otrzymuj raporty tygodniowe',
+            description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
+            onChangeHandler: value => change('weekly_emails_reports_enabled',
+              value),
+          }}
+        />
+        <Field
+          name="monthly_emails_reports_enabled"
+          component={renderSwitch}
+          componentProps={{
+            label: 'Otrzymuj raporty miesieczne',
+            description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
+            onChangeHandler: value => change('monthly_emails_reports_enabled',
+              value),
+          }}
+        />
       </Layout>
-    )
+    );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  updateEmployeeNotificationsRequest: (...params) => dispatch(drivingSchoolActionCreators.updateEmployeeNotificationsRequest(...params))
-});
-
-NotificationsStep = connect(null, mapDispatchToProps)(NotificationsStep);
-
-export default reduxForm({
+NotificationsStep = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   initialValues: {
     push_notifications_enabled: true,
     weekly_emails_reports_enabled: false,
-    monthly_emails_reports_enabled: true
+    monthly_emails_reports_enabled: true,
   },
   onSubmitSuccess: (result, dispatch, props) => {
-    const { navigation } = props;
+    const {navigation} = props;
 
     try {
       navigation.state.params.handleSubmitSuccess();
-    } catch(error) {
+    } catch (error) {
       navigation.navigate('step2');
     }
-  }
+  },
 })(NotificationsStep);
+
+NotificationsStep = LoadingHOC(NotificationsStep);
+
+const mapStateToProps = state => ({
+  drivingSchool: state.context.currentDrivingSchoolID,
+  status: state.notificationsSettingsSet.status,
+  initialValues: state.notificationsSettingsSet.settings,
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestData: () => dispatch(notificationSettingsActionCreators.showRequest()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsStep);

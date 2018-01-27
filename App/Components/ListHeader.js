@@ -1,33 +1,25 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { Fonts, Colors } from '../Themes/'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ButtonText from './ButtonText';
+import { Text, View } from 'react-native';
+import { Fonts, Colors } from '../Themes/';
 
-export default ProfileHeader = ({ navigation, title }) => {
-  const styles = StyleSheet.create({
-    mainContainer: {
-      margin: 15,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      flexDirection: 'row'
+export default ListHeader = ({ title }) => {
+
+  const styles = {
+    container: {
+      backgroundColor: Colors.lightGrey,
+      height: 44,
+      justifyContent: 'center',
+      paddingLeft: 15
     },
-    welcomeFeed: {
-      marginLeft: 15,
-    },
-    welcomeText: {
-      fontSize: Fonts.size.regular,
+    title: {
       color: Colors.strongGrey,
-      fontWeight: '400'
+      fontSize: Fonts.size.medium
     }
-  });
+  };
 
   return (
-    <View style={styles.mainContainer}>
-      <Text>{title}</Text>
-      <View></View>
+    <View style={styles.container}>
+      <Text style={styles.title}>{title.toUpperCase()}</Text>
     </View>
   );
-}
+};

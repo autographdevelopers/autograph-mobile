@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
+import { createFormAction } from 'redux-form-saga';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -8,10 +9,9 @@ const { Types, Creators } = createActions({
   clearAuthenticationErrorMessage: null
 });
 
-// Entry point for the login procedure - will be handled by saga
-Types['REQUEST_LOGIN_PROCEDURE'] = 'REQUEST_LOGIN_PROCEDURE';
+export const login = createFormAction('LOGIN');
 
-export const SESSION_ACTION_TYPES = Types;
+export const sessionActionTypes = Types;
 export const sessionActionCreators = Creators;
 
 /* ------------- Initial State ------------- */

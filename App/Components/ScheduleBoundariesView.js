@@ -100,7 +100,7 @@ export default class ScheduleBoundariesView extends Component {
   };
 
   setTime = time => {
-    const newWeekdays = [].concat(this.props.value), // deep or shallow copy?
+    const newWeekdays = [].concat(this.props.value), // TODO deep or shallow copy?
       timeArray = time.split(':'),
       m = timeArray[1],
       h = timeArray[0];
@@ -207,7 +207,7 @@ export default class ScheduleBoundariesView extends Component {
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={value[this.state.currentWeekday][this.state.startend]}
+          date={this.displayTime(value[this.state.currentWeekday][this.state.startend])}
           showIcon={false}
           mode='time'
           format={TIME_FORMAT}

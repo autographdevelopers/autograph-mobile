@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, Animated } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default ButtonText = ({ children, position, onPress, customStyle={}, fontSize = Fonts.size.medium, icon }) => {
-  const renderIcon = () => {
-    if(icon){
-      return icon
-    }
-  }
-
+export default CellWithSwitch = ({ children, position, onPress, customStyle={}, customTextStyle={} }) => {
   const styles = StyleSheet.create({
     text: {
       color: Colors.primaryWarm,
@@ -24,8 +18,7 @@ export default ButtonText = ({ children, position, onPress, customStyle={}, font
 
   return (
     <TouchableOpacity style={[styles.button, customStyle]} onPress={onPress}>
-      {renderIcon()}
-      <Text style={styles.text}>{children}</Text>
+      <Animated.Text style={[styles.text, customTextStyle]}>{children}</Animated.Text>
     </TouchableOpacity>
   );
 }

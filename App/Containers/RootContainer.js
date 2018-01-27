@@ -4,38 +4,62 @@ import AppWithNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import StartupActions from '../Redux/StartupRedux';
 import ReduxPersist from '../Config/ReduxPersist';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors } from '../Themes';
-
+import { contextActionCreators } from '../Redux/ContextRedux';
 
 const styles = StyleSheet.create({
   applicationView: {
     flex: 1,
-    backgroundColor: Colors.snow
-  }
+    backgroundColor: Colors.snow,
+  },
 });
 
 class RootContainer extends Component {
-  componentDidMount () {
+  componentDidMount() {
     // if redux persist is not active fire startup action
-    if (!ReduxPersist.active) {
-      this.props.startup()
+    if ( !ReduxPersist.active ) {
+      this.props.startup();
     }
   }
 
-  render () {
+  render() {
+    const { setCurrentDrivingSchool,
+      setCurrentEmployee,
+      setCurrentStudent,
+      currentDrivingSchool,
+      currentEmployee,
+      currentStudent } = this.props;
+
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' translucent={true}/>
-        <AppWithNavigation />
+        <AppWithNavigation screenProps={{
+          setCurrentDrivingSchool,
+          setCurrentEmployee,
+          setCurrentStudent,
+          currentDrivingSchool,
+          currentEmployee,
+          currentStudent,
+        }}/>
       </View>
-    )
+    );
   }
 }
 
-// wraps dispatch to create nicer functions to call within our component
-const mapDispatchToProps = dispatch => ({
-  startup: () => dispatch(StartupActions.startup())
-});
+const mapStateToProps = state => ( {
+  currentDrivingSchool: state.context.currentDrivingSchoolID,
+  currentEmployee: state.context.currentEmployeeID,
+  currentStudent: state.context.currentStudentID,
+} );
 
-export default connect(null, mapDispatchToProps)(RootContainer)
+const mapDispatchToProps = dispatch => ( {
+  startup: () => dispatch(StartupActions.startup()),
+  setCurrentDrivingSchool: id => dispatch(
+    contextActionCreators.setCurrentDrivingSchool(id)),
+  setCurrentEmployee: id => dispatch(
+    contextActionCreators.setCurrentEmployee(id)),
+  setCurrentStudent: id => dispatch(contextActionCreators.setCurrentStudent(id)),
+} );
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

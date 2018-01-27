@@ -14,9 +14,12 @@ class InvitedEmployeesList extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const { setCurrentEmployee } = this.props.screenProps;
+
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
-        <Text style={styles.header}>{`Zaproszeni pracownicy (${this.props.employees.length})`}</Text>
+        <Text style={styles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
         <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
           <FlatList
             contentContainerStyle={{
@@ -29,7 +32,7 @@ class InvitedEmployeesList extends Component {
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
-                onPress={() => {}}
+                onPress={ () => { setCurrentEmployee(item.id) ; navigation.navigate('userProfile', { user: item, index, setCurrentEmployee } ) } }
               />
             )}
             showsVerticalScrollIndicator={false}
@@ -48,7 +51,7 @@ class InvitedEmployeesList extends Component {
 }
 
 const mapStateToProps = state => ({
-  employees: state.employees.pendingIds.map( id => state.employees.pending[id]),
+  employees: state.employees.activeIds.map( id => state.employees.active[id]),
   status: state.employees.status
 });
 

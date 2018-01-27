@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
 import LoadingHOC from '../../Containers/LoadingHOC';
+import ButtonPrimary from '../../Components/ButtonPrimary';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import InputField from '../../Components/InputField';
@@ -93,7 +94,7 @@ class InformationStep extends Component {
     this.state = {
       listViewDisplayed: false
     }
-  }// TODO ask Maciek about his idea on how to display users which do not have avatar
+  }
 
   closeListView = () => {
     this.setState({
@@ -107,12 +108,12 @@ class InformationStep extends Component {
     });
   };
 
-  submitForm() {
+  submitForm = () => {
     const { drivingSchool, handleSubmit } = this.props;
     const action = drivingSchool ? updateDrivingSchool : createDrivingSchool;
 
     handleSubmit(action)();
-  }
+  };
 
   componentWillUnmount() {
     if (this.props.navigation.state.params && this.props.navigation.state.params.handleSubmitSuccess) {
@@ -121,7 +122,7 @@ class InformationStep extends Component {
   }
 
   render() {
-    const { change, error } = this.props;
+    const { change, error, navigation, submitting } = this.props;
 
     return (
       <Layout>
@@ -137,6 +138,8 @@ class InformationStep extends Component {
           <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}
                  options={{ multiline: true }}/>
         </KeyboardAwareScrollView>
+        {navigation.state.params && navigation.state.params.singleton &&
+          <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </Layout>
     )
   }
@@ -174,7 +177,7 @@ const mapStateToProps = state => ({
 
 
 const mapDispatchToProps = dispatch => ({
-  showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest())
+  requestData: () => dispatch(drivingSchoolActionCreators.showRequest())
 });
 
 

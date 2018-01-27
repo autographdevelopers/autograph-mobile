@@ -25,7 +25,7 @@ const responseHook = response => {
 
 const requestHook = request => {
   const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-  const { currentDrivingSchoolID } = store.getState().context;
+  const { currentDrivingSchoolID, currentEmployeeID } = store.getState().context;
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;
@@ -33,6 +33,8 @@ const requestHook = request => {
   request.headers['uid'] = uid;
   //
   request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
+
+  request.url = request.url.replace(':employee_id', currentEmployeeID);
 };
 
 const api = apisauce.create({
@@ -63,15 +65,37 @@ export const API = {
   resetPassword: email => api.post('auth/password', { email }),
   createDrivingSchool: params => api.post('driving_schools', params),
   updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
-  updateScheduleBoundaries: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params), //schould be put on server
-  updateEmployeeNotifications: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params),
   fetchDrivingSchools: () => api.get('driving_schools'),
   showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
 
-
   scheduleSettings: {
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings_set`)
+  },
+
+  scheduleBoundaries: {
+    update: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params),
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_boundaries`)
+  },
+
+  notificationSettings: {
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings_set`),
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params)
+  },
+
+  employees: {
+    index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employees`)
+  },
+
+  students: {
+    index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
+  },
+  employeePrivileges: {
+    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`),
+    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`, data)
   }
 };
+
+
+// TODO nest driving school like others

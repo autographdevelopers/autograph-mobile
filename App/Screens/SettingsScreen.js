@@ -1,36 +1,40 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import Layout from '../Components/Layout'
-import { connect } from 'react-redux';
-import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
-import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
+import IconF from 'react-native-vector-icons/FontAwesome';
+import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Colors } from '../Themes';
 
-class SettingsScreen extends Component {
-  static navigationOptions = {
-    header: null
+export default class SettingsScreen extends Component {
+  static navigationOptions = { header: null };
+
+  saveSuccessCallback = () => {
+    const title = 'Congratulations!';
+    const message = 'Your changes have been saved.';
+    const buttons = [{
+      text: 'OK', onPress: () => {
+        this.props.navigation.goBack(null);
+      }
+    }];
+
+    Alert.alert(title, message, buttons);
   };
 
-  constructor(props) {
-    super(props)
-  }
-
   render() {
-    const { navigation, showDrivingSchool, showScheduleSettings } = this.props;
+    const { navigation } = this.props;
+    const navParams = { handleSubmitSuccess: this.saveSuccessCallback, singleton: true };
 
     return (
       <Layout>
         <ListItem
+          // leftIcon={<IconF size={30} name={'cog'} color={Colors.strongGrey}/>}
           title={'Information'}
           subtitle={'Edit basic information about your school.'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            showDrivingSchool();
-            navigation.navigate('editSchoolInfo', {
-              handleSubmitSuccess: () => {
-              }
-            })
+            navigation.navigate('editSchoolInfo', navParams)
           }}
         />
 
@@ -40,11 +44,7 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            showDrivingSchool();
-            navigation.navigate('editScheduleBoundaries', {
-              handleSubmitSuccess: () => {
-              }
-            })
+            navigation.navigate('editScheduleBoundaries', navParams)
           }}
         />
 
@@ -54,21 +54,10 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           onPress={() => {
-            showScheduleSettings();
-            navigation.navigate('editScheduleSettings', {
-              handleSubmitSuccess: () => {
-              }
-            })
+            navigation.navigate('editScheduleSettings', navParams)
           }}
         />
       </Layout>
     )
   }
 }
-
-const mapDispatchToProps = dispatch => ({
-  showDrivingSchool: () => dispatch(drivingSchoolActionCreators.showDrivingSchoolRequest()),
-  showScheduleSettings: () => dispatch(scheduleSettingsActionCreators.showRequest())
-});
-
-export default connect(null, mapDispatchToProps)(SettingsScreen)
