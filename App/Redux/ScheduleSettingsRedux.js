@@ -41,4 +41,4 @@ export const scheduleSettingsReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: updateStatus,
 });
 
-// TODO add error field
+// TODO add error field everywhere!

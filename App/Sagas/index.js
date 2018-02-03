@@ -9,6 +9,7 @@ import { scheduleBoundariesTypes } from '../Redux/ScheduleBoundariesRedux';
 import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsSettingsSetRedux';
 import { employeesActionTypes } from '../Redux/EmployeesRedux';
 import { studentsActionTypes } from '../Redux/StudentsRedux';
+import { employeePrivilegesActionTypes } from '../Redux/EmployeePrivileges';
 
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
@@ -40,6 +41,11 @@ import {
 
 import { create as createInvitation } from './InvitationsSaga';
 
+import {
+  update as updateEmployeePrivilegesSaga,
+  show as showEmployeePrivilegesSaga
+} from './EmployeePrivilegesSaga';
+
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
 import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
@@ -48,6 +54,7 @@ import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettin
 import { updateScheduleBoundaries } from '../Redux/ScheduleBoundariesRedux';
 import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
 import { login } from '../Redux/SessionRedux';
+import { update as updateEmployeePrivileges } from '../Redux/EmployeePrivileges';
 
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
@@ -72,6 +79,9 @@ export default function* root() {
     takeLatest(invite.REQUEST, createInvitation, api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
-    takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api)
+    takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
+
+    takeLatest(updateEmployeePrivileges.REQUEST, updateEmployeePrivilegesSaga, api),
+    takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST, showEmployeePrivilegesSaga, api)
   ])
 }
