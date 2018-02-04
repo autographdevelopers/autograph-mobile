@@ -21,8 +21,6 @@ import { API as api } from '../Services/Api';
 
 const submit = navigation => values => {
   return api.signUp(values).then(response => {
-    console.log('DUPA');
-    console.log(response);
     if ( response.ok ) {
       const title = 'Congratulations!';
       const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';

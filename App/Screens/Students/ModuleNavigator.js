@@ -45,8 +45,6 @@ class StudentsModule extends Component {
 
   render() {
     const { navigation } = this.props;
-    console.log('Test general purpose props STUDENTS SCREEN');
-    console.log(this.props.screenProps);
 
     return (
       <View style={{ flex: 1 }}>

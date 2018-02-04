@@ -81,9 +81,6 @@ class LoginScreen extends Component {
 
   render() {
     const {change, error, navigation: {navigate}, submitting} = this.props;
-    console.log('Test general purpose props LOGIN SCREEN');
-    console.log(this.props.screenProps);
-
     return (
       <FancyBackground>
         <Layout customStyles={{backgroundColor: 'transparent'}}>

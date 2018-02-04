@@ -39,9 +39,7 @@ class StartScreen extends Component {
   };
 
   render() {
-    const { status, drivingSchools } = this.props;
-    console.log('Test general purpose props START SCREEN');
-    console.log(this.props.screenProps);
+    const { status } = this.props;
 
     return (
       <ScrollView>

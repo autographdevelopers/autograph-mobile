@@ -32,7 +32,6 @@ export default LoadingHOC = (WrappedComponent) => {
     renderBody = () => {
       switch (this.state.status) {
         case FETCHING_STATUS.READY:
-          console.log('Ready to request data');
           return null;
         case FETCHING_STATUS.SUCCESS:
           return (<WrappedComponent {...this.props} />);
