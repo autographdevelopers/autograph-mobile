@@ -1,12 +1,43 @@
-import {Text, ScrollView, Image, View} from 'react-native';
-import React, {Component} from 'react';
+import { Text, ScrollView, Image, View } from 'react-native';
+import React, { Component } from 'react';
 import FancyBackground from '../Components/FancyBackground';
-import {Fonts, Metrics, Colors} from '../Themes/';
-import {StyleSheet} from 'react-native';
+import { Fonts, Metrics, Colors } from '../Themes/';
+import { StyleSheet } from 'react-native';
 import ButtonOutline from '../Components/ButtonOutline';
 import ButtonWhiteFill from '../Components/ButtonWhiteFill';
-import {connect} from 'react-redux';
 import Layout from '../Components/Layout';
+
+export default LaunchScreen = props => {
+  return (
+    <FancyBackground>
+      <Layout customStyles={{ backgroundColor: 'transparent' }}>
+        <View style={styles.container}>
+          <View style={[styles.section, styles.brandSection]}>
+            <Text style={styles.brandName}>AutoGraph</Text>
+            <Text style={styles.slogan}>Profesjonalne narzędzie do zarządzania
+              szkołami jazdy.</Text>
+          </View>
+          <View style={[styles.section, styles.actions]}>
+            <View style={styles.actionWrapper}>
+              <Text style={styles.label}>Nie masz jeszcze konta?</Text>
+              <ButtonWhiteFill onPress={() => {
+                props.navigation.navigate('signUp');
+              }}>
+                ZAREJESTRUJ SIĘ
+              </ButtonWhiteFill>
+            </View>
+            <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
+              <Text style={styles.label}>Masz już konto?</Text>
+              <ButtonOutline onPress={() => {
+                props.navigation.navigate('login');
+              }}>ZALOGUJ SIĘ</ButtonOutline>
+            </View>
+          </View>
+        </View>
+      </Layout>
+    </FancyBackground>
+  );
+};
 
 const styles = StyleSheet.create({
   section: {
@@ -51,42 +82,3 @@ const styles = StyleSheet.create({
   },
 });
 
-class LaunchScreen extends Component {
-  static navigationOptions = {
-    header: null,
-  };
-
-  render() {
-    return (
-      <FancyBackground>
-        <Layout customStyles={{backgroundColor: 'transparent'}}>
-          <View style={styles.container}>
-            <View style={[styles.section, styles.brandSection]}>
-              <Text style={styles.brandName}>AutoGraph</Text>
-              <Text style={styles.slogan}>Profesjonalne narzędzie do zarządzania
-                szkołami jazdy.</Text>
-            </View>
-            <View style={[styles.section, styles.actions]}>
-              <View style={styles.actionWrapper}>
-                <Text style={styles.label}>Nie masz jeszcze konta?</Text>
-                <ButtonWhiteFill onPress={() => {
-                  this.props.navigation.navigate('signUp');
-                }}>
-                  ZAREJESTRUJ SIĘ
-                </ButtonWhiteFill>
-              </View>
-              <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
-                <Text style={styles.label}>Masz już konto?</Text>
-                <ButtonOutline onPress={() => {
-                  this.props.navigation.navigate('login');
-                }}>ZALOGUJ SIĘ</ButtonOutline>
-              </View>
-            </View>
-          </View>
-        </Layout>
-      </FancyBackground>
-    );
-  }
-};
-
-export default connect()(LaunchScreen);

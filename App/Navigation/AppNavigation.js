@@ -16,12 +16,30 @@ import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
-import ManageEmployee from '../Screens/EmployeeProfile/ManageEmployee';
+import { Colors } from '../Themes';
 
 const routeConfigs = {
-  login: { screen: LoginScreen },
+  login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerTintColor: Colors.snow,
+      headerStyle: {
+        position: 'absolute',
+        backgroundColor: 'transparent',
+        zIndex: 99999,
+        top: 0,
+        left: 0,
+        right: 0,
+      },
+    }
+  },
   signUp: { screen: SignUpScreen },
-  launchScreen: { screen: LaunchScreen },
+  launchScreen: {
+    screen: LaunchScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
   resetPassword: { screen: ResetPasswordScreen },
   startScreen: { screen: StartScreen },
   main: {

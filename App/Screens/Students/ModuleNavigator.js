@@ -27,6 +27,7 @@ const navigationConfigs = {
       const handlePress = index => {
         index === 1 ? props.navigation.navigate(SEGMENTS[index].component) : props.navigation.goBack(null);
       };
+
       return <SegmentsControl
         componentProps={{
           values: SEGMENTS.map(segment => segment.name),
@@ -49,7 +50,6 @@ class StudentsModule extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ModuleNavigator
-          screenProps={{ parentNav: navigation }} //optional?
           navigation={navigation}/>
         <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
       </View>
