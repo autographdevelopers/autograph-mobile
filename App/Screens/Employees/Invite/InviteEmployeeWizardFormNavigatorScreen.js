@@ -20,10 +20,19 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  navigationOptions: {
-    header: null,
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
+  navigationOptions: props => {
+    const { routeName } = props.navigation.state;
+    const index = parseInt(routeName.charAt(routeName.length - 1));
+    const labels = ['Informacje', 'Uprawnienia'];
+
+    return {
+      header: <View>
+                <NavHeader navigation={props.navigation} title={labels[index]}/>
+                <StepsIndicators labels={labels} activeIndex={index}/>
+              </View>
+    }
   },
+
   initialRouteName: 'step0',
   cardStyle: navStyles.card
 };

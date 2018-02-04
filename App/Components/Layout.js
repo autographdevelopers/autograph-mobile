@@ -14,7 +14,7 @@ export default Layout = ({children, customStyles = {}, scroll=true}) => {
   });
 
   const body = scroll ?
-    (<ScrollView contentContainerStyle={[styles.layout, customStyles]}>
+    (<ScrollView style={{flex:1}} contentContainerStyle={[styles.layout, customStyles]}>
       {children}
     </ScrollView>)
     :

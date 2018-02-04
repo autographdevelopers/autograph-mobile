@@ -34,7 +34,7 @@ class RootContainer extends Component {
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' translucent={true}/>
-        <AppWithNavigation screenProps={{
+        <AppWithNavigation generalProps={{
           setCurrentDrivingSchool,
           setCurrentEmployee,
           setCurrentStudent,

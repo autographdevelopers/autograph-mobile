@@ -4,9 +4,7 @@ import { Alert, ScrollView, View } from 'react-native';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import { invite } from '../../../Redux/InvitationsRedux';
 /** Custom components */
-import NavHeader from '../../../Components/NavHeader';
 import CellSwitch from '../../../Components/CellWithSwitch';
-import StepsIndicators from '../../../Components/StepsIndicators';
 import Layout from '../../../Components/Layout';
 import FormErrorMessage from '../../../Components/GenerealFormErrorMessage';
 
@@ -15,14 +13,6 @@ const renderSwitch = ({ input, meta, componentProps }) => (
 );
 
 class PrivilegesStep extends Component {
-  static navigationOptions = {
-    header: props => {
-      return (<View><NavHeader navigation={props.navigation} title={'Uprawnienia'}/><StepsIndicators
-        labels={['Informacje', 'Uprawnienia']} activeIndex={1}/></View>)
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  };
-
   constructor(props) {
     super(props);
 
@@ -32,24 +22,6 @@ class PrivilegesStep extends Component {
 
   submitForm = () => {
     this.props.handleSubmit(invite)();
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if(!this.props.submitSucceeded && nextProps.submitSucceeded)
-      this.renderSuccessDialog();
-  }
-
-  renderSuccessDialog = () => {
-      const title = 'Congratulations!';
-      const message = 'Your Invitation has been sent to given email address.';
-
-      const buttons = [{
-        text: 'OK', onPress: () => {
-          this.props.screenProps.takeMeBack();
-        }
-      }];
-
-      Alert.alert(title, message, buttons);
   };
 
   render() {
@@ -94,5 +66,17 @@ class PrivilegesStep extends Component {
 export default reduxForm({
   form: 'Employees',
   destroyOnUnmount: false,
-  forceUnregisterOnUnmount: true
+  forceUnregisterOnUnmount: true,
+  onSubmitSuccess: (result, dispatch, props) => {
+    const title = 'Congratulations!';
+    const message = 'Your Invitation has been sent to given email address.';
+
+    const buttons = [{
+      text: 'OK', onPress: () => {
+        props.screenProps.takeMeBack();
+      }
+    }];
+
+    Alert.alert(title, message, buttons);
+  }
 })(PrivilegesStep);

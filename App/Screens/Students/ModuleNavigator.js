@@ -33,8 +33,7 @@ const navigationConfigs = {
           selectedIndex: props.navigation.state.index,
           onTabPress: handlePress
         }}/>
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
+    }
   },
   initialRouteName: 'ActiveStudentsList',
   cardStyle: navStyles.card
@@ -46,6 +45,8 @@ class StudentsModule extends Component {
 
   render() {
     const { navigation } = this.props;
+    console.log('Test general purpose props STUDENTS SCREEN');
+    console.log(this.props.screenProps);
 
     return (
       <View style={{ flex: 1 }}>

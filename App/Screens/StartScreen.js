@@ -40,6 +40,9 @@ class StartScreen extends Component {
 
   render() {
     const { status, drivingSchools } = this.props;
+    console.log('Test general purpose props START SCREEN');
+    console.log(this.props.screenProps);
+
     return (
       <ScrollView>
         {status === 'FETCHING' ? <ActivityIndicator size={'large'} color={Colors.primaryWarm}/> :

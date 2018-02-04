@@ -72,7 +72,7 @@ class ResetPasswordScreen extends Component {
           Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.
         </Text>
         <InputField input={{ onChange: this.handleEmailChange, onBlur: () => {} }}
-                    meta={{ error: error, touched: error }}
+                    meta={{ error: error, touched: error }} options={{autoCapitalize: 'none'}}
                     label={'Email'}
                     required={true}
         />

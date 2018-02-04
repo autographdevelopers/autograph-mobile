@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { Text, FlatList, RefreshControl } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { Fonts, Colors } from '../../Themes/';
 import { connect } from 'react-redux';
@@ -7,24 +7,25 @@ import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
+import listProjectorStyles from '../../Styles/ListProjector';
 
 class InvitedEmployeesList extends Component {
   componentWillMount() {
     this.props.fetchEmployees();
   }
 
-  render() {
-    const { navigation } = this.props;
-    const { setCurrentEmployee } = this.props.screenProps;
+  goToUserProfile = (user, index) => () => {
+    this.props.screenProps.setCurrentEmployee(user.id);
+    this.props.navigation.navigate('userProfile', { user, index });
+  };
 
+  render() {
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
-        <Text style={styles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
-        <List containerStyle={[{ borderBottomWidth: 0, borderTopWidth: 0, flex: 1 }, styles.listContainer]}>
+        <Text style={listProjectorStyles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
+        <List containerStyle={listProjectorStyles.containerStyle}>
           <FlatList
-            contentContainerStyle={{
-              paddingBottom: 60
-            }}
+            contentContainerStyle={listProjectorStyles.contentContainerStyle}
             data={this.props.employees}
             renderItem={({ item, index }) => (
               <ListItem
@@ -32,11 +33,11 @@ class InvitedEmployeesList extends Component {
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
-                onPress={ () => { setCurrentEmployee(item.id) ; navigation.navigate('userProfile', { user: item, index, setCurrentEmployee } ) } }
+                onPress={this.goToUserProfile(item, index)}
               />
             )}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(e, i) => e.id}
+            keyExtractor={(element, index) => element.id}
             refreshControl={
               <RefreshControl
                 onRefresh={this.props.fetchEmployees}
@@ -60,21 +61,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedEmployeesList)
-
-const styles = StyleSheet.create({
-  listContainer: {
-    backgroundColor: Colors.snow,
-    shadowOpacity: 0.15,
-    shadowColor: Colors.black,
-    shadowOffset: { height: 0, width: 0 },
-    shadowRadius: 8,
-    borderRadius: 8,
-    marginBottom: 15
-  },
-  header: {
-    marginHorizontal: 15,
-    color: Colors.strongGrey,
-    fontSize: Fonts.size.medium,
-    backgroundColor: 'transparent'
-  }
-});
