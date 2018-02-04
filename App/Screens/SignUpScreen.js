@@ -2,6 +2,7 @@ import { Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { reduxForm, Field, SubmissionError, destroy } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
+import layoutStyles from '../Styles/Layout';
 
 import {
   required,
@@ -16,7 +17,7 @@ import AcceptTerms from '../Components/AcceptTerms';
 import DateSelector from '../Components/DateSelector';
 import InputField from '../Components/InputField';
 import NavHeader from '../Components/NavHeader';
-import Layout from '../Components/Layout';
+// import Layout from '../Components/Layout';
 import { API as api } from '../Services/Api';
 
 const submit = navigation => values => {
@@ -74,7 +75,7 @@ class SignUpScreen extends Component {
     const { handleSubmit, change, submitting, navigation } = this.props;
 
     return (
-      <Layout>
+      <ScrollView contentContainerStyle={layoutStyles}>
         <Field name={'type'} data={typeData}
                setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} label={'Kim jestes?'}
@@ -121,7 +122,7 @@ class SignUpScreen extends Component {
 
         <PrimaryButton onPress={handleSubmit(submit(navigation))}
                        submitting={submitting}>Zarejestruj</PrimaryButton>
-      </Layout>
+      </ScrollView>
     );
   }
 }
@@ -131,4 +132,3 @@ export default reduxForm({
   destroyOnUnmount: false,
   initialValues: { accepted: false, time_zone: 'UTC +01:00' },
 })(SignUpScreen);
-

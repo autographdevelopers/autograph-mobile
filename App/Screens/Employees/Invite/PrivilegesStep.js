@@ -8,10 +8,6 @@ import CellSwitch from '../../../Components/CellWithSwitch';
 import Layout from '../../../Components/Layout';
 import FormErrorMessage from '../../../Components/GenerealFormErrorMessage';
 
-const renderSwitch = ({ input, meta, componentProps }) => (
-  <CellSwitch value={input.value} {...componentProps}/>
-);
-
 class PrivilegesStep extends Component {
   constructor(props) {
     super(props);
@@ -32,34 +28,34 @@ class PrivilegesStep extends Component {
         <FormErrorMessage>{error}</FormErrorMessage>
         <FormSection name={'employee_privilege_set'}>
           <ScrollView>
-            <Field name={'can_manage_employees'} component={renderSwitch}
-                   componentProps={{
-                     label: 'Zarzadzanie pracownikami',
-                     description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.',
-                     onChangeHandler: value => change('employee_privilege_set.can_manage_employees', value)
-                   }}/>
-            <Field name={'can_manage_students'} component={renderSwitch}
-                   componentProps={{
-                     label: 'Zarzadzanie kursantami',
-                     description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..',
-                     onChangeHandler: value => change('employee_privilege_set.can_manage_students', value)
-                   }}/>
-            <Field name={'can_modify_schedules'} component={renderSwitch}
-                   componentProps={{
-                     label: 'Pozwalaj na ustalanie grafiku',
-                     description: 'Zaproszony uzytkownik bedzie mogl ustawiac grafik.',
-                     onChangeHandler: value => change('employee_privilege_set.can_modify_schedules', value)
-                   }}/>
-            <Field name={'is_driving'} component={renderSwitch}
-                   componentProps={{
-                     label: 'Jest instruktorem',
-                     description: 'Lorem ipsum dolor sit melt',
-                     onChangeHandler: value => change('employee_privilege_set.is_driving', value)
-                   }}/>
+            <Field name={'can_manage_employees'} component={CellSwitch}
+                   label={'Zarzadzanie pracownikami'}
+                   description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.'}
+                   onChangeHandler={value => change(
+                     'employee_privilege_set.can_manage_employees', value)}
+            />
+            <Field name={'can_manage_students'} component={CellSwitch}
+                   label={'Zarzadzanie kursantami'}
+                   description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..'}
+                   onChangeHandler={value => change(
+                     'employee_privilege_set.can_manage_students', value)}
+            />
+            <Field name={'can_modify_schedules'} component={CellSwitch}
+                   label={'Pozwalaj na ustalanie grafiku'}
+                   description={'Zaproszony uzytkownik bedzie mogl ustawiac grafik.'}
+                   onChangeHandler={value => change(
+                     'employee_privilege_set.can_modify_schedules', value)}
+            />
+            <Field name={'is_driving'} component={CellSwitch}
+                   label={'Jest instruktorem'}
+                   description={'Lorem ipsum dolor sit melt'}
+                   onChangeHandler={value => change(
+                     'employee_privilege_set.is_driving', value)}
+            />
           </ScrollView>
         </FormSection>
       </Layout>
-    )
+    );
   }
 }
 
@@ -71,12 +67,13 @@ export default reduxForm({
     const title = 'Congratulations!';
     const message = 'Your Invitation has been sent to given email address.';
 
-    const buttons = [{
-      text: 'OK', onPress: () => {
-        props.screenProps.takeMeBack();
-      }
-    }];
+    const buttons = [
+      {
+        text: 'OK', onPress: () => {
+          props.screenProps.takeMeBack();
+        },
+      }];
 
     Alert.alert(title, message, buttons);
-  }
+  },
 })(PrivilegesStep);
