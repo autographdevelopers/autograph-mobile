@@ -5,24 +5,28 @@ import { StyleSheet } from 'react-native';
 import ButtonOutline from '../../Components/ButtonOutline';
 import ButtonWhiteFill from '../../Components/ButtonWhiteFill';
 
-export default LaunchScreen = props => {
+export default LaunchScreen = ({navigation, screenProps}) => {
 
   return (
     <View style={[styles.section, styles.actions]}>
       <View style={styles.actionWrapper}>
-        <Text style={styles.label}>Nie masz jeszcze konta?</Text>
+        <Text style={styles.label}>
+          {screenProps.I18n.t('not_have_account')}
+        </Text>
         <ButtonWhiteFill onPress={() => {
-          props.navigation.navigate('signUp');
+          navigation.navigate('signUp');
         }}>
-          ZAREJESTRUJ SIĘ
+          {screenProps.I18n.t('register')}
         </ButtonWhiteFill>
       </View>
       <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
-        <Text style={styles.label}>Masz już konto?</Text>
+        <Text style={styles.label}>{screenProps.I18n.t('have_account')}</Text>
         <ButtonOutline onPress={() => {
-          props.navigation.navigate('login');
-          props.screenProps.toggleSlogan();
-        }}>ZALOGUJ SIĘ</ButtonOutline>
+          navigation.navigate('login');
+          screenProps.toggleSlogan();
+        }}>
+          {screenProps.I18n.t('login')}
+        </ButtonOutline>
       </View>
     </View>
   );

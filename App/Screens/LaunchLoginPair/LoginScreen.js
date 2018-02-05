@@ -34,7 +34,7 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const { change, error, navigation: { navigate }, submitting } = this.props;
+    const { change, error, navigation: { navigate }, submitting, screenProps } = this.props;
 
     return (
       <KeyboardAwareScrollView contentContainerStyle={[styles.section]}>
@@ -44,7 +44,7 @@ class LoginScreen extends Component {
                  component={LoginInputField}
                  handleTextChange={val => change('email', val)}
                  placeholder={'Type in your email address.'}
-                 label={'EMAIL'}
+                 label={screenProps.I18n.t('email')}
                  icon={'md-mail'}
                  secure={false}
           />
@@ -52,19 +52,19 @@ class LoginScreen extends Component {
                  component={LoginInputField}
                  handleTextChange={val => change('password', val)}
                  placeholder={'Type in your email address.'}
-                 label={'PASSWORD'}
+                 label={screenProps.I18n.t('password')}
                  icon={'md-lock'}
                  secure={true}
           />
         </View>
         <View style={styles.actionsSection}>
           <ButtonOutline onPress={this.submitForm} submitting={submitting}>
-            ZALOGUJ SIE
+            {screenProps.I18n.t('login')}
           </ButtonOutline>
           <View style={styles.resetPasswordContainer}>
             <Icon name={'lock-reset'} size={20} color={Colors.snow}/>
             <TouchableOpacity onPress={() => navigate('resetPassword')}>
-              <Text style={styles.resetPassword}>ZRESETUJ HASLO</Text>
+              <Text style={styles.resetPassword}>{screenProps.I18n.t('reset_password')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -92,7 +92,7 @@ export default reduxForm({
 
 const styles = StyleSheet.create({
   inputsSection: {
-    // justifyContent: 'flex-start',
+    justifyContent: 'flex-start',
     // flex: 1,
   },
   actionsSection: {

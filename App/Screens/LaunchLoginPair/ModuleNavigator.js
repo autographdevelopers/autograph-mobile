@@ -44,21 +44,21 @@ class LaunchLoginPair extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, screenProps } = this.props;
 
     return (
       <FancyBackground>
         <Layout customStyles={{ backgroundColor: 'transparent' }}>
           <View style={styles.container}>
             <View style={styles.brandSection}>
-              <Text style={styles.brandName}>AutoGraph</Text>
+              <Text style={styles.brandName}>{screenProps.I18n.t('brand_name')}</Text>
               <Animated.Text style={[styles.slogan, {opacity: this.variableOpacity}]}>
-                Profesjonalne narzędzie do zarządzania szkołami jazdy.
+                {screenProps.I18n.t('brand_description')}
               </Animated.Text>
             </View>
             <View style={{flex: 1}}>
             <ModuleNavigator
-              navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan}} />
+              navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan, ...screenProps}} />
             </View>
           </View>
         </Layout>

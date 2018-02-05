@@ -12,15 +12,18 @@ I18n.translations = {
 
 let languageCode = I18n.locale.substr(0, 2);
 
-// All other translations for the app goes to the respective language file:
-switch (languageCode) {
-  case 'de':
+console.log('Language COde: ');
+console.log(I18n.currentLocale());
+
+// // All other translations for the app goes to the respective language file:
+// switch (languageCode) {
+//   case 'de':
     I18n.translations.de = require('./languages/de.json');
-    break;
-  case 'fr':
+    // break;
+  // case 'fr':
     I18n.translations.fr = require('./languages/fr.json');
-    break;
-  case 'pl':
+    // break;
+  // case 'pl':
     I18n.translations.pl = require('./languages/pl.json');
-    break;
-}
+    // break;
+// }
