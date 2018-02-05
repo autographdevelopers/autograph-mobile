@@ -78,9 +78,6 @@ export default reduxForm({
     password: 'aaaaaaaa',
   },
   onSubmitSuccess: (result, dispatch, props) => {
-    console.log('key');
-    console.log(props.screenProps.parentNavKey);
-
     const resetNav = NavigationActions.reset({
       index: 0,
       key: null,

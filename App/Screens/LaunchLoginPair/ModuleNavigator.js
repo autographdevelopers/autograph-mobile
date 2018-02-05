@@ -58,7 +58,7 @@ class LaunchLoginPair extends Component {
             </View>
             <View style={{flex: 2}}>
             <ModuleNavigator
-              navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan, parentNavKey: navigation.state.key}} />
+              navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan}} />
             </View>
           </View>
         </Layout>
