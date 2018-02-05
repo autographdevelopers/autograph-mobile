@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { login } from '../../Redux/SessionRedux';
 import { Field, reduxForm } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import ButtonOutline from '../../Components/ButtonOutline';
 import LoginInputField from '../../Components/LoginInputField';
@@ -35,7 +36,7 @@ class LoginScreen extends Component {
     const { change, error, navigation: { navigate }, submitting } = this.props;
 
     return (
-      <View style={[styles.section]}>
+      <KeyboardAwareScrollView contentContainerStyle={[styles.section]}>
         <View style={styles.inputsSection}>
           <FormErrorMessage>{error}</FormErrorMessage>
           <Field name={'email'}
@@ -66,7 +67,7 @@ class LoginScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 };
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   section: {
+    marginTop: 30,
     flex: 1,
   },
 });

@@ -2,7 +2,7 @@ import { Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { reduxForm, Field, SubmissionError, destroy } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
-import layoutStyles from '../Styles/Layout';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   required,
@@ -17,6 +17,7 @@ import AcceptTerms from '../Components/AcceptTerms';
 import DateSelector from '../Components/DateSelector';
 import InputField from '../Components/InputField';
 import NavHeader from '../Components/NavHeader';
+import layoutStyles from '../Styles/Layout';
 // import Layout from '../Components/Layout';
 import { API as api } from '../Services/Api';
 
@@ -75,7 +76,7 @@ class SignUpScreen extends Component {
     const { handleSubmit, change, submitting, navigation } = this.props;
 
     return (
-      <ScrollView contentContainerStyle={layoutStyles}>
+      <KeyboardAwareScrollView contentContainerStyle={layoutStyles}>
         <Field name={'type'} data={typeData}
                setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} label={'Kim jestes?'}
@@ -84,7 +85,7 @@ class SignUpScreen extends Component {
         <Field name={'email'} component={InputField}
                label={'Email'}
                asterix={true} validate={[required, email]}
-               options={{autoCapitalize: 'none'}} />
+               options={{ autoCapitalize: 'none' }}/>
 
         <Field name={'name'} component={InputField} label={'Imię'}
                asterix={true} validate={required}/>
@@ -122,7 +123,7 @@ class SignUpScreen extends Component {
 
         <PrimaryButton onPress={handleSubmit(submit(navigation))}
                        submitting={submitting}>Zarejestruj</PrimaryButton>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
