@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     color: Colors.snow,
     backgroundColor: Colors.transparent,
     fontSize: Fonts.size.small,
-    fontWeight: 'bold',
+    fontFamily: Fonts.type.medium,
     marginBottom: 11,
   },
   input: {

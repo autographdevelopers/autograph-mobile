@@ -15,12 +15,13 @@ class LoginScreen extends Component {
   static navigationOptions = {
     headerTintColor: Colors.snow,
     headerStyle: {
-      position: 'absolute',
+      // position: 'absolute',
       backgroundColor: 'transparent',
-      zIndex: 9999999999,
-      top: 0,
-      left: 0,
-      right: 0,
+      paddingTop: 0,
+      // zIndex: 9999999999,
+      // top: 0,
+      // left: 0,
+      // right: 0,
     },
   };
 
@@ -91,8 +92,8 @@ export default reduxForm({
 
 const styles = StyleSheet.create({
   inputsSection: {
-    justifyContent: 'flex-end',
-    flex: 1,
+    // justifyContent: 'flex-start',
+    // flex: 1,
   },
   actionsSection: {
     flex: 1,
@@ -103,17 +104,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.snow,
     fontSize: Fonts.size.small,
-    fontWeight: 'bold',
+    fontFamily: Fonts.type.medium,
     marginLeft: 8,
   },
   resetPasswordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: 22,
     marginBottom: 36,
   },
   section: {
-    marginTop: 30,
     flex: 1,
   },
 });

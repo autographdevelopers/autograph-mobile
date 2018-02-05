@@ -29,7 +29,10 @@ export default LaunchScreen = props => {
 };
 
 LaunchScreen.navigationOptions = {
-  header: null
+  headerStyle: {
+    backgroundColor: 'transparent',
+    paddingTop: 0,
+  },
 };
 
 const styles = StyleSheet.create({

@@ -38,9 +38,9 @@ class LaunchLoginPair extends Component {
       this.variableOpacity,
       {
         toValue: this.variableOpacity._value === 1 ? 0 : 1 ,
-        duration: 500,
+        duration: 200,
       },
-    ).start(()=>console.log('animated'));
+    ).start();
   };
 
   render() {
@@ -50,13 +50,13 @@ class LaunchLoginPair extends Component {
       <FancyBackground>
         <Layout customStyles={{ backgroundColor: 'transparent' }}>
           <View style={styles.container}>
-            <View style={[styles.section, styles.brandSection]}>
+            <View style={styles.brandSection}>
               <Text style={styles.brandName}>AutoGraph</Text>
               <Animated.Text style={[styles.slogan, {opacity: this.variableOpacity}]}>
                 Profesjonalne narzędzie do zarządzania szkołami jazdy.
               </Animated.Text>
             </View>
-            <View style={{flex: 2}}>
+            <View style={{flex: 1}}>
             <ModuleNavigator
               navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan}} />
             </View>
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   },
   brandSection: {
     justifyContent: 'flex-end',
+    marginTop: 75,
     alignItems: 'center',
   },
   brand: {

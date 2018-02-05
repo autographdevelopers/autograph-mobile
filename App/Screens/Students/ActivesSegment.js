@@ -8,6 +8,7 @@ import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import listProjectorStyles from '../../Styles/ListProjector';
+import Icon from 'react-native-vector-icons/Entypo';
 
 class InvitedStudentsList extends Component {
   componentWillMount() {
@@ -25,6 +26,9 @@ class InvitedStudentsList extends Component {
             renderItem={({ item, index }) => (
               <ListItem
                 title={`${item.name} ${item.surname}`}
+                titleStyle={{fontFamily: Fonts.type.regular}}
+                subtitleStyle={{fontFamily: Fonts.type.regular}}
+                rightIcon={<Icon name={'chevron-thin-right'} color={Colors.strongGrey} size={18} style={{alignSelf: 'center'}}/>}
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}

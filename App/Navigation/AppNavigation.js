@@ -20,26 +20,6 @@ import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
 import { Colors } from '../Themes';
 
 const routeConfigs = {
-  // login: {
-  //   screen: LoginScreen,
-  //   navigationOptions: {
-  //     headerTintColor: Colors.snow,
-  //     headerStyle: {
-  //       position: 'absolute',
-  //       backgroundColor: 'transparent',
-  //       zIndex: 99999,
-  //       top: 0,
-  //       left: 0,
-  //       right: 0,
-  //     },
-  //   }
-  // },
-  // launchScreen: {
-  //   screen: LaunchScreen,
-  //   navigationOptions: {
-  //     header: null
-  //   }
-  // },
   loginLaunch: {
     screen: LaunchLoginPair
   },

@@ -21,5 +21,6 @@ export default styles = {
     color: Colors.strongGrey,
     fontSize: Fonts.size.medium,
     backgroundColor: 'transparent',
+    fontFamily: Fonts.type.base,
   },
 };
