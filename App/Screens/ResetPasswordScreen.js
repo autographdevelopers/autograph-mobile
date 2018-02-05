@@ -9,17 +9,6 @@ import { connect } from 'react-redux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { STATUS } from '../Redux/ResetPasswordRedux'
 
-const styles = StyleSheet.create({
-  instructionText: {
-    marginBottom: 20,
-    textAlign: 'center',
-    color: Colors.strongGrey,
-    fontSize: Fonts.regular
-  },
-  buttonWrapper: {
-    marginTop: 15
-  }
-})
 
 class ResetPasswordScreen extends Component {
   static navigationOptions = {
@@ -100,3 +89,15 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen)
+
+const styles = StyleSheet.create({
+  instructionText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    color: Colors.strongGrey,
+    fontSize: Fonts.regular
+  },
+  buttonWrapper: {
+    marginTop: 15
+  }
+});

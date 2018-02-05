@@ -1,30 +1,41 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { login } from '../Redux/SessionRedux';
+import { login } from '../../Redux/SessionRedux';
 import { Field, reduxForm } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
 
-import ButtonOutline from '../Components/ButtonOutline';
-import LoginInputField from '../Components/LoginInputField';
+import ButtonOutline from '../../Components/ButtonOutline';
+import LoginInputField from '../../Components/LoginInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Fonts, Colors } from '../Themes/index';
-import FancyBackground from '../Components/FancyBackground';
-import FormErrorMessage from '../Components/GenerealFormErrorMessage';
-import Layout from '../Components/Layout';
+import { Fonts, Colors } from '../../Themes/index';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
-const LoginScreen = props => {
-  submitForm = () => {
-    props.handleSubmit(login)();
+class LoginScreen extends Component {
+  static navigationOptions = {
+    headerTintColor: Colors.snow,
+    headerStyle: {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      zIndex: 9999999999,
+      top: 0,
+      left: 0,
+      right: 0,
+    },
   };
 
-  const { change, error, navigation: { navigate }, submitting } = props;
+  submitForm = () => {
+    this.props.handleSubmit(login)();
+  };
 
-  return (
-    <FancyBackground>
-      <Layout customStyles={{ backgroundColor: 'transparent' }}>
-        <View style={styles.titleSection}>
-          <Text style={styles.brandName}>AutoGraph</Text>
-        </View>
+  componentWillUnmount() {
+    this.props.screenProps.toggleSlogan();
+  }
+
+  render() {
+    const { change, error, navigation: { navigate }, submitting } = this.props;
+
+    return (
+      <View style={[styles.section]}>
         <View style={styles.inputsSection}>
           <FormErrorMessage>{error}</FormErrorMessage>
           <Field name={'email'}
@@ -55,9 +66,9 @@ const LoginScreen = props => {
             </TouchableOpacity>
           </View>
         </View>
-      </Layout>
-    </FancyBackground>
-  );
+      </View>
+    );
+  }
 };
 
 export default reduxForm({
@@ -67,8 +78,12 @@ export default reduxForm({
     password: 'aaaaaaaa',
   },
   onSubmitSuccess: (result, dispatch, props) => {
+    console.log('key');
+    console.log(props.screenProps.parentNavKey);
+
     const resetNav = NavigationActions.reset({
       index: 0,
+      key: null,
       actions: [NavigationActions.navigate({ routeName: 'startScreen' })],
     });
 
@@ -81,30 +96,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
   },
-  titleSection: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   actionsSection: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-  },
-  brandName: {
-    color: Colors.snow,
-    fontSize: Fonts.size.big2,
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  slogan: {
-    fontSize: Fonts.size.regular,
-    textAlign: 'center',
-    color: Colors.snow,
-  },
-  error: {
-    textAlign: 'center',
-    color: Colors.salmon,
-    fontWeight: 'bold',
   },
   resetPassword: {
     textAlign: 'center',
@@ -118,5 +113,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 32,
     marginBottom: 36,
+  },
+  section: {
+    flex: 1,
   },
 });

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import LoginScreen from '../Screens/LoginScreen';
-import LaunchScreen from '../Screens/LaunchScreen';
+import LoginScreen from '../Screens/LaunchLoginPair/LoginScreen';
+import LaunchScreen from '../Screens/LaunchLoginPair/LaunchScreen';
+import LaunchLoginPair from '../Screens/LaunchLoginPair/ModuleNavigator';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
@@ -19,27 +20,30 @@ import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
 import { Colors } from '../Themes';
 
 const routeConfigs = {
-  login: {
-    screen: LoginScreen,
-    navigationOptions: {
-      headerTintColor: Colors.snow,
-      headerStyle: {
-        position: 'absolute',
-        backgroundColor: 'transparent',
-        zIndex: 99999,
-        top: 0,
-        left: 0,
-        right: 0,
-      },
-    }
+  // login: {
+  //   screen: LoginScreen,
+  //   navigationOptions: {
+  //     headerTintColor: Colors.snow,
+  //     headerStyle: {
+  //       position: 'absolute',
+  //       backgroundColor: 'transparent',
+  //       zIndex: 99999,
+  //       top: 0,
+  //       left: 0,
+  //       right: 0,
+  //     },
+  //   }
+  // },
+  // launchScreen: {
+  //   screen: LaunchScreen,
+  //   navigationOptions: {
+  //     header: null
+  //   }
+  // },
+  loginLaunch: {
+    screen: LaunchLoginPair
   },
   signUp: { screen: SignUpScreen },
-  launchScreen: {
-    screen: LaunchScreen,
-    navigationOptions: {
-      header: null
-    }
-  },
   resetPassword: { screen: ResetPasswordScreen },
   startScreen: { screen: StartScreen },
   main: {
@@ -75,7 +79,7 @@ const routeConfigs = {
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'launchScreen',
+  initialRouteName: 'loginLaunch',
   cardStyle: styles.card
 };
 

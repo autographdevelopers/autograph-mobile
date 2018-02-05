@@ -1,12 +1,10 @@
 const type = {
-  // TODO  fix Roboto font doesn't load
-  base: 'RobotoRegular',
-  bold: 'RobotoBold',
-  // emphasis: 'HelveticaNeue-Italic',
-  // base: 'Avenir-Book',
-  // bold: 'Avenir-Black',
-  // emphasis: 'HelveticaNeue-Italic'
-}
+  base: 'Roboto',
+  regular: 'Roboto-Regular',
+  medium: 'Roboto-Medium',
+  light: 'Roboto-Light',
+  thin: 'Roboto-Thin',
+};
 
 const size = {
   big2: 45,
