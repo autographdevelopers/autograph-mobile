@@ -63,10 +63,12 @@ export const API = {
   logIn: (email, password) => api.post('auth/sign_in', { email, password }),
   signUp: userData => api.post('auth', userData),
   resetPassword: email => api.post('auth/password', { email }),
-  createDrivingSchool: params => api.post('driving_schools', params),
-  updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
-  fetchDrivingSchools: () => api.get('driving_schools'),
-  showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
+  drivingSchools: {
+    create: params => api.post('driving_schools', params),
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
+    index: () => api.get('driving_schools'),
+    show: () => api.get('driving_schools/:driving_school_id'),
+  },
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
 
   scheduleSettings: {
@@ -96,6 +98,3 @@ export const API = {
     update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`, data)
   }
 };
-
-
-// TODO nest driving school like others
