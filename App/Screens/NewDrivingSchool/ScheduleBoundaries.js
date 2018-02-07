@@ -66,22 +66,10 @@ class ScheduleBoundaries extends Component {
   }
 }
 
-
 ScheduleBoundaries = reduxForm({
   form: FORM_ID,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  initialValues: {
-    schedule_boundaries: [
-      { weekday: 'monday', start_time: null, end_time: null },
-      { weekday: 'tuesday', start_time: null, end_time: null },
-      { weekday: 'wednesday', start_time: null, end_time: null },
-      { weekday: 'thursday', start_time: null, end_time: null },
-      { weekday: 'friday', start_time: null, end_time: null },
-      { weekday: 'saturday', start_time: null, end_time: null },
-      { weekday: 'sunday', start_time: null, end_time: null }
-    ]
-  },
   onSubmitSuccess: (result, dispatch, props) => {
     const { navigation } = props;
 
@@ -97,7 +85,7 @@ ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 
 const mapStateToProps = state => {
   const { currentDrivingSchoolID } = state.context;
-  const schedule_boundaries = state.scheduleBoundaries.collection.filter(item => item.driving_school_id === currentDrivingSchoolID);
+  const schedule_boundaries = state.scheduleBoundaries.collection;
 
   return {
     drivingSchool: state.context.currentDrivingSchoolID,

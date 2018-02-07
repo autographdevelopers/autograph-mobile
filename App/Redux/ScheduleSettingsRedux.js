@@ -3,8 +3,6 @@ import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
 
 export const INITIAL_STATE = {
-  hashMap: {},
-  allIDs: [],
   status: FETCHING_STATUS.READY,
 };
 
@@ -21,14 +19,11 @@ export const scheduleSettingsActionCreators = Creators;
 export const scheduleSettingsTypes = Types;
 /** Handlers */
 export const save = (state, { data }) => {
-  const hashMap = deepClone(state.hashMap);
-  hashMap[data.id] = data;
-  const allIDs = mergeArraysUniq(state.allIDs, [data.id]);
+  console.log(data);
 
   return {
     ...state,
-    hashMap,
-    allIDs,
+    ...data
   };
 };
 

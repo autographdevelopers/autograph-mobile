@@ -3,7 +3,7 @@ import { Text, View, Switch } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default CellWithSwitch = ({ label, value, onChangeHandler, description }) => {
+export default CellWithSwitch = ({ label, input, onChangeHandler, description }) => {
   const styles = StyleSheet.create({
     container: {
       paddingVertical: 5,
@@ -39,7 +39,7 @@ export default CellWithSwitch = ({ label, value, onChangeHandler, description })
         {description && <Text style={styles.description}>{description}</Text> }
       </View>
       <View style={styles.switchBox}>
-        <Switch onValueChange={onChangeHandler} value={value}/>
+        <Switch onValueChange={onChangeHandler} value={input.value}/>
       </View>
     </View>
   );

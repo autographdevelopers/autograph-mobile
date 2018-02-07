@@ -44,6 +44,7 @@ const navigationConfigs = {
 const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class EmployeesModule extends Component {
+  static navigationOptions = {header: null}
 
   goToInviteEmployee = () => {
     this.props.navigation.navigate('inviteEmployee');

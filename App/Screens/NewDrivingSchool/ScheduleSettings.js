@@ -12,11 +12,6 @@ import FORM_IDS from './Constants';
 
 import { connect } from 'react-redux';
 import LoadingHOC from '../../Containers/LoadingHOC';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-
-const renderSwitch = ({ input, meta, componentProps }) => (
-  <CellSwitch value={input.value} {...componentProps}/>
-);
 
 const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 
@@ -46,18 +41,16 @@ class ScheduleSettings extends Component {
     return (
       <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>
-        <Field name={'last_minute_booking_enabled'} component={renderSwitch}
-               componentProps={{
-                 label: 'Zapisy na ostatnia chwile',
-                 description: 'Pozwalaj na zapisy mniej niż dzień przed planowaną jazdą..',
-                 onChangeHandler: value => change('last_minute_booking_enabled', value)
-               }}/>
-        <Field name={'holidays_enrollment_enabled'} component={renderSwitch}
-               componentProps={{
-                 label: 'Święta i dni wolne od pracy',
-                 description: 'Zablokuj możliwoś zapisów w dnia ustawowo wolne od pracy.',
-                 onChangeHandler: value => change('holidays_enrollment_enabled', value)
-               }}/>
+        <Field name={'last_minute_booking_enabled'} component={CellSwitch}
+                 label={'Zapisy na ostatnia chwile'}
+                 description={'Pozwalaj na zapisy mniej niż dzień przed planowaną jazdą..'}
+                 onChangeHandler={value => change('last_minute_booking_enabled', value)}
+               />
+        <Field name={'holidays_enrollment_enabled'} component={CellSwitch}
+                 label={'Święta i dni wolne od pracy'}
+                 description={'Zablokuj możliwoś zapisów w dnia ustawowo wolne od pracy.'}
+                 onChangeHandler={value => change('holidays_enrollment_enabled', value)}
+               />
         {navigation.state.params && navigation.state.params.singleton &&
         <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </Layout>
@@ -100,12 +93,12 @@ ScheduleSettings = LoadingHOC(ScheduleSettings);
 const mapStateToProps = state => {
   const { currentDrivingSchoolID } = state.context,
     { scheduleSettings } = state,
-    { hashMap } = scheduleSettings,
-    ID = Object.keys(hashMap).filter(item => hashMap[item].driving_school_id === currentDrivingSchoolID)[0];
+    { hashMap } = scheduleSettings;
+    // ID = Object.keys(hashMap).filter(item => hashMap[item].driving_school_id === currentDrivingSchoolID)[0];
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: state.scheduleSettings.hashMap[ID],
+    initialValues: state.scheduleSettings,
     status: state.scheduleSettings.status
   }
 };

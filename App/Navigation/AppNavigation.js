@@ -27,8 +27,10 @@ const routeConfigs = {
   resetPassword: { screen: ResetPasswordScreen },
   startScreen: { screen: StartScreen },
   main: {
-    screen: TabNavigation, navigationOptions: {
-      header: null
+    screen: TabNavigation, navigationOptions: ({navigation}) => {
+      return {
+        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+      }
     }
   },
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },

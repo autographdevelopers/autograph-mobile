@@ -29,8 +29,10 @@ class StartScreen extends Component {
   };
 
   navigateToSchoolContext = id => () => {
+    const { drivingSchools } = this.props;
+    const { hashMap } = drivingSchools;
     this.props.setCurrentSchoolContext(id);
-    this.props.navigation.navigate('main');
+    this.props.navigation.navigate('main', {drivingSchool: hashMap[id]});
   };
 
   navigateToNewDrivingSchoolForm = () => {

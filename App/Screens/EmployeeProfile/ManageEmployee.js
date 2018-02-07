@@ -18,10 +18,6 @@ import {
 } from '../../Redux/EmployeePrivileges';
 import LoadingHOC from '../../Containers/LoadingHOC';
 
-const renderSwitch = ({ input, meta, componentProps }) => (
-  <CellSwitch value={input.value} {...componentProps}/>
-);
-
 class ManageEmployee extends Component {
 
   submitForm = () => {
@@ -35,34 +31,30 @@ class ManageEmployee extends Component {
       <View style={{ flex: 1 }}>
         <ListHeader title={'Uprawnienia'}/>
         <Layout>
-          <Field name={'can_manage_employees'} component={renderSwitch}
-                 componentProps={{
-                   label: 'Zarzadzanie pracownikami',
-                   description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.',
-                   onChangeHandler: value => change(
-                     'can_manage_employees', value),
-                 }}/>
-          <Field name={'can_manage_students'} component={renderSwitch}
-                 componentProps={{
-                   label: 'Zarzadzanie kursantami',
-                   description: 'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..',
-                   onChangeHandler: value => change(
-                     'can_manage_students', value),
-                 }}/>
-          <Field name={'can_modify_schedules'} component={renderSwitch}
-                 componentProps={{
-                   label: 'Pozwalaj na ustalanie grafiku',
-                   description: 'Zaproszony uzytkownik bedzie mogl ustawiac grafik.',
-                   onChangeHandler: value => change(
-                     'can_modify_schedules', value),
-                 }}/>
-          <Field name={'is_driving'} component={renderSwitch}
-                 componentProps={{
-                   label: 'Jest instruktorem',
-                   description: 'Lorem ipsum dolor sit melt',
-                   onChangeHandler: value => change(
-                     'is_driving', value),
-                 }}/>
+          <Field name={'can_manage_employees'} component={CellSwitch}
+                   label={'Zarzadzanie pracownikami'}
+                   description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.'}
+                   onChangeHandler={value => change(
+                     'can_manage_employees', value)}
+                 />
+          <Field name={'can_manage_students'} component={CellSwitch}
+                   label={'Zarzadzanie kursantami'}
+                   description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..'}
+                   onChangeHandler={value => change(
+                     'can_manage_students', value)}
+                 />
+          <Field name={'can_modify_schedules'} component={CellSwitch}
+                   label={'Pozwalaj na ustalanie grafiku'}
+                   description={'Zaproszony uzytkownik bedzie mogl ustawiac grafik.'}
+                   onChangeHandler={value => change(
+                     'can_modify_schedules', value)}
+                 />
+          <Field name={'is_driving'} component={CellSwitch}
+                   label={'Jest instruktorem'}
+                   description={'Lorem ipsum dolor sit melt'}
+                   onChangeHandler={value => change(
+                     'is_driving', value)}
+                 />
         </Layout>
         <ButtonPrimary submitting={submitting}
                        onPress={this.submitForm}>Zapisz</ButtonPrimary>

@@ -39,33 +39,27 @@ class NotificationsStep extends Component {
         <FormErrorMessage>{error}</FormErrorMessage>
         <Field
           name="push_notifications_enabled"
-          component={renderSwitch}
-          componentProps={{
-            label: 'Otrzymuj powiadomienia push',
-            description: 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.',
-            onChangeHandler: value => change('push_notifications_enabled',
-              value),
-          }}
+          component={CellSwitch}
+            label={ 'Otrzymuj powiadomienia push'}
+              description={ 'Bedziesz otrzymywał co jakiś czas powiadomienia nawet jesli Twoja aplikacja będzie zamknięta.'}
+              onChangeHandler={ value => change('push_notifications_enabled',
+              value)}
         />
         <Field
           name="weekly_emails_reports_enabled"
-          component={renderSwitch}
-          componentProps={{
-            label: 'Otrzymuj raporty tygodniowe',
-            description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-            onChangeHandler: value => change('weekly_emails_reports_enabled',
-              value),
-          }}
+          component={CellSwitch}
+            label={ 'Otrzymuj raporty tygodniowe'}
+            description={ 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.'}
+            onChangeHandler={ value => change('weekly_emails_reports_enabled',
+              value)}
         />
         <Field
           name="monthly_emails_reports_enabled"
-          component={renderSwitch}
-          componentProps={{
-            label: 'Otrzymuj raporty miesieczne',
-            description: 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.',
-            onChangeHandler: value => change('monthly_emails_reports_enabled',
-              value),
-          }}
+          component={CellSwitch}
+            label={ 'Otrzymuj raporty miesieczne' }
+            description={ 'Będziesz otrzymywał pod koniec tygodnia, email z lorem ipsum.' }
+            onChangeHandler={ value => change('monthly_emails_reports_enabled',
+              value)}
         />
       </Layout>
     );
