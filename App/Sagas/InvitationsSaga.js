@@ -13,6 +13,3 @@ export function* create(api, action) {
     yield put(invite.failure(formError));
   }
 }
-
-//TODO shouldn't actions be in user saga?
-//Ask maciek Can I send multiple invitation to the same person????
