@@ -20,7 +20,7 @@ const INITIAL_STATE = {
     { weekday: 'saturday', start_time: null, end_time: null },
     { weekday: 'sunday', start_time: null, end_time: null }
   ]
-}
+};
 
 const renderScheduleBoundaries = ({ input, meta, setValue }) => {
   return <ScheduleBoundariesPicker value={input.value} meta={meta} setValue={setValue}/>
