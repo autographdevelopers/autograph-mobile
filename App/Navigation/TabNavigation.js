@@ -38,7 +38,7 @@ const routesConfigs = {
     screen: StudentsScreen,
     navigationOptions: {
       tabBarLabel: I18n.t('students'),
-      tabBarIcon: ({ tintColor }) => (<IconE size={25} name={'user'} color={tintColor}/> ),
+      tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'graduation-cap'} color={tintColor}/> ),
     }
   },
   settings: {
