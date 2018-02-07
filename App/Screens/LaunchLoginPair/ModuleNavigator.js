@@ -33,7 +33,6 @@ class LaunchLoginPair extends Component {
   };
 
   toggleSlogan = () => {
-    console.log(this.variableOpacity);
     Animated.timing(
       this.variableOpacity,
       {

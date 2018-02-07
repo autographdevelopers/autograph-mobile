@@ -42,7 +42,6 @@ const submit = navigation => values => {
         }];
       Alert.alert(title, message, buttons);
     } else {
-      console.log(response);
       const errors = {};
       Object.keys(response.data).forEach(field => {
         errors[field] = { all: response.data[field] };

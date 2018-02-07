@@ -12,9 +12,6 @@ I18n.translations = {
 
 let languageCode = I18n.locale.substr(0, 2);
 
-console.log('Language COde: ');
-console.log(I18n.currentLocale());
-
 // // All other translations for the app goes to the respective language file:
 // switch (languageCode) {
 //   case 'de':

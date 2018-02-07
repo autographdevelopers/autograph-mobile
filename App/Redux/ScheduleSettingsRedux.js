@@ -19,8 +19,6 @@ export const scheduleSettingsActionCreators = Creators;
 export const scheduleSettingsTypes = Types;
 /** Handlers */
 export const save = (state, { data }) => {
-  console.log(data);
-
   return {
     ...state,
     ...data
