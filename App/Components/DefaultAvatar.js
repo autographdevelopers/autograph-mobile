@@ -24,8 +24,8 @@ export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLe
     },
     letter: {
       fontSize: Fonts.size.regular,
+      fontFamily: Fonts.type.base,
       color: Colors.snow,
-      fontWeight: 'bold'
     }
   };
 

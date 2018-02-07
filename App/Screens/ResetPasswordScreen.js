@@ -9,21 +9,10 @@ import { connect } from 'react-redux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { STATUS } from '../Redux/ResetPasswordRedux'
 
-const styles = StyleSheet.create({
-  instructionText: {
-    marginBottom: 20,
-    textAlign: 'center',
-    color: Colors.strongGrey,
-    fontSize: Fonts.regular
-  },
-  buttonWrapper: {
-    marginTop: 15
-  }
-})
 
 class ResetPasswordScreen extends Component {
   static navigationOptions = {
-    header: (props) => <NavHeader navigation={props.navigation} title={'Odzyskaj haslo'} />
+    header: (props) => <NavHeader navigation={props.navigation} title={props.screenProps.I18n.t('recover_password')} />
   };
 
   constructor(props) {
@@ -39,10 +28,10 @@ class ResetPasswordScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { status } = nextProps.resetPassword
-
+    const { t } = this.props.screenProps.I18n;
     if (status === STATUS.SUCCESS) {
-      const title = 'Sukces!';
-      const message = 'Email z linkiem do zresetowania Twojego hasła został wysłany.';
+      const title = t('success') + '!';
+      const message = t('password_reset_request_feedback');
       const buttons = [
         {
           text: 'OK', onPress: () => {
@@ -64,20 +53,20 @@ class ResetPasswordScreen extends Component {
   render () {
     const { email } = this.state
     const { error } = this.props.resetPassword
-    const { handleSubmit } = this.props
+    const { handleSubmit, screenProps: {I18n} } = this.props
 
     return (
       <Layout>
         <Text style={styles.instructionText}>
-          Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.
+          {I18n.t('reset_password_instruction')}
         </Text>
         <InputField input={{ onChange: this.handleEmailChange, onBlur: () => {} }}
-                    meta={{ error: error, touched: error }}
-                    label={'Email'}
+                    meta={{ error: error, touched: error }} options={{autoCapitalize: 'none'}}
+                    label={I18n.t('email')}
                     required={true}
         />
         <View style={styles.buttonWrapper}>
-          <PrimaryButton onPress={ handleSubmit(email) }>Odzyskaj hasło</PrimaryButton>
+          <PrimaryButton onPress={ handleSubmit(email) }>{I18n.t('recover_password')}</PrimaryButton>
         </View>
       </Layout>
     )
@@ -100,3 +89,15 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen)
+
+const styles = StyleSheet.create({
+  instructionText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    color: Colors.strongGrey,
+    fontSize: Fonts.regular
+  },
+  buttonWrapper: {
+    marginTop: 15
+  }
+});

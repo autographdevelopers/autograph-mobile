@@ -4,7 +4,6 @@ import { SubmissionError } from 'redux-form';
 import { invite } from '../Redux/InvitationsRedux';
 
 export function* create(api, action) {
-  console.tron.log('IN SAGA:: INVITE USER');
   const response = yield call(api.inviteUser, action.payload);
   if (response.ok) {
     yield put(invite.success());
@@ -14,6 +13,3 @@ export function* create(api, action) {
     yield put(invite.failure(formError));
   }
 }
-
-//TODO shouldn't actions be in user saga?
-//Ask maciek Can I send multiple invitation to the same person????

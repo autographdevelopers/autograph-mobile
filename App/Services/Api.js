@@ -10,8 +10,7 @@ import apisauce, {
 
 const responseHook = response => {
   const sessionMetadata = {};
-  // QUESTION: why response doesnt not return access token wehn validation on server falied?
-  // QUESTION why lack of zip code triggers 500 error
+  // QUESTION: why response doesnt not return access token when validation on server falied?
   if (response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
     sessionMetadata['accessToken'] = response.headers['access-token'];
     sessionMetadata['tokenType'] = response.headers['token-type'];
@@ -50,44 +49,42 @@ const api = apisauce.create({
 api.addResponseTransform(responseHook);
 api.addRequestTransform(requestHook);
 
-const problemCodes = { // TODO check if these are not defined in api object
-  SERVER_ERROR,
-  CLIENT_ERROR,
-  NETWORK_ERROR,
-  TIMEOUT_ERROR,
-  CONNECTION_ERROR
-};
+
 
 export const API = {
-  problemCodes,
+  problemCodes: {
+    SERVER_ERROR,
+    CLIENT_ERROR,
+    NETWORK_ERROR,
+    TIMEOUT_ERROR,
+    CONNECTION_ERROR
+  },
   logIn: (email, password) => api.post('auth/sign_in', { email, password }),
   signUp: userData => api.post('auth', userData),
   resetPassword: email => api.post('auth/password', { email }),
-  createDrivingSchool: params => api.post('driving_schools', params),
-  updateDrivingSchool: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
-  fetchDrivingSchools: () => api.get('driving_schools'),
-  showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
+  drivingSchools: {
+    create: params => api.post('driving_schools', params),
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
+    index: () => api.get('driving_schools'),
+    show: () => api.get('driving_schools/:driving_school_id'),
+  },
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
 
   scheduleSettings: {
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings_set`)
   },
-
   scheduleBoundaries: {
     update: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_boundaries`)
   },
-
   notificationSettings: {
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings_set`),
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params)
   },
-
   employees: {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employees`)
   },
-
   students: {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
   },
@@ -97,5 +94,4 @@ export const API = {
   }
 };
 
-
-// TODO nest driving school like others
+// TODO update header when school name changed

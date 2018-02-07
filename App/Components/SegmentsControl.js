@@ -1,11 +1,15 @@
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import React, { Component } from 'react';
 import { Colors } from '../Themes/';
+import { Fonts } from '../Themes';
 
 export default SegmentsControl = ({ componentProps }) => {
   const tabsContainerStyle = {
     marginVertical: 25,
-    marginHorizontal: 45
+    // marginHorizontal: 45
+    width: '80%',
+    alignSelf: 'center'
+
   };
 
   const tabStyle = {
@@ -15,7 +19,8 @@ export default SegmentsControl = ({ componentProps }) => {
   };
 
   const tabTextStyle = {
-    color: Colors.primaryWarm
+    color: Colors.primaryWarm,
+    fontFamily: Fonts.type.regular
   };
 
   const activeTabStyle = {

@@ -29,8 +29,10 @@ class StartScreen extends Component {
   };
 
   navigateToSchoolContext = id => () => {
+    const { drivingSchools } = this.props;
+    const { hashMap } = drivingSchools;
     this.props.setCurrentSchoolContext(id);
-    this.props.navigation.navigate('main');
+    this.props.navigation.navigate('main', {drivingSchool: hashMap[id]});
   };
 
   navigateToNewDrivingSchoolForm = () => {
@@ -39,7 +41,8 @@ class StartScreen extends Component {
   };
 
   render() {
-    const { status, drivingSchools } = this.props;
+    const { status } = this.props;
+
     return (
       <ScrollView>
         {status === 'FETCHING' ? <ActivityIndicator size={'large'} color={Colors.primaryWarm}/> :

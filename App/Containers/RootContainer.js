@@ -7,6 +7,7 @@ import ReduxPersist from '../Config/ReduxPersist';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../Themes';
 import { contextActionCreators } from '../Redux/ContextRedux';
+import I18n from '../I18n';
 
 const styles = StyleSheet.create({
   applicationView: {
@@ -29,18 +30,20 @@ class RootContainer extends Component {
       setCurrentStudent,
       currentDrivingSchool,
       currentEmployee,
-      currentStudent } = this.props;
+      currentStudent,
+      } = this.props;
 
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' translucent={true}/>
-        <AppWithNavigation screenProps={{
+        <AppWithNavigation generalProps={{
           setCurrentDrivingSchool,
           setCurrentEmployee,
           setCurrentStudent,
           currentDrivingSchool,
           currentEmployee,
           currentStudent,
+          I18n
         }}/>
       </View>
     );
