@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default Slot = ({ start, checked }) => {
+export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{} }) => {
 
   const BULLET_SIZE = 7;
   const CHECK_BULLET_SIZE = 22;
@@ -12,6 +12,8 @@ export default Slot = ({ start, checked }) => {
   const styles = StyleSheet.create({
     container: {
       height: 53,
+      // position: 'absolute',
+      left:0,right:0,
       flexDirection: 'row',
     },
     button: {
@@ -19,7 +21,7 @@ export default Slot = ({ start, checked }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      borderTopWidth: 2,
+      borderTopWidth: 1,
       borderTopColor: Colors.strongGrey,
     },
     rightSection: {
@@ -33,7 +35,7 @@ export default Slot = ({ start, checked }) => {
       backgroundColor: Colors.strongGrey,
     },
     leftSection: {
-      backgroundColor: Colors.snow,
+      backgroundColor: 'transparent',
       flexDirection: 'row',
       alignItems: 'center',
       width: 45,
@@ -65,7 +67,7 @@ export default Slot = ({ start, checked }) => {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 50,
-      backgroundColor: 'rgba(360, 50, 0, .32)',
+      backgroundColor: 'rgba(0, 0, 0, .32)',
       marginRight: 15,
       position: 'relative',
     },
@@ -77,13 +79,13 @@ export default Slot = ({ start, checked }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyles]} >
       <View style={styles.leftSection}>
         <Text style={styles.timeText}>09:00</Text>
         <View style={styles.bullet}/>
       </View>
       <View style={styles.rightSection}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
           <View style={styles.body}>
             <View style={styles.check}>
               <Icon name={'check'} color={Colors.snow} size={14}/>
