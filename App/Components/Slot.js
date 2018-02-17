@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{} }) => {
+export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{}, index }) => {
 
   const BULLET_SIZE = 7;
   const CHECK_BULLET_SIZE = 22;
@@ -44,6 +44,7 @@ export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{} }) =
     timeText: {
       fontSize: Fonts.size.small,
       fontFamily: Fonts.type.base,
+      fontWeight: index %2 ==0  ? "800" : "400",
       flex: 1,
     },
     intervalInfo: {
