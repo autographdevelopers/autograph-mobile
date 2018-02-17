@@ -3,17 +3,20 @@ import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EmployeeProfile from './Profile';
 import EmployeeManagement from './ManageEmployee';
+import SetAvailability from './SetAvailability';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ProfileHeader from '../../Components/ProfileHeader';
 
 const routeConfigs = {
   employeeProfile: {
     screen: EmployeeProfile,
-
   },
   manageEmployee: {
     screen: EmployeeManagement,
   },
+  setAvailability: {
+    screen: SetAvailability
+  }
 };
 
 const navigationConfigs = {
@@ -27,7 +30,8 @@ const navigationConfigs = {
           <NavHeader navigation={navigation} title={title}/>
           <ProfileHeader
             onManagePersonClick={() => navigation.navigate(
-              'manageEmployee', { user, index, title: 'Manage Employee' })}
+              'manageEmployee', { user, index, title: 'Ustaw uprawnienia' })}
+            onSetAvailabilityClick={() => navigation.navigate('setAvailability', { user, index, title: 'Ustaw dyspozycyjnosc' })}
             avatarProps={{ name: user.name, index }}
             user={user}
             routeName={navigation.state.routeName}

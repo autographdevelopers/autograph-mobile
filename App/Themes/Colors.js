@@ -1,6 +1,7 @@
 const colors = {
   primaryWarm: '#00C098',
   primaryCold: '#00E1C9',
+  success: '#45DB5E',
   salmon: '#FA5C78',
   lightGrey: '#EFEFF4',
   mediumGrey: '#CECED2',

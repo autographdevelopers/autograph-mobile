@@ -81,7 +81,7 @@ export default class ProfileHeader extends Component  {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if(nextProps.routeName === 'employeeProfile' && this.props.routeName === 'manageEmployee' )
+    if(nextProps.routeName === 'employeeProfile' && (this.props.routeName === 'manageEmployee' || this.props.routeName === 'setAvailability' ) )
       this.resizeHeaderAndRedirect()();
   };
 
@@ -118,6 +118,17 @@ export default class ProfileHeader extends Component  {
           }}>
             Zarzadzaj pracownikiem
           </ButtonText>
+
+          <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onSetAvailabilityClick)}
+                      customTextStyle={{
+                        fontSize: this.variableFontSize,
+                        height: this.variableFontSize,
+                        opacity: this.variableOpacity
+                      }}>
+            Ustaw dyspozycyjnosc
+          </ButtonText>
+
+
         </View>
       </View>
     );

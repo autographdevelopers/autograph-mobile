@@ -11,6 +11,7 @@
 // import './Stories/UniversalCell.story';
 // import './Stories/CollectionGroup.story';
 // import './Stories/DefaultAvatar.story';
-import './Stories/ProfileHeader.story';
-import './Stories/ProfileLabel.story';
-import './Stories/ListHeader.story';
+// import './Stories/ProfileHeader.story';
+// import './Stories/ProfileLabel.story';
+// import './Stories/ListHeader.story';
+import './Stories/Slot.story';
