@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { StyleSheet } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Fonts, Colors } from '../Themes/'
-import InputFieldLayout from './InputFieldLayout'
-import ButtonText from './ButtonText'
 import { FETCHING_STATUS } from '../Lib/utils';
 
-export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest }) => {
+export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool }) => {
   renderInvitationButtons = () => {
     if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'pending') {
       return (
@@ -28,16 +25,20 @@ export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, re
     if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'active')
       return <Icon name={'chevron-right'} size={30} color={Colors.primaryWarm}/>
     else if (drivingSchool.status === 'pending' && drivingSchool.employee_driving_school_status === 'active' && drivingSchool.privilege_set.is_owner === true)
-      return (
-        <ButtonText position={'center'} onPress={() => {}}>
-          Aktywuj
-        </ButtonText>
-      )
+      return <Text style={{color: Colors.primaryWarm}}>Aktywuj</Text>
+  }
+
+  handleOnPress = () => {
+    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'active') {
+      navigateToSchool(drivingSchool.id)
+    }
+    // else if (drivingSchool.status === 'pending' && drivingSchool.employee_driving_school_status === 'active' && drivingSchool.privilege_set.is_owner === true)
+      // Show modal
   }
 
   return (
     <View>
-      <View style={styles.cellContainer}>
+      <TouchableOpacity style={styles.cellContainer} activeOpacity={0.8} onPress={this.handleOnPress}>
         <Avatar
           medium
           rounded
@@ -49,7 +50,7 @@ export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, re
         </View>
         <View style={{flex: 1}}/>
         {this.renderCellAction()}
-      </View>
+      </TouchableOpacity>
       {this.renderInvitationButtons()}
     </View>
   )

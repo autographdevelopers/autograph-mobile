@@ -30,6 +30,11 @@ class MySchoolsScreen extends Component {
     this.props.navigation.navigate('newDrivingSchool')
   }
 
+  navigateToSchoolContext = id => () => {
+    this.props.setCurrentSchoolContext(id);
+    this.props.navigation.navigate('main');
+  };
+
   getActiveSchools = () =>
     Object.values(this.props.drivingSchools.hashMap).filter(value =>
       value.employee_driving_school_status === 'active' && (value.status == 'active' || value.status === 'pending' && value.privilege_set.is_owner === true)
@@ -52,6 +57,7 @@ class MySchoolsScreen extends Component {
               <DrivingSchoolCell drivingSchool={item}
                                  acceptInvitationRequest={this.props.acceptInvitationRequest}
                                  rejectInvitationRequest={this.props.rejectInvitationRequest}
+                                 navigateToSchool={this.navigateToSchoolContext}
               />
             }
             keyExtractor={(e, i) => i}

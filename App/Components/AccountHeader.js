@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Fonts, Colors } from '../Themes/'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

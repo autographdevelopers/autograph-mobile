@@ -8,7 +8,6 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
-// import StartScreen from '../Screens/StartScreen';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
