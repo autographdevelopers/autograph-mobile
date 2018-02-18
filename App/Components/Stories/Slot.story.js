@@ -25,12 +25,12 @@ const renderSlots2 = () => {
 
 storiesOf('Slots')
 .add('default', () => (
-  <View style={{ marginHorizontal: 30 }}>
+  <View style={{ marginHorizontal: 40 }}>
     {renderSlots2()}
   </View>
 ))
 .add('stacked', () => (
-  <View style={{ marginHorizontal: 30 }}>
+  <View style={{ marginHorizontal: 40 }}>
     {renderSlots1()}
   </View>
 ));
