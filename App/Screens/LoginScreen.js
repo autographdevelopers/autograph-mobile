@@ -75,16 +75,9 @@ class LoginScreen extends Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-    this.state = { email: 'employee@gmail.com', password: 'password' };
-  }
-
-  setField(field) {
-    return text => {
-      this.setState({ [field]: text });
-    }
-  }
+  submitForm = () => {
+    this.props.handleSubmit(login)();
+  };
 
   render() {
     const {change, error, navigation: {navigate}, submitting} = this.props;
@@ -138,13 +131,13 @@ class LoginScreen extends Component {
 export default reduxForm({
   form: 'login',
   initialValues: {
-    email: 'w@gmail.com',
-    password: 'aaaaaaaa',
+    email: 'employee@gmail.com',
+    password: 'password',
   },
   onSubmitSuccess: (result, dispatch, props) => {
     const resetNav = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({routeName: 'startScreen'})],
+      actions: [NavigationActions.navigate({routeName: 'mySchoolsScreen'})],
     });
 
     props.navigation.dispatch(resetNav);

@@ -1,25 +1,27 @@
 import React, { Component } from 'react'
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { StyleSheet } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Fonts, Colors } from '../Themes/'
 import InputFieldLayout from './InputFieldLayout'
 import ButtonText from './ButtonText'
+import { FETCHING_STATUS } from '../Lib/utils';
 
-export default DrivingSchoolCell = ({drivingSchool}) => {
+export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest }) => {
   renderInvitationButtons = () => {
-    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'pending')
+    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'pending') {
       return (
         <View style={styles.invitationResponseSegment}>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#4CDA64'}]}>
+          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#4CDA64'}]} onPress={() => acceptInvitationRequest(drivingSchool.id)}>
             <Text style={{fontSize: 15, color: '#4CDA64'}}>Akceptuj</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#FF3B30'}]}>
+          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#FF3B30'}]} onPress={() => rejectInvitationRequest(drivingSchool.id)}>
             <Text style={{fontSize: 15, color: '#FF3B30'}}>Odrzuć</Text>
           </TouchableOpacity>
         </View>
       )
+    }
   }
 
   renderCellAction = () => {
@@ -75,7 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   invitationResponseButton: {
-    // paddingHorizontal: 10,
     paddingVertical: 10,
     width: '45%',
     borderWidth: 1,

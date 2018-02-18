@@ -69,6 +69,10 @@ export const API = {
   showDrivingSchool: () => api.get('driving_schools/:driving_school_id'),
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
 
+  invitations: {
+    accept: (id) => api.put(`driving_schools/${id}/invitations/accept`),
+    reject: (id) => api.put(`driving_schools/${id}/invitations/reject`)
+  },
   scheduleSettings: {
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings_set`)
