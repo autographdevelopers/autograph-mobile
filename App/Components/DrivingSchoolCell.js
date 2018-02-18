@@ -4,36 +4,34 @@ import { Avatar } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Fonts, Colors } from '../Themes/'
 import { FETCHING_STATUS } from '../Lib/utils';
+import { isDrivingSchoolRelationActive, isDrivingSchoolAwaitingActivation, isDrivingSchoolRelationPending } from '../Lib/DrivingSchoolHelpers';
 
 export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool }) => {
   renderInvitationButtons = () => {
-    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'pending') {
+    console.tron.log('JESTEM')
+    if (isDrivingSchoolRelationPending(drivingSchool))
       return (
         <View style={styles.invitationResponseSegment}>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#4CDA64'}]} onPress={() => acceptInvitationRequest(drivingSchool.id)}>
-            <Text style={{fontSize: 15, color: '#4CDA64'}}>Akceptuj</Text>
+          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: Colors.green}]} onPress={() => acceptInvitationRequest(drivingSchool.id)}>
+            <Text style={{fontSize: Fonts.size.medium, color: Colors.green}}>Akceptuj</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: '#FF3B30'}]} onPress={() => rejectInvitationRequest(drivingSchool.id)}>
-            <Text style={{fontSize: 15, color: '#FF3B30'}}>Odrzuć</Text>
+          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: Colors.red}]} onPress={() => rejectInvitationRequest(drivingSchool.id)}>
+            <Text style={{fontSize: Fonts.size.medium, color: Colors.red}}>Odrzuć</Text>
           </TouchableOpacity>
         </View>
       )
-    }
   }
 
   renderCellAction = () => {
-    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'active')
+    if (isDrivingSchoolRelationActive(drivingSchool))
       return <Icon name={'chevron-right'} size={30} color={Colors.primaryWarm}/>
-    else if (drivingSchool.status === 'pending' && drivingSchool.employee_driving_school_status === 'active' && drivingSchool.privilege_set.is_owner === true)
+    else if (isDrivingSchoolAwaitingActivation(drivingSchool))
       return <Text style={{color: Colors.primaryWarm}}>Aktywuj</Text>
   }
 
   handleOnPress = () => {
-    if (drivingSchool.status === 'active' && drivingSchool.employee_driving_school_status === 'active') {
-      navigateToSchool(drivingSchool.id)
-    }
-    // else if (drivingSchool.status === 'pending' && drivingSchool.employee_driving_school_status === 'active' && drivingSchool.privilege_set.is_owner === true)
-      // Show modal
+    if (isDrivingSchoolRelationActive(drivingSchool))
+      navigateToSchool(drivingSchool)
   }
 
   return (
@@ -67,11 +65,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   drivingSchoolName: {
-    color: 'gray',
-    fontSize: 17
+    color: Colors.strongGrey,
+    fontSize: Fonts.size.regular
   },
   drivingSchoolAddress: {
-    color: 'gray'
+    color: Colors.strongGrey
   },
   invitationResponseSegment: {
     flexDirection: 'row',

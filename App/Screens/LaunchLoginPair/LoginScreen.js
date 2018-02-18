@@ -76,8 +76,8 @@ class LoginScreen extends Component {
 export default reduxForm({
   form: 'login',
   initialValues: {
-    email: 'w@gmail.com',
-    password: 'aaaaaaaa',
+    email: 'employee@gmail.com',
+    password: 'password',
   },
   onSubmitSuccess: (result, dispatch, props) => {
     const resetNav = NavigationActions.reset({

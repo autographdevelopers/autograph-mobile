@@ -27,7 +27,6 @@ const routeConfigs = {
   resetPassword: { screen: ResetPasswordScreen },
   mySchoolsScreen: { screen: MySchoolsScreen,
     navigationOptions: {
-      header: null,
       header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={true}/>
     }
   },

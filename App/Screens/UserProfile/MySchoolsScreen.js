@@ -4,6 +4,7 @@ import { List, ListItem, Avatar } from 'react-native-elements'
 
 import { connect } from 'react-redux'
 import { FETCHING_STATUS } from '../../Lib/utils'
+import { isDrivingSchoolRelationActive, isDrivingSchoolAwaitingActivation, isDrivingSchoolRelationPending } from '../../Lib/DrivingSchoolHelpers';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux'
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux'
 import { contextActionCreators } from '../../Redux/ContextRedux'
@@ -30,26 +31,16 @@ class MySchoolsScreen extends Component {
     this.props.navigation.navigate('newDrivingSchool')
   }
 
-  navigateToSchoolContext = id => () => {
-    this.props.setCurrentSchoolContext(id);
-    this.props.navigation.navigate('main');
-  };
-
-  getActiveSchools = () =>
-    Object.values(this.props.drivingSchools.hashMap).filter(value =>
-      value.employee_driving_school_status === 'active' && (value.status == 'active' || value.status === 'pending' && value.privilege_set.is_owner === true)
-    )
-
-  getInvitingSchools = () =>
-    Object.values(this.props.drivingSchools.hashMap).filter(value =>
-      value.employee_driving_school_status === 'pending' && value.status == 'active'
-    )
+  navigateToSchoolContext = school => {
+    this.props.setCurrentSchoolContext(school.id)
+    this.props.navigation.navigate('main', {drivingSchool: school})
+  }
 
   renderDrivingSchoolsList = (data, helperText) => {
     if (this.props.drivingSchools.status === FETCHING_STATUS.FETCHING) {
       return <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
     } else {
-      if (!!data.length)
+      if (data.length > 0)
         return <List containerStyle={{borderBottomWidth: 0, borderTopWidth: 0, marginTop: 0}}>
           <FlatList
             data={data}
@@ -60,7 +51,7 @@ class MySchoolsScreen extends Component {
                                  navigateToSchool={this.navigateToSchoolContext}
               />
             }
-            keyExtractor={(e, i) => i}
+            keyExtractor={(s, i) => `drivingSchool-${s.id}`}
           />
         </List>
       else
@@ -75,14 +66,14 @@ class MySchoolsScreen extends Component {
   renderOverlay = () => {
     if (this.props.invitations.status === FETCHING_STATUS.FETCHING)
       return <View style={styles.loading}>
-        <ActivityIndicator size='large'/>
+        <ActivityIndicator size='large' color={Colors.snow}/>
       </View>
   }
 
   render () {
     return (
       <View style={{flex: 1}}>
-        <AccountHeader/>
+        <AccountHeader user={this.props.user}/>
         <View style={styles.listContainer}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
@@ -99,12 +90,12 @@ class MySchoolsScreen extends Component {
               Dodaj Szkołę
             </ButtonText>
           </View>
-          {this.renderDrivingSchoolsList(this.getActiveSchools(), 'Tutaj wyświetlą się szkoły, do których należysz.')}
+          {this.renderDrivingSchoolsList([...this.props.activeDrivingSchools, ...this.props.awaitingActivationDrivingSchools], 'Tutaj wyświetlą się szkoły, do których należysz.')}
           <Text style={styles.listHeader}>
             Zaproszenia do współpracy
           </Text>
           <View style={styles.underline}/>
-          {this.renderDrivingSchoolsList(this.getInvitingSchools(), 'Tutaj wyświetlą się zaproszenia do szkół.')}
+          {this.renderDrivingSchoolsList(this.props.invitingDrivingSchools, 'Tutaj wyświetlą się zaproszenia do szkół.')}
         </View>
         {this.renderOverlay()}
       </View>
@@ -139,17 +130,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    zIndex: 100
   }
 })
 
-const mapStateToProps = ({drivingSchools, invitations}) => ({drivingSchools, invitations})
+const mapStateToProps = ({drivingSchools, invitations, user}) => ({
+  activeDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolRelationActive(value)),
+  invitingDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolRelationPending(value)),
+  awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolAwaitingActivation(value)),
+  drivingSchools,
+  invitations,
+  user
+})
 
 const mapDispatchToProps = dispatch => ({
   fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.indexRequest()),
