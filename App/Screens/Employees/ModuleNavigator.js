@@ -4,8 +4,6 @@ import { StackNavigator } from 'react-navigation';
 import InvitedEmployeesList from './InvitedEmployeesList';
 import ActiveEmployeesList from './ActiveEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
-import { connect } from 'react-redux';
-import { contextActionCreators } from '../../Redux/ContextRedux';
 import { View } from 'react-native';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 
@@ -37,8 +35,7 @@ const navigationConfigs = {
           selectedIndex: props.navigation.state.index,
           onTabPress: handlePress,
         }}/>;
-    },
-    headerStyle: { elevation: 0, shadowOpacity: 0 },
+    }
   },
   initialRouteName: 'ActiveEmployeesList',
   cardStyle: navStyles.card,
@@ -47,18 +44,22 @@ const navigationConfigs = {
 const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class EmployeesModule extends Component {
+  static navigationOptions = {header: null}
+
+  goToInviteEmployee = () => {
+    this.props.navigation.navigate('inviteEmployee');
+  };
 
   render() {
-    const { setCurrentEmployee, navigation } = this.props;
+    const { navigation, screenProps } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
-        <ModuleNavigator
-          screenProps={{ parentNav: navigation, setCurrentEmployee }}
-          navigation={navigation}/>
-        <ButtonPrimary float={true}
-                       onPress={() => this.props.navigation.navigate(
-                         'inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+        <ModuleNavigator screenProps={screenProps} navigation={navigation} />
+
+        <ButtonPrimary float={true} onPress={this.goToInviteEmployee}>
+          Dodaj pracownika
+        </ButtonPrimary>
       </View>
     );
   }
@@ -66,9 +67,4 @@ class EmployeesModule extends Component {
 
 EmployeesModule.router = ModuleNavigator.router;
 
-const mapDispatchToProps = dispatch => ( {
-  setCurrentEmployee: id => dispatch(
-    contextActionCreators.setCurrentEmployee(id)),
-} );
-
-export default connect(null, mapDispatchToProps)(EmployeesModule);
+export default EmployeesModule;

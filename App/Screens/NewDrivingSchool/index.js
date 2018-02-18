@@ -26,8 +26,7 @@ const routeConfigs = {
       header: props => {
         return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
           labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
-      },
-      headerStyle: { elevation: 0, shadowOpacity: 0 }
+      }
     }
   },
   step1: {
@@ -58,9 +57,6 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  navigationOptions: {
-    headerStyle: { elevation: 0, shadowOpacity: 0 }
-  },
   initialRouteName: 'step0',
   cardStyle: navStyles.card
 };

@@ -18,7 +18,8 @@ export default ButtonOutline = ({ color=Colors.snow, children, onPress, submitti
       color: color || Colors.snow,
       textAlign: 'center',
       fontSize: Fonts.size.medium,
-      fontWeight: '700'
+      fontFamily: Fonts.type.medium,
+      letterSpacing: 1.2 // ios only
     }
   });
 

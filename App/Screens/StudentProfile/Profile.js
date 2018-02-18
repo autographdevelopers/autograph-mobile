@@ -3,7 +3,7 @@ import Layout from '../../Components/Layout';
 
 export default class Profile extends Component {
   componentWillUnmount = () => {
-    this.props.screenProps.setCurrentEmployee(null);
+    this.props.navigation.state.params.setCurrentEmployee(null);
   };
 
   render() {

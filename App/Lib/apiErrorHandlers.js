@@ -4,6 +4,9 @@ export const gatherErrorsFromResponse = (response, api) => {
   switch (response.problem) {
     case api.problemCodes.CLIENT_ERROR:
       Object.keys(response.data).forEach(field => errors[field] = { all: response.data[field] });
+      if(response.status === 401) {
+        errors['_error'] = 'Authentication failure. Please login with valid credentials.';
+      }
       break;
     case api.problemCodes.SERVER_ERROR:
       errors['_error'] = 'Upps server error occured - it\'s probably our fault, please try again later.';

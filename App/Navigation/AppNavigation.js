@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import LoginScreen from '../Screens/LoginScreen';
-import LaunchScreen from '../Screens/LaunchScreen';
+import LoginScreen from '../Screens/LaunchLoginPair/LoginScreen';
+import LaunchScreen from '../Screens/LaunchLoginPair/LaunchScreen';
+import LaunchLoginPair from '../Screens/LaunchLoginPair/ModuleNavigator';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
@@ -15,11 +16,14 @@ import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
+import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
+import { Colors } from '../Themes';
 
 const routeConfigs = {
-  login: { screen: LoginScreen },
+  loginLaunch: {
+    screen: LaunchLoginPair
+  },
   signUp: { screen: SignUpScreen },
-  launchScreen: { screen: LaunchScreen },
   resetPassword: { screen: ResetPasswordScreen },
   mySchoolsScreen: { screen: MySchoolsScreen,
     navigationOptions: {
@@ -28,8 +32,10 @@ const routeConfigs = {
     }
   },
   main: {
-    screen: TabNavigation, navigationOptions: {
-      header: null
+    screen: TabNavigation, navigationOptions: ({navigation}) => {
+      return {
+        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+      }
     }
   },
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
@@ -57,7 +63,7 @@ const routeConfigs = {
 
 const navigationConfigs = {
   headerMode: 'float',
-  initialRouteName: 'launchScreen',
+  initialRouteName: 'loginLaunch',
   cardStyle: styles.card
 };
 

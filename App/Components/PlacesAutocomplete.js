@@ -38,7 +38,6 @@ export default PlacesAutocomplete  = ({ input, meta, label, asterix, setValue, l
 
             setValue('street', details.formatted_address);
             closeListView();
-            console.log('On press handler finished!!');
           }}
           textInputProps={{
             value: input.value,

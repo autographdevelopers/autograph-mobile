@@ -33,8 +33,6 @@ const navigationConfigs = {
             routeName={navigation.state.routeName}
           />
         </View>
-      ,
-      headerStyle: { elevation: 0, shadowOpacity: 0 },
     };
   },
   initialRouteName: 'employeeProfile',
@@ -47,15 +45,19 @@ const ProfileNavigation = StackNavigator(routeConfigs, navigationConfigs);
 export default class EmployeeProfileModule extends Component {
   static navigationOptions = { header: null };
 
-  render() {
-    const { user, index, setCurrentEmployee } = this.props.navigation.state.params;
+  componentWillUnmount = () => {
+    this.props.screenProps.setCurrentEmployee(null);
+  };
 
-    console.log(this.props);
+  render() {
+    const { user, index } = this.props.navigation.state.params;
+    const { navigation } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
-        <ProfileNavigation navigation={this.props.navigation}
-                           screenProps={{...this.props.screenProps, user, index }}/>
+        <ProfileNavigation
+          navigation={navigation}
+          screenProps={{ user, index }} />
       </View>
     );
   }

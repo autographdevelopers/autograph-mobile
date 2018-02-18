@@ -1,1 +1,24 @@
-{}
+{
+  "brand_name": "AutoGraph",
+  "brand_description": "Profesjonalne narzędzie do zarządzania szkołami jazdy.",
+  "login": "ZALOGUJ SIĘ",
+  "register": "ZAREJESTRUJ SIĘ",
+  "have_account": "Masz już konto?",
+  "not_have_account": "Nie masz jeszcze konta?",
+  "reset_password": "ZRESETUJ HASLO",
+  "activities": "Aktywnosc",
+  "calendar": "Kalendarz",
+  "employees": "Pracownicy",
+  "students": "Kursanci",
+  "settings": "Ustawienia",
+  "active": "Aktywni",
+  "invited": "Zaproszeni",
+  "add_employee": "Dodaj pracownika",
+  "add_student": "Dodaj kursanta",
+  "email": "Email",
+  "password": "Haslo",
+  "reset_password_instruction": "Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.",
+  "recover_password": "Odzyskaj haslo",
+  "success": "Udało się",
+  "password_reset_request_feedback": "Email z linkiem do zresetowania Twojego hasła został wysłany."
+}

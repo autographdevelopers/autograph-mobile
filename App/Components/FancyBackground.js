@@ -23,7 +23,7 @@ export default FancyBackground = ({ children }) => {
   return (
     <View style={styles.container}>
       <Image resizeMode={'stretch'} source={require('../Images/login_pic.jpg')} style={StyleSheet.absoluteFillObject}/>
-      <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1, y: 0.5 }}
+      <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1.0, y: 0.5 }}
                       colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.overlay}/>
       <View style={styles.children}>{children}</View>
     </View>

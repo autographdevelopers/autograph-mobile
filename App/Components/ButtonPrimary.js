@@ -22,6 +22,7 @@ export default ButtonPrimary = ({ onPress, children, submitting=false, float=fal
     },
     text: {
       fontSize: Fonts.size.regular,
+      fontFamily: Fonts.type.base,
       color: Colors.snow,
       backgroundColor: 'transparent',
       textAlign: 'center'

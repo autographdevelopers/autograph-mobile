@@ -18,7 +18,8 @@ export default ButtonWhiteFill = ({ color, children, onPress }) => {
       color: color || Colors.softBlack,
       textAlign: 'center',
       fontSize: Fonts.size.medium,
-      fontWeight: '700'
+      fontFamily: Fonts.type.medium,
+      letterSpacing: 1.2 // ios only
     }
   });
 

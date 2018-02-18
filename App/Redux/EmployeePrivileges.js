@@ -21,7 +21,7 @@ const INITIAL_STATE = {
 // can_modify_schedules
 // is_driving
 // is_owner
-// status: FETCHING_STATUS[?]
+status: FETCHING_STATUS.READY
 };
 
 export const saveHandler = (state, { data }) => ({...state, data});
@@ -34,6 +34,4 @@ export const employeePrivilegesReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: changeStatusHandler,
 });
 
-
 // TODO here we keep privileges of currently browsed employee, create another educer for myPrivileges
-// TODO change hashmap to array in schedule settings

@@ -7,7 +7,6 @@ import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* create(api, action) {
-  console.tron.log('IN SAGA:: INVITE USER');
   const response = yield call(api.inviteUser, action.payload);
   if (response.ok) {
     yield put(invite.success());
@@ -41,6 +40,3 @@ export function* reject(api, action) {
     yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }
-
-//TODO shouldn't actions be in user saga?
-//Ask maciek Can I send multiple invitation to the same person????
