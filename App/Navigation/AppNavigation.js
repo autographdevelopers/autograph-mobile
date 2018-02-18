@@ -57,8 +57,11 @@ const routeConfigs = {
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
     }
+  },
+  userProfile: {
+    screen: EmployeeProfileModule,
   }
-};
+}
 
 const navigationConfigs = {
   headerMode: 'float',

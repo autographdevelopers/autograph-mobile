@@ -8,7 +8,6 @@ import { isDrivingSchoolRelationActive, isDrivingSchoolAwaitingActivation, isDri
 
 export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool }) => {
   renderInvitationButtons = () => {
-    console.tron.log('JESTEM')
     if (isDrivingSchoolRelationPending(drivingSchool))
       return (
         <View style={styles.invitationResponseSegment}>
