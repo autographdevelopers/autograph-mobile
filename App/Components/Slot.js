@@ -3,11 +3,15 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
+import { SLOT_STATUS } from '../Lib/utils';
 
-export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{}, index }) => {
+export default Slot = ({ slot, containerStyles={}, onPress=()=>{}, index }) => {
 
   const BULLET_SIZE = 7;
   const CHECK_BULLET_SIZE = 22;
+
+  const isBooked = slot.status === SLOT_STATUS.BOOKED;
+  const minutes = slot.start_hour.split(':')[1];
 
   const styles = StyleSheet.create({
     container: {
@@ -17,7 +21,7 @@ export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{}, ind
       flexDirection: 'row',
     },
     button: {
-      backgroundColor: Colors.success,
+      backgroundColor: isBooked ? Colors.success : Colors.mediumGrey,
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
@@ -44,7 +48,7 @@ export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{}, ind
     timeText: {
       fontSize: Fonts.size.small,
       fontFamily: Fonts.type.base,
-      fontWeight: index %2 ==0  ? "800" : "400",
+      fontWeight: minutes === '00'  ? '600' : '400',
       flex: 1,
     },
     intervalInfo: {
@@ -82,20 +86,23 @@ export default Slot = ({ start, checked, containerStyles={}, onPress=()=>{}, ind
   return (
     <View style={[styles.container, containerStyles]} >
       <View style={styles.leftSection}>
-        <Text style={styles.timeText}>09:00</Text>
+        <Text style={styles.timeText}>{slot.start_hour}</Text>
         <View style={styles.bullet}/>
       </View>
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
-          <View style={styles.body}>
-            <View style={styles.check}>
-              <Icon name={'check'} color={Colors.snow} size={14}/>
+          { isBooked &&
+            <View style={styles.body}>
+              <View style={styles.check}>
+                <Icon name={'check'} color={Colors.snow} size={14}/>
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${(parseInt(minutes) + 30)%60}`}</Text>
+                <Text style={styles.title}>DYSPOZYCJA</Text>
+              </View>
             </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.intervalInfo}>9:00 - 9:30</Text>
-              <Text style={styles.title}>DYSPOZYCJA</Text>
-            </View>
-          </View>
+          }
+          { !isBooked && <View style={styles.body}><Text>---</Text></View> }
         </TouchableOpacity>
       </View>
     </View>

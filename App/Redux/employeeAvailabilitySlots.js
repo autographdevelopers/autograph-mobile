@@ -1,30 +1,47 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone, FETCHING_STATUS } from '../Lib/utils';
+import { deepClone, FETCHING_STATUS, generateDailySlots, SLOT_STATUS } from '../Lib/utils';
 
 const { Types, Creators } = createActions({
-  showRequest: null,
+  indexRequest: null,
   save: ['data'],
-  changeStatus: ['status']
-}, { prefix: 'EMPLOYEE_PRIVILEGES_' });
+  toggleSlot: ['weekDay', 'start_hour'],
+  changeStatus: ['status'],
+}, { prefix: 'EMPLOYEE_AVAILABILITY_SLOTS_' });
 
-export const employeePrivilegesActionCreators = Creators;
-export const employeePrivilegesActionTypes = Types;
+export const employeeAvailabilitySlotsActionCreators = Creators;
+export const employeeAvailabilitySlotsActionTypes = Types;
 
 const INITIAL_STATE = {
-  // data: {
-  //   monday: ['9:00 TIMEZONE', '9:30 TIMEZONE']
-  // },
-  // status: FETCHING_STATUS.READY
+  schedule: {
+    monday: generateDailySlots(),
+    tuesday: generateDailySlots(),
+    wednesday: generateDailySlots(),
+    thursday: generateDailySlots(),
+    friday: generateDailySlots(),
+    saturday: generateDailySlots(),
+    sunday: generateDailySlots(),
+  },
+  status: FETCHING_STATUS.READY,
 };
 
-export const saveHandler = (state, { data }) => ({...state, data});
+export const saveHandler = (state, { schedule }) => ( { ...state, schedule } );
+
+export const toggleSlotHandler = (state, { weekDay, start_hour }) => {
+  const newState = deepClone(state),
+    schedule = newState.schedule[weekDay],
+    slot = schedule.find( item => item.start_hour === start_hour ) ;
+
+    slot.status = slot.status === SLOT_STATUS.BOOKED ? SLOT_STATUS.ACTIVE : SLOT_STATUS.BOOKED;
+
+    return newState;
+};
 
 export const changeStatusHandler = (state, { status }) => {
-  return {...deepClone(state), status}
+  return { ...deepClone(state), status };
 };
 
-export const employeePrivilegesReducer = createReducer(INITIAL_STATE, {
+export const employeeAvailabilitySlotsReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE]: saveHandler,
   [Types.CHANGE_STATUS]: changeStatusHandler,
+  [Types.TOGGLE_SLOT]: toggleSlotHandler,
 });
-

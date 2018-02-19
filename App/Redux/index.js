@@ -14,6 +14,7 @@ import formActionSaga from 'redux-form-saga';
 import { employeesReducer } from './EmployeesRedux';
 import { studentsReducer } from './StudentsRedux';
 import { employeePrivilegesReducer } from './EmployeePrivileges';
+import { employeeAvailabilitySlotsReducer } from './employeeAvailabilitySlots';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -29,7 +30,8 @@ export const reducers = combineReducers({
   scheduleBoundaries: scheduleBoundariesReducer,
   employees: employeesReducer,
   students: studentsReducer,
-  employeePrivileges: employeePrivilegesReducer
+  employeePrivileges: employeePrivilegesReducer,
+  employeeAvailabilitySlots: employeeAvailabilitySlotsReducer
 });
 
 export default () => {
