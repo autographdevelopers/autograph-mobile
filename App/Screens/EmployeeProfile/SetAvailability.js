@@ -78,11 +78,10 @@ class SetAvailability extends Component {
   };
 
   render() {
-
-    const { t } = this.props.screenProps.I18n;
-    const currentDayText = t(`weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize();
-    const saveText = t('save').capitalize();
-    const availabilityText = t('availability');
+    const { t } = this.props.screenProps.I18n,
+      currentDayText = t(`weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize(),
+      saveText = t('save').capitalize(),
+      availabilityText = t('availability');
 
     return (
       <View style={{ flex: 1 }}>
@@ -144,5 +143,8 @@ const mapDispatchToProps = dispatch => ({
   toggleSlotState: (day, hour) => () => dispatch(
     employeeAvailabilitySlotsActionCreators.toggleSlot(day, hour)),
 });
+
+// TODO extract weekdaypicker(used also in schedule boundaries) to separate component
+// TODO generate WEEKDAYS constant from translations
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetAvailability);

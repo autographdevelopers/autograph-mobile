@@ -5,13 +5,11 @@ import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 import { SLOT_STATUS } from '../Lib/utils';
 
-export default Slot = ({ slot, containerStyles={}, onPress=()=>{}, index }) => {
-
-  const BULLET_SIZE = 7;
-  const CHECK_BULLET_SIZE = 22;
-
-  const isBooked = slot.status === SLOT_STATUS.BOOKED;
-  const minutes = slot.start_hour.split(':')[1];
+export default Slot = ({ slot, containerStyles={}, onPress=()=>{} }) => {
+  const BULLET_SIZE = 7,
+   CHECK_BULLET_SIZE = 22,
+   isBooked = slot.status === SLOT_STATUS.BOOKED,
+   minutes = slot.start_hour.split(':')[1];
 
   const styles = StyleSheet.create({
     container: {
@@ -61,7 +59,7 @@ export default Slot = ({ slot, containerStyles={}, onPress=()=>{}, index }) => {
       color: Colors.snow,
       fontFamily: Fonts.type.base,
       fontSize: Fonts.size.small,
-      fontWeight: '800',
+      fontWeight: '700',
     },
     textContainer: {
       alignItems: 'center',
@@ -108,3 +106,6 @@ export default Slot = ({ slot, containerStyles={}, onPress=()=>{}, index }) => {
     </View>
   );
 };
+
+// TODO work on displaying interval(incorporate moment.js)
+// TODO incorporate stack like view
