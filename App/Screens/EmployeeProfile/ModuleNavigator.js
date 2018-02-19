@@ -55,13 +55,13 @@ export default class EmployeeProfileModule extends Component {
 
   render() {
     const { user, index } = this.props.navigation.state.params;
-    const { navigation } = this.props;
+    const { navigation, screenProps } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
         <ProfileNavigation
           navigation={navigation}
-          screenProps={{ user, index }} />
+          screenProps={{ user, index, ...screenProps }} />
       </View>
     );
   }

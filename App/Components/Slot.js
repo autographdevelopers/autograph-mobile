@@ -16,8 +16,8 @@ export default Slot = ({ slot, containerStyles={}, onPress=()=>{}, index }) => {
   const styles = StyleSheet.create({
     container: {
       height: 53,
-      // position: 'absolute',
-      left:0,right:0,
+      left:0,
+      right:0,
       flexDirection: 'row',
     },
     button: {
