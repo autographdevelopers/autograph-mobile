@@ -76,14 +76,14 @@ class LoginScreen extends Component {
 export default reduxForm({
   form: 'login',
   initialValues: {
-    email: 'w@gmail.com',
-    password: 'aaaaaaaa',
+    email: 'employee@gmail.com',
+    password: 'password',
   },
   onSubmitSuccess: (result, dispatch, props) => {
     const resetNav = NavigationActions.reset({
       index: 0,
       key: null,
-      actions: [NavigationActions.navigate({ routeName: 'startScreen' })],
+      actions: [NavigationActions.navigate({ routeName: 'mySchoolsScreen' })],
     });
 
     props.navigation.dispatch(resetNav);

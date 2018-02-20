@@ -10,6 +10,7 @@ import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsS
 import { employeesActionTypes } from '../Redux/EmployeesRedux';
 import { studentsActionTypes } from '../Redux/StudentsRedux';
 import { employeePrivilegesActionTypes } from '../Redux/EmployeePrivileges';
+import { invitationActionTypes } from '../Redux/InvitationsRedux';
 
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
@@ -37,9 +38,13 @@ import {
 
 import {
   update as updateScheduleSettingsSaga,
-  show as  showScheduleSettingsSaga } from './ScheduleSettingsSaga';
+  show as showScheduleSettingsSaga } from './ScheduleSettingsSaga';
 
-import { create as createInvitation } from './InvitationsSaga';
+import {
+  create as createInvitation,
+  accept as acceptInvitation,
+  reject as rejectInvitation
+} from './InvitationsSaga';
 
 import {
   update as updateEmployeePrivilegesSaga,
@@ -77,6 +82,8 @@ export default function* root() {
     takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api),
 
     takeLatest(invite.REQUEST, createInvitation, api),
+    takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitation, api),
+    takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitation, api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
