@@ -71,6 +71,8 @@ class MySchoolsScreen extends Component {
   }
 
   render () {
+    const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools } = this.props;
+
     return (
       <View style={{flex: 1}}>
         <AccountHeader user={this.props.user}/>
@@ -90,12 +92,12 @@ class MySchoolsScreen extends Component {
               Dodaj Szkołę
             </ButtonText>
           </View>
-          {this.renderDrivingSchoolsList([...this.props.activeDrivingSchools, ...this.props.awaitingActivationDrivingSchools], 'Tutaj wyświetlą się szkoły, do których należysz.')}
+          {this.renderDrivingSchoolsList([...activeDrivingSchools, ...awaitingActivationDrivingSchools], 'Tutaj wyświetlą się szkoły, do których należysz.')}
           <Text style={styles.listHeader}>
             Zaproszenia do współpracy
           </Text>
           <View style={styles.underline}/>
-          {this.renderDrivingSchoolsList(this.props.invitingDrivingSchools, 'Tutaj wyświetlą się zaproszenia do szkół.')}
+          {this.renderDrivingSchoolsList(invitingDrivingSchools, 'Tutaj wyświetlą się zaproszenia do szkół.')}
         </View>
         {this.renderOverlay()}
       </View>
@@ -139,9 +141,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = ({drivingSchools, invitations, user}) => ({
-  activeDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolRelationActive(value)),
-  invitingDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolRelationPending(value)),
-  awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap).filter(value => isDrivingSchoolAwaitingActivation(value)),
+  activeDrivingSchools: Object.values(drivingSchools.hashMap).filter(isDrivingSchoolRelationActive),
+  invitingDrivingSchools: Object.values(drivingSchools.hashMap).filter(isDrivingSchoolRelationPending),
+  awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap).filter(isDrivingSchoolAwaitingActivation),
   drivingSchools,
   invitations,
   user
