@@ -11,6 +11,8 @@ const colors = {
   purple: '#9A66B0',
   yellow: '#FFCC02',
   blue: '#2DAAFE',
+  red: '#FF3B30',
+  green: '#4CDA64',
 
 
   clear: 'rgba(0,0,0,0)',

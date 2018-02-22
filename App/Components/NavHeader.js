@@ -3,9 +3,29 @@ import { Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Fonts, Colors } from '../Themes/'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
-export default NavHeader = ({ navigation, title }) => {
+export default NavHeader = ({ navigation, title, close = false }) => {
+  const displayLeftButton = () => {
+    if(!close) {
+      return (
+        <TouchableOpacity onPress={() => navigation.goBack(null)}><FontAwesomeIcon name={'angle-left'} size={30}
+                                                                        color={Colors.snow}/></TouchableOpacity>
+      )
+    }
+  };
+
+  const displayRightButton  = () => {
+    if(close) {
+      return (
+        <TouchableOpacity onPress={() => navigation.goBack(null)} style={{alignSelf: 'center'}}>
+          <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>
+        </TouchableOpacity>
+      )
+    }
+  };
+
   const styles = StyleSheet.create({
     mainContainer: {
       height: 64,
@@ -20,7 +40,7 @@ export default NavHeader = ({ navigation, title }) => {
     },
     rightContainer: {
       width: 25,
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
     title: {
       textAlign: 'center',
@@ -42,11 +62,12 @@ export default NavHeader = ({ navigation, title }) => {
                     colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.mainContainer}>
       <View style={styles.wrapper}>
         <View style={styles.leftContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack(null)}><Icon name={'angle-left'} size={30}
-                                                                      color={Colors.snow}/></TouchableOpacity>
+          {displayLeftButton()}
         </View>
         <Text style={styles.title}>{title}</Text>
-        <View style={styles.rightContainer}/>
+        <View style={styles.rightContainer}>
+          {displayRightButton()}
+        </View>
       </View>
     </LinearGradient>
   );

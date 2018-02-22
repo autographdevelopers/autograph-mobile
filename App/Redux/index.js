@@ -15,6 +15,7 @@ import { employeesReducer } from './EmployeesRedux';
 import { studentsReducer } from './StudentsRedux';
 import { employeePrivilegesReducer } from './EmployeePrivileges';
 import { employeeAvailabilitySlotsReducer } from './employeeAvailabilitySlots';
+import { invitationsReducer } from './InvitationsRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -31,7 +32,8 @@ export const reducers = combineReducers({
   employees: employeesReducer,
   students: studentsReducer,
   employeePrivileges: employeePrivilegesReducer,
-  employeeAvailabilitySlots: employeeAvailabilitySlotsReducer
+  employeeAvailabilitySlots: employeeAvailabilitySlotsReducer,
+  invitations: invitationsReducer
 });
 
 export default () => {

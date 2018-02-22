@@ -9,13 +9,13 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
-import StartScreen from '../Screens/StartScreen';
 import TabNavigation from './TabNavigation';
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
 import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
+import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
 import { Colors } from '../Themes';
 
@@ -25,7 +25,11 @@ const routeConfigs = {
   },
   signUp: { screen: SignUpScreen },
   resetPassword: { screen: ResetPasswordScreen },
-  startScreen: { screen: StartScreen },
+  mySchoolsScreen: { screen: MySchoolsScreen,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={true}/>
+    }
+  },
   main: {
     screen: TabNavigation, navigationOptions: ({navigation}) => {
       return {
@@ -57,7 +61,7 @@ const routeConfigs = {
   userProfile: {
     screen: EmployeeProfileModule,
   }
-};
+}
 
 const navigationConfigs = {
   headerMode: 'float',
