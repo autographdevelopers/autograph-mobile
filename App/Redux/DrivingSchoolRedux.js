@@ -10,6 +10,7 @@ export const updateDrivingSchool = createFormAction('UPDATE_DRIVING_SCHOOL');
 
 const { Types, Creators } = createActions({
   saveSingle: ['data'],
+  destroySingle: ['schoolId'],
   saveCollection: ['schools'],
   changeStatus: ['status'],
   /* SAGAS */
@@ -42,6 +43,18 @@ export const saveSingleHandler = (state, { data }) => {
   }
 };
 
+export const destroySingleHandler = (state, { schoolId }) => {
+  const hashMap = deepClone(state.hashMap);
+  delete hashMap[schoolId];
+  const allIDs = state.allIDs.filter(id => schoolId !== id );
+
+  return {
+    ...state,
+    hashMap,
+    allIDs
+  }
+};
+
 export const saveCollectionHandler = (state, { schools }) =>
   ({ ...state, hashMap: arrayToHash(schools), allIDs: schools.map(s => s.id) });
 
@@ -51,6 +64,7 @@ export const changeStatusHandler = (state, { status }) => ({ ...state, status })
 
 export const drivingSchoolReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_SINGLE]: saveSingleHandler,
+  [Types.DESTROY_SINGLE]: destroySingleHandler,
   [Types.SAVE_COLLECTION]: saveCollectionHandler,
   [Types.CHANGE_STATUS]: changeStatusHandler
 });
