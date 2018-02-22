@@ -80,12 +80,10 @@ class SetAvailability extends Component {
   render() {
     const { t } = this.props.screenProps.I18n,
       currentDayText = t(`weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize(),
-      saveText = t('save').capitalize(),
-      availabilityText = t('availability');
+      saveText = t('save').capitalize();
 
     return (
       <View style={{ flex: 1 }}>
-        <ListHeader title={availabilityText}/>
         <ScrollView showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.scheduleContainer}>
           <View style={[styles.currentDayIndexRow]}>
