@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Modal, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { Colors } from '../Themes/';
+import { Colors, Fonts } from '../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // Props API
@@ -38,7 +38,7 @@ export default DialogBox = ({
       height: 400,
       width: 300,
       paddingHorizontal: 15,
-      paddingVertical: 15,
+      paddingBottom: 15,
       marginHorizontal: 15,
       alignSelf: 'center',
       backgroundColor: Colors.snow,
@@ -53,12 +53,47 @@ export default DialogBox = ({
     semicircle: {
       height: 400,
       width: 400,
-      top: '-75%',
+      top: -300,
       position: 'absolute',
       borderRadius: 200,
-      backgroundColor: Colors.lightGrey,
-      alignSelf: 'center'
+      backgroundColor: Colors.subtleGray,
+      alignSelf: 'center',
     },
+    title: {
+      marginTop: 100,
+      textAlign: 'center',
+      fontFamily: Fonts.type.base,
+      fontWeight: '600',
+      fontSize: Fonts.size.regular,
+    },
+    description: {
+      textAlign: 'center',
+      color: Colors.strongGrey,
+      fontFamily: Fonts.type.base,
+      fontSize: Fonts.size.medium,
+      fontWeight: '400',
+
+    },
+    closeBtn: {
+      position: 'absolute',
+      top: 15,
+      right: 15,
+    },
+    crossIcon: {
+      backgroundColor: 'transparent',
+      fontWeight: '100'
+    },
+    triangle: {
+      width: 0,
+      height: 0,
+      borderTopWidth: 400,
+      borderRightWidth: 300,
+      borderTopColor: 'transparent',
+      borderRightColor: Colors.subtleGray,
+      position: 'absolute',
+      bottom: 0,
+      left: 0
+    }
   });
 
   return (
@@ -69,17 +104,14 @@ export default DialogBox = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
-          <View style={styles.semicircle}>
-            <TouchableOpacity>
-              <Icon name="md-close" color={Colors.strongGrey} size={24} style={{
-                backgroundColor: 'transparent',
-                color: Colors.softBlack,
-                marginTop: 15,
-                marginRight: 15,
-              }}/>
-            </TouchableOpacity>
-          <Text>This is content inside of modal component</Text>
-          </View>
+          <View style={styles.semicircle}/>
+          <TouchableOpacity style={styles.closeBtn}>
+            <Icon name="md-close" color={Colors.softBlack} size={24} style={styles.crossIcon}/>
+          </TouchableOpacity>
+          <Text style={styles.title}>Hello are you sure?</Text>
+          <Text style={styles.description}>Some interesting lorem ipsum
+            description</Text>
+          <View style={styles.triangle}></View>
         </View>
       </View>
     </Modal>
