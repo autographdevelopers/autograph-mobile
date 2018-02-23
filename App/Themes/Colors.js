@@ -3,7 +3,7 @@ const colors = {
   primaryCold: '#00E1C9',
   salmon: '#FA5C78',
   lightGrey: '#EFEFF4',
-  subtleGray: 'rgba(0,0,0,0.02)',
+  subtleGray: 'rgba(0,0,0,0.015)',
   mediumGrey: '#CECED2',
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
