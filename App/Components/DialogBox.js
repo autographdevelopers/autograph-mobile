@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Modal, Text } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Modal,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,7 +20,7 @@ export default DialogBox = ({
                               successTexts,
                               failureTexts,
                               status,
-                              loaderLabel,
+                              loaderLabel='Ładowanie..',
                               children,
                               mode,
                               icon,
@@ -37,9 +43,6 @@ export default DialogBox = ({
       overflow: 'hidden',
       height: 400,
       width: 300,
-      paddingHorizontal: 15,
-      paddingBottom: 15,
-      marginHorizontal: 15,
       alignSelf: 'center',
       backgroundColor: Colors.snow,
     },
@@ -81,7 +84,7 @@ export default DialogBox = ({
     },
     crossIcon: {
       backgroundColor: 'transparent',
-      fontWeight: '100'
+      fontWeight: '100',
     },
     triangle: {
       width: 0,
@@ -92,9 +95,30 @@ export default DialogBox = ({
       borderRightColor: Colors.subtleGray,
       position: 'absolute',
       bottom: 0,
-      left: 0
+      left: 0,
+    },
+    spinner: {
+      alignSelf: 'center',
+      flex : 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+    },
+    loaderText: {
+      fontFamily: Fonts.type.base,
+      fontSize: Fonts.size.medium,
+      fontWeight: '300',
+      backgroundColor: 'transparent'
     }
   });
+
+  const LoaderView = () => (
+    <View style={styles.spinner}>
+      <View style={styles.triangle}/>
+      <ActivityIndicator color={Colors.primaryWarm} size={'large'}/>
+      <Text style={styles.loaderText}>{loaderLabel}</Text>
+    </View>
+  );
 
   return (
     <Modal
@@ -104,14 +128,14 @@ export default DialogBox = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
-          <View style={styles.semicircle}/>
-          <TouchableOpacity style={styles.closeBtn}>
-            <Icon name="md-close" color={Colors.softBlack} size={24} style={styles.crossIcon}/>
-          </TouchableOpacity>
-          <Text style={styles.title}>Hello are you sure?</Text>
-          <Text style={styles.description}>Some interesting lorem ipsum
-            description</Text>
-          <View style={styles.triangle}></View>
+          {/*<View style={styles.semicircle}/>*/}
+          {/*<TouchableOpacity style={styles.closeBtn}>*/}
+          {/*<Icon name="md-close" color={Colors.softBlack} size={24} style={styles.crossIcon}/>*/}
+          {/*</TouchableOpacity>*/}
+          {/*<Text style={styles.title}>Hello are you sure?</Text>*/}
+          {/*<Text style={styles.description}>Some interesting lorem ipsum*/}
+          {/*description</Text>*/}
+          <LoaderView/>
         </View>
       </View>
     </Modal>
