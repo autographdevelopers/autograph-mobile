@@ -2,7 +2,7 @@
 // import './Stories/LoginInputField.story';
 // import './Stories/InputField.story';
 // import './Stories/RadioButton.story';
-// import './Stories/ButtonPrimary.story';
+import './Stories/ButtonPrimary.story';
 // import './Stories/CheckBox.story';
 // import './Stories/ButtonPrimary.story';
 // import './Stories/StepsIndicators.story';
@@ -14,4 +14,4 @@
 // import './Stories/ProfileHeader.story';
 // import './Stories/ProfileLabel.story';
 // import './Stories/ListHeader.story';
-import './Stories/DialogBox.story';
+// import './Stories/DialogBox.story';

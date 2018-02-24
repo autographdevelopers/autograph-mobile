@@ -8,6 +8,9 @@ const colors = {
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
   black: '#000000',
+  yellowLight: '#FFDF02',
+  yellowDark: '#FFBF00',
+
   purple: '#9A66B0',
   yellow: '#FFCC02',
   blue: '#2DAAFE',

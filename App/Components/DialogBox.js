@@ -9,6 +9,7 @@ import {
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ButtonPrimary from './ButtonPrimary';
 
 // Props API
 // dialogText, successTexts, failureTexts - { title, description }
@@ -128,14 +129,15 @@ export default DialogBox = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
-          {/*<View style={styles.semicircle}/>*/}
-          {/*<TouchableOpacity style={styles.closeBtn}>*/}
-          {/*<Icon name="md-close" color={Colors.softBlack} size={24} style={styles.crossIcon}/>*/}
-          {/*</TouchableOpacity>*/}
-          {/*<Text style={styles.title}>Hello are you sure?</Text>*/}
-          {/*<Text style={styles.description}>Some interesting lorem ipsum*/}
-          {/*description</Text>*/}
-          <LoaderView/>
+          <View style={styles.semicircle}/>
+          <TouchableOpacity style={styles.closeBtn}>
+          <Icon name="md-close" color={Colors.softBlack} size={24} style={styles.crossIcon}/>
+          </TouchableOpacity>
+          <Text style={styles.title}>Hello are you sure?</Text>
+          <Text style={styles.description}>Some interesting lorem ipsum
+          description</Text>
+          {/*<LoaderView/>*/}
+          <ButtonPrimary>Zapisz</ButtonPrimary>
         </View>
       </View>
     </Modal>

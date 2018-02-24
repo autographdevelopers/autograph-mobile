@@ -4,26 +4,39 @@ import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import LinearGradient from 'react-native-linear-gradient';
 
-export default ButtonPrimary = ({ onPress, children, submitting=false, float=false }) => {
+const THEMES = { PRIMARY: 'primary', WARNING: 'warning' };
+
+export default ButtonPrimary = ({ onPress,
+                                  children,
+                                  submitting=false,
+                                  float=false,
+                                  theme=THEMES.PRIMARY,
+                                  customWrapperStyles={}}) => {
+
+  const BOTTOM_OFFSET = 20;
 
   const styles = StyleSheet.create({
-    container: {
-      borderRadius: 50,
+    bg: {
       paddingVertical: 5,
       paddingHorizontal: 5,
-      width: '100%',
-      height: '100%'
+      borderRadius: 50,
+      flex: 1,
+      shadowColor: Colors.black,
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 1,
+      shadowOffset: { width: 0, height: 2 },
     },
     button: {
       flex: 1,
-      width: '100%',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
-    text: {
+    title: {
       fontSize: Fonts.size.regular,
       fontFamily: Fonts.type.base,
       color: Colors.snow,
+      fontWeight: '600',
       backgroundColor: 'transparent',
       textAlign: 'center'
     },
@@ -31,30 +44,44 @@ export default ButtonPrimary = ({ onPress, children, submitting=false, float=fal
       height: 44,
       alignSelf: 'center',
       width: '50%',
+      backgroundColor: 'transparent',
       justifyContent: 'center',
-      alignItems: 'center'
     },
     wrapperFloat: {
       position: 'absolute',
-      bottom: 20,
+      zIndex: 9999999,
+      bottom: BOTTOM_OFFSET,
     },
     wrapperNoFloat: {
-      marginBottom: 20,
+      marginBottom: BOTTOM_OFFSET,
     }
   });
 
+  const Spinner = () => (
+    <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
+  );
+
+  const gradientCoords = {
+    start: { x: 0.0, y: 0.5 },
+    end: { x: 1.0, y: 0.5 }
+  };
+
+  const gradientThemes = {
+    primary: [Colors.primaryCold, Colors.primaryWarm],
+    warning: [Colors.yellowLight, Colors.yellowDark]
+  };
+
+  const Button = () => (
+    <LinearGradient {...gradientCoords} colors={gradientThemes[theme]} style={styles.bg}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Text style={styles.title}>{children}</Text>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
+
   return (
-    <View style={[styles.wrapper, (float ? styles.wrapperFloat: styles.wrapperNoFloat)]}>
-      { submitting ?
-        <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
-        :
-        <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1, y: 0.5 }}
-                        colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.container}>
-          <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>{children}</Text>
-          </TouchableOpacity>
-        </LinearGradient>
-      }
+    <View style={[ styles.wrapper, [styles.wrapperNoFloat, styles.wrapperFloat][+float], customWrapperStyles ]}>
+      { submitting ? <Spinner/> : <Button/> }
     </View>
   );
 }
