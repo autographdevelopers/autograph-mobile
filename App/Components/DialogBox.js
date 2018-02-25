@@ -11,27 +11,33 @@ import { Colors, Fonts } from '../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonPrimary from './ButtonPrimary';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { connect } from 'react-redux';
+import { FETCHING_STATUS } from '../Lib/utils';
+import { modalActionCreators } from '../Redux/ModalRedux';
 // Props API
 // dialogText, successTexts, failureTexts - { title, description }
 // dialogBtn, successBtn, failureBtn - { title, handler }
 // status - one of FETCHING_STATUSES
 
-export default DialogBox = ({
-                              dialogTexts,
-                              successTexts,
-                              failureTexts,
-                              status,
-                              loaderLabel = 'Ładowanie..',
-                              children,
-                              mode='warning',
-                              icon,
-                              dialogBtn,
-                              successBtn,
-                              failureBtn,
-                              visible,
-                              modalProps = {},
-                            }) => {
+const DialogBox = ({
+                     dialogTexts,
+                     successTexts,
+                     failureTexts,
+                     status=FETCHING_STATUS.READY,
+                     loaderLabel = 'Ładowanie..',
+                     children,
+                     mode = 'warning',
+                     icon,
+                     dialogBtn,
+                     successBtn,
+                     failureBtn,
+                     modalName,
+                     openedModalName,
+                     closeModal,
+                     onModalClose = ()=>{},
+                     visible,
+                     modalProps = {},
+                   }) => {
 
   const CIRCLE_SIZE = 450;
   const CIRCLE_TOP_OFFSET = -330;
@@ -43,7 +49,9 @@ export default DialogBox = ({
     modalContainer: {
       /** OVERLAY */
       flex: 1,
-      backgroundColor: 'rgba(0,0,0, .8)',
+      position: 'absolute',
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(0,0,0,0.7)',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -63,22 +71,21 @@ export default DialogBox = ({
     },
     title: {
       textAlign: 'center',
-      fontFamily: Fonts.type.base,
-      fontWeight: '600',
-      fontSize: 22,
+      fontFamily: Fonts.type.bold,
+      marginBottom: BREATH_SPACE,
+      fontSize: 25,
     },
     description: {
       textAlign: 'center',
       color: Colors.strongGrey,
-      fontFamily: Fonts.type.base,
+      fontFamily: Fonts.type.light,
       fontSize: Fonts.size.medium,
-      fontWeight: '400',
     },
     crossIconBox: {
       position: 'absolute',
       top: 15,
       right: 15,
-      zIndex: TOP_OF_THE_STACK
+      zIndex: TOP_OF_THE_STACK,
     },
     crossIcon: {
       backgroundColor: 'transparent',
@@ -101,7 +108,7 @@ export default DialogBox = ({
       alignItems: 'center',
       justifyContent: 'center',
       height: MODAL_SPINNER_MODE_SIZE,
-      width: MODAL_SPINNER_MODE_SIZE
+      width: MODAL_SPINNER_MODE_SIZE,
     },
     loaderText: {
       fontFamily: Fonts.type.base,
@@ -114,7 +121,7 @@ export default DialogBox = ({
       paddingHorizontal: 40,
       paddingTop: CIRCLE_SIZE + CIRCLE_TOP_OFFSET,
       minHeight: CIRCLE_SIZE + CIRCLE_TOP_OFFSET + BREATH_SPACE + 100,
-      width: '80%'
+      width: '90%',
     },
     headerIconContainer: {
       /** container covers visible part of a circle */
@@ -129,14 +136,16 @@ export default DialogBox = ({
       justifyContent: 'center',
     },
     contentContainer: {
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
     },
     textArea: {
-      marginVertical: 2*BREATH_SPACE
+      marginTop: BREATH_SPACE,
+      marginBottom: 3 * BREATH_SPACE,
     },
     actionButtonContainer: {
-      paddingVertical: 25
-    }
+      paddingBottom: 25,
+      paddingTop: 3 * BREATH_SPACE
+    },
   });
 
   const defaultIcons = {
@@ -155,40 +164,75 @@ export default DialogBox = ({
   const ActionView = () => (
     <View style={styles.actionView}>
       <View style={styles.semicircle}/>
-      <TouchableOpacity style={styles.crossIconBox}>
-        <Icon name="md-close" color={Colors.softBlack} size={24}
+
+      <TouchableOpacity style={styles.crossIconBox} onPress={closeModalHandler}>
+        <Icon name="md-close"
+              color={Colors.softBlack}
+              size={24}
               style={styles.crossIcon}/>
       </TouchableOpacity>
-      <View style={styles.headerIconContainer}>{defaultIcons['warning']}</View>
+
+      <View style={styles.headerIconContainer}>{icon ||
+      defaultIcons[mode]}</View>
 
       <View style={styles.contentContainer}>
+
         <View style={styles.textArea}>
-          <Text style={styles.title}>Hello are you sure?</Text>
-          <Text style={styles.description}>Some interesting lorem ipsum
-            description</Text>
+          <Text style={styles.title}>{dialogTexts.title}</Text>
+          <Text style={styles.description}>{dialogTexts.description}</Text>
         </View>
+
         {children}
+
         <View style={styles.actionButtonContainer}>
-        <ButtonPrimary theme={'warning'}
-                       customWrapperStyles={{ width: '100%', marginBottom: 0 }}>Yes
-          I do</ButtonPrimary>
+          <ButtonPrimary theme={mode}
+                         customWrapperStyles={{
+                           width: '75%',
+                           marginBottom: 0,
+                         }}
+                         onPress={dialogBtn.handler}>
+            {dialogBtn.title}
+          </ButtonPrimary>
         </View>
+
       </View>
     </View>
   );
 
+  const renderBody = () => {
+    if ( status === FETCHING_STATUS.FETCHING ) {
+      return <LoaderView/>;
+    } else if ( status === FETCHING_STATUS.READY ) {
+      return <ActionView/>;
+    }
+  };
+
+  const closeModalHandler = () => {
+    closeModal();
+    onModalClose();
+  };
+
   return (
     <Modal
-      visible={visible}
+      visible={openedModalName === modalName}
       animationType={'slide'}
+      onRequestClose={closeModalHandler}
+      transparent={true}
       {...modalProps}
     >
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
-          <ActionView/>
-          {/*<LoaderView/>*/}
+          {renderBody()}
         </View>
       </View>
     </Modal>
   );
 };
+
+const mapStateToProps =
+  state => ( { openedModalName: state.modals.openedModalId } );
+const mapDispatchToProps = dispatch => ( {
+  closeModal: () => dispatch(modalActionCreators.close()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DialogBox);

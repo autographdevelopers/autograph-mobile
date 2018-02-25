@@ -41,7 +41,7 @@ export function* index(api, action) {
 
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveCollection(response.data)); // add in redux
-    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+    yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.READY));
   } else {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }

@@ -15,6 +15,8 @@ import { employeesReducer } from './EmployeesRedux';
 import { studentsReducer } from './StudentsRedux';
 import { employeePrivilegesReducer } from './EmployeePrivileges';
 import { invitationsReducer } from './InvitationsRedux';
+import { modalsReducer } from './ModalRedux';
+import { schoolActivationReducer } from './SchoolActivation';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -31,8 +33,10 @@ export const reducers = combineReducers({
   employees: employeesReducer,
   students: studentsReducer,
   employeePrivileges: employeePrivilegesReducer,
-  invitations: invitationsReducer
-})
+  invitations: invitationsReducer,
+  modals: modalsReducer,
+  schoolActivation: schoolActivationReducer,
+});
 
 export default () => {
   let { store, sagasManager, sagaMiddleware } = configureStore(reducers,

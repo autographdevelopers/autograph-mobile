@@ -11,7 +11,8 @@ export default ButtonPrimary = ({ onPress,
                                   submitting=false,
                                   float=false,
                                   theme=THEMES.PRIMARY,
-                                  customWrapperStyles={}}) => {
+                                  customWrapperStyles={},
+                                  customBgStyle={}}) => {
 
   const BOTTOM_OFFSET = 20;
 
@@ -72,7 +73,7 @@ export default ButtonPrimary = ({ onPress,
   };
 
   const Button = () => (
-    <LinearGradient {...gradientCoords} colors={gradientThemes[theme]} style={styles.bg}>
+    <LinearGradient {...gradientCoords} colors={gradientThemes[theme]} style={[styles.bg, customBgStyle]}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.title}>{children}</Text>
       </TouchableOpacity>
