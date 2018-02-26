@@ -88,7 +88,6 @@ class MySchoolsScreen extends Component {
   };
 
   render() {
-    console.log('my schools rerendered');
     const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools } = this.props;
 
     return (
