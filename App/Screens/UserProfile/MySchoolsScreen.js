@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import { List, ListItem, Avatar } from 'react-native-elements';
+import { List } from 'react-native-elements';
 
 import { connect } from 'react-redux';
 import { FETCHING_STATUS } from '../../Lib/utils';
@@ -22,16 +22,16 @@ import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { contextActionCreators } from '../../Redux/ContextRedux';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Fonts, Colors } from '../../Themes/index';
+import { Colors } from '../../Themes/index';
 
 import AccountHeader from '../../Components/AccountHeader';
-import NavHeader from '../../Components/NavHeader';
 import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
 import ButtonText from '../../Components/ButtonText';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
 import DialogBox from '../../Components/DialogBox';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { schoolActivationActionCreators } from '../../Redux/SchoolActivation';
+import SchoolActivationInput from './SchoolActivationInput';
 
 class MySchoolsScreen extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ class MySchoolsScreen extends Component {
   };
 
   render() {
-    console.log(this.props.screenProps);
+    console.log('my schools rerendered');
     const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools } = this.props;
 
     return (
@@ -156,14 +156,7 @@ class MySchoolsScreen extends Component {
                    status={this.props.drivingSchools.status}
                    onModalClose={()=>this.props.resetSchoolActivationState()}
         >
-          <Text style={styles.confirmationInstruction}>Wpisz <Text
-            style={{ fontWeight: '400' }}>kod</Text> potwierdzajacy..</Text>
-          <TextInput
-            style={styles.codeInput}
-            onChangeText={this.props.setInputText}
-            value={this.props.schoolActivation.inputVerificationCode}
-            autoFocus={true}
-          />
+          <SchoolActivationInput/>
         </DialogBox>
       </View>
     );
@@ -202,21 +195,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.3)',
     zIndex: 100,
-  },
-  confirmationInstruction: {
-    fontFamily: Fonts.type.light,
-    fontSize: Fonts.size.medium,
-    color: Colors.black,
-    textAlign: 'center',
-  },
-  codeInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.strongGrey,
-    paddingVertical: 10,
-  },
+  }
 });
 
-const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }) => ( {
+const mapStateToProps = ({ drivingSchools, invitations, user }) => ( {
   activeDrivingSchools: Object.values(drivingSchools.hashMap).
     filter(isDrivingSchoolRelationActive),
   invitingDrivingSchools: Object.values(drivingSchools.hashMap).
@@ -226,7 +208,6 @@ const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }
   drivingSchools,
   invitations,
   user,
-  schoolActivation
 } );
 
 const mapDispatchToProps = dispatch => ( {
@@ -244,8 +225,6 @@ const mapDispatchToProps = dispatch => ( {
   },
   resetSchoolActivationState: () => dispatch(
     schoolActivationActionCreators.resetState()),
-  setInputText: text => dispatch(
-    schoolActivationActionCreators.setInputText(text)),
-} );
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MySchoolsScreen);

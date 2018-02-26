@@ -1,12 +1,5 @@
 import { createActions, createReducer } from 'reduxsauce';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { modalActionTypes } from './ModalRedux';
-
-console.log('ddd')
-console.log('ddd')
-console.log('ddd')
-console.log('ddd')
-console.log(modalActionTypes)
 
 const { Types, Creators } = createActions({
   request: ['code'],
