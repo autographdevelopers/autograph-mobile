@@ -132,20 +132,38 @@ class MySchoolsScreen extends Component {
                      description: 'Aby w pełni korzystać z aplikacji, Twoja szkoła musi zostać zweryfikowana.',
                    }}
                    dialogBtn={{
-                     title: 'Activate', handler: () => {
-                       this.props.fetchSchoolsRequest();
-                     },
+                     title: 'Activate',
+                     handler: () => {this.props.fetchSchoolsRequest();},
+                   }}
+                   successTexts={{
+                     title: 'Udało się!',
+                     description: 'Twoja szkoła została pomyślnie aktywowana, mozesz teraz w pelni korzystac z mozliwosci AutoGRaph.'
+                   }}
+                   successBtn={{
+                     title: 'Powrót',
+                     handler: this.props.resetSchoolActivationState
+                   }}
+                   failureTexts={{
+                     title: 'Upps, cos poszło nie tak..',
+                     description: 'Lorem ipsum dolor sit melt.'
+                   }}
+                   failureBtn={{
+                     title: 'Powrót',
+                     handler: this.props.resetSchoolActivationState
                    }}
                    mode={'primary'}
-                   icon={<MCIcon name={'rocket'} color={Colors.primaryWarm}
-                                 size={70}/>}
+                   icon={<MCIcon name={'rocket'} color={Colors.primaryWarm} size={70}/>}
                    status={this.props.drivingSchools.status}
                    onModalClose={()=>this.props.resetSchoolActivationState()}
         >
-
           <Text style={styles.confirmationInstruction}>Wpisz <Text
             style={{ fontWeight: '400' }}>kod</Text> potwierdzajacy..</Text>
-          <TextInput style={styles.codeInput}/>
+          <TextInput
+            style={styles.codeInput}
+            onChangeText={this.props.setInputText}
+            value={this.props.schoolActivation.inputVerificationCode}
+            autoFocus={true}
+          />
         </DialogBox>
       </View>
     );
@@ -198,7 +216,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ drivingSchools, invitations, user }) => ( {
+const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }) => ( {
   activeDrivingSchools: Object.values(drivingSchools.hashMap).
     filter(isDrivingSchoolRelationActive),
   invitingDrivingSchools: Object.values(drivingSchools.hashMap).
@@ -208,6 +226,7 @@ const mapStateToProps = ({ drivingSchools, invitations, user }) => ( {
   drivingSchools,
   invitations,
   user,
+  schoolActivation
 } );
 
 const mapDispatchToProps = dispatch => ( {
@@ -225,6 +244,8 @@ const mapDispatchToProps = dispatch => ( {
   },
   resetSchoolActivationState: () => dispatch(
     schoolActivationActionCreators.resetState()),
+  setInputText: text => dispatch(
+    schoolActivationActionCreators.setInputText(text)),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MySchoolsScreen);
