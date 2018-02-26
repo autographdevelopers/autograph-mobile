@@ -34,10 +34,6 @@ import { schoolActivationActionCreators } from '../../Redux/SchoolActivation';
 import SchoolActivationInput from './SchoolActivationInput';
 
 class MySchoolsScreen extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount = () => {
     this.props.fetchSchoolsRequest();
   };
@@ -54,7 +50,7 @@ class MySchoolsScreen extends Component {
 
   renderDrivingSchoolsList = (data, helperText) => {
     if ( this.props.drivingSchools.status === FETCHING_STATUS.FETCHING ) {
-      return <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>;
+      return <ActivityIndicator size={'small'} color={Colors.primaryWarm}/>;
     } else {
       if ( data.length > 0 )
         return <List containerStyle={{
