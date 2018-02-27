@@ -4,7 +4,7 @@ import { deepClone, FETCHING_STATUS, generateDailySlots, SLOT_STATUS } from '../
 const { Types, Creators } = createActions({
   indexRequest: null,
   save: ['data'],
-  toggleSlot: ['weekDay', 'start_hour'],
+  toggleSlot: ['weekDay', 'id'],
   changeStatus: ['status'],
 }, { prefix: 'EMPLOYEE_AVAILABILITY_SLOTS_' });
 
@@ -26,10 +26,10 @@ const INITIAL_STATE = {
 
 export const saveHandler = (state, { schedule }) => ( { ...state, schedule } );
 
-export const toggleSlotHandler = (state, { weekDay, start_hour }) => {
+export const toggleSlotHandler = (state, { weekDay, id }) => {
   const newState = deepClone(state),
     schedule = newState.schedule[weekDay],
-    slot = schedule.find( item => item.start_hour === start_hour ) ;
+    slot = schedule.find( item => item.id === id ) ;
 
     slot.status = slot.status === SLOT_STATUS.BOOKED ? SLOT_STATUS.ACTIVE : SLOT_STATUS.BOOKED;
 

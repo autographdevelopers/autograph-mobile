@@ -1,3 +1,4 @@
+import moment from 'moment';
 export const deepClone = entity => ( JSON.parse(JSON.stringify(entity)) );
 export const arrayToHash = array => array.reduce((accumulator, current) => {
   accumulator[current.id] = current;
@@ -10,23 +11,17 @@ export const FETCHING_STATUS = {
   SUCCESS: 'SUCCESS',
   ERROR: 'ERROR',
 };
-export const findInObjectByPath = (obj, path) => {
-  for (let i = 0, path = path.split('.'), len = path.length; i < len; i++) {
-    obj = obj[path[i]];
-  }
-  return obj;
-};
-
-export const padNumber = s => String('0' + s).slice(-2);
 
 export const SLOT_STATUS = { FREE: 'FREE', BOOKED: 'BOOKED' };
 
 export const generateDailySlots = () => {
-  return new Array(48).fill(0).map((_, index) => {
-      const hour = padNumber(( 0.25 * ( 2 * ( index + 1 ) + (Math.pow( -1, index + 2 ) ) - 3 ) ));
-      const minute = padNumber((index * 30) % 60);
+  const now = moment({hour: 0, minute: 0});
 
-      return { start_hour: `${hour}:${minute}`, status: SLOT_STATUS.FREE };
+  return new Array(48).fill(0).map((_, index) => {
+    const from = now.clone().add(index * 30, 'minutes').format('HH:mm');
+    const to = now.clone().add((index+1) * 30, 'minutes').format('HH:mm');
+
+      return { id: index, start_hour: from, end_hour: to, status: SLOT_STATUS.FREE };
     },
   );
 };

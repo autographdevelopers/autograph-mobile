@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import Slot from '../../Components/Slot';
 import { employeeAvailabilitySlotsActionCreators } from '../../Redux/employeeAvailabilitySlots';
 import Bubble from '../../Components/Bubble';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const WEEKDAYS = [
   'monday',
@@ -36,17 +35,18 @@ class SetAvailability extends Component {
     };
   }
 
-  _keyExtractor = (item, index) => `employee-slot-aval-${index}`;
+  _keyExtractor = (item, _) => `employee-slot-aval-${item.id}`;
 
-  _renderSlot = day => ({ item, index }) => (
-      <Slot slot={item} onPress={this.props.toggleSlotState(day, item.start_hour)} />
-  )
+  _renderSlot = day => ({ item, _ }) => (
+      <Slot slot={item} onPress={this.props.toggleSlotState(day, item.id)} />
+  );
 
   _showEarlierSlots = () => {
     this.setState({
       refreshing: true,
     });
 
+    /** Let user knows to load earlier virtual request is processed*/
     setTimeout(()=> {
       this.setState({
         refreshing: false,
@@ -76,19 +76,6 @@ class SetAvailability extends Component {
     });
   };
 
-  nextDay = () => {
-    const next = ( this.state.currentDayIndex + 1 ) % WEEKDAYS.length;
-
-    this.changeDay(next)();
-  };
-
-  prevDay = () => {
-    const current = this.state.currentDayIndex;
-    const prev = current - 1 === -1 ? WEEKDAYS.length - 1 : current - 1;
-
-    this.changeDay(prev)();
-  };
-
   renderWeekdaysBullets = () => {
     const { t } = this.props.screenProps.I18n;
 
@@ -105,26 +92,12 @@ class SetAvailability extends Component {
 
   render() {
     const { t } = this.props.screenProps.I18n,
-      currentDayText = t(
-        `weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize(),
       saveText = t('save').capitalize();
 
     return (
       <View style={{ flex: 1 }}>
-        {/*<View style={[styles.currentDayIndexRow]}>*/}
-          {/*<TouchableOpacity onPress={this.prevDay}>*/}
-            {/*<Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>*/}
-          {/*</TouchableOpacity>*/}
-          {/*<Text style={styles.currentWeekday}>{currentDayText}</Text>*/}
-          {/*<TouchableOpacity onPress={this.nextDay}>*/}
-            {/*<Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>*/}
-          {/*</TouchableOpacity>*/}
-        {/*</View>*/}
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
-        {/*<ScrollView */}
-                    {/*>*/}
           {this.renderSchedule()}
-        {/*</ScrollView>*/}
         <ButtonPrimary float={true}>{saveText}</ButtonPrimary>
       </View>
     );
@@ -137,19 +110,6 @@ const styles = {
     justifyContent: 'space-between',
     marginVertical: 15,
     paddingHorizontal: 30, // assign to var
-  },
-  currentDayIndexRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  currentWeekday: {
-    marginHorizontal: 35,
-    width: '50%',
-    fontSize: Fonts.size.regular,
-    color: Colors.softBlack,
-    textAlign: 'center',
   },
   scheduleContainer: {
     paddingHorizontal: 30,
@@ -171,11 +131,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ( {
-  toggleSlotState: (day, hour) => () => dispatch(
-    employeeAvailabilitySlotsActionCreators.toggleSlot(day, hour)),
+  toggleSlotState: (day, id) => () => dispatch(
+    employeeAvailabilitySlotsActionCreators.toggleSlot(day, id)),
 } );
 
-// TODO extract weekdaypicker(used also in schedule boundaries) to separate component
 // TODO generate WEEKDAYS constant from translations
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetAvailability);

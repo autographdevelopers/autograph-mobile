@@ -7,11 +7,7 @@ import { SLOT_STATUS } from '../Lib/utils';
 
 export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
 
-  /** TODO: make active bullet slightly bigger that others! */
-  /** TODO: add hours intervals info also to free slots */
   /** TODO: display summary of selected hours for a given day. */
-  /** TODO: Maybe remove for good weekday slider and left only bullets? */
-
 
   const BULLET_SIZE = 4,
     CHECK_BULLET_SIZE = 15,
@@ -113,7 +109,7 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
             <Icon name={'check'} color={Colors.snow} size={10}/>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${( parseInt(minutes) + 30 ) % 60}`}</Text>
+            <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${slot.end_hour}`}</Text>
             <Text style={styles.title}>DYSPOZYCJA</Text>
           </View>
         </View>
@@ -129,7 +125,6 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
     <View style={[styles.container, containerStyles]}>
       <View style={styles.leftSection}>
         <Text style={styles.timeText}>{slot.start_hour}</Text>
-        {/*<View style={styles.bullet}/>*/}
       </View>
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -137,8 +132,5 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
         </TouchableOpacity>
       </View>
     </View>
-);
+  );
 };
-
-// TODO work on displaying interval(incorporate moment.js)
-// TODO incorporate stack like view
