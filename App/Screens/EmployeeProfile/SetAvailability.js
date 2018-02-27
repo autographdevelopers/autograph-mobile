@@ -5,12 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Colors, Fonts } from '../../Themes/';
 import { connect } from 'react-redux';
-import ListHeader from '../../Components/ListHeader';
 import Slot from '../../Components/Slot';
 import { employeeAvailabilitySlotsActionCreators } from '../../Redux/employeeAvailabilitySlots';
 import Bubble from '../../Components/Bubble';
@@ -31,22 +31,45 @@ class SetAvailability extends Component {
 
     this.state = {
       currentDayIndex: 0,
+      startFrom: 12,
+      refreshing: false
     };
   }
+
+  _keyExtractor = (item, index) => `employee-slot-aval-${index}`;
+
+  _renderSlot = day => ({ item, index }) => {
+
+    return (
+      <Slot slot={item} first={index==0} onPress={this.props.toggleSlotState(day, item.start_hour)} />
+    )
+  };
+
+  _showEarlierSlots = () => {
+    console.log('show earlier slots!')//KURWNBDLACZRGO ENI DZIALSZS
+
+    this.setState({
+      refreshing: true,
+      startFrom: 0
+    })
+  };
 
   renderSchedule = () => {
     const day = WEEKDAYS[this.state.currentDayIndex];
 
-    return this.props.schedule[day].map((item, index) =>
-       <Slot slot={item}
-                     onPress={this.props.toggleSlotState(day, item.start_hour)}
-                     key={`employee-slot-aval-${index}`}/>
-      );
+    return <FlatList
+      ListHeaderComponent={<Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
+      keyExtractor={this._keyExtractor}
+      data={this.props.schedule[day].slice(this.state.startFrom)}
+      renderItem={this._renderSlot(day)}
+      onRefresh={this._showEarlierSlots}
+      refreshing={this.state.refreshing}
+    />;
   };
 
   changeDay = index => () => {
     this.setState({
-      currentDayIndex: index
+      currentDayIndex: index,
     });
   };
 
@@ -79,25 +102,25 @@ class SetAvailability extends Component {
 
   render() {
     const { t } = this.props.screenProps.I18n,
-      currentDayText = t(`weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize(),
+      currentDayText = t(
+        `weekdays.normal.${WEEKDAYS[this.state.currentDayIndex]}`).capitalize(),
       saveText = t('save').capitalize();
 
     return (
       <View style={{ flex: 1 }}>
+        {/*<View style={[styles.currentDayIndexRow]}>*/}
+          {/*<TouchableOpacity onPress={this.prevDay}>*/}
+            {/*<Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>*/}
+          {/*</TouchableOpacity>*/}
+          {/*<Text style={styles.currentWeekday}>{currentDayText}</Text>*/}
+          {/*<TouchableOpacity onPress={this.nextDay}>*/}
+            {/*<Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>*/}
+          {/*</TouchableOpacity>*/}
+        {/*</View>*/}
+        <View
+          style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
         <ScrollView showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.scheduleContainer}>
-          <View style={[styles.currentDayIndexRow]}>
-            <TouchableOpacity onPress={this.prevDay}>
-              <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
-            </TouchableOpacity>
-            <Text style={styles.currentWeekday}>{currentDayText}</Text>
-            <TouchableOpacity onPress={this.nextDay}>
-              <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.weekdaysPanel}>
-            {this.renderWeekdaysBullets()}
-          </View>
           {this.renderSchedule()}
         </ScrollView>
         <ButtonPrimary float={true}>{saveText}</ButtonPrimary>
@@ -111,6 +134,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 15,
+    paddingHorizontal: 30, // assign to var
   },
   currentDayIndexRow: {
     flexDirection: 'row',
@@ -127,7 +151,13 @@ const styles = {
   },
   scheduleContainer: {
     paddingHorizontal: 30,
-    paddingBottom: 90
+    paddingBottom: 90,
+  },
+  loadMoreText: {
+    textAlign: 'center',
+    fontSize: Fonts.size.small,
+    paddingVertical: 10,
+    color: Colors.strongGrey
   }
 };
 
@@ -137,10 +167,10 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ( {
   toggleSlotState: (day, hour) => () => dispatch(
     employeeAvailabilitySlotsActionCreators.toggleSlot(day, hour)),
-});
+} );
 
 // TODO extract weekdaypicker(used also in schedule boundaries) to separate component
 // TODO generate WEEKDAYS constant from translations

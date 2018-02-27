@@ -5,61 +5,65 @@ import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 import { SLOT_STATUS } from '../Lib/utils';
 
-export default Slot = ({ slot, containerStyles={}, onPress=()=>{} }) => {
-  const BULLET_SIZE = 7,
-   CHECK_BULLET_SIZE = 22,
-   isBooked = slot.status === SLOT_STATUS.BOOKED,
-   minutes = slot.start_hour.split(':')[1];
+export default Slot = ({ slot, first=false, last=false, containerStyles = {}, onPress = () => {} }) => {
+
+  /** TODO: make active bullet slightly bigger that others! */
+  /** TODO: add hours intervals info also to free slots */
+  /** TODO: display summary of selected hours for a given day. */
+  /** TODO: Maybe remove for good weekday slider and left only bullets? */
+
+
+  const BULLET_SIZE = 4,
+    CHECK_BULLET_SIZE = 15,
+    isBooked = slot.status === SLOT_STATUS.BOOKED,
+    minutes = slot.start_hour.split(':')[1];
 
   const styles = StyleSheet.create({
     container: {
-      height: 53,
-      left:0,
-      right:0,
+      height: 44,
       flexDirection: 'row',
     },
     button: {
-      backgroundColor: isBooked ? Colors.success : Colors.mediumGrey,
       flex: 1,
+      borderTopRightRadius: first ? 5 : 0,
+      borderTopLeftRadius: first ? 5 : 0,
       alignItems: 'center',
       justifyContent: 'center',
       borderTopWidth: 1,
-      borderTopColor: Colors.strongGrey,
+      borderTopColor: Colors.mediumGrey,
     },
     rightSection: {
       flex: 1,
-      paddingTop: ( Fonts.size.small + 8 ) / 2 - 1,
     },
     bullet: {
       width: BULLET_SIZE,
       height: BULLET_SIZE,
-      borderRadius: 50,
+      borderRadius: BULLET_SIZE/2,
       backgroundColor: Colors.strongGrey,
     },
     leftSection: {
       backgroundColor: 'transparent',
       flexDirection: 'row',
-      alignItems: 'center',
+      justifyContent: 'flex-end',
       width: 45,
-      height: Fonts.size.small + 8,
     },
     timeText: {
       fontSize: Fonts.size.small,
       fontFamily: Fonts.type.base,
-      fontWeight: minutes === '00'  ? '600' : '400',
-      flex: 1,
+      fontWeight: minutes === '00' ? '600' : '400',
+      // flex: 1,
+      marginRight: 5
     },
     intervalInfo: {
-      color: Colors.snow,
+      color: Colors.softBlack,
       fontSize: 11,
-      fontWeight: '500',
-      fontFamily: Fonts.type.base,
+      fontFamily: Fonts.type.light,
+      textAlign: 'center'
     },
     title: {
-      color: Colors.snow,
-      fontFamily: Fonts.type.base,
+      color: Colors.softBlack,
+      fontFamily: Fonts.type.medium,
       fontSize: Fonts.size.small,
-      fontWeight: '700',
     },
     textContainer: {
       alignItems: 'center',
@@ -69,42 +73,73 @@ export default Slot = ({ slot, containerStyles={}, onPress=()=>{} }) => {
       height: CHECK_BULLET_SIZE,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 50,
-      backgroundColor: 'rgba(0, 0, 0, .32)',
+      borderRadius: CHECK_BULLET_SIZE/2,
+      backgroundColor: Colors.primaryWarm,
       marginRight: 15,
-      position: 'relative',
     },
     body: {
+      flex: 1
+    },
+    booked: {
+      //flex: 1 why does NOT work?
+      width: '100%',
+      height: '100%',
+      backgroundColor: Colors.snow,
+      borderRightWidth: 5,
+      borderRightColor: Colors.primaryCold,
+      borderLeftWidth: 5,
+      borderLeftColor: Colors.primaryCold,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
+    notBooked: {
+      //flex: 1 why does NOT work?
+      width: '100%',
+      height: '100%',
+      backgroundColor: Colors.subtleGray,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    freeSlotLabel: {
+      color: Colors.mediumGrey,
+      fontFamily: Fonts.type.medium
+    }
   });
 
+  const renderBody = () => {
+    if(isBooked) {
+      return (
+        <View style={styles.booked}>
+          <View style={styles.check}>
+            <Icon name={'check'} color={Colors.snow} size={10}/>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${( parseInt(minutes) + 30 ) % 60}`}</Text>
+            <Text style={styles.title}>DYSPOZYCJA</Text>
+          </View>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.notBooked}><Text style={styles.freeSlotLabel}>WOLNE</Text></View>
+      )
+    }
+  };
+
   return (
-    <View style={[styles.container, containerStyles]} >
+    <View style={[styles.container, containerStyles]}>
       <View style={styles.leftSection}>
         <Text style={styles.timeText}>{slot.start_hour}</Text>
-        <View style={styles.bullet}/>
+        {/*<View style={styles.bullet}/>*/}
       </View>
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.button} onPress={onPress}>
-          { isBooked &&
-            <View style={styles.body}>
-              <View style={styles.check}>
-                <Icon name={'check'} color={Colors.snow} size={14}/>
-              </View>
-              <View style={styles.textContainer}>
-                <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${(parseInt(minutes) + 30)%60}`}</Text>
-                <Text style={styles.title}>DYSPOZYCJA</Text>
-              </View>
-            </View>
-          }
-          { !isBooked && <View style={styles.body}><Text>---</Text></View> }
+          {renderBody()}
         </TouchableOpacity>
       </View>
     </View>
-  );
+);
 };
 
 // TODO work on displaying interval(incorporate moment.js)

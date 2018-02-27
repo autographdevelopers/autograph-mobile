@@ -14,4 +14,5 @@
 // import './Stories/ProfileHeader.story';
 // import './Stories/ProfileLabel.story';
 // import './Stories/ListHeader.story';
-import './Stories/Slot.story';
+// import './Stories/Slot.story';
+import './Stories/DialogBox.story';
