@@ -38,27 +38,30 @@ class SetAvailability extends Component {
 
   _keyExtractor = (item, index) => `employee-slot-aval-${index}`;
 
-  _renderSlot = day => ({ item, index }) => {
-
-    return (
-      <Slot slot={item} first={index==0} onPress={this.props.toggleSlotState(day, item.start_hour)} />
-    )
-  };
+  _renderSlot = day => ({ item, index }) => (
+      <Slot slot={item} onPress={this.props.toggleSlotState(day, item.start_hour)} />
+  )
 
   _showEarlierSlots = () => {
-    console.log('show earlier slots!')//KURWNBDLACZRGO ENI DZIALSZS
-
     this.setState({
       refreshing: true,
-      startFrom: 0
-    })
+    });
+
+    setTimeout(()=> {
+      this.setState({
+        refreshing: false,
+        startFrom: 0
+      });
+    }, 1000);
   };
 
   renderSchedule = () => {
     const day = WEEKDAYS[this.state.currentDayIndex];
 
     return <FlatList
-      ListHeaderComponent={<Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scheduleContainer}
+      ListHeaderComponent={this.state.startFrom === 12 && <Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
       keyExtractor={this._keyExtractor}
       data={this.props.schedule[day].slice(this.state.startFrom)}
       renderItem={this._renderSlot(day)}
@@ -118,10 +121,10 @@ class SetAvailability extends Component {
           {/*</TouchableOpacity>*/}
         {/*</View>*/}
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
-        <ScrollView showsVerticalScrollIndicator={false}
-                    contentContainerStyle={styles.scheduleContainer}>
+        {/*<ScrollView */}
+                    {/*>*/}
           {this.renderSchedule()}
-        </ScrollView>
+        {/*</ScrollView>*/}
         <ButtonPrimary float={true}>{saveText}</ButtonPrimary>
       </View>
     );
@@ -154,6 +157,7 @@ const styles = {
   },
   loadMoreText: {
     textAlign: 'center',
+    paddingLeft: 45, // the same as width of the left side of the slot - needed for centering
     fontSize: Fonts.size.small,
     paddingVertical: 10,
     color: Colors.strongGrey

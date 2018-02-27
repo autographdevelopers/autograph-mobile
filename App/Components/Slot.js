@@ -5,7 +5,7 @@ import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
 import { SLOT_STATUS } from '../Lib/utils';
 
-export default Slot = ({ slot, first=false, last=false, containerStyles = {}, onPress = () => {} }) => {
+export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
 
   /** TODO: make active bullet slightly bigger that others! */
   /** TODO: add hours intervals info also to free slots */
