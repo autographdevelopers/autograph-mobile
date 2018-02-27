@@ -117,8 +117,7 @@ class SetAvailability extends Component {
             {/*<Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>*/}
           {/*</TouchableOpacity>*/}
         {/*</View>*/}
-        <View
-          style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
+        <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
         <ScrollView showsVerticalScrollIndicator={false}
                     contentContainerStyle={styles.scheduleContainer}>
           {this.renderSchedule()}

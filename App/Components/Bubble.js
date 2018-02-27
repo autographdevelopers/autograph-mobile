@@ -4,17 +4,18 @@ import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
 export default Bubble = ({ active, label='Label', onPress=()=>{}, customStyle }) => {
-  const SIZE= 25;
+  const SIZE = active ? 30 : 25;
+
   const styles = StyleSheet.create({
     text: {
       color: Colors.softBlack,
       fontSize: Fonts.size.small,
-      fontFamily: Fonts.type.base
+      fontFamily: active ? Fonts.type.medium : Fonts.type.base
     },
     button: {
       width: SIZE,
       height: SIZE,
-      borderRadius: 50,
+      borderRadius: SIZE / 2,
       backgroundColor: active ? Colors.primaryWarm : Colors.lightGrey,
       marginBottom: 5
     },

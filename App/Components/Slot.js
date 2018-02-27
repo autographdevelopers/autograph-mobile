@@ -25,11 +25,9 @@ export default Slot = ({ slot, first=false, last=false, containerStyles = {}, on
     },
     button: {
       flex: 1,
-      borderTopRightRadius: first ? 5 : 0,
-      borderTopLeftRadius: first ? 5 : 0,
       alignItems: 'center',
       justifyContent: 'center',
-      borderTopWidth: 1,
+      borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: Colors.mediumGrey,
     },
     rightSection: {
