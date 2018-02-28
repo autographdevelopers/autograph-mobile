@@ -56,6 +56,13 @@ export const mapToBookedSlotsSummary = slotsCollection => {
   return slotsCollection.map( item => `${item[0].start_hour} - ${item[item.length - 1].end_hour}`)
 };
 
+export const slotsSummary = slots => {
+  const groupedSlots = groupBookedSlots(slots);
+  const summarizedIntervals = mapToBookedSlotsSummary(groupedSlots)
+
+  return summarizedIntervals;
+};
+
 
 
 String.prototype.capitalize = function() {

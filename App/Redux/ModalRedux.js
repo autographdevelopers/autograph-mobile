@@ -1,7 +1,7 @@
 import { createActions, createReducer } from 'reduxsauce';
 import { schoolActivationActionTypes } from './SchoolActivation';
 
-export const MODALS_IDS = { ACTIVATE_SCHOOL: 'ACTIVATE_SCHOOL' };
+export const MODALS_IDS = { ACTIVATE_SCHOOL: 'ACTIVATE_SCHOOL', SAVE_EMPLOYEE_AVAILABILITY: 'SAVE_EMPLOYEE_AVAILABILITY' };
 
 const { Types, Creators } = createActions({
   open: ['id'],
