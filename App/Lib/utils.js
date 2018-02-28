@@ -26,6 +26,38 @@ export const generateDailySlots = () => {
   );
 };
 
+// {
+//   status: 'ACTIVE',
+//   start_hour: '13:30',
+//   end_hour: '14:00',
+//   id: 27
+// }
+
+export const groupBookedSlots = slotsCollection => {
+  const activeSlots = slotsCollection.filter( slot => slot.status === SLOT_STATUS.BOOKED )
+  return activeSlots.reduce( (acc, current, index, _) => {
+    if(index === 0 ) {
+      acc.push([current]);
+    } else {
+      const lastInterval = acc[acc.length - 1];
+      const lastSlot = lastInterval[lastInterval.length - 1];
+      if(lastSlot.id === current.id - 1) {
+        lastInterval.push(current);
+      } else {
+        acc.push([current]);
+      }
+    }
+
+    return acc;
+  }, []);
+};
+
+export const mapToBookedSlotsSummary = slotsCollection => {
+  return slotsCollection.map( item => `${item[0].start_hour} - ${item[item.length - 1].end_hour}`)
+};
+
+
+
 String.prototype.capitalize = function() {
   return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
