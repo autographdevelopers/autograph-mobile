@@ -114,10 +114,10 @@ class AvailabilitySummaryModal extends Component {
   }
 };
 
-const mapStateToProps = state => ( {
+const mapStateToProps = state => ({
   openedModalName: state.modals.openedModalId,
-  schedule: state.employeeAvailabilitySlots.schedule,
-} );
+  schedule: state.schedule.template,
+});
 
 const mapDispatchToProps = dispatch => ( {
   closeModal: () => dispatch(modalActionCreators.close()),

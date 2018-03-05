@@ -10,8 +10,9 @@ import { slotsSummary } from '../Lib/utils';
 import ButtonText from './ButtonText';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
+import I18n from '../I18n/index';
 
-export default ScheduleBox = ({ schedule }) => {
+export default ScheduleBox = ({ schedule, onRemovePress, onEditPress }) => {
 
   const renderSummary = () =>
     <ScrollView>
@@ -19,7 +20,7 @@ export default ScheduleBox = ({ schedule }) => {
         return (
           <View style={styles.weekdayRow} key={`weekday-${index}-row`}>
             <View style={styles.weekdayContainer}>
-              <Text style={styles.weekdayLabel}>{item.slice(0, 3).capitalize()}.</Text>
+              <Text style={styles.weekdayLabel}>{I18n.t(`weekdays.short.${item}`).capitalize()}.</Text>
             </View>
 
             <View style={styles.intervalsContainer}>
@@ -43,9 +44,11 @@ export default ScheduleBox = ({ schedule }) => {
         {renderSummary()}
       </View>
       <View style={styles.footer}>
-        <ButtonText icon={<IconF size={15} name={'cog'} color={Colors.primaryWarm}/>}>Edytuj</ButtonText>
+        <ButtonText icon={<IconF size={15} name={'cog'} color={Colors.primaryWarm}/>} onPress={onEditPress}>Edytuj</ButtonText>
         <ButtonText icon={<IconE size={15} name={'trash'} color={Colors.salmon}/>}
-                    customTextStyle={{color: Colors.salmon}}>
+                    customTextStyle={{color: Colors.salmon}}
+                    onPress={onRemovePress}
+        >
           Usuń
         </ButtonText>
       </View>
@@ -69,7 +72,6 @@ const styles = {
   },
   weekdayRow: {
     flexDirection: 'row',
-    paddingVertical: 5,
   },
   interval: {
     color: Colors.strongGrey,
@@ -79,6 +81,7 @@ const styles = {
   container: {
     width: '90%',
     minHeight: 200,
+    alignSelf: 'center',
     borderRadius: 15,
     backgroundColor: Colors.snow,
     shadowColor: Colors.black,
@@ -88,8 +91,8 @@ const styles = {
     shadowOffset: { width: 0, height: 2 },
   },
   body: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   header: {
     borderBottomColor: Colors.primaryWarm,
@@ -104,7 +107,7 @@ const styles = {
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: Colors.subtleGray,
     paddingVertical: 10,
     paddingHorizontal: 10
   },

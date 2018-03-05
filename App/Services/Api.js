@@ -93,8 +93,14 @@ export const API = {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
   },
   employeePrivileges: {
-    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`),
-    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/:driving_school_id/employees/${employeeID}/employee_privilege_set`, data)
+    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/${id}/employees/${employeeID}/employee_privilege_set`),
+    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/${id}/employees/${employeeID}/employee_privilege_set`, data)
+  },
+  schedule: {
+    show: (employeeID=':employee_id', id =':driving_school_id') =>
+      api.get(`driving_schools/:driving_school_id/employees/:employee_id/schedule`),
+    update: (params, employeeID=':employee_id', id =':driving_school_id') =>
+      api.put(`driving_schools/:driving_school_id/employees/:employee_id/schedule`, params)
   }
 };
 

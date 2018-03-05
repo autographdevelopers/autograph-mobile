@@ -12,12 +12,9 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Colors, Fonts } from '../../Themes/';
 import { connect } from 'react-redux';
 import Slot from '../../Components/Slot';
-import { employeeAvailabilitySlotsActionCreators } from '../../Redux/employeeAvailabilitySlots';
+import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 import Bubble from '../../Components/Bubble';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DialogBox from '../../Components/DialogBox';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
-import { slotsSummary } from '../../Lib/utils';
 import AvailabilitySummaryModal from './AvailabilitySummaryModal';
 
 const WEEKDAYS = [
@@ -27,7 +24,8 @@ const WEEKDAYS = [
   'thursday',
   'friday',
   'saturday',
-  'sunday'];
+  'sunday'
+];
 
 class SetAvailability extends Component {
   constructor(props) {
@@ -81,8 +79,6 @@ class SetAvailability extends Component {
     });
   };
 
-
-
   renderWeekdaysBullets = () => {
     const { t } = this.props.screenProps.I18n;
 
@@ -105,7 +101,7 @@ class SetAvailability extends Component {
       <View style={{ flex: 1 }}>
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
           {this.renderSchedule()}
-        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />
+        {/*<AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />*/}
         <ButtonPrimary float={true} onPress={this.props.openSummaryModal}>{saveText}</ButtonPrimary>
       </View>
     );
@@ -138,13 +134,13 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    schedule: state.employeeAvailabilitySlots.schedule,
+    schedule: state.scheduleForm.template,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   toggleSlotState: (day, id) => () => dispatch(
-    employeeAvailabilitySlotsActionCreators.toggleSlot(day, id)),
+    scheduleFormActionCreators.toggleSlot(day, id)),
   openSummaryModal: () =>
     dispatch(modalActionCreators.open(MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY))
 });

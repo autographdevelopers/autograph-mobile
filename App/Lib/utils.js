@@ -52,6 +52,16 @@ export const groupBookedSlots = slotsCollection => {
   }, []);
 };
 
+export const isTemplateEmpty = template => {
+  return template['monday'].length === 0
+    && template['tuesday'].length === 0
+    && template['wednesday'].length === 0
+    && template['thursday'].length === 0
+    && template['friday'].length === 0
+    && template['saturday'].length === 0
+    && template['sunday'].length === 0
+}
+
 export const mapToBookedSlotsSummary = slotsCollection => {
   return slotsCollection.map( item => `${item[0].start_hour} - ${item[item.length - 1].end_hour}`)
 };
