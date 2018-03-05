@@ -18,6 +18,7 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DialogBox from '../../Components/DialogBox';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import { slotsSummary } from '../../Lib/utils';
+import AvailabilitySummaryModal from './AvailabilitySummaryModal';
 
 const WEEKDAYS = [
   'monday',
@@ -80,25 +81,7 @@ class SetAvailability extends Component {
     });
   };
 
-  renderSummary = () => {
-    const summary = Object.values(this.props.schedule).reduce((acc, current, index, array) => {
-      acc[WEEKDAYS[index]] = slotsSummary(current);
-      return acc;
-    }, {});
 
-    return (
-      <View>
-        {Object.keys(summary).map((day, index) =>
-          <View>
-            <Text>{day}</Text>
-            {summary[day].map((interval, index) =>
-              <Text>{interval}</Text>
-            )}
-          </View>
-        )}
-      </View>
-    )
-  };
 
   renderWeekdaysBullets = () => {
     const { t } = this.props.screenProps.I18n;
@@ -122,38 +105,7 @@ class SetAvailability extends Component {
       <View style={{ flex: 1 }}>
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
           {this.renderSchedule()}
-          <DialogBox modalName={MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY}
-                     dialogTexts={{
-                       title: 'Podsumowanie',
-                       description: 'Zweryfikuj swoją dyspozycyjność oraz zapisz lub cofnij i dokonaj poprawek.',
-                     }}
-                     dialogBtn={{
-                       title: 'Zapisz',
-                       handler: () => {},
-                     }}
-                     successTexts={{
-                       title: 'Udało się!',
-                       description: 'Twoja szkoła została pomyślnie aktywowana, mozesz teraz w pelni korzystac z mozliwosci AutoGRaph.'
-                     }}
-                     successBtn={{
-                       title: 'Powrót',
-                       handler: ()=>{}
-                     }}
-                     failureTexts={{
-                       title: 'Upps, cos poszło nie tak..',
-                       description: 'Lorem ipsum dolor sit melt.'
-                     }}
-                     failureBtn={{
-                       title: 'Powrót',
-                       handler: () => {}
-                     }}
-                     mode={'primary'}
-                     icon={<MCIcon name={'calendar-clock'} color={Colors.primaryWarm} size={55}/>}
-                     status={'READY'}
-                     onModalClose={()=>{}}
-          >
-            {this.renderSummary()}
-          </DialogBox>
+        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />
         <ButtonPrimary float={true} onPress={this.props.openSummaryModal}>{saveText}</ButtonPrimary>
       </View>
     );
@@ -177,7 +129,11 @@ const styles = {
     fontSize: Fonts.size.small,
     paddingVertical: 10,
     color: Colors.strongGrey
-  }
+  },
+  headerWrapper: {
+
+  },
+
 };
 
 const mapStateToProps = state => {

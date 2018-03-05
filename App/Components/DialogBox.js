@@ -97,8 +97,8 @@ class DialogBox extends Component {
      */
     const textsForStatus = {
       [FETCHING_STATUS.READY]: {
-        title: dialogTexts.title || 'saddas',
-        description: dialogTexts.description || 'dsadsad',
+        title: dialogTexts.title,
+        description: dialogTexts.description,
       },
       [FETCHING_STATUS.SUCCESS]: {
         title: successTexts.title || 'saddas',
@@ -221,7 +221,7 @@ const LoaderView = ({label}) => (
 
 const ActionView = ({ icon, title, description, onButtonPress, mode, children, btnTitle, closeModalHandler }) => (
   <View style={styles.actionView}>
-    <View style={styles.semicircle}/>
+    {/*<View style={styles.semicircle}/>*/}
 
     <TouchableOpacity style={styles.crossIconBox} onPress={closeModalHandler}>
       <Icon name="md-close"
@@ -230,13 +230,13 @@ const ActionView = ({ icon, title, description, onButtonPress, mode, children, b
             style={styles.crossIcon}/>
     </TouchableOpacity>
 
-    <View style={styles.headerIconContainer}>{icon}</View>
+    {/*<View style={styles.headerIconContainer}>{icon}</View>*/}
 
     <View style={styles.contentContainer}>
 
       <View style={styles.textArea}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        { description && <Text style={styles.description}>{description}</Text> }
       </View>
 
       {children}
@@ -274,6 +274,8 @@ const styles = StyleSheet.create({
   innerContainer: {
     borderRadius: 20,
     overflow: 'hidden',
+    marginHorizontal: 10,
+    maxWidth: '99%',
     backgroundColor: Colors.snow,
   },
   semicircle: {
@@ -334,10 +336,11 @@ const styles = StyleSheet.create({
   },
   actionView: {
     overflow: 'hidden',
-    paddingHorizontal: 40,
-    paddingTop: CIRCLE_SIZE + CIRCLE_TOP_OFFSET,
+    paddingHorizontal: 15,
+    paddingTop: 15, //CIRCLE_SIZE + CIRCLE_TOP_OFFSET,
     minHeight: CIRCLE_SIZE + CIRCLE_TOP_OFFSET + BREATH_SPACE + 100,
-    width: '90%',
+    // width: '90%',
+    flex: 1
   },
   headerIconContainer: {
     /** container covers visible part of a circle */
@@ -356,7 +359,7 @@ const styles = StyleSheet.create({
   },
   textArea: {
     marginTop: BREATH_SPACE,
-    marginBottom: 3 * BREATH_SPACE,
+    marginBottom: 2 * BREATH_SPACE,
   },
   actionButtonContainer: {
     paddingBottom: 25,

@@ -6,6 +6,7 @@ import EmployeeManagement from './ManageEmployee';
 import SetAvailability from './SetAvailability';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ProfileHeader from '../../Components/ProfileHeader';
+import AvailabilityDashboard from './AvailabilityDashboard';
 
 const routeConfigs = {
   employeeProfile: {
@@ -13,6 +14,9 @@ const routeConfigs = {
   },
   manageEmployee: {
     screen: EmployeeManagement,
+  },
+  availabilityDashboard: {
+    screen: AvailabilityDashboard,
   },
   setAvailability: {
     screen: SetAvailability
@@ -31,7 +35,7 @@ const navigationConfigs = {
           <ProfileHeader
             onManagePersonClick={() => navigation.navigate(
               'manageEmployee', { user, index, title: 'Ustaw uprawnienia' })}
-            onSetAvailabilityClick={() => navigation.navigate('setAvailability', { user, index, title: 'Ustaw dyspozycyjnosc' })}
+            onSetAvailabilityClick={() => navigation.navigate('availabilityDashboard', { user, index, title: 'Dyspozycyjnosc' })}
             avatarProps={{ name: user.name, index }}
             user={user}
             routeName={navigation.state.routeName}
