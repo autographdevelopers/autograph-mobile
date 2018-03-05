@@ -14,14 +14,14 @@ export const FETCHING_STATUS = {
 
 export const SLOT_STATUS = { FREE: 'FREE', BOOKED: 'BOOKED' };
 
-export const generateDailySlots = () => {
+export const generateDailySlots = ( setStatus = index => SLOT_STATUS.FREE ) => {
   const now = moment({hour: 0, minute: 0});
 
   return new Array(48).fill(0).map((_, index) => {
     const from = now.clone().add(index * 30, 'minutes').format('HH:mm');
     const to = now.clone().add((index+1) * 30, 'minutes').format('HH:mm');
 
-      return { id: index, start_hour: from, end_hour: to, status: SLOT_STATUS.FREE };
+      return { id: index, start_hour: from, end_hour: to, status: setStatus(index) };
     },
   );
 };

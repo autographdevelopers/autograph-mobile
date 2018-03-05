@@ -51,6 +51,7 @@ const styles = {
   },
   container: {
     flex: 1,
+    alignItems: 'center',
     marginTop: 110
   },
   placeholderBox: {
@@ -58,7 +59,6 @@ const styles = {
     minHeight: 200,
     paddingHorizontal: 30,
     paddingVertical: 30,
-    alignSelf: 'center',
     borderRadius: 15,
     backgroundColor: Colors.snow,
     shadowColor: Colors.black,

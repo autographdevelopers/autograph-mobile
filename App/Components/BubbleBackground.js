@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import {
   Text,
-  TouchableOpacity,
   View,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 import { Colors } from '../Themes';
