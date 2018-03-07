@@ -50,17 +50,11 @@ class AvailabilitySummaryModal extends Component {
     };
   }
 
-  nextStep = () => {
-    this.setState({
-      step: this.state.step + 1,
-    });
-  };
+  closeModal = () => {
+    this.props.closeModal();
+    this.setState({step: 0});
+  }
 
-  // prevStep = () => {
-  //   this.setState({
-  //     step: this.state.step - 1,
-  //   });
-  // };
 
   navToStep = index => () => {
     this.setState({
@@ -71,10 +65,10 @@ class AvailabilitySummaryModal extends Component {
   renderButtonsPane = () => {
     if ( this.state.step === 0 ) {
       return <ButtonPrimary icon={<IconM name={'arrow-forward'} color={Colors.snow} size={20}/>}
-                            onPress={this.nextStep}>Dalej</ButtonPrimary>;
+                            onPress={this.navToStep(1)}>Dalej</ButtonPrimary>;
     } else if ( this.state.step === 1 ) {
       return (
-          <ButtonPrimary onPress={this.nextStep}
+          <ButtonPrimary onPress={()=>{}}
                          icon={<IconE name={'paper-plane'} color={Colors.snow} size={20}/>}>
             Zapisz
           </ButtonPrimary>
@@ -99,6 +93,7 @@ class AvailabilitySummaryModal extends Component {
 
       return (
         <View>
+          <TextHeader title={'Obowiązuje od..'}/>
           <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od teraz</Text></View>
           <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od jutra</Text></View>
           <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od przyszlego tygodnia</Text></View>
@@ -115,24 +110,24 @@ class AvailabilitySummaryModal extends Component {
   };
 
   render() {
-    const { modalProps, openedModalName, closeModal, schedule } = this.props;
+    const { modalProps, openedModalName, closeModal } = this.props;
 
     return (
       <Modal
         visible={openedModalName === MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY}
         animationType={'slide'}
-        onRequestClose={closeModal}
+        onRequestClose={this.closeModal}
         transparent={true}
         {...modalProps}
       >
         <View style={styles.overlay}>
           <View style={styles.window}>
-            <CloseModalRow onPress={closeModal}/>
+            <CloseModalRow onPress={this.closeModal}/>
             <StepsIndicators labels={['Ustawienia', 'Podsumowanie']}
                              activeIndex={this.state.step}
                              onPress={this.navToStep}
                              customContainerStyles={{marginTop: 0, marginBottom: 10}}/>
-            <TextHeader title={'Obowiązuje od..'}/>
+
             {this.renderBody()}
             <View style={styles.buttonPane}>
               {this.renderButtonsPane()}
