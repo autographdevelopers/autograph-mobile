@@ -8,6 +8,7 @@ const THEMES = { PRIMARY: 'primary', WARNING: 'warning' };
 
 export default ButtonPrimary = ({ onPress,
                                   children,
+                                  icon=null,
                                   submitting=false,
                                   float=false,
                                   theme=THEMES.PRIMARY,
@@ -30,6 +31,7 @@ export default ButtonPrimary = ({ onPress,
     },
     button: {
       flex: 1,
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -39,7 +41,8 @@ export default ButtonPrimary = ({ onPress,
       color: Colors.snow,
       fontWeight: '400',
       backgroundColor: 'transparent',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginRight: icon ? 5 : 0
     },
     wrapper: {
       height: 44,
@@ -76,6 +79,7 @@ export default ButtonPrimary = ({ onPress,
     <LinearGradient {...gradientCoords} colors={gradientThemes[theme]} style={[styles.bg, customBgStyle]}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.title}>{children}</Text>
+        {icon}
       </TouchableOpacity>
     </LinearGradient>
   );

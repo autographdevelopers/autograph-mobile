@@ -5,7 +5,7 @@ import {
   Modal,
   Text,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../../Themes/index';
@@ -14,6 +14,14 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import { connect } from 'react-redux';
 import { FETCHING_STATUS, slotsSummary } from '../../Lib/utils';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
+import ScheduleSummary from '../../Components/ScheduleSummary';
+import StepsIndicators  from '../../Components/StepsIndicators';
+import IconE from 'react-native-vector-icons/Entypo';
+import IconM from 'react-native-vector-icons/MaterialIcons';
+import RadioButton from '../../Components/RadioButton';
+import CustomDatePicker from '../../Components/CustomDatePicker';
+import moment from 'moment';
+import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 
 const CloseModalRow = ({ onPress }) => (
   <View style={styles.crossIconRow}>
@@ -26,12 +34,6 @@ const CloseModalRow = ({ onPress }) => (
   </View>
 );
 
-const Bubble = ({ label, customBoxStyles = {}, customTextStyles = {} }) => (
-  <View style={[styles.intervalBox, customBoxStyles]}>
-    <Text style={[styles.intervalText, customTextStyles]}>{label}</Text>
-  </View>
-);
-
 const TextHeader = ({ title, description }) => (
   <View style={styles.textArea}>
     {title && <Text style={styles.title}>{title}</Text>}
@@ -39,57 +41,81 @@ const TextHeader = ({ title, description }) => (
   </View>
 );
 
-const WEEKDAYS = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-];
-
 class AvailabilitySummaryModal extends Component {
 
-  renderSummary = () => {
-    const { schedule } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 0,
+    };
+  }
 
-    const summary = Object.values(schedule).reduce((acc, current, index, _) => {
-      acc[WEEKDAYS[index]] = slotsSummary(current);
-      return acc;
-    }, {});
+  nextStep = () => {
+    this.setState({
+      step: this.state.step + 1,
+    });
+  };
 
-    return (
-      <View>
-        {Object.keys(schedule).map((day, index) =>
-          <View key={`weekday-summary-${index}`} style={styles.weekdaySummary}>
-            <Text style={styles.headerText}>{day.capitalize()}</Text>
-            <View style={styles.intervalsContainer}>
-              {summary[day].map((interval, index) =>
-                <Bubble label={interval} key={`interval-box-${index}`}/>,
-              )}
-              {summary[day].length === 0 &&
-              <Bubble label={'WOLNE'}
-                      customBoxStyles={styles.freeDayBox}
-                      customTextStyles={styles.freeDayText}
-              />
-              }
-            </View>
-          </View>,
-        )}
-      </View>
-    );
+  // prevStep = () => {
+  //   this.setState({
+  //     step: this.state.step - 1,
+  //   });
+  // };
+
+  navToStep = index => () => {
+    this.setState({
+      step: index
+    });
+  };
+
+  renderButtonsPane = () => {
+    if ( this.state.step === 0 ) {
+      return <ButtonPrimary icon={<IconM name={'arrow-forward'} color={Colors.snow} size={20}/>}
+                            onPress={this.nextStep}>Dalej</ButtonPrimary>;
+    } else if ( this.state.step === 1 ) {
+      return (
+          <ButtonPrimary onPress={this.nextStep}
+                         icon={<IconE name={'paper-plane'} color={Colors.snow} size={20}/>}>
+            Zapisz
+          </ButtonPrimary>
+      );
+    }
+  };
+
+  renderBody = () => {
+    const FORMAT = 'MM-DD-YYYY';
+    const today = moment().format(FORMAT);
+
+    if (this.state.step === 0) {
+      const datePickerConfiguration = {
+        ref: ref => this.datepicker = ref,
+        minDate: today,
+        format: FORMAT,
+        placeholder: FORMAT,
+        onDateChange: this.props.setBindingFrom,
+        duration: 100,
+        date: this.props.new_template_binding_from
+      };
+
+      return (
+        <View>
+          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od teraz</Text></View>
+          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od jutra</Text></View>
+          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od przyszlego tygodnia</Text></View>
+          <TouchableOpacity style={styles.optionRow} onPress={()=>this.datepicker.onPressDate() }>
+            <RadioButton/>
+              <Text style={styles.radioLabel}>Od dnia.. </Text>
+            <CustomDatePicker datePickerConfiguration={datePickerConfiguration} />
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return <ScheduleSummary schedule={this.props.schedule}/>;
+    }
   };
 
   render() {
-    const { modalProps, openedModalName, closeModal } = this.props;
-
-    const buttonConfiguration = {
-      theme: 'primary',
-      customWrapperStyles: { marginVertical: 15, width: '70%' },
-      customBgStyle: { borderRadius: 20 },
-      onPress: closeModal,
-    };
+    const { modalProps, openedModalName, closeModal, schedule } = this.props;
 
     return (
       <Modal
@@ -102,11 +128,15 @@ class AvailabilitySummaryModal extends Component {
         <View style={styles.overlay}>
           <View style={styles.window}>
             <CloseModalRow onPress={closeModal}/>
-            <TextHeader title={'Podsumowanie'} description={'Lorem ipsum'}/>
-            <ScrollView>
-              {this.renderSummary()}
-            </ScrollView>
-            <ButtonPrimary {...buttonConfiguration}>Ok</ButtonPrimary>
+            <StepsIndicators labels={['Ustawienia', 'Podsumowanie']}
+                             activeIndex={this.state.step}
+                             onPress={this.navToStep}
+                             customContainerStyles={{marginTop: 0, marginBottom: 10}}/>
+            <TextHeader title={'Obowiązuje od..'}/>
+            {this.renderBody()}
+            <View style={styles.buttonPane}>
+              {this.renderButtonsPane()}
+            </View>
           </View>
         </View>
       </Modal>
@@ -114,14 +144,16 @@ class AvailabilitySummaryModal extends Component {
   }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ( {
   openedModalName: state.modals.openedModalId,
-  schedule: state.schedule.template,
-});
+  schedule: state.scheduleForm.template,
+  new_template_binding_from: state.scheduleForm.new_template_binding_from,
+} );
 
 const mapDispatchToProps = dispatch => ( {
   closeModal: () => dispatch(modalActionCreators.close()),
-} );
+  setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   AvailabilitySummaryModal);
@@ -137,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   window: {
-    borderRadius: 20,
+    borderRadius: 15,
     width: '90%',
     maxHeight: '90%',
     paddingVertical: 15,
@@ -145,10 +177,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
   },
   title: {
-    textAlign: 'center',
     fontFamily: Fonts.type.base,
     marginBottom: BREATH_SPACE / 2,
-    fontSize: 25,
+    fontSize: Fonts.size.regular,
   },
   description: {
     textAlign: 'center',
@@ -196,39 +227,14 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     paddingTop: 3 * BREATH_SPACE,
   },
-
-  headerText: {
-    fontFamily: Fonts.type.base,
-    fontSize: Fonts.size.medium,
-    marginBottom: 5,
-    marginLeft: 4,
+  buttonPane: {
+    // marginVertical: 15,
   },
-  intervalsContainer: {
+  optionRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    marginBottom: 15
   },
-  intervalBox: {
-    borderRadius: 8,
-    backgroundColor: Colors.lightGrey,
-    marginRight: 10,
-    marginBottom: 5,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-  },
-  intervalText: {
-    fontFamily: Fonts.type.light,
-    fontSize: 11,
-    backgroundColor: 'transparent',
-    color: Colors.black,
-  },
-  freeDayBox: {
-    backgroundColor: Colors.yellowLight,
-    opacity: 50,
-  },
-  freeDayText: {
-    fontFamily: Fonts.type.base,
-  },
-  weekdaySummary: {
-    marginBottom: 5,
-  },
+  radioLabel: {
+    marginLeft: 10
+  }
 });

@@ -101,7 +101,7 @@ class SetAvailability extends Component {
       <View style={{ flex: 1 }}>
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
           {this.renderSchedule()}
-        {/*<AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />*/}
+        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />
         <ButtonPrimary float={true} onPress={this.props.openSummaryModal}>{saveText}</ButtonPrimary>
       </View>
     );
