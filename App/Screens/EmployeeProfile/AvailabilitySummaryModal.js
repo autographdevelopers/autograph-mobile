@@ -63,12 +63,16 @@ class AvailabilitySummaryModal extends Component {
   };
 
   renderButtonsPane = () => {
+    const customWrapperStyles= {width: '60%'};
+
     if ( this.state.step === 0 ) {
-      return <ButtonPrimary icon={<IconM name={'arrow-forward'} color={Colors.snow} size={20}/>}
+      return <ButtonPrimary customWrapperStyles={customWrapperStyles}
+        icon={<IconM name={'arrow-forward'} color={Colors.snow} size={20}/>}
                             onPress={this.navToStep(1)}>Dalej</ButtonPrimary>;
     } else if ( this.state.step === 1 ) {
       return (
-          <ButtonPrimary onPress={()=>{}}
+          <ButtonPrimary customWrapperStyles={customWrapperStyles}
+            onPress={()=>{}}
                          icon={<IconE name={'paper-plane'} color={Colors.snow} size={20}/>}>
             Zapisz
           </ButtonPrimary>
@@ -77,8 +81,9 @@ class AvailabilitySummaryModal extends Component {
   };
 
   renderBody = () => {
-    const FORMAT = 'MM-DD-YYYY';
+    const FORMAT = 'DD/MM/YYYY';
     const today = moment().format(FORMAT);
+    const starts_from = this.props.new_template_binding_from;
 
     if (this.state.step === 0) {
       const datePickerConfiguration = {
@@ -88,7 +93,7 @@ class AvailabilitySummaryModal extends Component {
         placeholder: FORMAT,
         onDateChange: this.props.setBindingFrom,
         duration: 100,
-        date: this.props.new_template_binding_from
+        date: starts_from || today
       };
 
       return (
@@ -105,12 +110,13 @@ class AvailabilitySummaryModal extends Component {
         </View>
       );
     } else {
-      return <ScheduleSummary schedule={this.props.schedule}/>;
+      return <View><Text style={styles.startsFrom}>Obowiazuje od
+        <Text style={styles.startsFromEmphasise}> {starts_from}</Text></Text><ScheduleSummary schedule={this.props.schedule}/></View>
     }
   };
 
   render() {
-    const { modalProps, openedModalName, closeModal } = this.props;
+    const { modalProps, openedModalName } = this.props;
 
     return (
       <Modal
@@ -169,6 +175,7 @@ const styles = StyleSheet.create({
     maxHeight: '90%',
     paddingVertical: 15,
     paddingHorizontal: 15,
+    paddingBottom: 0,
     backgroundColor: Colors.snow,
   },
   title: {
@@ -231,5 +238,12 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     marginLeft: 10
+  },
+  startsFrom: {
+    fontFamily: Fonts.type.light,
+    marginBottom: 10
+  },
+  startsFromEmphasise: {
+    fontFamily: Fonts.type.base
   }
 });
