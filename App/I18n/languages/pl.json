@@ -6,8 +6,8 @@
   "have_account": "Masz już konto?",
   "not_have_account": "Nie masz jeszcze konta?",
   "reset_password": "ZRESETUJ HASLO",
-  "activities": "Aktywnosc",
-  "calendar": "Kalendarz",
+  "activities": "Aktywności",
+  "calendar": "Grafik",
   "employees": "Pracownicy",
   "students": "Kursanci",
   "settings": "Ustawienia",
@@ -21,6 +21,8 @@
   "recover_password": "Odzyskaj haslo",
   "success": "Udało się",
   "password_reset_request_feedback": "Email z linkiem do zresetowania Twojego hasła został wysłany.",
+  "enroll": "Umów jazdę",
+  "myCourse": "Mój kurs",
   "weekdays": {
     "normal": {
       "monday": "Poniedzialek",
