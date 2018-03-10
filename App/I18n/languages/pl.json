@@ -23,6 +23,11 @@
   "password_reset_request_feedback": "Email z linkiem do zresetowania Twojego hasła został wysłany.",
   "enroll": "Umów jazdę",
   "myCourse": "Mój kurs",
+  "lacksPrivileges": {
+    "canManageEmployee": "Niestety nie masz uprawnień, żeby zarządzać pracownikami.",
+    "canManageStudent": "Niestety nie masz uprawnień, żeby zarządzać kursantami.",
+    "generic": "Aby nabyć uprawnienia skontaktuj się z właścicielem szkoły lub pracownikiem, który może zarządzać pracownikami."
+  },
   "weekdays": {
     "normal": {
       "monday": "Poniedzialek",

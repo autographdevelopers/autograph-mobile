@@ -22,7 +22,6 @@ class InvitedEmployeesList extends Component {
   render() {
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
-        <Text style={listProjectorStyles.header}>{`Aktywni pracownicy (${this.props.employees.length})`}</Text>
         <List containerStyle={listProjectorStyles.containerStyle}>
           <FlatList
             contentContainerStyle={listProjectorStyles.contentContainerStyle}

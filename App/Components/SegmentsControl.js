@@ -5,8 +5,7 @@ import { Fonts } from '../Themes';
 
 export default SegmentsControl = ({ componentProps }) => {
   const tabsContainerStyle = {
-    marginVertical: 25,
-    // marginHorizontal: 45
+    marginTop: 25,
     width: '80%',
     alignSelf: 'center'
 

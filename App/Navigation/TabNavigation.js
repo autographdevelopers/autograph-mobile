@@ -106,13 +106,6 @@ const studentRoutesConfigs = {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
     }
-  },
-  settings: {
-    screen: SettingsScreen,
-    navigationOptions: {
-      tabBarLabel: I18n.t('settings'),
-      tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'cog'} color={tintColor}/> ),
-    }
   }
 }
 
