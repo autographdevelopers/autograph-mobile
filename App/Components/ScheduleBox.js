@@ -6,42 +6,21 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Colors, Fonts } from '../Themes';
-import { slotsSummary } from '../Lib/utils';
 import ButtonText from './ButtonText';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
 import I18n from '../I18n/index';
-import moment from 'moment';
-import { groupBookedSlots } from '../Lib/utils';
+import ScheduleSummary from '../Components/ScheduleSummary';
 
 export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) => {
-  const renderSummary = () => {
-    const now = moment({hour: 0, minute: 0});
-    const formatInterval = id => now.clone().add(id * 30, 'minutes').format('HH:mm');
-
-    return <ScrollView>
-      {Object.keys(schedule).map((item, index) => {
-        return (
-          <View style={styles.weekdayRow} key={`weekday-${index}-row`}>
-            <View style={styles.weekdayContainer}>
-              <Text style={styles.weekdayLabel}>{I18n.t(
-                `weekdays.short.${item}`).capitalize()}.</Text>
-            </View>
-
-            <View style={styles.intervalsContainer}>
-              {groupBookedSlots(schedule[item], (last, current) => last === current - 1).map((intervalID, index) =>
-                <Text style={styles.interval}
-                      key={`interval-${index}`}>
-                  {`${formatInterval(intervalID[0])} - ${formatInterval(intervalID[intervalID.length - 1])}`}
-                </Text>)
-              }
-              {schedule[item].length === 0 &&
-              <Text style={styles.freeDayText}>wolne</Text>}
-            </View>
-          </View> );
-      })
-      }
-    </ScrollView>;
+  const customScheduleStyles = {
+    weekdaySummary: styles.weekdayRow,
+    headerTextContainer: styles.weekdayContainer,
+    headerText: styles.weekdayLabel,
+    intervalsContainer: styles.intervalsContainer,
+    intervalBox: styles.box,
+    intervalText: styles.interval,
+    freeDayBox: styles.freeDayBox
   };
 
   return (
@@ -50,7 +29,7 @@ export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) =
         <View style={styles.header}>
           <Text style={styles.headerText}>{title}</Text>
         </View>
-        {renderSummary()}
+        <ScheduleSummary schedule={schedule} customStyles={customScheduleStyles} weekdayFull={false}/>
       </View>
       <View style={styles.footer}>
         <ButtonText icon={<IconF size={15} name={'cog'} color={Colors.primaryWarm}/>} onPress={onEditPress}>Edytuj</ButtonText>
@@ -68,10 +47,19 @@ export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) =
 const styles = {
   weekdayContainer: {
     width: 50,
+    marginBottom: 0,
+    borderBottomWidth: 0,
+    borderBottomColor: 0
+  },
+  box: {
+    borderRadius: 0,
+    backgroundColor: 'transparent',
+    marginRight: 5,
+    marginBottom: 0,
   },
   weekdayLabel: {
     color: Colors.black,
-    fontSize: Fonts.size.medium,
+    fontSize: Fonts.size.small,
     fontWeight: '500'
   },
   intervalsContainer: {
@@ -84,8 +72,7 @@ const styles = {
   },
   interval: {
     color: Colors.strongGrey,
-    fontSize: Fonts.size.medium,
-    marginRight: 5,
+    fontSize: Fonts.size.small,
   },
   container: {
     width: '90%',
@@ -93,11 +80,12 @@ const styles = {
     alignSelf: 'center',
     borderRadius: 15,
     backgroundColor: Colors.snow,
-    shadowColor: Colors.black,
-    shadowOpacity: 0.25,
+    shadowColor: Colors.mediumGrey,
+    shadowOpacity: 0.5,
     shadowRadius: 20,
     elevation: 1,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0.5, height: 0.5 },
+    marginBottom: 15
   },
   body: {
     paddingHorizontal: 10,
@@ -110,8 +98,8 @@ const styles = {
     marginBottom: 10,
   },
   headerText: {
-    fontSize: Fonts.size.regular,
-    fontFamily: Fonts.type.regular,
+    fontSize: Fonts.size.medium,
+    fontFamily: Fonts.type.light,
   },
   footer: {
     flexDirection: 'row',
@@ -120,7 +108,7 @@ const styles = {
     paddingVertical: 10,
     paddingHorizontal: 10
   },
-  freeDayText: {
-    color: Colors.yellow
+  freeDayBox: {
+    paddingHorizontal: 5
   }
 };

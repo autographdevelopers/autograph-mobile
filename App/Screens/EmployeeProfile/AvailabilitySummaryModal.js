@@ -49,7 +49,7 @@ class AvailabilitySummaryModal extends Component {
   closeModal = () => {
     this.props.closeModal();
     this.props.changeStatus(FETCHING_STATUS.READY);
-    this.setState({step: 0});
+    this.setState({step: this.props.showBindingFromStep ? 0 : 1});
   };
 
   submitSchedule = () => {
@@ -162,7 +162,6 @@ class AvailabilitySummaryModal extends Component {
 
   render() {
     const { modalProps, openedModalName, status } = this.props;
-    console.log(this.props);
 
     return (
       <Modal
@@ -248,13 +247,14 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.type.base
   },
   appliesForm: {
-    marginVertical: 15,
-    fontFamily: Fonts.type.medium,
+    marginVertical: 15, 
+    fontFamily: Fonts.type.base,
     fontSize: Fonts.size.regular
   },
   optionRow: {
     flexDirection: 'row',
-    marginVertical: 10
+    marginVertical: 10,
+    alignItems: 'center'
   },
   radioLabeL: {
     marginLeft: 10

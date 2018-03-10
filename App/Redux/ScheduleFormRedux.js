@@ -49,6 +49,8 @@ export const toggleSlotHandler = (state, { weekDay, id }) => {
     else
       daySlots.splice(index, 1);
 
+    daySlots.sort((prev, next) => prev > next);
+
     return newState;
 };
 

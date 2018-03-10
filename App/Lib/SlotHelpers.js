@@ -2,8 +2,8 @@ import moment from 'moment/moment';
 
 export const slotHelper = {
   summarizeDay: function(daySlots){
-    const groupedSlots = this.groupAdjacentSlots(daySlots);
-    console.log(groupedSlots);
+    const sortedSlots = daySlots.sort((prev, next) => prev > next);
+    const groupedSlots = this.groupAdjacentSlots(sortedSlots);
     const intervals = this.mapToHumanReadableIntervals(groupedSlots);
 
     return intervals;

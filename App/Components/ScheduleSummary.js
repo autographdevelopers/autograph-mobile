@@ -20,13 +20,13 @@ const WEEKDAYS = [
   'sunday',
 ];
 
-const Bubble = ({ label, customBoxStyles = {}, customTextStyles = {}}) => (
-  <View style={[styles.intervalBox, customBoxStyles]}>
-    <Text style={[styles.intervalText, customTextStyles]}>{label}</Text>
+const Bubble = ({ label, customBoxStyles = [], customTextStyles = []}) => (
+  <View style={[styles.intervalBox, ...customBoxStyles]}>
+    <Text style={[styles.intervalText, ...customTextStyles]}>{label}</Text>
   </View>
 );
 
-export default ScheduleSummary = ({ schedule, weekdayFull=true }) => {
+export default ScheduleSummary = ({ schedule, weekdayFull=true, customStyles={} }) => {
   const getWeekday = day => {
     const weekday = (weekdayFull ? I18n.t(`weekdays.normal.${day}`) : I18n.t(`weekdays.short.${day}`));
 
@@ -36,21 +36,23 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true }) => {
   return (
     <ScrollView>
       {Object.keys(schedule).map((day, index) =>
-        <View key={`weekday-summary-${index}`} style={styles.weekdaySummary}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>
+        <View key={`weekday-summary-${index}`} style={[styles.weekdaySummary, customStyles.weekdaySummary]}>
+          <View style={[styles.headerTextContainer, customStyles.headerTextContainer]}>
+            <Text style={[styles.headerText, customStyles.headerText]}>
               {getWeekday(day)}
             </Text>
           </View>
 
-          <View style={styles.intervalsContainer}>
+          <View style={[styles.intervalsContainer, customStyles.intervalsContainer]}>
             {slotHelper.summarizeDay(schedule[day]).map((interval, index) =>
-              <Bubble label={interval} key={`interval-box-${index}`}/>,
+              <Bubble label={interval} key={`interval-box-${index}`}
+                      customBoxStyles={[customStyles.intervalBox]}
+                      customTextStyles={[customStyles.intervalText]}/>,
             )}
             {schedule[day].length === 0 &&
               <Bubble label={'wolne'}
-                      customBoxStyles={styles.freeDayBox}
-                      customTextStyles={styles.freeDayText}
+                      customBoxStyles={[styles.freeDayBox, customStyles.freeDayBox]}
+                      customTextStyles={[styles.freeDayText, customStyles.freeDayText]}
               />
             }
           </View>
@@ -62,6 +64,7 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true }) => {
 
 const styles = StyleSheet.create({
   intervalsContainer: {
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
