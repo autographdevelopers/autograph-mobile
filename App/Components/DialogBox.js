@@ -221,7 +221,7 @@ const LoaderView = ({label}) => (
 
 const ActionView = ({ icon, title, description, onButtonPress, mode, children, btnTitle, closeModalHandler }) => (
   <View style={styles.actionView}>
-    {/*<View style={styles.semicircle}/>*/}
+    <View style={styles.semicircle}/>
 
     <TouchableOpacity style={styles.crossIconBox} onPress={closeModalHandler}>
       <Icon name="md-close"
@@ -230,7 +230,7 @@ const ActionView = ({ icon, title, description, onButtonPress, mode, children, b
             style={styles.crossIcon}/>
     </TouchableOpacity>
 
-    {/*<View style={styles.headerIconContainer}>{icon}</View>*/}
+    <View style={styles.headerIconContainer}>{icon}</View>
 
     <View style={styles.contentContainer}>
 

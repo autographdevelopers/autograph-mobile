@@ -23,9 +23,8 @@ export function* update(api, action) {
   const response = yield call(api.schedule.update, action.data);
 
   if (response.ok) {
-    // yield put(scheduleActionCreators.save(response.data));
-    // yield put(
-    //   scheduleFormActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+    yield put(scheduleActionCreators.save(response.data));
+    yield put(scheduleFormActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
     yield put(scheduleFormActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }

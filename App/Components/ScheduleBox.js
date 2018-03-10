@@ -11,35 +11,44 @@ import ButtonText from './ButtonText';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
 import I18n from '../I18n/index';
+import moment from 'moment';
+import { groupBookedSlots } from '../Lib/utils';
 
-export default ScheduleBox = ({ schedule, onRemovePress, onEditPress }) => {
+export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) => {
+  const renderSummary = () => {
+    const now = moment({hour: 0, minute: 0});
+    const formatInterval = id => now.clone().add(id * 30, 'minutes').format('HH:mm');
 
-  const renderSummary = () =>
-    <ScrollView>
+    return <ScrollView>
       {Object.keys(schedule).map((item, index) => {
         return (
           <View style={styles.weekdayRow} key={`weekday-${index}-row`}>
             <View style={styles.weekdayContainer}>
-              <Text style={styles.weekdayLabel}>{I18n.t(`weekdays.short.${item}`).capitalize()}.</Text>
+              <Text style={styles.weekdayLabel}>{I18n.t(
+                `weekdays.short.${item}`).capitalize()}.</Text>
             </View>
 
             <View style={styles.intervalsContainer}>
-              {slotsSummary(schedule[item]).map((interval, index) =>
-                <Text style={styles.interval} key={`interval-${index}`}>{interval}</Text>)
+              {groupBookedSlots(schedule[item], (last, current) => last === current - 1).map((intervalID, index) =>
+                <Text style={styles.interval}
+                      key={`interval-${index}`}>
+                  {`${formatInterval(intervalID[0])} - ${formatInterval(intervalID[intervalID.length - 1])}`}
+                </Text>)
               }
-              {slotsSummary(schedule[item]).length ===0 && <Text style={styles.freeDayText}>wolne</Text>}
+              {schedule[item].length === 0 &&
+              <Text style={styles.freeDayText}>wolne</Text>}
             </View>
-          </View>
-        );
+          </View> );
       })
       }
     </ScrollView>;
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.body}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Aktualny grafik (do 21.01.2018)</Text>
+          <Text style={styles.headerText}>{title}</Text>
         </View>
         {renderSummary()}
       </View>

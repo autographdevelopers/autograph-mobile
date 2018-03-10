@@ -6,7 +6,7 @@ const { Types, Creators } = createActions({
   changeStatus: ['status'],
   changeNewTemplateBindingFrom: ['date'],
   updateRequest: ['data'],
-  initializeForm: ['data', 'schedule_type']
+  initializeForm: ['data', 'schedule_type', 'new_template_binding_from']
 }, { prefix: 'SCHEDULE_FORM_' });
 
 export const scheduleFormActionCreators = Creators;
@@ -26,33 +26,28 @@ const INITIAL_STATE = {
   },
   new_template_binding_from: null,
   status: FETCHING_STATUS.READY,
-  type: TEMPLATE_TYPES.CURRENT_TEMPLATE
+  schedule_type: TEMPLATE_TYPES.CURRENT_TEMPLATE
 };
 
-export const initializeFormHandler = (state, { data, schedule_type }) => {
-  const newState = deepClone(state);
+export const initializeFormHandler = (state, { data, schedule_type, new_template_binding_from }) => {
+  const newState = deepClone(INITIAL_STATE);
+  const templateToBeModified = deepClone(data);
+  newState.template = templateToBeModified;
   newState.schedule_type = schedule_type;
-
-  newState.template = Object.keys(data).reduce((acc, current, index, array) => {
-    acc[current] = acc[current].map((item, index) => {
-      if(data[current].includes(item.id))
-        item.status = FETCHING_STATUS.BOOKED;
-
-      return item;
-    });
-
-    return acc;
-  }, newState.template);
+  newState.status = FETCHING_STATUS.READY;
+  newState.new_template_binding_from = new_template_binding_from;
 
   return newState;
 };
 
 export const toggleSlotHandler = (state, { weekDay, id }) => {
   const newState = deepClone(state),
-    template = newState.template[weekDay],
-    slot = template.find( item => item.id === id ) ;
+    daySlots = newState.template[weekDay];
 
-    slot.status = slot.status === SLOT_STATUS.BOOKED ? SLOT_STATUS.ACTIVE : SLOT_STATUS.BOOKED;
+    if ((index = daySlots.indexOf(id)) === -1)
+      daySlots.push(id);
+    else
+      daySlots.splice(index, 1);
 
     return newState;
 };

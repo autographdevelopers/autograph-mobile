@@ -12,16 +12,18 @@ import { Colors, Fonts } from '../../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { connect } from 'react-redux';
-import { FETCHING_STATUS, slotsSummary } from '../../Lib/utils';
+import { FETCHING_STATUS, SLOT_STATUS, slotsSummary } from '../../Lib/utils';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
 import ScheduleSummary from '../../Components/ScheduleSummary';
 import StepsIndicators  from '../../Components/StepsIndicators';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconM from 'react-native-vector-icons/MaterialIcons';
-import RadioButton from '../../Components/RadioButton';
 import CustomDatePicker from '../../Components/CustomDatePicker';
 import moment from 'moment';
 import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
+import { isTemplateEmpty } from '../../Lib/utils';
+import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
+import RadioButton from '../../Components/RadioButton';
 
 const CloseModalRow = ({ onPress }) => (
   <View style={styles.crossIconRow}>
@@ -34,27 +36,35 @@ const CloseModalRow = ({ onPress }) => (
   </View>
 );
 
-const TextHeader = ({ title, description }) => (
-  <View style={styles.textArea}>
-    {title && <Text style={styles.title}>{title}</Text>}
-    {description && <Text style={styles.description}>{description}</Text>}
-  </View>
-);
+const STEPS = ['Ustawienia', 'Podsumowanie'];
 
 class AvailabilitySummaryModal extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      step: 0,
+      step: props.showBindingFromStep ? 0 : 1,
     };
   }
 
   closeModal = () => {
     this.props.closeModal();
+    this.props.changeStatus(FETCHING_STATUS.READY);
     this.setState({step: 0});
-  }
+  };
 
+  submitSchedule = () => {
+    const { template, new_template_binding_from } = this.props;
+    const params = {};
+
+    const templateType = new_template_binding_from ? 'new_template' : 'current_template';
+
+    params[templateType] = template;
+
+    if(new_template_binding_from)
+      params['new_template_binding_from'] = new_template_binding_from;
+
+    this.props.updateScheduleRequest(params);
+  };
 
   navToStep = index => () => {
     this.setState({
@@ -62,61 +72,97 @@ class AvailabilitySummaryModal extends Component {
     });
   };
 
-  renderButtonsPane = () => {
-    const customWrapperStyles= {width: '60%'};
+  renderButton = () => {
+    const customWrapperStyles= { width: '60%' };
+    const icon = this.state.step === 0 ? <IconM name={'arrow-forward'} color={Colors.snow} size={20}/> : null;
+    const handlePress = this.state.step === 0 ? this.navToStep(1) :  this.submitSchedule;
+    const label = this.state.step === 0 ? 'Dalej' : 'Zapisz';
 
-    if ( this.state.step === 0 ) {
-      return <ButtonPrimary customWrapperStyles={customWrapperStyles}
-        icon={<IconM name={'arrow-forward'} color={Colors.snow} size={20}/>}
-                            onPress={this.navToStep(1)}>Dalej</ButtonPrimary>;
-    } else if ( this.state.step === 1 ) {
-      return (
-          <ButtonPrimary customWrapperStyles={customWrapperStyles}
-            onPress={()=>{}}
-                         icon={<IconE name={'paper-plane'} color={Colors.snow} size={20}/>}>
-            Zapisz
-          </ButtonPrimary>
-      );
-    }
+    return <ButtonPrimary customWrapperStyles={customWrapperStyles}
+                          icon={icon}
+                          onPress={handlePress}>{label}</ButtonPrimary>;
   };
 
-  renderBody = () => {
-    const FORMAT = 'DD/MM/YYYY';
-    const today = moment().format(FORMAT);
+  renderStep = () => {
+    const FORMAT = 'YYYY-MM-DD';
+    const tommorow = moment().add(1, 'days').format(FORMAT);
     const starts_from = this.props.new_template_binding_from;
+    const { setBindingFrom } = this.props;
 
     if (this.state.step === 0) {
       const datePickerConfiguration = {
         ref: ref => this.datepicker = ref,
-        minDate: today,
+        minDate: tommorow,
         format: FORMAT,
-        placeholder: FORMAT,
-        onDateChange: this.props.setBindingFrom,
-        duration: 100,
-        date: starts_from || today
+        placeholder: 'dnia..(data)',
+        onDateChange: setBindingFrom,
+        duration: 400,
+        date: starts_from
       };
 
       return (
         <View>
-          <TextHeader title={'Obowiązuje od..'}/>
-          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od teraz</Text></View>
-          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od jutra</Text></View>
-          <View style={styles.optionRow}><RadioButton/><Text style={styles.radioLabel}>Od przyszlego tygodnia</Text></View>
-          <TouchableOpacity style={styles.optionRow} onPress={()=>this.datepicker.onPressDate() }>
-            <RadioButton/>
-              <Text style={styles.radioLabel}>Od dnia.. </Text>
-            <CustomDatePicker datePickerConfiguration={datePickerConfiguration} />
+          <Text style={styles.appliesForm}>Obowiązuje od.. </Text>
+          <TouchableOpacity style={styles.optionRow} onPress={() => setBindingFrom(null)} >
+            <RadioButton active={this.props.new_template_binding_from === null} setValue={()=>setBindingFrom(null)} />
+            <View style={styles.radioLabeL}><Text>teraz</Text></View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.optionRow} onPress={() => this.datepicker.onPressDate()}>
+            <RadioButton active={this.props.new_template_binding_from !== null} setValue={()=>this.datepicker.onPressDate()} />
+            <View style={styles.radioLabeL}><CustomDatePicker datePickerConfiguration={datePickerConfiguration} /></View>
           </TouchableOpacity>
         </View>
       );
-    } else {
-      return <View><Text style={styles.startsFrom}>Obowiazuje od
-        <Text style={styles.startsFromEmphasise}> {starts_from}</Text></Text><ScheduleSummary schedule={this.props.schedule}/></View>
+    } else if (this.state.step === 1) {
+      return (
+        <View>
+          { this.props.showBindingFromStep &&
+            <Text style={styles.startsFrom}>Obowiazuje od
+              <Text style={styles.startsFromEmphasise}> {starts_from || 'teraz'}</Text>
+            </Text>
+          }
+
+          <ScheduleSummary schedule={this.props.template} />
+        </View>
+      )
     }
   };
 
+  renderStepsWizard = () => (
+    <View style={[styles.window, styles.windowDefault]}>
+      <CloseModalRow onPress={this.closeModal}/>
+
+      { this.props.showBindingFromStep && <StepsIndicators labels={STEPS}
+                       activeIndex={this.state.step}
+                       onPress={this.navToStep}
+                       customContainerStyles={{marginTop: 0, marginBottom: 10}}/> }
+
+      { this.renderStep() }
+
+      <View style={styles.buttonPane}>
+        {this.renderButton()}
+      </View>
+    </View>
+  );
+
+  renderError = () => (
+    <View style={styles.windowDefault}>
+      <Text>Cos poszlo nei tak, prosze sprobuj ponownie pozniej.</Text>
+      <ButtonPrimary onPress={this.closeModal}>Powrot</ButtonPrimary>
+    </View>
+  );
+
+  renderSuccess = () => (
+    <View style={styles.windowDefault}>
+      <Text>Pomyslnie zapisano harmonogram.</Text>
+      <ButtonPrimary onPress={()=>{this.closeModal(); this.props.onSuccessBtnPress()}}>Powrot</ButtonPrimary>
+    </View>
+  );
+
   render() {
-    const { modalProps, openedModalName } = this.props;
+    const { modalProps, openedModalName, status } = this.props;
+    console.log(this.props);
 
     return (
       <Modal
@@ -127,37 +173,36 @@ class AvailabilitySummaryModal extends Component {
         {...modalProps}
       >
         <View style={styles.overlay}>
-          <View style={styles.window}>
-            <CloseModalRow onPress={this.closeModal}/>
-            <StepsIndicators labels={['Ustawienia', 'Podsumowanie']}
-                             activeIndex={this.state.step}
-                             onPress={this.navToStep}
-                             customContainerStyles={{marginTop: 0, marginBottom: 10}}/>
+          { status === FETCHING_STATUS.READY && this.renderStepsWizard() }
 
-            {this.renderBody()}
-            <View style={styles.buttonPane}>
-              {this.renderButtonsPane()}
-            </View>
-          </View>
+          { status === FETCHING_STATUS.ERROR && this.renderError() }
+
+          { status === FETCHING_STATUS.FETCHING && <ActivityIndicator color={Colors.snow} size={'large'}/> }
+
+          { status === FETCHING_STATUS.SUCCESS && this.renderSuccess() }
         </View>
       </Modal>
     );
   }
-};
+}
 
 const mapStateToProps = state => ( {
   openedModalName: state.modals.openedModalId,
-  schedule: state.scheduleForm.template,
+  template: state.scheduleForm.template,
   new_template_binding_from: state.scheduleForm.new_template_binding_from,
-} );
-
-const mapDispatchToProps = dispatch => ( {
-  closeModal: () => dispatch(modalActionCreators.close()),
-  setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date))
+  schedule_type: state.scheduleForm.schedule_type,
+  status: state.scheduleForm.status,
+  showBindingFromStep: isTemplateEmpty(state.schedule.new_template) || state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  AvailabilitySummaryModal);
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(modalActionCreators.close()),
+  setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),
+  updateScheduleRequest: data => dispatch(scheduleFormActionCreators.updateRequest(data)),
+  changeStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvailabilitySummaryModal);
 
 /** == STYLING ================================================ */
 const BREATH_SPACE = 15;
@@ -169,25 +214,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  window: {
+  windowDefault: {
     borderRadius: 15,
+    paddingTop: 15,
     width: '90%',
-    maxHeight: '90%',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    paddingBottom: 0,
     backgroundColor: Colors.snow,
   },
-  title: {
-    fontFamily: Fonts.type.base,
-    marginBottom: BREATH_SPACE / 2,
-    fontSize: Fonts.size.regular,
-  },
-  description: {
-    textAlign: 'center',
-    color: Colors.strongGrey,
-    fontFamily: Fonts.type.light,
-    fontSize: Fonts.size.medium,
+  window: {
+    maxHeight: '90%',
+    paddingBottom: 0,
+    paddingHorizontal: 15,
+    backgroundColor: Colors.snow,
   },
   crossIconRow: {
     flexDirection: 'row',
@@ -197,47 +234,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontWeight: '100',
   },
-  // triangle: {
-  //   /** shape */
-  //   width: 0,
-  //   height: 0,
-  //   borderTopWidth: MODAL_SPINNER_MODE_SIZE,
-  //   borderRightWidth: MODAL_SPINNER_MODE_SIZE,
-  //   borderRightColor: Colors.subtleGray,
-  //   borderTopColor: 'transparent',
-  //   /** position */
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   left: 0,
-  // },
-  // spinnerView: {
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   height: MODAL_SPINNER_MODE_SIZE,
-  //   width: MODAL_SPINNER_MODE_SIZE,
-  // },
-  // loaderText: {
-  //   fontFamily: Fonts.type.base,
-  //   fontSize: Fonts.size.medium,
-  //   fontWeight: '300',
-  //   backgroundColor: 'transparent',
-  // },
   textArea: {
-    marginBottom: BREATH_SPACE,
-  },
-  actionButtonContainer: {
-    paddingBottom: 25,
-    paddingTop: 3 * BREATH_SPACE,
+    marginVertical: BREATH_SPACE,
   },
   buttonPane: {
-    // marginVertical: 15,
-  },
-  optionRow: {
-    flexDirection: 'row',
-    marginBottom: 15
-  },
-  radioLabel: {
-    marginLeft: 10
+    marginVertical: 15,
   },
   startsFrom: {
     fontFamily: Fonts.type.light,
@@ -245,5 +246,17 @@ const styles = StyleSheet.create({
   },
   startsFromEmphasise: {
     fontFamily: Fonts.type.base
+  },
+  appliesForm: {
+    marginVertical: 15,
+    fontFamily: Fonts.type.medium,
+    fontSize: Fonts.size.regular
+  },
+  optionRow: {
+    flexDirection: 'row',
+    marginVertical: 10
+  },
+  radioLabeL: {
+    marginLeft: 10
   }
 });

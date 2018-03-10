@@ -5,11 +5,9 @@ import { Fonts, Colors } from '../Themes/';
 
 const styles = StyleSheet.create({
   datepicker: {
-    flex: 1,
     alignItems: 'center'
   },
   datepickerRow: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -26,8 +24,9 @@ const datepickerCustom = {
     height: Fonts.size.medium
   },
   dateText: {
-    textAlign: 'left',
-    fontSize: Fonts.size.medium
+    textAlign: 'center',
+    fontSize: Fonts.size.medium,
+    color: Colors.primaryWarm
   },
   dateTouchBody: {
     height: Fonts.size.medium

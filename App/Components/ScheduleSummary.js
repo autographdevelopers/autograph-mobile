@@ -8,6 +8,7 @@ import {
 import { Colors, Fonts } from '../Themes';
 import { slotsSummary } from '../Lib/utils';
 import I18n from '../I18n/index';
+import { slotHelper } from '../Lib/SlotHelpers';
 
 const WEEKDAYS = [
   'monday',
@@ -26,11 +27,6 @@ const Bubble = ({ label, customBoxStyles = {}, customTextStyles = {}}) => (
 );
 
 export default ScheduleSummary = ({ schedule, weekdayFull=true }) => {
-  const summary = Object.values(schedule).reduce((acc, current, index, _) => {
-    acc[WEEKDAYS[index]] = slotsSummary(current);
-    return acc;
-  }, {});
-
   const getWeekday = day => {
     const weekday = (weekdayFull ? I18n.t(`weekdays.normal.${day}`) : I18n.t(`weekdays.short.${day}`));
 
@@ -48,10 +44,10 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true }) => {
           </View>
 
           <View style={styles.intervalsContainer}>
-            {summary[day].map((interval, index) =>
+            {slotHelper.summarizeDay(schedule[day]).map((interval, index) =>
               <Bubble label={interval} key={`interval-box-${index}`}/>,
             )}
-            {summary[day].length === 0 &&
+            {schedule[day].length === 0 &&
               <Bubble label={'wolne'}
                       customBoxStyles={styles.freeDayBox}
                       customTextStyles={styles.freeDayText}

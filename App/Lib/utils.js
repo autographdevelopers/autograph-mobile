@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { View, ScrollView } from 'react-native';
 export const deepClone = entity => ( JSON.parse(JSON.stringify(entity)) );
 export const arrayToHash = array => array.reduce((accumulator, current) => {
   accumulator[current.id] = current;
@@ -33,9 +34,8 @@ export const generateDailySlots = ( setStatus = index => SLOT_STATUS.FREE ) => {
 //   id: 27
 // }
 
-export const groupBookedSlots = slotsCollection => {
-  const activeSlots = slotsCollection.filter( slot => slot.status === SLOT_STATUS.BOOKED )
-  return activeSlots.reduce( (acc, current, index, _) => {
+export const groupBookedSlots = (slotsCollection, compare) => {
+  return slotsCollection.reduce((acc, current, index, _) => {
     if(index === 0 ) {
       acc.push([current]);
     } else {
@@ -53,22 +53,23 @@ export const groupBookedSlots = slotsCollection => {
 };
 
 export const isTemplateEmpty = template => {
-  return template['monday'].length === 0
-    && template['tuesday'].length === 0
-    && template['wednesday'].length === 0
-    && template['thursday'].length === 0
-    && template['friday'].length === 0
-    && template['saturday'].length === 0
-    && template['sunday'].length === 0
-}
+  return template['monday'] && template['monday'].length === 0
+    && template['tuesday'] && template['tuesday'].length === 0
+    && template['wednesday'] && template['wednesday'].length === 0
+    && template['thursday'] && template['thursday'].length === 0
+    && template['friday'] && template['friday'].length === 0
+    && template['saturday'] && template['saturday'].length === 0
+    && template['sunday'] && template['sunday'].length === 0
+};
 
 export const mapToBookedSlotsSummary = slotsCollection => {
   return slotsCollection.map( item => `${item[0].start_hour} - ${item[item.length - 1].end_hour}`)
 };
 
 export const slotsSummary = slots => {
-  const groupedSlots = groupBookedSlots(slots);
-  const summarizedIntervals = mapToBookedSlotsSummary(groupedSlots)
+  const activeSlots = slots.filter(slot => slot.status === SLOT_STATUS.BOOKED);
+  const groupedSlots = groupBookedSlots(activeSlots, (last, current) => last.id === current.id -1);
+  const summarizedIntervals = mapToBookedSlotsSummary(groupedSlots);
 
   return summarizedIntervals;
 };
@@ -77,4 +78,12 @@ export const slotsSummary = slots => {
 
 String.prototype.capitalize = function() {
   return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
+
+Array.prototype.last = function() {
+  return this[this.length-1];
+};
+
+Array.prototype.first = function() {
+  return this[0];
 };

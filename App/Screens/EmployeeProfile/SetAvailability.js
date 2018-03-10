@@ -38,11 +38,13 @@ class SetAvailability extends Component {
     };
   }
 
-  _keyExtractor = (item, _) => `employee-slot-aval-${item.id}`;
+  _keyExtractor = (item, _) => {return `employee-slot-interval-${item.id}`};
 
-  _renderSlot = day => ({ item, _ }) => (
-      <Slot slot={item} onPress={this.props.toggleSlotState(day, item.id)} />
-  );
+  _renderSlot = day => ({item}) => {
+    const isActive = this.props.schedule[day].includes(item.id);
+
+    return <Slot active={isActive} id={item.id} onPress={this.props.toggleSlotState(day, item.id)} />
+  };
 
   _showEarlierSlots = () => {
     this.setState({
@@ -60,13 +62,14 @@ class SetAvailability extends Component {
 
   renderSchedule = () => {
     const day = WEEKDAYS[this.state.currentDayIndex];
+    const slotsIds = new Array(48).fill(0).map((_, index) => ({id: index}));
 
     return <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scheduleContainer}
       ListHeaderComponent={this.state.startFrom === 12 && <Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
       keyExtractor={this._keyExtractor}
-      data={this.props.schedule[day].slice(this.state.startFrom)}
+      data={slotsIds.slice(this.state.startFrom)}
       renderItem={this._renderSlot(day)}
       onRefresh={this._showEarlierSlots}
       refreshing={this.state.refreshing}
@@ -101,7 +104,7 @@ class SetAvailability extends Component {
       <View style={{ flex: 1 }}>
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
           {this.renderSchedule()}
-        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} />
+        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} onSuccessBtnPress={()=>this.props.navigation.goBack(null)}/>
         <ButtonPrimary float={true} onPress={this.props.openSummaryModal}>{saveText}</ButtonPrimary>
       </View>
     );

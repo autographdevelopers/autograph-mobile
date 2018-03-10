@@ -3,16 +3,10 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../Themes/';
 import Icon from 'react-native-vector-icons/Entypo';
-import { SLOT_STATUS } from '../Lib/utils';
+import { slotHelper } from '../Lib/SlotHelpers';
 
-export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
-
-  /** TODO: display summary of selected hours for a given day. */
-
-  const BULLET_SIZE = 4,
-    CHECK_BULLET_SIZE = 15,
-    isBooked = slot.status === SLOT_STATUS.BOOKED,
-    minutes = slot.start_hour.split(':')[1];
+export default Slot = ({ id, active=false, containerStyles = {}, onPress = () => {} }) => {
+  const CHECK_BULLET_SIZE = 15;
 
   const styles = StyleSheet.create({
     container: {
@@ -29,12 +23,6 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
     rightSection: {
       flex: 1,
     },
-    bullet: {
-      width: BULLET_SIZE,
-      height: BULLET_SIZE,
-      borderRadius: BULLET_SIZE/2,
-      backgroundColor: Colors.strongGrey,
-    },
     leftSection: {
       backgroundColor: 'transparent',
       flexDirection: 'row',
@@ -44,7 +32,7 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
     timeText: {
       fontSize: Fonts.size.small,
       fontFamily: Fonts.type.base,
-      fontWeight: minutes === '00' ? '600' : '400',
+      // fontWeight: minutes === '00' ? '600' : '400',
       // flex: 1,
       marginRight: 5
     },
@@ -102,14 +90,14 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
   });
 
   const renderBody = () => {
-    if(isBooked) {
+    if(active) {
       return (
         <View style={styles.booked}>
           <View style={styles.check}>
             <Icon name={'check'} color={Colors.snow} size={10}/>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.intervalInfo}>{`${slot.start_hour} - ${slot.end_hour}`}</Text>
+            <Text style={styles.intervalInfo}>{`${slotHelper.getSlotInterval(id)}`}</Text>
             <Text style={styles.title}>DYSPOZYCJA</Text>
           </View>
         </View>
@@ -124,7 +112,7 @@ export default Slot = ({ slot, containerStyles = {}, onPress = () => {} }) => {
   return (
     <View style={[styles.container, containerStyles]}>
       <View style={styles.leftSection}>
-        <Text style={styles.timeText}>{slot.start_hour}</Text>
+        <Text style={styles.timeText}>{slotHelper.idToHour(id)}</Text>
       </View>
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.button} onPress={onPress}>

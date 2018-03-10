@@ -7,9 +7,10 @@ import {
 import { Colors } from '../Themes';
 
 export default BubbleBackground = ({ children }) => (
-  <View style={{flex: 1}}>
+  <View style={{flex: 1, paddingBottom: 20}}>
     <View style={styles.content}>{children}</View>
     <View style={styles.background}>
+      <View style={styles.bubble6}/>
       <View style={styles.bubble5}/>
       <View style={styles.bubble4}/>
       <View style={styles.bubble3}/>
@@ -60,5 +61,10 @@ const styles = {
     ...buildBubble(35),
     right: 60,
     top: 45,
+  },
+  bubble5: {
+    ...buildBubble(35),
+    right: 80,
+    top: 15,
   },
 };

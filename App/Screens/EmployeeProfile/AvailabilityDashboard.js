@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Colors, Fonts } from '../../Themes/index';
 import BubbleBackground from '../../Components/BubbleBackground';
 import ScheduleBox from '../../Components/ScheduleBox';
 import {connect} from 'react-redux';
-import {
-  scheduleActionCreators,
-  scheduleActionTypes
-} from '../../Redux/ScheduleRedux';
+import { scheduleActionCreators } from '../../Redux/ScheduleRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../Lib/utils';
 import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
 
 class AvailabilityDashboard extends Component {
 
@@ -18,51 +16,52 @@ class AvailabilityDashboard extends Component {
   };
 
   handleEditPress = template_type => () => {
-    this.props.initForm(this.props[template_type], template_type);
+    const bindingFrom = template_type === TEMPLATE_TYPES.NEW_TEMPLATE ? this.props.new_template_binding_from : null;
+
+    this.props.initForm(this.props[template_type], template_type, bindingFrom);
 
     const { user, index } = this.props.navigation.state.params;
 
-    this.props.navigation.navigate('setAvailability',
-      { user, index, title: 'Ustaw dyspozycyjnosc' });
+    this.props.navigation.navigate('setAvailability', { user, index, title: 'Ustaw dyspozycyjnosc' });
   };
 
   pageContents = () => {
-    const {current_template, new_template} = this.props;
+    const {current_template, new_template, new_template_binding_from} = this.props;
 
     if ([FETCHING_STATUS.FETCHING, FETCHING_STATUS.READY].includes(this.props.status) ) {
-      return(
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator animating size="large" color={Colors.primaryWarm}/>
-        </View>);
+        </View>
+      );
     }
     else if (isTemplateEmpty(current_template) && isTemplateEmpty(new_template)) {
         return (
           <BubbleBackground>
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
               <View style={styles.placeholderBox}>
                 <Text style={styles.title}>Mój Grafik</Text>
                 <Text style={styles.description}>
                   Lorem ipsum dolor sit melt..Lorem ipsum dolor sit meltLorem
                   ipsum dolor sit meltLorem ipsum dolor sit meltLorem ipsum dolor
                   sit meltLorem ipsum dolor sit meltLorem ipsum dolor sit meltLorem
-                  ipsum dolor sit melt.t</Text>
-                <TouchableOpacity onPress={this.handleEditPress('current_template')} style={styles.button}>
+                  ipsum dolor sit melt.</Text>
+                <TouchableOpacity onPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)} style={styles.button}>
                   <Text style={styles.buttonText}>STWÓRZ GRAFIK</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </ScrollView>
           </BubbleBackground>
         )
     } else if (!isTemplateEmpty(current_template) && isTemplateEmpty(new_template)) {
       return (
-        <ScheduleBox schedule={current_template} onEditPress={this.handleEditPress} onRemovePress={()=>{}}/>
+        <ScheduleBox title={'Aktualny grafik'} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
       );
     } else if (!isTemplateEmpty(new_template)) {
       return (
         <View>
-          <ScheduleBox schedule={current_template} onEditPress={this.handleEditPress('current_template')} onRemovePress={()=>{}}/>
-          <ScheduleBox schedule={new_template} onEditPress={this.handleEditPress('new_template')} onRemovePress={()=>{}}/>
+          <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
+          <ScheduleBox title={`Następny grafik (od ${new_template_binding_from})`} schedule={new_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)} onRemovePress={()=>{}}/>
         </View>
       );
     }
@@ -71,7 +70,9 @@ class AvailabilityDashboard extends Component {
   render() {
     return (
       <View style={{flex: 1, paddingTop: 15}}>
-        {this.pageContents()}
+        <ScrollView>
+          {this.pageContents()}
+        </ScrollView>
       </View>
     );
   }
@@ -81,11 +82,12 @@ const mapStateToProps = state => ({
   current_template: state.schedule.current_template,
   new_template: state.schedule.new_template,
   status:  state.schedule.status,
+  new_template_binding_from: state.schedule.new_template_binding_from
 });
 
 const mapDispatchToProps = dispatch => ({
   showScheduleRequest: () => dispatch(scheduleActionCreators.showRequest()),
-  initForm: (data, type) => dispatch(scheduleFormActionCreators.initializeForm(data, type))
+  initForm: (data, type, start_from) => dispatch(scheduleFormActionCreators.initializeForm(data, type, start_from))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailabilityDashboard)
@@ -106,7 +108,7 @@ const styles = {
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 70
+    justifyContent: 'center',
   },
   placeholderBox: {
     width: '90%',
