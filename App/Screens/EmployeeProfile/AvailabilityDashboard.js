@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../../Themes/index';
 import BubbleBackground from '../../Components/BubbleBackground';
 import ScheduleBox from '../../Components/ScheduleBox';
@@ -8,7 +8,8 @@ import { scheduleActionCreators } from '../../Redux/ScheduleRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../Lib/utils';
 import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
-
+import CustomDatePicker from '../../Components/CustomDatePicker';
+import moment from 'moment/moment';
 class AvailabilityDashboard extends Component {
 
   componentWillMount = () => {
@@ -58,9 +59,34 @@ class AvailabilityDashboard extends Component {
         <ScheduleBox title={'Aktualny grafik'} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
       );
     } else if (!isTemplateEmpty(new_template)) {
+      const FORMAT = 'YYYY-MM-DD';
+      const tommorow = moment().add(1, 'days').format(FORMAT);
+      const starts_from = this.props.new_template_binding_from__FORM;
+      const { setBindingFrom } = this.props;
+
+      const datePickerConfiguration = {
+        ref: ref => this.datepicker = ref,
+        minDate: tommorow,
+        format: FORMAT,
+        placeholder: 'dnia..(data)',
+        onDateChange: setBindingFrom,
+        date: starts_from
+      };
+
       return (
         <View>
           <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
+          <View style={styles.changeOfScheduleContainer}>
+            <View style={styles.dotsColumn}>
+              <View style={styles.dot} />
+              <View style={styles.dot} />
+              <View style={styles.dot} />
+            </View>
+            <View style={styles.changeOfScheduleInfoBox}>
+              <CustomDatePicker datePickerConfiguration={datePickerConfiguration} />
+              <Text style={styles.changeOfScheduleLabel}>zmiana w grafiku</Text>
+            </View>
+          </View>
           <ScheduleBox title={`Następny grafik (od ${new_template_binding_from})`} schedule={new_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)} onRemovePress={()=>{}}/>
         </View>
       );
@@ -70,7 +96,7 @@ class AvailabilityDashboard extends Component {
   render() {
     return (
       <View style={{flex: 1, paddingTop: 15}}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{paddingBottom: 30}}>
           {this.pageContents()}
         </ScrollView>
       </View>
@@ -82,10 +108,12 @@ const mapStateToProps = state => ({
   current_template: state.schedule.current_template,
   new_template: state.schedule.new_template,
   status:  state.schedule.status,
-  new_template_binding_from: state.schedule.new_template_binding_from
+  new_template_binding_from: state.schedule.new_template_binding_from,
+  new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from
 });
 
 const mapDispatchToProps = dispatch => ({
+  setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),
   showScheduleRequest: () => dispatch(scheduleActionCreators.showRequest()),
   initForm: (data, type, start_from) => dispatch(scheduleFormActionCreators.initializeForm(data, type, start_from))
 });
@@ -137,5 +165,36 @@ const styles = {
     color: Colors.primaryWarm,
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.medium
+  },
+  changeOfScheduleContainer: {
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 15
+  },
+  changeOfScheduleInfoBox: {
+    flex: 1,
+    flexDirection: 'row',
+    borderRadius: 10,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingLeft: 15,
+    // borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.subtleGray,
+  },
+  changeOfScheduleLabel: {
+    fontFamily: Fonts.type.base,
+    fontSize: Fonts.size.small,
+  },
+  dotsColumn: {
+    height: 35,
+    paddingHorizontal: 15,
+    justifyContent: 'space-between'
+  },
+  dot: {
+    height: 6,
+    width: 6,
+    borderRadius: 3,
+    backgroundColor: Colors.mediumGrey
   }
 };

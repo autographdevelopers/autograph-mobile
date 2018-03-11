@@ -96,7 +96,6 @@ class AvailabilitySummaryModal extends Component {
         format: FORMAT,
         placeholder: 'dnia..(data)',
         onDateChange: setBindingFrom,
-        duration: 400,
         date: starts_from
       };
 

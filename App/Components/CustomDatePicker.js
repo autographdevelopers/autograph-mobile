@@ -5,7 +5,8 @@ import { Fonts, Colors } from '../Themes/';
 
 const styles = StyleSheet.create({
   datepicker: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 100
   },
   datepickerRow: {
     flexDirection: 'row',

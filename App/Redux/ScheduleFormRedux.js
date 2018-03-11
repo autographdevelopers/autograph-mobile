@@ -15,15 +15,6 @@ export const scheduleFormActionTypes = Types;
 export const TEMPLATE_TYPES = { NEW_TEMPLATE: 'new_template', CURRENT_TEMPLATE: 'current_template' };
 
 const INITIAL_STATE = {
-  template: {
-    monday: generateDailySlots(),
-    tuesday: generateDailySlots(),
-    wednesday: generateDailySlots(),
-    thursday: generateDailySlots(),
-    friday: generateDailySlots(),
-    saturday: generateDailySlots(),
-    sunday: generateDailySlots(),
-  },
   new_template_binding_from: null,
   status: FETCHING_STATUS.READY,
   schedule_type: TEMPLATE_TYPES.CURRENT_TEMPLATE

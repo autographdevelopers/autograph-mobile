@@ -9,7 +9,6 @@ import { Colors, Fonts } from '../Themes';
 import ButtonText from './ButtonText';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
-import I18n from '../I18n/index';
 import ScheduleSummary from '../Components/ScheduleSummary';
 
 export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) => {
@@ -20,7 +19,7 @@ export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) =
     intervalsContainer: styles.intervalsContainer,
     intervalBox: styles.box,
     intervalText: styles.interval,
-    freeDayBox: styles.freeDayBox
+    freeDayBox: {}
   };
 
   return (
@@ -49,15 +48,18 @@ const styles = {
     width: 50,
     marginBottom: 0,
     borderBottomWidth: 0,
-    borderBottomColor: 0
+    borderBottomColor: Colors.primaryWarm
   },
   box: {
     borderRadius: 0,
     backgroundColor: 'transparent',
     marginRight: 5,
     marginBottom: 0,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
   },
   weekdayLabel: {
+    paddingVertical: 4,
     color: Colors.black,
     fontSize: Fonts.size.small,
     fontWeight: '500'
@@ -71,21 +73,18 @@ const styles = {
     flexDirection: 'row',
   },
   interval: {
-    color: Colors.strongGrey,
+    color: Colors.black,
     fontSize: Fonts.size.small,
   },
   container: {
     width: '90%',
     minHeight: 200,
     alignSelf: 'center',
-    borderRadius: 15,
+    borderRadius: 10,
     backgroundColor: Colors.snow,
-    shadowColor: Colors.mediumGrey,
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 1,
-    shadowOffset: { width: 0.5, height: 0.5 },
-    marginBottom: 15
+    overflow: 'hidden',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.mediumGrey
   },
   body: {
     paddingHorizontal: 10,
@@ -108,7 +107,7 @@ const styles = {
     paddingVertical: 10,
     paddingHorizontal: 10
   },
-  freeDayBox: {
-    paddingHorizontal: 5
+  freeDayText: {
+    color: Colors.yellow
   }
 };
