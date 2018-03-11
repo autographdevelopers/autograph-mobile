@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import {
-  Alert,
   Text,
-  ScrollView,
-  StyleSheet,
   View,
   FlatList,
-  TouchableOpacity,
 } from 'react-native';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { Colors, Fonts } from '../../Themes/';
@@ -128,11 +124,7 @@ const styles = {
     fontSize: Fonts.size.small,
     paddingVertical: 10,
     color: Colors.strongGrey
-  },
-  headerWrapper: {
-
-  },
-
+  }
 };
 
 const mapStateToProps = state => {
