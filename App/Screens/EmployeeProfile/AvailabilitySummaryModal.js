@@ -6,13 +6,13 @@ import {
   Text,
   ActivityIndicator,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
-import { StyleSheet } from 'react-native';
 import { Colors, Fonts } from '../../Themes/index';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { connect } from 'react-redux';
-import { FETCHING_STATUS, SLOT_STATUS, slotsSummary } from '../../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
 import ScheduleSummary from '../../Components/ScheduleSummary';
 import StepsIndicators  from '../../Components/StepsIndicators';
@@ -147,15 +147,17 @@ class AvailabilitySummaryModal extends Component {
   );
 
   renderError = () => (
-    <View style={styles.windowDefault}>
-      <Text>Cos poszlo nei tak, prosze sprobuj ponownie pozniej.</Text>
+    <View style={[styles.windowDefault, styles.centerXY]}>
+      <IconE name={'circle-with-cross'} size={65} color={Colors.red}/>
+      <Text style={styles.msgInfo}>Cos poszlo nei tak, prosze sprobuj ponownie pozniej.</Text>
       <ButtonPrimary onPress={this.closeModal}>Powrot</ButtonPrimary>
     </View>
   );
 
   renderSuccess = () => (
-    <View style={styles.windowDefault}>
-      <Text>Pomyslnie zapisano harmonogram.</Text>
+    <View style={[styles.windowDefault, styles.centerXY]}>
+      <IconM name={'check-circle'} color={Colors.primaryWarm} size={65}/>
+      <Text style={styles.msgInfo}>Pomyslnie zapisano harmonogram.</Text>
       <ButtonPrimary onPress={()=>{this.closeModal(); this.props.onSuccessBtnPress()}}>Powrot</ButtonPrimary>
     </View>
   );
@@ -166,7 +168,7 @@ class AvailabilitySummaryModal extends Component {
     return (
       <Modal
         visible={openedModalName === MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY}
-        animationType={'slide'}
+        animationType={'none'}
         onRequestClose={this.closeModal}
         transparent={true}
         {...modalProps}
@@ -225,6 +227,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: Colors.snow,
   },
+  centerXY: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  msgInfo: {
+    marginVertical: 30,
+    textAlign: 'center'
+  },
   crossIconRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -247,7 +257,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.type.base
   },
   appliesForm: {
-    marginVertical: 15, 
+    marginVertical: 15,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.regular
   },

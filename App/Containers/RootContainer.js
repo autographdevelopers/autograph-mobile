@@ -62,7 +62,7 @@ const mapStateToProps = state => ( {
   currentStudent: state.context.currentStudentID,
 } );
 
-const mapDispatchToProps = dispatch => ( {
+const mapDispatchToProps = dispatch => ({
   startup: () => dispatch(StartupActions.startup()),
   setCurrentDrivingSchool: id => dispatch(
     contextActionCreators.setCurrentDrivingSchool(id)),
@@ -72,6 +72,6 @@ const mapDispatchToProps = dispatch => ( {
     contextActionCreators.setCurrentStudent(id)),
     openModal: id => dispatch(modalActionCreators.open(id)),
     closeModal: () => dispatch(modalActionCreators.close()),
-} );
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
