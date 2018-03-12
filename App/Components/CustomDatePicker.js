@@ -37,19 +37,17 @@ const datepickerCustom = {
   }
 };
 
-export default class CustomDatePicker extends Component{
-  render() {
-    return(
-      <DatePicker
-        style={styles.datepicker}
-        customStyles={datepickerCustom}
-        showIcon={false}
-        placeholder="YYYY-MM-DD"
-        format="YYYY-MM-DD"
-        confirmBtnText="Potwierdz"
-        cancelBtnText="Anuluj"
-        {...this.props.datePickerConfiguration}
-      />
-    );
-  }
+export default CustomDatePicker = ({datePickerConfiguration}) => {
+  return(
+    <DatePicker
+      style={styles.datepicker}
+      customStyles={datepickerCustom}
+      showIcon={false}
+      placeholder="YYYY-MM-DD"
+      format="YYYY-MM-DD"
+      confirmBtnText="Potwierdz"
+      cancelBtnText="Anuluj"
+      {...datePickerConfiguration}
+    />
+  );
 }

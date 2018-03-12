@@ -53,14 +53,14 @@ class AvailabilitySummaryModal extends Component {
   };
 
   submitSchedule = () => {
-    const { template, new_template_binding_from } = this.props;
+    const { template, new_template_binding_from, schedule_type, showBindingFromStep } = this.props;
     const params = {};
-
-    const templateType = new_template_binding_from ? 'new_template' : 'current_template';
+    // schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE &&
+    const templateType = showBindingFromStep && new_template_binding_from ? 'new_template' : 'current_template';
 
     params[templateType] = template;
 
-    if(new_template_binding_from)
+    if(showBindingFromStep)
       params['new_template_binding_from'] = new_template_binding_from;
 
     this.props.updateScheduleRequest(params);
@@ -192,7 +192,7 @@ const mapStateToProps = state => ( {
   new_template_binding_from: state.scheduleForm.new_template_binding_from,
   schedule_type: state.scheduleForm.schedule_type,
   status: state.scheduleForm.status,
-  showBindingFromStep: isTemplateEmpty(state.schedule.new_template) || state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE
+  showBindingFromStep: !state.schedule.new_template_binding_from || isTemplateEmpty(state.schedule.new_template) || state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE
 });
 
 const mapDispatchToProps = dispatch => ({

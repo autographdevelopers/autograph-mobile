@@ -4,9 +4,9 @@ import { deepClone, FETCHING_STATUS, generateDailySlots, SLOT_STATUS } from '../
 const { Types, Creators } = createActions({
   toggleSlot: ['weekDay', 'id'],
   changeStatus: ['status'],
-  changeNewTemplateBindingFrom: ['date'],
+    changeNewTemplateBindingFrom: ['date'],
   updateRequest: ['data'],
-  initializeForm: ['data', 'schedule_type', 'new_template_binding_from']
+  initializeForm: ['data', 'schedule_type']
 }, { prefix: 'SCHEDULE_FORM_' });
 
 export const scheduleFormActionCreators = Creators;
@@ -20,13 +20,12 @@ const INITIAL_STATE = {
   schedule_type: TEMPLATE_TYPES.CURRENT_TEMPLATE
 };
 
-export const initializeFormHandler = (state, { data, schedule_type, new_template_binding_from }) => {
-  const newState = deepClone(INITIAL_STATE);
+export const initializeFormHandler = (state, { data, schedule_type }) => {
+  const newState = deepClone(state);
   const templateToBeModified = deepClone(data);
   newState.template = templateToBeModified;
   newState.schedule_type = schedule_type;
   newState.status = FETCHING_STATUS.READY;
-  newState.new_template_binding_from = new_template_binding_from;
 
   return newState;
 };
