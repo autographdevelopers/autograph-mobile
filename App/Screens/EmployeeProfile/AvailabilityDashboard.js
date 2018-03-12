@@ -1,18 +1,21 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator, StyleSheet, Modal } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import {connect} from 'react-redux';
+import moment from 'moment/moment';
+/** Custom dependencies */
 import { Colors, Fonts } from '../../Themes/index';
 import BubbleBackground from '../../Components/BubbleBackground';
 import ScheduleBox from '../../Components/ScheduleBox';
-import {connect} from 'react-redux';
 import { scheduleActionCreators } from '../../Redux/ScheduleRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../Lib/utils';
 import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
 import CustomDatePicker from '../../Components/CustomDatePicker';
-import moment from 'moment/moment';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
 import ModalTemplate from '../../Components/ModalTemplate';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import BindingFromBox from '../../Components/BindingFromBox';
 
 class AvailabilityDashboard extends Component {
 
@@ -65,27 +68,27 @@ class AvailabilityDashboard extends Component {
         )
     } else if (!isTemplateEmpty(current_template) && !new_template_binding_from) {
       return (
-        <ScheduleBox title={'Aktualny grafik'} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
+        <ScheduleBox title={'Aktualny grafik'}
+                     schedule={current_template}
+                     onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
+                     onRemovePress={()=>{}}/>
       );
     } else if (new_template_binding_from) {
       return (
         <View>
-          <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`} schedule={current_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)} onRemovePress={()=>{}}/>
+          <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`}
+                       schedule={current_template}
+                       onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
+                       onRemovePress={()=>{}} />
 
-          <TouchableOpacity onPress={openModal(MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE)}
-                            style={styles.changeOfScheduleContainer}>
-            <View style={styles.dotsColumn}>
-              <View style={styles.dot} />
-              <View style={styles.dot} />
-              <View style={styles.dot} />
-            </View>
-            <View style={styles.changeOfScheduleInfoBox}>
-              <Text style={styles.changeOfScheduleLabel}>{new_template_binding_from}</Text>
-              <Text style={styles.changeOfScheduleLabel}> zmiana w grafiku</Text>
-            </View>
-          </TouchableOpacity>
+          <BindingFromBox onPress={openModal(MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE)}
+                          date={new_template_binding_from}
+                          label={'zmiana w grafiku'} />
 
-          <ScheduleBox title={`Następny grafik (od ${new_template_binding_from})`} schedule={new_template} onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)} onRemovePress={()=>{}}/>
+          <ScheduleBox title={`Następny grafik (od ${new_template_binding_from})`}
+                       schedule={new_template}
+                       onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)}
+                       onRemovePress={()=>{}} />
         </View>
       );
     }
@@ -139,7 +142,6 @@ class AvailabilityDashboard extends Component {
             Zróbmy to!
           </ButtonPrimary>
         </ModalTemplate>
-
       </View>
     );
   }
@@ -211,35 +213,5 @@ const styles = {
     color: Colors.primaryWarm,
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.medium
-  },
-  changeOfScheduleContainer: {
-    flexDirection: 'row',
-    width: '90%',
-    alignSelf: 'center',
-    paddingVertical: 15
-  },
-  changeOfScheduleInfoBox: {
-    flex: 1,
-    flexDirection: 'row',
-    borderRadius: 10,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingLeft: 15,
-    backgroundColor: Colors.subtleGray,
-  },
-  changeOfScheduleLabel: {
-    fontFamily: Fonts.type.base,
-    fontSize: Fonts.size.small,
-  },
-  dotsColumn: {
-    height: 35,
-    paddingHorizontal: 15,
-    justifyContent: 'space-between'
-  },
-  dot: {
-    height: 6,
-    width: 6,
-    borderRadius: 3,
-    backgroundColor: Colors.mediumGrey
   }
 };
