@@ -67,6 +67,7 @@ class AvailabilitySummaryModal extends Component {
     const { setBindingFrom } = this.props;
 
     if (this.state.step === 0) {
+      // TODO: refactor this to separate component
       const datePickerConfiguration = {
         ref: ref => this.datepicker = ref,
         minDate: tommorow,
@@ -105,16 +106,6 @@ class AvailabilitySummaryModal extends Component {
     }
   };
 
-  renderStepsWizard = () => (
-    <View>
-      { this.renderStep() }
-
-      <View style={styles.buttonPane}>
-        {this.renderButton()}
-      </View>
-    </View>
-  );
-
   render() {
     const { showBindingFromStep } = this.props;
     // TODO: fix this 'width: 100%' issue in modal children
@@ -126,7 +117,11 @@ class AvailabilitySummaryModal extends Component {
                                                   onPress={this.navToStep}
                                                   customContainerStyles={styles.stepIndicatorCustom}/>
         }
-        { this.renderStepsWizard() }
+        { this.renderStep() }
+
+        <View style={styles.buttonPane}>
+          {this.renderButton()}
+        </View>
       </View>
     );
   }
