@@ -141,6 +141,7 @@ class AvailabilityDashboard extends Component {
 
     return (
       <View style={{flex: 1, paddingTop: 15}}>
+        {/** SCHEDULE BOXES */}
         <ScrollView contentContainerStyle={{paddingBottom: 30}}>
           {this.pageContents()}
         </ScrollView>
