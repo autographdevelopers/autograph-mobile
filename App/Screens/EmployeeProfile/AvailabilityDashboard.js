@@ -5,17 +5,17 @@ import {connect} from 'react-redux';
 import moment from 'moment/moment';
 /** Custom dependencies */
 import { Colors, Fonts } from '../../Themes/index';
-import BubbleBackground from '../../Components/BubbleBackground';
-import ScheduleBox from '../../Components/ScheduleBox';
 import { scheduleActionCreators } from '../../Redux/ScheduleRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../Lib/utils';
 import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
-import CustomDatePicker from '../../Components/CustomDatePicker';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
-import ModalTemplate from '../../Components/ModalTemplate';
+import ScheduleBox from '../../Components/ScheduleBox';
+import BubbleBackground from '../../Components/BubbleBackground';
+import CustomDatePicker from '../../Components/CustomDatePicker';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import BindingFromBox from '../../Components/BindingFromBox';
+import ModalTemplate from '../../Components/ModalTemplate';
 
 class AvailabilityDashboard extends Component {
 

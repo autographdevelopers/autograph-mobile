@@ -34,7 +34,7 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true, customStyles={} 
   };
 
   return (
-    <ScrollView style={customStyles.container}>
+    <ScrollView style={[{width: '100%'},customStyles.container]}>
       {Object.keys(schedule).map((day, index) =>
         <View key={`weekday-summary-${index}`} style={[styles.weekdaySummary, customStyles.weekdaySummary]}>
           <View style={[styles.headerTextContainer, customStyles.headerTextContainer]}>

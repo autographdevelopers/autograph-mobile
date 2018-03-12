@@ -159,8 +159,9 @@ const styles = {
     paddingHorizontal: 15,
   },
   content: {
+    width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   overlay: {
     flex: 1,

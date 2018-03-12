@@ -2,39 +2,22 @@ import React, { Component } from 'react';
 import {
   View,
   TouchableOpacity,
-  Modal,
   Text,
-  ActivityIndicator,
-  ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Colors, Fonts } from '../../Themes/index';
-import Icon from 'react-native-vector-icons/Ionicons';
-import ButtonPrimary from '../../Components/ButtonPrimary';
 import { connect } from 'react-redux';
-import { FETCHING_STATUS } from '../../Lib/utils';
-import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
-import ScheduleSummary from '../../Components/ScheduleSummary';
-import StepsIndicators  from '../../Components/StepsIndicators';
-import IconE from 'react-native-vector-icons/Entypo';
 import IconM from 'react-native-vector-icons/MaterialIcons';
-import CustomDatePicker from '../../Components/CustomDatePicker';
 import moment from 'moment';
-import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
-import { isTemplateEmpty } from '../../Lib/utils';
-import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
-import RadioButton from '../../Components/RadioButton';
 
-const CloseModalRow = ({ onPress }) => (
-  <View style={styles.crossIconRow}>
-    <TouchableOpacity onPress={onPress}>
-      <Icon name="md-close"
-            color={Colors.softBlack}
-            size={24}
-            style={styles.crossIcon}/>
-    </TouchableOpacity>
-  </View>
-);
+import { Colors, Fonts } from '../../Themes/index';
+import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
+import { isTemplateEmpty } from '../../Lib/utils';
+import ScheduleSummary from '../../Components/ScheduleSummary';
+import ButtonPrimary from '../../Components/ButtonPrimary';
+import StepsIndicators  from '../../Components/StepsIndicators';
+import CustomDatePicker from '../../Components/CustomDatePicker';
+import RadioButton from '../../Components/RadioButton';
 
 const STEPS = ['Ustawienia', 'Podsumowanie'];
 
@@ -45,12 +28,6 @@ class AvailabilitySummaryModal extends Component {
       step: props.showBindingFromStep ? 0 : 1,
     };
   }
-
-  closeModal = () => {
-    this.props.closeModal();
-    this.props.changeStatus(FETCHING_STATUS.READY);
-    this.setState({step: this.props.showBindingFromStep ? 0 : 1});
-  };
 
   submitSchedule = () => {
     const { template, new_template_binding_from, schedule_type, showBindingFromStep } = this.props;
@@ -75,7 +52,7 @@ class AvailabilitySummaryModal extends Component {
   renderButton = () => {
     const customWrapperStyles= { width: '60%' };
     const icon = this.state.step === 0 ? <IconM name={'arrow-forward'} color={Colors.snow} size={20}/> : null;
-    const handlePress = this.state.step === 0 ? this.navToStep(1) :  this.submitSchedule;
+    const handlePress = this.state.step === 0 ? this.navToStep(1) : this.submitSchedule;
     const label = this.state.step === 0 ? 'Dalej' : 'Zapisz';
 
     return <ButtonPrimary customWrapperStyles={customWrapperStyles}
@@ -129,14 +106,7 @@ class AvailabilitySummaryModal extends Component {
   };
 
   renderStepsWizard = () => (
-    <View style={[styles.window, styles.windowDefault]}>
-      <CloseModalRow onPress={this.closeModal}/>
-
-      { this.props.showBindingFromStep && <StepsIndicators labels={STEPS}
-                       activeIndex={this.state.step}
-                       onPress={this.navToStep}
-                       customContainerStyles={{marginTop: 0, marginBottom: 10}}/> }
-
+    <View>
       { this.renderStep() }
 
       <View style={styles.buttonPane}>
@@ -145,43 +115,19 @@ class AvailabilitySummaryModal extends Component {
     </View>
   );
 
-  renderError = () => (
-    <View style={[styles.windowDefault, styles.centerXY]}>
-      <IconE name={'circle-with-cross'} size={65} color={Colors.red}/>
-      <Text style={styles.msgInfo}>Cos poszlo nei tak, prosze sprobuj ponownie pozniej.</Text>
-      <ButtonPrimary onPress={this.closeModal}>Powrot</ButtonPrimary>
-    </View>
-  );
-
-  renderSuccess = () => (
-    <View style={[styles.windowDefault, styles.centerXY]}>
-      <IconM name={'check-circle'} color={Colors.primaryWarm} size={65}/>
-      <Text style={styles.msgInfo}>Pomyslnie zapisano harmonogram.</Text>
-      <ButtonPrimary onPress={()=>{this.closeModal(); this.props.onSuccessBtnPress()}}>Powrot</ButtonPrimary>
-    </View>
-  );
-
   render() {
-    const { modalProps, openedModalName, status } = this.props;
+    const { showBindingFromStep } = this.props;
+    // TODO: fix this 'width: 100%' issue in modal children
 
     return (
-      <Modal
-        visible={openedModalName === MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY}
-        animationType={'none'}
-        onRequestClose={this.closeModal}
-        transparent={true}
-        {...modalProps}
-      >
-        <View style={styles.overlay}>
-          { status === FETCHING_STATUS.READY && this.renderStepsWizard() }
-
-          { status === FETCHING_STATUS.ERROR && this.renderError() }
-
-          { status === FETCHING_STATUS.FETCHING && <ActivityIndicator color={Colors.snow} size={'large'}/> }
-
-          { status === FETCHING_STATUS.SUCCESS && this.renderSuccess() }
-        </View>
-      </Modal>
+      <View style={{width: '100%'}}>
+        { showBindingFromStep && <StepsIndicators labels={STEPS}
+                                                  activeIndex={this.state.step}
+                                                  onPress={this.navToStep}
+                                                  customContainerStyles={styles.stepIndicatorCustom}/>
+        }
+        { this.renderStepsWizard() }
+      </View>
     );
   }
 }
@@ -196,54 +142,18 @@ const mapStateToProps = state => ( {
 });
 
 const mapDispatchToProps = dispatch => ({
-  closeModal: () => dispatch(modalActionCreators.close()),
   setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),
   updateScheduleRequest: data => dispatch(scheduleFormActionCreators.updateRequest(data)),
-  changeStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailabilitySummaryModal);
 
 /** == STYLING ================================================ */
-const BREATH_SPACE = 15;
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  windowDefault: {
-    borderRadius: 15,
-    paddingTop: 15,
-    width: '90%',
-    backgroundColor: Colors.snow,
-  },
-  window: {
-    maxHeight: '90%',
-    paddingBottom: 0,
-    paddingHorizontal: 15,
-    backgroundColor: Colors.snow,
-  },
-  centerXY: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  msgInfo: {
-    marginVertical: 30,
-    textAlign: 'center'
-  },
-  crossIconRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  crossIcon: {
-    backgroundColor: 'transparent',
-    fontWeight: '100',
-  },
-  textArea: {
-    marginVertical: BREATH_SPACE,
+  stepIndicatorCustom: {
+    marginTop: 0,
+    marginBottom: 10
   },
   buttonPane: {
     marginVertical: 15,

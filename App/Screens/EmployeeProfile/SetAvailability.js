@@ -12,6 +12,8 @@ import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
 import Bubble from '../../Components/Bubble';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import AvailabilitySummaryModal from './AvailabilitySummaryModal';
+import ModalTemplate from '../../Components/ModalTemplate';
+import { FETCHING_STATUS } from '../../Lib/utils';
 
 const WEEKDAYS = [
   'monday',
@@ -92,7 +94,19 @@ class SetAvailability extends Component {
     });
   };
 
+  successCallback = () => {
+    this.props.closeModal();
+    this.props.changeFormStatus(FETCHING_STATUS.READY);
+    this.props.navigation.goBack(null);
+  };
+
+  resetScheduleFormModal = () => {
+    this.props.closeModal();
+    this.props.changeFormStatus(FETCHING_STATUS.READY);
+  };
+
   render() {
+    const { formStatus } = this.props;
     const { t } = this.props.screenProps.I18n,
       saveText = t('save').capitalize();
 
@@ -100,8 +114,18 @@ class SetAvailability extends Component {
       <View style={{ flex: 1 }}>
         <View style={styles.weekdaysPanel}>{this.renderWeekdaysBullets()}</View>
           {this.renderSchedule()}
-        <AvailabilitySummaryModal title={'Podsumowanie'} description={'Lorem ipsum dolor sit melt'} onSuccessBtnPress={()=>this.props.navigation.goBack(null)}/>
         <ButtonPrimary float={true} onPress={this.props.openSummaryModal}>{saveText}</ButtonPrimary>
+        <ModalTemplate
+          modalID={MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY}
+          status={formStatus}
+          successMsg={'Pomyslnie zapisano harmonogram.'}
+          errorMsg={'Nie udalo sie zapisać harmonogramu, sprobuj ponownie pozniej.'}
+          successBtnCallback={this.successCallback}
+          errorBtnCallback={this.resetScheduleFormModal}
+          closeModalCallback={this.resetScheduleFormModal}
+        >
+          <AvailabilitySummaryModal/>
+        </ModalTemplate>
       </View>
     );
   }
@@ -127,17 +151,18 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => {
-  return {
-    schedule: state.scheduleForm.template,
-  };
-};
+const mapStateToProps = state => ({
+  schedule: state.scheduleForm.template,
+  formStatus: state.scheduleForm.status,
+});
 
 const mapDispatchToProps = dispatch => ({
   toggleSlotState: (day, id) => () => dispatch(
     scheduleFormActionCreators.toggleSlot(day, id)),
   openSummaryModal: () =>
-    dispatch(modalActionCreators.open(MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY))
+    dispatch(modalActionCreators.open(MODALS_IDS.SAVE_EMPLOYEE_AVAILABILITY)),
+  closeModal: () =>  dispatch(modalActionCreators.close()),
+  changeFormStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status))
 });
 
 // TODO generate WEEKDAYS constant from translations
