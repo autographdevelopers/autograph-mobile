@@ -66,12 +66,12 @@ class AvailabilityDashboard extends Component {
             </ScrollView>
           </BubbleBackground>
         )
-    } else if (!isTemplateEmpty(current_template) && !new_template_binding_from) {
+    } else if (!isTemplateEmpty(current_template) && new_template_binding_from === null) {
       return (
         <ScheduleBox title={'Aktualny grafik'}
                      schedule={current_template}
                      onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
-                     onRemovePress={()=>{}}/>
+                     onRemovePress={this.openRemoveScheduleModal(TEMPLATE_TYPES.CURRENT_TEMPLATE)}/>
       );
     } else if (new_template_binding_from) {
       return (
@@ -79,7 +79,7 @@ class AvailabilityDashboard extends Component {
           <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`}
                        schedule={current_template}
                        onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
-                       onRemovePress={()=>{}} />
+                       onRemovePress={this.openRemoveScheduleModal(TEMPLATE_TYPES.CURRENT_TEMPLATE)}/>
 
           <BindingFromBox onPress={openModal(MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE)}
                           date={new_template_binding_from}
@@ -88,15 +88,34 @@ class AvailabilityDashboard extends Component {
           <ScheduleBox title={`Następny grafik (od ${new_template_binding_from})`}
                        schedule={new_template}
                        onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)}
-                       onRemovePress={()=>{}} />
+                       onRemovePress={this.openRemoveScheduleModal(TEMPLATE_TYPES.NEW_TEMPLATE)} />
         </View>
       );
     }
   };
 
-  closeModalCallback = () => {
+  closeBindingDateModalCallback = () => {
     this.props.setBindingFrom(this.props.new_template_binding_from);
     this.props.setFormStatus(FETCHING_STATUS.READY);
+  };
+
+  closeRemoveScheduleModal = () => {
+    this.props.setFormStatus(FETCHING_STATUS.READY);
+  };
+
+  openRemoveScheduleModal = whichTemplate => () => {
+    const template_params = {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: []
+    };
+
+    this.props.initForm(template_params, whichTemplate);
+    this.props.openModal(MODALS_IDS.REMOVE_SCHEDULE)();
   };
 
   render() {
@@ -105,6 +124,7 @@ class AvailabilityDashboard extends Component {
       updateScheduleRequest,
       formStatus,
       setBindingFrom,
+      formData
     } = this.props;
 
     const FORMAT = 'YYYY-MM-DD';
@@ -116,7 +136,7 @@ class AvailabilityDashboard extends Component {
       format: FORMAT,
       placeholder: 'dnia..(data)',
       onDateChange: setBindingFrom,
-      date: new_template_binding_from__FORM
+      date: new_template_binding_from__FORM,
     };
 
     return (
@@ -125,12 +145,13 @@ class AvailabilityDashboard extends Component {
           {this.pageContents()}
         </ScrollView>
 
+        {/** CHANGE NEW SCHEDULE BINDING DATE MODAL */}
         <ModalTemplate
           modalID={MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE}
           status={formStatus}
           successMsg={'Pomyslnie zmieniono date obowiazywania nowego harmonogramu.'}
           errorMsg={'Nie udalo sie zmienic daty harmonogramu, sprobuj ponownie pozniej.'}
-          closeModalCallback={this.closeModalCallback}
+          closeModalCallback={this.closeBindingDateModalCallback}
           modalTitle={'Zmiana data wprowadzenia nowego grafiku'}
           modalMsg={'Zmiana daty wprowadzenia nowego grafiku skutkować będzie lorem ipsum dolor sit melt..'}
         >
@@ -139,6 +160,22 @@ class AvailabilityDashboard extends Component {
           </View>
 
           <ButtonPrimary onPress={updateScheduleRequest({new_template_binding_from: new_template_binding_from__FORM})}>
+            Zróbmy to!
+          </ButtonPrimary>
+        </ModalTemplate>
+
+        {/** CLEAR SCHEDULE MODAL */}
+        <ModalTemplate
+          modalID={MODALS_IDS.REMOVE_SCHEDULE}
+          status={formStatus}
+          successMsg={'Pomyslnie usunieto grafik.'}
+          errorMsg={'Nie udalo sie usunac grafiku, sprobuj ponownie pozniej.'}
+          closeModalCallback={this.closeRemoveScheduleModal}
+          modalTitle={'Usun grafik'}
+          modalMsg={'Usuniecie grafiku spodowuje usuniecie wszystkich slotow na jakie mogli sie zapisywac kursanci.'}
+        >
+
+          <ButtonPrimary onPress={updateScheduleRequest(formData)}>
             Zróbmy to!
           </ButtonPrimary>
         </ModalTemplate>
@@ -151,6 +188,7 @@ const mapStateToProps = state => ({
   current_template: state.schedule.current_template,
   new_template: state.schedule.new_template,
   status:  state.schedule.status,
+  formData: state.scheduleForm,
   formStatus: state.scheduleForm.status,
   new_template_binding_from: state.schedule.new_template_binding_from,
   new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from

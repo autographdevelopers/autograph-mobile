@@ -1,10 +1,10 @@
 import { createActions, createReducer } from 'reduxsauce';
-import { schoolActivationActionTypes } from './SchoolActivation';
 
 export const MODALS_IDS = {
   ACTIVATE_SCHOOL: 'ACTIVATE_SCHOOL',
   SAVE_EMPLOYEE_AVAILABILITY: 'SAVE_EMPLOYEE_AVAILABILITY',
-  CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE: 'CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE'
+  CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE: 'CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE',
+  REMOVE_SCHEDULE: 'REMOVE_SCHEDULE'
 };
 
 const { Types, Creators } = createActions({
@@ -31,11 +31,6 @@ export const closeModalHandler = (state) => ( {
 export const openModalHandler = (state, { id }) => ( {
   ...state,
   openedModalId: id,
-} );
-
-export const openSchoolActivationDialogHandler = state => ( {
-  ...state,
-  openedModalId: MODALS_IDS.ACTIVATE_SCHOOL,
 } );
 
 /* ------------- Gather all handlers to create single reducer ------------- */
