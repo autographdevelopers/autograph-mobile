@@ -4,16 +4,16 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import { Colors, Fonts } from '../../Themes/';
+import ButtonPrimary from '../../../Components/ButtonPrimary';
+import { Colors, Fonts } from '../../../Themes/';
 import { connect } from 'react-redux';
-import Slot from '../../Components/Slot';
-import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
-import Bubble from '../../Components/Bubble';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
-import AvailabilitySummaryModal from './AvailabilitySummaryModal';
-import ModalTemplate from '../../Components/ModalTemplate';
-import { FETCHING_STATUS } from '../../Lib/utils';
+import Slot from '../../../Components/Slot';
+import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
+import Bubble from '../../../Components/Bubble';
+import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
+import AvailabilitySummaryModal from './AvailabilityFinalizeFormModal';
+import ModalTemplate from '../../../Components/ModalTemplate';
+import { FETCHING_STATUS } from '../../../Lib/utils';
 
 const WEEKDAYS = [
   'monday',
@@ -25,7 +25,7 @@ const WEEKDAYS = [
   'sunday'
 ];
 
-class SetAvailability extends Component {
+class AvailabilityForm extends Component {
   constructor(props) {
     super(props);
 
@@ -167,4 +167,4 @@ const mapDispatchToProps = dispatch => ({
 
 // TODO generate WEEKDAYS constant from translations
 
-export default connect(mapStateToProps, mapDispatchToProps)(SetAvailability);
+export default connect(mapStateToProps, mapDispatchToProps)(AvailabilityForm);

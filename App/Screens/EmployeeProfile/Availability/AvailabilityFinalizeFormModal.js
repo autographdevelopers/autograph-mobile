@@ -9,19 +9,19 @@ import { connect } from 'react-redux';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 
-import { Colors, Fonts } from '../../Themes/index';
-import { scheduleFormActionCreators } from '../../Redux/ScheduleFormRedux';
-import { TEMPLATE_TYPES } from '../../Redux/ScheduleFormRedux';
-import { isTemplateEmpty } from '../../Lib/utils';
-import ScheduleSummary from '../../Components/ScheduleSummary';
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import StepsIndicators  from '../../Components/StepsIndicators';
-import CustomDatePicker from '../../Components/CustomDatePicker';
-import RadioButton from '../../Components/RadioButton';
+import { Colors, Fonts } from '../../../Themes/index';
+import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
+import { isTemplateEmpty } from '../../../Lib/utils';
+import ScheduleSummary from '../../../Components/ScheduleSummary';
+import ButtonPrimary from '../../../Components/ButtonPrimary';
+import StepsIndicators  from '../../../Components/StepsIndicators';
+import CustomDatePicker from '../../../Components/CustomDatePicker';
+import RadioButton from '../../../Components/RadioButton';
 
 const STEPS = ['Ustawienia', 'Podsumowanie'];
 
-class AvailabilitySummaryModal extends Component {
+class AvailabilityFinalizeFormModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,10 +64,9 @@ class AvailabilitySummaryModal extends Component {
     const FORMAT = 'YYYY-MM-DD';
     const tommorow = moment().add(1, 'days').format(FORMAT);
     const starts_from = this.props.new_template_binding_from;
-    const { setBindingFrom } = this.props;
+    const { setBindingFrom, new_template_binding_from } = this.props;
 
     if (this.state.step === 0) {
-      // TODO: refactor this to separate component
       const datePickerConfiguration = {
         ref: ref => this.datepicker = ref,
         minDate: tommorow,
@@ -81,12 +80,12 @@ class AvailabilitySummaryModal extends Component {
         <View>
           <Text style={styles.appliesForm}>Obowiązuje od.. </Text>
           <TouchableOpacity style={styles.optionRow} onPress={() => setBindingFrom(null)} >
-            <RadioButton active={this.props.new_template_binding_from === null} setValue={()=>setBindingFrom(null)} />
+            <RadioButton active={new_template_binding_from === null} setValue={()=>setBindingFrom(null)} />
             <View style={styles.radioLabeL}><Text>teraz</Text></View>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.optionRow} onPress={() => this.datepicker.onPressDate()}>
-            <RadioButton active={this.props.new_template_binding_from !== null} setValue={()=>this.datepicker.onPressDate()} />
+            <RadioButton active={new_template_binding_from !== null} setValue={()=>this.datepicker.onPressDate()} />
             <View style={styles.radioLabeL}><CustomDatePicker datePickerConfiguration={datePickerConfiguration} /></View>
           </TouchableOpacity>
         </View>
@@ -141,7 +140,7 @@ const mapDispatchToProps = dispatch => ({
   updateScheduleRequest: data => dispatch(scheduleFormActionCreators.updateRequest(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailabilitySummaryModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AvailabilityFinalizeFormModal);
 
 /** == STYLING ================================================ */
 

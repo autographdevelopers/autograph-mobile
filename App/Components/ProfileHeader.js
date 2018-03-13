@@ -81,7 +81,7 @@ export default class ProfileHeader extends Component  {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if(nextProps.routeName === 'employeeProfile' && (this.props.routeName === 'manageEmployee' || this.props.routeName === 'availabilityDashboard' ) )
+    if(nextProps.routeName === 'employeeProfile' && (this.props.routeName === 'editPrivileges' || this.props.routeName === 'availabilityIndex' ) )
       this.resizeHeaderAndRedirect()();
   };
 

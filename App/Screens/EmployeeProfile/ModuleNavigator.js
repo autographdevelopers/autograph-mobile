@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EmployeeProfile from './Profile';
-import EmployeeManagement from './ManageEmployee';
-import SetAvailability from './SetAvailability';
+import EditPrivileges from './Privileges/EditPrivileges';
+import AvailabilityForm from './Availability/AvailabilityForm';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ProfileHeader from '../../Components/ProfileHeader';
-import AvailabilityDashboard from './AvailabilityDashboard';
+import AvailabilityIndex from './Availability/AvailabilityIndex';
 
 const routeConfigs = {
   employeeProfile: {
     screen: EmployeeProfile,
   },
-  manageEmployee: {
-    screen: EmployeeManagement,
+  editPrivileges: {
+    screen: EditPrivileges,
   },
-  availabilityDashboard: {
-    screen: AvailabilityDashboard,
+  availabilityIndex: {
+    screen: AvailabilityIndex,
   },
   setAvailability: {
-    screen: SetAvailability
+    screen: AvailabilityForm
   }
 };
 
@@ -34,8 +34,8 @@ const navigationConfigs = {
           <NavHeader navigation={navigation} title={title}/>
           <ProfileHeader
             onManagePersonClick={() => navigation.navigate(
-              'manageEmployee', { user, index, title: 'Ustaw uprawnienia' })}
-            onSetAvailabilityClick={() => navigation.navigate('availabilityDashboard', { user, index, title: 'Dyspozycyjnosc' })}
+              'editPrivileges', { user, index, title: 'Ustaw uprawnienia' })}
+            onSetAvailabilityClick={() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' })}
             avatarProps={{ name: user.name, index }}
             user={user}
             routeName={navigation.state.routeName}
