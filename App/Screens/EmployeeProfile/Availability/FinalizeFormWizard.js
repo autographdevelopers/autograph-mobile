@@ -21,7 +21,7 @@ import RadioButton from '../../../Components/RadioButton';
 
 const STEPS = ['Ustawienia', 'Podsumowanie'];
 
-class AvailabilityFinalizeFormModal extends Component {
+class FinalizeFormWizard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,7 +140,7 @@ const mapDispatchToProps = dispatch => ({
   updateScheduleRequest: data => dispatch(scheduleFormActionCreators.updateRequest(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailabilityFinalizeFormModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FinalizeFormWizard);
 
 /** == STYLING ================================================ */
 

@@ -11,7 +11,7 @@ import Slot from '../../../Components/Slot';
 import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
 import Bubble from '../../../Components/Bubble';
 import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
-import AvailabilitySummaryModal from './AvailabilityFinalizeFormModal';
+import FinalizeFormWizard from './FinalizeFormWizard';
 import ModalTemplate from '../../../Components/ModalTemplate';
 import { FETCHING_STATUS } from '../../../Lib/utils';
 
@@ -124,7 +124,7 @@ class AvailabilityForm extends Component {
           errorBtnCallback={this.resetScheduleFormModal}
           closeModalCallback={this.resetScheduleFormModal}
         >
-          <AvailabilitySummaryModal/>
+          <FinalizeFormWizard />
         </ModalTemplate>
       </View>
     );
