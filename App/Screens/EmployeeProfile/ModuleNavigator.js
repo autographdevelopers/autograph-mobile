@@ -32,10 +32,11 @@ const navigationConfigs = {
       header:
         <View>
           <NavHeader navigation={navigation} title={title}/>
+
           <ProfileHeader
-            onManagePersonClick={() => navigation.navigate(
-              'editPrivileges', { user, index, title: 'Ustaw uprawnienia' })}
+            onManagePersonClick={() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' })}
             onSetAvailabilityClick={() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' })}
+
             avatarProps={{ name: user.name, index }}
             user={user}
             routeName={navigation.state.routeName}

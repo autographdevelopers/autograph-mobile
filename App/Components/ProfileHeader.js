@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 import {
   Text,
-  TouchableOpacity,
   View,
-  TextInput,
   Animated,
 } from 'react-native';
-import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
 
 const DURATION = 350;
-const AVATAR_SMALL_SIZE = 50;
-const AVATAR_LARGE_SIZE = 80;
+const AVATAR_SMALL_SIZE = 45;
+const AVATAR_LETTER_SMALL_FONT = 25;
+const AVATAR_LETTER_LARGE_FONT = 30;
+const AVATAR_LARGE_SIZE = 70;
 const TEXT_HEIGHT = Fonts.size.medium;
 
 export default class ProfileHeader extends Component  {
 
-  variableSize = new Animated.Value(AVATAR_LARGE_SIZE);
+  variableAvatarSize = new Animated.Value(AVATAR_LARGE_SIZE);
+  variableAvatarFontSize = new Animated.Value(AVATAR_LETTER_LARGE_FONT);
   variableFontSize = new Animated.Value(TEXT_HEIGHT);
   variableOpacity = new Animated.Value(1);
 
@@ -29,6 +28,7 @@ export default class ProfileHeader extends Component  {
     this.state = {
       showDetails: true,
       avatarSizeGoal: AVATAR_SMALL_SIZE,
+      avatarLetterSizeGoal: AVATAR_LETTER_SMALL_FONT,
       opacityGoal: 0,
       textHeightGoal: 0,
       animate: false
@@ -40,6 +40,7 @@ export default class ProfileHeader extends Component  {
 
     this.setState({
       avatarSizeGoal: [AVATAR_SMALL_SIZE, AVATAR_LARGE_SIZE][newOpacityGoal],
+      avatarLetterSizeGoal: [AVATAR_LETTER_SMALL_FONT, AVATAR_LETTER_LARGE_FONT][newOpacityGoal],
       opacityGoal: newOpacityGoal,
       textHeightGoal: [0, TEXT_HEIGHT][newOpacityGoal],
       animate: false
@@ -53,9 +54,16 @@ export default class ProfileHeader extends Component  {
   resizeHeaderAndRedirect = ( callback = ()=>{} ) => () => {
     Animated.parallel([
       Animated.timing(
-        this.variableSize,
+        this.variableAvatarSize,
         {
           toValue: this.state.avatarSizeGoal,
+          duration: DURATION,
+        },
+      ),
+      Animated.timing(
+        this.variableAvatarFontSize,
+        {
+          toValue: this.state.avatarLetterSizeGoal,
           duration: DURATION,
         },
       ),
@@ -81,54 +89,51 @@ export default class ProfileHeader extends Component  {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if(nextProps.routeName === 'employeeProfile' && (this.props.routeName === 'editPrivileges' || this.props.routeName === 'availabilityIndex' ) )
+    if(nextProps.routeName === 'employeeProfile' &&
+      (this.props.routeName === 'editPrivileges' ||
+        this.props.routeName === 'availabilityIndex' ))
+
       this.resizeHeaderAndRedirect()();
   };
 
   render() {
     const { avatarProps, user } = this.props;
 
+    const textAnimationStyles = {
+      fontSize: this.variableFontSize,
+      height: this.variableFontSize,
+      opacity: this.variableOpacity
+    };
+
+    const avatarAnimationStyles = {
+      width: this.variableAvatarSize,
+      height: this.variableAvatarSize
+    };
+
     return (
       <View style={styles.container}>
         <View style={styles.leftCol}>
-          <Animated.View
-            style={{ width: this.variableSize, height: this.variableSize }}>
-            <DefaultAvatar {...avatarProps}
-              // customContainerStyle={{ width: 68, height: 68 }}
-                           customLetterStyle={{ fontSize: 30 }}
-                           aniamationable={true}
-            />
-          </Animated.View>
+          <DefaultAvatar {...avatarProps}
+                         customLetterStyle={{fontSize: this.variableAvatarFontSize}}
+                         customContainerStyle={avatarAnimationStyles}
+
+          />
         </View>
         <View style={styles.rightCol}>
+
           <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
-          {/*<Text style={styles.secondaryInfo}>{`tel: ${user.phone_number}`}</Text>*/}
-          <Animated.Text style={[
-            styles.secondaryInfo,
-            {
-              fontSize: this.variableFontSize,
-              height: this.variableFontSize,
-              opacity: this.variableOpacity,
-            }]}>{`email: ${user.email}`}</Animated.Text>
+
+          <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
+
           <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onManagePersonClick)}
-            customTextStyle={{
-            fontSize: this.variableFontSize,
-            height: this.variableFontSize,
-            opacity: this.variableOpacity
-          }}>
+            customTextStyle={textAnimationStyles}>
             Zarzadzaj pracownikiem
           </ButtonText>
 
           <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onSetAvailabilityClick)}
-                      customTextStyle={{
-                        fontSize: this.variableFontSize,
-                        height: this.variableFontSize,
-                        opacity: this.variableOpacity
-                      }}>
+                      customTextStyle={textAnimationStyles}>
             Ustaw dyspozycyjnosc
           </ButtonText>
-
-
         </View>
       </View>
     );
@@ -144,9 +149,6 @@ const styles = {
     borderBottomColor: Colors.lightGrey,
   },
   leftCol: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // width: '25%',
     paddingRight: 15
   },
   rightCol: {
@@ -160,7 +162,6 @@ const styles = {
   },
   secondaryInfo: {
     color: Colors.strongGrey,
-    // fontSize: Fonts.size.medium,
   },
   row: {
     flexDirection: 'row',
