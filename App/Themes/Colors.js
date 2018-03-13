@@ -13,7 +13,8 @@ const colors = {
   yellowDark: '#FFBF00',
 
   purple: '#9A66B0',
-  yellow: '#ffef80',
+  paleYellow: '#ffef80',
+  yellow: '#FFCC02',
   blue: '#2DAAFE',
   red: '#FF3B30',
   green: '#4CDA64',

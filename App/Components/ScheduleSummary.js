@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   freeDayBox: {
-    backgroundColor: Colors.yellow,
+    backgroundColor: Colors.paleYellow,
     paddingHorizontal: 10
   },
   freeDayText: {},
