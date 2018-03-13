@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import EmployeeProfile from './Profile';
+import Profile from './Profile';
 import EditPrivileges from './Privileges/EditPrivileges';
 import AvailabilityForm from './Availability/AvailabilityForm';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
@@ -9,8 +9,8 @@ import EmployeeProfileHeader from '../../Components/EmployeeProfileHeader';
 import AvailabilityIndex from './Availability/AvailabilityIndex';
 
 const routeConfigs = {
-  employeeProfile: {
-    screen: EmployeeProfile,
+  profile: {
+    screen: Profile,
   },
   editPrivileges: {
     screen: EditPrivileges,
@@ -29,12 +29,12 @@ const navigationConfigs = {
       header: <EmployeeProfileHeader navigation={navigation} />
     };
   },
-  initialRouteName: 'employeeProfile',
+  initialRouteName: 'profile',
   initialRouteParams: { title: 'Profile' },
   cardStyle: navStyles.card,
 };
 
-const ProfileNavigation = StackNavigator(routeConfigs, navigationConfigs);
+const EmployeeProfile = StackNavigator(routeConfigs, navigationConfigs);
 
 export default class EmployeeProfileModule extends Component {
   static navigationOptions = { header: null };
@@ -49,7 +49,7 @@ export default class EmployeeProfileModule extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <ProfileNavigation
+        <EmployeeProfile
           navigation={navigation}
           screenProps={{ user, index, ...screenProps }} />
       </View>
@@ -57,4 +57,4 @@ export default class EmployeeProfileModule extends Component {
   }
 }
 
-EmployeeProfileModule.router = ProfileNavigation.router;
+EmployeeProfileModule.router = EmployeeProfile.router;

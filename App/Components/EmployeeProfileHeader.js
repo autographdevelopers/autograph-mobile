@@ -96,7 +96,7 @@ export default class EmployeeProfileHeader extends Component  {
     const nextRoute = nextProps.navigation.state.routeName;
     const currentRoute = this.props.navigation.state.routeName;
 
-    if(nextRoute === 'employeeProfile' && LINKS.includes(currentRoute))
+    if(nextRoute === 'profile' && LINKS.includes(currentRoute))
       this.resizeHeaderAndRedirect()();
   };
 
