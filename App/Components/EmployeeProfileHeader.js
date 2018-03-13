@@ -7,6 +7,7 @@ import {
 import { Fonts, Colors } from '../Themes/';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
+import NavHeader from '../Components/NavHeader';
 
 const DURATION = 350;
 const AVATAR_SMALL_SIZE = 45;
@@ -15,7 +16,9 @@ const AVATAR_LETTER_LARGE_FONT = 30;
 const AVATAR_LARGE_SIZE = 70;
 const TEXT_HEIGHT = Fonts.size.medium;
 
-export default class ProfileHeader extends Component  {
+const LINKS = ['editPrivileges', 'availabilityIndex'];
+
+export default class EmployeeProfileHeader extends Component  {
 
   variableAvatarSize = new Animated.Value(AVATAR_LARGE_SIZE);
   variableAvatarFontSize = new Animated.Value(AVATAR_LETTER_LARGE_FONT);
@@ -89,15 +92,17 @@ export default class ProfileHeader extends Component  {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if(nextProps.routeName === 'employeeProfile' &&
-      (this.props.routeName === 'editPrivileges' ||
-        this.props.routeName === 'availabilityIndex' ))
+    /** Handle going back to profile index */
+    const nextRoute = nextProps.navigation.state.routeName;
+    const currentRoute = this.props.navigation.state.routeName;
 
+    if(nextRoute === 'employeeProfile' && LINKS.includes(currentRoute))
       this.resizeHeaderAndRedirect()();
   };
 
   render() {
-    const { avatarProps, user } = this.props;
+    const { navigation } = this.props;
+    const { user, index, title } = navigation.state.params;
 
     const textAnimationStyles = {
       fontSize: this.variableFontSize,
@@ -111,29 +116,33 @@ export default class ProfileHeader extends Component  {
     };
 
     return (
-      <View style={styles.container}>
-        <View style={styles.leftCol}>
-          <DefaultAvatar {...avatarProps}
-                         customLetterStyle={{fontSize: this.variableAvatarFontSize}}
-                         customContainerStyle={avatarAnimationStyles}
+      <View>
+        <NavHeader navigation={navigation} title={title} />
+        <View style={styles.container}>
+          <View style={styles.leftCol}>
+            <DefaultAvatar name={user.name}
+                           index={index}
+                           customLetterStyle={{fontSize: this.variableAvatarFontSize}}
+                           customContainerStyle={avatarAnimationStyles}
 
-          />
-        </View>
-        <View style={styles.rightCol}>
+            />
+          </View>
+          <View style={styles.rightCol}>
 
-          <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
+            <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
 
-          <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
+            <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
 
-          <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onManagePersonClick)}
-            customTextStyle={textAnimationStyles}>
-            Zarzadzaj pracownikiem
-          </ButtonText>
+            <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' }))}
+              customTextStyle={textAnimationStyles}>
+              Zarzadzaj pracownikiem
+            </ButtonText>
 
-          <ButtonText onPress={this.resizeHeaderAndRedirect(this.props.onSetAvailabilityClick)}
-                      customTextStyle={textAnimationStyles}>
-            Ustaw dyspozycyjnosc
-          </ButtonText>
+            <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' }))}
+                        customTextStyle={textAnimationStyles}>
+              Ustaw dyspozycyjnosc
+            </ButtonText>
+          </View>
         </View>
       </View>
     );

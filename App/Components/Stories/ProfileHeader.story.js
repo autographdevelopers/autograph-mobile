@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react-native'
-import ProfileHeader from '../ProfileHeader';
+import ProfileHeader from '../EmployeeProfileHeader';
 
 const person = {
   name: 'Wojciech',

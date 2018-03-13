@@ -5,7 +5,7 @@ import EmployeeProfile from './Profile';
 import EditPrivileges from './Privileges/EditPrivileges';
 import AvailabilityForm from './Availability/AvailabilityForm';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
-import ProfileHeader from '../../Components/ProfileHeader';
+import EmployeeProfileHeader from '../../Components/EmployeeProfileHeader';
 import AvailabilityIndex from './Availability/AvailabilityIndex';
 
 const routeConfigs = {
@@ -24,24 +24,9 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  navigationOptions: (props) => {
-    const { navigation } = props;
-    const { user, index, title } = navigation.state.params;
-
+  navigationOptions: ({ navigation }) => {
     return {
-      header:
-        <View>
-          <NavHeader navigation={navigation} title={title}/>
-
-          <ProfileHeader
-            onManagePersonClick={() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' })}
-            onSetAvailabilityClick={() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' })}
-
-            avatarProps={{ name: user.name, index }}
-            user={user}
-            routeName={navigation.state.routeName}
-          />
-        </View>
+      header: <EmployeeProfileHeader navigation={navigation} />
     };
   },
   initialRouteName: 'employeeProfile',
