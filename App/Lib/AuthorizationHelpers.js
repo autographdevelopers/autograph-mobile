@@ -8,10 +8,10 @@ export const isStudent = user =>
   user.type === STUDENT
 
 export const isDrivingSchoolOwner = drivingSchool =>
-  drivingSchool.privilege_set && drivingSchool.privilege_set.is_owner
+  drivingSchool.privileges && drivingSchool.privileges.is_owner
 
 export const canManageEmployees = drivingSchool =>
-  drivingSchool.privilege_set && (drivingSchool.privilege_set.is_owner || drivingSchool.privilege_set.can_manage_employees)
+  drivingSchool.privileges && (drivingSchool.privileges.is_owner || drivingSchool.privileges.can_manage_employees)
 
 export const canManageStudents = drivingSchool =>
-  drivingSchool.privilege_set && (drivingSchool.privilege_set.is_owner || drivingSchool.privilege_set.can_manage_students)
+  drivingSchool.privileges && (drivingSchool.privileges.is_owner || drivingSchool.privileges.can_manage_students)

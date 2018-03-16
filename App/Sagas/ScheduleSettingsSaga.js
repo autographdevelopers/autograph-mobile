@@ -6,7 +6,7 @@ import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* update(api, action) {
-  const response = yield call(api.scheduleSettings.update, { schedule_settings_set: action.payload });
+  const response = yield call(api.scheduleSettings.update, { schedule_settings: action.payload });
   if (response.ok) {
     yield put(updateScheduleSettings.success());
   } else {

@@ -6,7 +6,7 @@ import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* update(api, action) {
-  const response = yield call(api.employeePrivileges.update, { employee_privilege_set: action.payload });
+  const response = yield call(api.employeePrivileges.update, { employee_privileges: action.payload });
   if (response.ok) {
     yield put(updateForm.success());
   } else {
