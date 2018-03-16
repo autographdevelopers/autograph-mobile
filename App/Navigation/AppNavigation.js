@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import LoginScreen from '../Screens/LaunchLoginPair/LoginScreen';
-import LaunchScreen from '../Screens/LaunchLoginPair/LaunchScreen';
 import LaunchLoginPair from '../Screens/LaunchLoginPair/ModuleNavigator';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
@@ -17,7 +15,6 @@ import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
-import { Colors } from '../Themes';
 
 const routeConfigs = {
   loginLaunch: {
@@ -27,7 +24,7 @@ const routeConfigs = {
   resetPassword: { screen: ResetPasswordScreen },
   mySchoolsScreen: { screen: MySchoolsScreen,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={true}/>
+      header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={false}/>
     }
   },
   employeeMain: {

@@ -1,24 +1,29 @@
-import React, { Component } from 'react'
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
-import { Avatar } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Fonts, Colors } from '../Themes/'
-import { isDrivingSchoolRelationActive, isDrivingSchoolAwaitingActivation, isDrivingSchoolRelationPending } from '../Lib/DrivingSchoolHelpers';
+import React, { Component } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Fonts, Colors } from '../Themes/index';
+import {
+  isDrivingSchoolRelationActive,
+  isDrivingSchoolAwaitingActivation,
+  isDrivingSchoolRelationPending
+} from '../Lib/DrivingSchoolHelpers';
 
 export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool, openActivateSchoolModal }) => {
+
   renderInvitationButtons = () => {
     if (isDrivingSchoolRelationPending(drivingSchool))
       return (
         <View style={styles.invitationResponseSegment}>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: Colors.green}]} onPress={() => acceptInvitationRequest(drivingSchool.id)}>
+          <TouchableOpacity style={[styles.invitationResponseButton, styles.btnAccept]} onPress={() => acceptInvitationRequest(drivingSchool.id)}>
             <Text style={{fontSize: Fonts.size.medium, color: Colors.green}}>Akceptuj</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.invitationResponseButton, {borderColor: Colors.red}]} onPress={() => rejectInvitationRequest(drivingSchool.id)}>
+          <TouchableOpacity style={[styles.invitationResponseButton, styles.btnReject]} onPress={() => rejectInvitationRequest(drivingSchool.id)}>
             <Text style={{fontSize: Fonts.size.medium, color: Colors.red}}>Odrzuć</Text>
           </TouchableOpacity>
         </View>
       )
-  }
+  };
 
   renderCellAction = () => {
     if (isDrivingSchoolRelationActive(drivingSchool))
@@ -80,7 +85,12 @@ const styles = StyleSheet.create({
     width: '45%',
     borderWidth: 1,
     borderRadius: 5,
-    justifyContent: 'center',
     alignItems: 'center',
+  },
+  btnAccept: {
+    borderColor: Colors.green
+  },
+  btnReject: {
+    borderColor: Colors.red
   }
-})
+});

@@ -32,7 +32,7 @@ const SchoolActivationInput = props => {
         <FormErrorMessage customStyles={{fontFamily: Fonts.type.base}}>{errorMessage}</FormErrorMessage>
       </View>
       <View style={{marginBottom: 15}}>
-        <ButtonPrimary onPress={props.activationRequest(schoolId, code)}
+        <ButtonPrimary onPress={props.activationRequest(schoolId, inputVerificationCode)}
                        customWrapperStyles={{width: '60%'}}>Aktywuj!</ButtonPrimary>
       </View>
     </View>
