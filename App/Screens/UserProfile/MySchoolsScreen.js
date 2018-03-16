@@ -17,6 +17,7 @@ import {
   isDrivingSchoolAwaitingActivation,
   isDrivingSchoolRelationPending,
 } from '../../Lib/DrivingSchoolHelpers';
+import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { contextActionCreators } from '../../Redux/ContextRedux';
@@ -44,8 +45,17 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToSchoolContext = school => {
+    const { user } = this.props;
     this.props.setCurrentSchoolContext(school.id);
-    this.props.navigation.navigate('main', { drivingSchool: school });
+
+    if(isEmployee(user)) {
+      if(isDrivingSchoolOwner(school))
+        this.props.navigation.navigate('ownerMain', {drivingSchool: school});
+      else
+        this.props.navigation.navigate('employeeMain', {drivingSchool: school});
+    }else if(isStudent(user)){
+      this.props.navigation.navigate('studentMain', {drivingSchool: school});
+    }
   };
 
   renderDrivingSchoolsList = (data, helperText) => {
@@ -88,7 +98,7 @@ class MySchoolsScreen extends Component {
   };
 
   render() {
-    const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools } = this.props;
+    const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools, user } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
@@ -106,7 +116,8 @@ class MySchoolsScreen extends Component {
               onPress={this.navigateToNewDrivingSchoolForm}
               customTextStyle={{ fontSize: 13 }}
               customStyle={{ marginTop: 7 }}
-              icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}>
+              icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
+              visible={isEmployee(user)}>
               Dodaj Szkołę
             </ButtonText>
           </View>

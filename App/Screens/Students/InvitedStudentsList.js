@@ -8,7 +8,6 @@ import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import listProjectorStyles from '../../Styles/ListProjector';
-import Icon from 'react-native-vector-icons/Entypo';
 
 class InvitedStudentsList extends Component {
   componentWillMount() {
@@ -18,7 +17,6 @@ class InvitedStudentsList extends Component {
   render() {
     return (
       <Layout scroll={false} customStyles={{paddingTop: 0}}>
-        <Text style={listProjectorStyles.header}>{`Aktywni kursanci (${this.props.employees.length})`}</Text>
         <List containerStyle={listProjectorStyles.containerStyle}>
           <FlatList
             contentContainerStyle={listProjectorStyles.contentContainerStyle}
@@ -26,9 +24,6 @@ class InvitedStudentsList extends Component {
             renderItem={({ item, index }) => (
               <ListItem
                 title={`${item.name} ${item.surname}`}
-                titleStyle={{fontFamily: Fonts.type.regular}}
-                subtitleStyle={{fontFamily: Fonts.type.regular}}
-                rightIcon={<Icon name={'chevron-thin-right'} color={Colors.strongGrey} size={18} style={{alignSelf: 'center'}}/>}
                 subtitle={item.email}
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
@@ -50,7 +45,7 @@ class InvitedStudentsList extends Component {
 }
 
 const mapStateToProps = state => ({
-  employees: state.students.activeIds.map( id => state.students.active[id]),
+  employees: state.students.pendingIds.map( id => state.students.pending[id]),
   status: state.students.status
 });
 
@@ -60,3 +55,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedStudentsList)
 
+// TODO add invited employee to store once it has been saved on the server
+// TODO distinguish refresing and loading so that loader in header and list are not visible both while component mounting

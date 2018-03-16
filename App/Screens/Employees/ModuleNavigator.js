@@ -5,7 +5,11 @@ import InvitedEmployeesList from './InvitedEmployeesList';
 import ActiveEmployeesList from './ActiveEmployeesList';
 import SegmentsControl from '../../Components/SegmentsControl';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import FullScreenInformation from '../../Components/FullScreenInformation';
+import { canManageEmployees } from '../../Lib/AuthorizationHelpers'
+import I18n from '../../I18n/index';
 
 const routeConfigs = {
   ActiveEmployeesList: {
@@ -51,7 +55,10 @@ class EmployeesModule extends Component {
   };
 
   render() {
-    const { navigation, screenProps } = this.props;
+    const { navigation, screenProps, drivingSchool } = this.props;
+
+    if(!canManageEmployees(drivingSchool))
+      return <FullScreenInformation>{I18n.t('lacksPrivileges.canManageEmployee')}</FullScreenInformation>
 
     return (
       <View style={{ flex: 1 }}>
@@ -67,4 +74,8 @@ class EmployeesModule extends Component {
 
 EmployeesModule.router = ModuleNavigator.router;
 
-export default EmployeesModule;
+const mapStateToProps = ({ drivingSchools, context }) => ( {
+  drivingSchool: drivingSchools.hashMap[context.currentDrivingSchoolID]
+} );
+
+export default connect(mapStateToProps)(EmployeesModule)

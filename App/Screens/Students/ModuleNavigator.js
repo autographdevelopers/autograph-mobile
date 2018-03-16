@@ -1,18 +1,22 @@
 import { StackNavigator } from 'react-navigation';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
-import InvitedStudents from './InvitedSegment';
-import ActiveStudents from './ActivesSegment';
+import InvitedStudentsList from './InvitedStudentsList';
+import ActiveStudentsList from './ActiveStudentsList';
 import React, { Component } from 'react';
 import SegmentsControl from '../../Components/SegmentsControl';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import { View } from 'react-native';
+import FullScreenInformation from '../../Components/FullScreenInformation';
+import { canManageStudents } from '../../Lib/AuthorizationHelpers'
+import I18n from '../../I18n/index';
+import { connect } from 'react-redux';
 
 const routeConfigs = {
   ActiveStudentsList: {
-    screen: ActiveStudents
+    screen: ActiveStudentsList
   },
   InvitedStudentsList: {
-    screen: InvitedStudents
+    screen: InvitedStudentsList
   }
 };
 
@@ -45,7 +49,10 @@ const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
 class StudentsModule extends Component {
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, drivingSchool } = this.props;
+
+    if(!canManageStudents(drivingSchool))
+      return <FullScreenInformation>{I18n.t('lacksPrivileges.canManageStudent')}</FullScreenInformation>
 
     return (
       <View style={{ flex: 1 }}>
@@ -59,5 +66,8 @@ class StudentsModule extends Component {
 
 StudentsModule.router = ModuleNavigator.router;
 
-export default StudentsModule;
+const mapStateToProps = ({ drivingSchools, context }) => ( {
+  drivingSchool: drivingSchools.hashMap[context.currentDrivingSchoolID]
+} );
 
+export default connect(mapStateToProps)(StudentsModule);

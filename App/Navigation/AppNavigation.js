@@ -9,7 +9,7 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
-import TabNavigation from './TabNavigation';
+import { StudentTabNavigator, EmployeeTabNavigator, OwnerTabNavigator } from './TabNavigation';
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
@@ -30,8 +30,22 @@ const routeConfigs = {
       header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={true}/>
     }
   },
-  main: {
-    screen: TabNavigation, navigationOptions: ({navigation}) => {
+  employeeMain: {
+    screen: EmployeeTabNavigator, navigationOptions: ({navigation}) => {
+      return {
+        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+      }
+    }
+  },
+  ownerMain: {
+    screen: OwnerTabNavigator, navigationOptions: ({navigation}) => {
+      return {
+        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+      }
+    }
+  },
+  studentMain: {
+    screen: StudentTabNavigator, navigationOptions: ({navigation}) => {
       return {
         header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
       }
