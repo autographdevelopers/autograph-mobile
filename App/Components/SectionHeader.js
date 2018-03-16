@@ -22,7 +22,7 @@ const styles = {
   },
   listHeader: {
     fontSize: 20,
-    color: 'gray',
+    color: Colors.softBlack,
   },
   underline: {
     marginTop: 8,

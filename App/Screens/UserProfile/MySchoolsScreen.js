@@ -32,6 +32,10 @@ import {
 } from '../../Lib/DrivingSchoolHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
+const SECTION_TITLES = {
+  mySchools: 'Moje szkoły',
+  invitingSchools: 'Zaproszenia do współpracy'
+};
 
 class MySchoolsScreen extends Component {
   componentWillMount = () => {
@@ -57,99 +61,86 @@ class MySchoolsScreen extends Component {
     }
   };
 
-  renderDrivingSchoolsList = (data, helperText) => {
-    if ( this.props.drivingSchools.status === FETCHING_STATUS.FETCHING ) {
-      return <ActivityIndicator size={'small'} color={Colors.primaryWarm}/>;
-    } else {
-      if ( data.length > 0 )
-        return <List containerStyle={{
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-          marginTop: 0,
-        }}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) =>
-              <DrivingSchoolCell drivingSchool={item}
-                                 acceptInvitationRequest={this.props.acceptInvitationRequest}
-                                 rejectInvitationRequest={this.props.rejectInvitationRequest}
-                                 navigateToSchool={this.navigateToSchoolContext}
-                                 openActivateSchoolModal={this.props.triggerSchoolActivationDialog}
-              />
-            }
-            keyExtractor={(s, i) => `drivingSchool-${s.id}`}
-          />
-        </List>;
-      else
-        return <View style={styles.helperContainer}>
-          <Text style={styles.helperText}>
-            {helperText}
-          </Text>
-        </View>;
-    }
-  };
-
-  renderOverlay = () => {
+  blockUIWhenInvitationResponseRequestIsPending = () => {
     if ( this.props.invitations.status === FETCHING_STATUS.FETCHING )
       return <View style={styles.loading}>
         <ActivityIndicator size='large' color={Colors.snow}/>
       </View>;
   };
 
+  renderListItem = ({item}) => {
+    if (item.sectionPlaceholder) {
+      return <View style={styles.helperContainer}>
+        <Text style={styles.helperText}>
+          {item.sectionPlaceholder}
+        </Text>
+      </View>
+    } else {
+      return <DrivingSchoolCell drivingSchool={item}
+                                acceptInvitationRequest={this.props.acceptInvitationRequest}
+                                rejectInvitationRequest={this.props.rejectInvitationRequest}
+                                navigateToSchool={this.navigateToSchoolContext}
+                                openActivateSchoolModal={this.props.triggerSchoolActivationDialog}
+      />
+    }
+  };
+
+  renderSectionHeader = ({section}) => {
+    switch(section.title) {
+      case SECTION_TITLES.mySchools:
+        return (
+          <View style={styles.headerWithBtn}>
+            <SectionHeader title={section.title}/>
+            <ButtonText
+              onPress={this.navigateToNewDrivingSchoolForm}
+              customTextStyle={{ fontSize: 13 }}
+              customStyle={{ marginTop: 7 }}
+              icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
+              visible={isEmployee(this.props.user)}>
+              Dodaj Szkołę
+            </ButtonText>
+          </View>
+        );
+      case SECTION_TITLES.invitingSchools:
+        return <SectionHeader title={section.title}/>;
+    }
+  };
+
+  dataOrPlaceHolder = (data, placeHolder) =>
+    data.length === 0 ? [{sectionPlaceholder: placeHolder}] : data;
+
   render() {
     const { activeDrivingSchools,
       awaitingActivationDrivingSchools,
       invitingDrivingSchools,
-      user,
       schoolActivationStatus,
       resetSchoolActivationState,
       drivingSchools: { status }
     } = this.props;
 
-    const SECTION_ID = {
-      my_schools: 'Moje szkoły',
-      inviting_schools: 'Zaproszenia do współpracy'
-    };
+    const mySchools = [...activeDrivingSchools, ...awaitingActivationDrivingSchools];
 
     const sections = [
-      {id: SECTION_ID.my_schools, data: [...activeDrivingSchools, ...awaitingActivationDrivingSchools] },
-      {id: SECTION_ID.inviting_schools, data: invitingDrivingSchools }
+      {title: SECTION_TITLES.mySchools,
+        data: this.dataOrPlaceHolder(mySchools,
+          'Tutaj wyświetlą się szkoły, do których należysz.') },
+      {title: SECTION_TITLES.invitingSchools,
+        data: this.dataOrPlaceHolder(invitingDrivingSchools,
+          'Tutaj wyświetlą się zaproszenia do szkół.') }
     ];
-
-    const sectionHeader = {
-      [SECTION_ID.inviting_schools]: title => <SectionHeader title={title}/>,
-      [SECTION_ID.my_schools]: title =>
-        <View style={styles.headerWithBtn}>
-          <SectionHeader title={title}/>
-          <ButtonText
-            onPress={this.navigateToNewDrivingSchoolForm}
-            customTextStyle={{ fontSize: 13 }}
-            customStyle={{ marginTop: 7 }}
-            icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
-            visible={isEmployee(user)}>
-            Dodaj Szkołę
-          </ButtonText>
-      </View>
-    };
 
     return (
       <View style={{ flex: 1 }}>
         <AccountHeader user={this.props.user}/>
+
         { status === FETCHING_STATUS.SUCCESS &&
           <SectionList
             contentContainerStyle={styles.listContainer}
             sections={sections}
             stickySectionHeadersEnabled={true}
             keyExtractor={(s, _) => `drivingSchool-${s.id}`}
-            renderSectionHeader={({section: {id}}) => sectionHeader[id](id)}
-            renderItem={({ item }) =>
-              <DrivingSchoolCell drivingSchool={item}
-                                 acceptInvitationRequest={this.props.acceptInvitationRequest}
-                                 rejectInvitationRequest={this.props.rejectInvitationRequest}
-                                 navigateToSchool={this.navigateToSchoolContext}
-                                 openActivateSchoolModal={this.props.triggerSchoolActivationDialog}
-              />
-            }
+            renderSectionHeader={this.renderSectionHeader}
+            renderItem={this.renderListItem}
           />
         }
 
@@ -159,7 +150,7 @@ class MySchoolsScreen extends Component {
           </View>
         }
 
-        {this.renderOverlay()}
+        {this.blockUIWhenInvitationResponseRequestIsPending()}
 
         <ModalTemplate
           modalID={MODALS_IDS.ACTIVATE_SCHOOL}
@@ -183,17 +174,6 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingHorizontal: 15,
     paddingVertical: 15
-  },
-  listHeader: {
-    fontSize: 20,
-    color: 'gray',
-  },
-  underline: {
-    marginTop: 8,
-    width: 45,
-    borderColor: Colors.primaryWarm,
-    borderWidth: 2,
-    borderRadius: 10,
   },
   helperContainer: {
     backgroundColor: Colors.lightGrey,
