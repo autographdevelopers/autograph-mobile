@@ -102,7 +102,8 @@ class MySchoolsScreen extends Component {
       invitingDrivingSchools,
       user,
       schoolActivationStatus,
-      resetSchoolActivationState
+      resetSchoolActivationState,
+      drivingSchools: { status }
     } = this.props;
 
     const SECTION_ID = {
@@ -134,13 +135,12 @@ class MySchoolsScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <AccountHeader user={this.props.user}/>
-        <View style={styles.listContainer}>
-
-
+        { status === FETCHING_STATUS.SUCCESS &&
           <SectionList
+            contentContainerStyle={styles.listContainer}
             sections={sections}
             stickySectionHeadersEnabled={true}
-            keyExtractor={(s, i) => `drivingSchool-${s.id}`}
+            keyExtractor={(s, _) => `drivingSchool-${s.id}`}
             renderSectionHeader={({section: {id}}) => sectionHeader[id](id)}
             renderItem={({ item }) =>
               <DrivingSchoolCell drivingSchool={item}
@@ -150,9 +150,14 @@ class MySchoolsScreen extends Component {
                                  openActivateSchoolModal={this.props.triggerSchoolActivationDialog}
               />
             }
-
           />
-        </View>
+        }
+
+        {status === FETCHING_STATUS.FETCHING &&
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
+          </View>
+        }
 
         {this.renderOverlay()}
 
@@ -176,8 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow
   },
   listContainer: {
-    flex: 1,
-    marginHorizontal: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 15
   },
   listHeader: {
     fontSize: 20,
