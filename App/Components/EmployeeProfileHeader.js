@@ -1,13 +1,15 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
 import {
   Text,
   View,
   Animated,
 } from 'react-native';
+/** Custom dependencies */
+import NavHeader from '../Components/NavHeader';
 import { Fonts, Colors } from '../Themes/';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
-import NavHeader from '../Components/NavHeader';
 
 const DURATION = 350;
 const AVATAR_SMALL_SIZE = 45;

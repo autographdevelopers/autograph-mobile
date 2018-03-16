@@ -1,3 +1,4 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
 import {
   Text,
@@ -5,22 +6,12 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
+/** Custom dependencies */
 import { Colors, Fonts } from '../Themes';
-import { slotsSummary } from '../Lib/utils';
 import I18n from '../I18n/index';
 import { slotHelper } from '../Lib/SlotHelpers';
 
-const WEEKDAYS = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-];
-
-const Bubble = ({ label, customBoxStyles = [], customTextStyles = []}) => (
+const IntervalInfo = ({ label, customBoxStyles = [], customTextStyles = []}) => (
   <View style={[styles.intervalBox, ...customBoxStyles]}>
     <Text style={[styles.intervalText, ...customTextStyles]}>{label}</Text>
   </View>
@@ -34,9 +25,10 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true, customStyles={} 
   };
 
   return (
-    <ScrollView style={[{width: '100%'},customStyles.container]}>
+    <View style={styles.container}>
       {Object.keys(schedule).map((day, index) =>
         <View key={`weekday-summary-${index}`} style={[styles.weekdaySummary, customStyles.weekdaySummary]}>
+
           <View style={[styles.headerTextContainer, customStyles.headerTextContainer]}>
             <Text style={[styles.headerText, customStyles.headerText]}>
               {getWeekday(day)}
@@ -45,28 +37,30 @@ export default ScheduleSummary = ({ schedule, weekdayFull=true, customStyles={} 
 
           <View style={[styles.intervalsContainer, customStyles.intervalsContainer]}>
             {slotHelper.summarizeDay(schedule[day]).map((interval, index) =>
-              <Bubble label={interval} key={`interval-box-${index}`}
+              <IntervalInfo label={interval} key={`interval-box-${index}`}
                       customBoxStyles={[customStyles.intervalBox]}
                       customTextStyles={[customStyles.intervalText]}/>,
             )}
             {schedule[day].length === 0 &&
-              <Bubble label={'wolne'}
+              <IntervalInfo label={'wolne'}
                       customBoxStyles={[styles.freeDayBox, customStyles.freeDayBox]}
                       customTextStyles={[styles.freeDayText, customStyles.freeDayText]}
               />
             }
           </View>
-        </View>,
+        </View>
       )}
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   intervalsContainer: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  container: {
+    // flex: 1
   },
   intervalBox: {
     borderRadius: 4,

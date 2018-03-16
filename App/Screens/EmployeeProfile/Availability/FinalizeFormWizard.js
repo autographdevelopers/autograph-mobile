@@ -94,11 +94,10 @@ class FinalizeFormWizard extends Component {
       return (
         <View>
           { this.props.showBindingFromStep &&
-            <Text style={styles.startsFrom}>Obowiazuje od
+              <Text style={styles.startsFrom}>Obowiazuje od
               <Text style={styles.startsFromEmphasise}> {starts_from || 'teraz'}</Text>
             </Text>
           }
-
           <ScheduleSummary schedule={this.props.template} />
         </View>
       )
@@ -110,7 +109,7 @@ class FinalizeFormWizard extends Component {
     // TODO: fix this 'width: 100%' issue in modal children
 
     return (
-      <View style={{width: '100%'}}>
+      <View>
         { showBindingFromStep && <StepsIndicators labels={STEPS}
                                                   activeIndex={this.state.step}
                                                   onPress={this.navToStep}

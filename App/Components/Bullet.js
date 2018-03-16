@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, Animated, View } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { Fonts, Colors } from '../Themes/';
+import { StyleSheet , Text, TouchableOpacity, View } from 'react-native';
+import { Fonts, Colors } from '../Themes/index';
 
-export default Bubble = ({ active, label='Label', onPress=()=>{}, customStyle }) => {
+export default Bullet = ({ active, label='Label', onPress=()=>{}, customStyle }) => {
   const SIZE = active ? 30 : 25;
 
   const styles = StyleSheet.create({
@@ -26,8 +25,7 @@ export default Bubble = ({ active, label='Label', onPress=()=>{}, customStyle })
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.button, customStyle]} onPress={onPress}>
-      </TouchableOpacity>
+      <TouchableOpacity style={[styles.button, customStyle]} onPress={onPress}/>
       <Text style={styles.text}>{label}</Text>
     </View>
   );

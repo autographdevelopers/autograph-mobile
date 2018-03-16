@@ -1,6 +1,6 @@
 /** Lib dependencies */
 import React, { Component } from 'react';
-import { Modal, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Modal, Text, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconM from 'react-native-vector-icons/MaterialIcons';
@@ -159,8 +159,6 @@ const styles = {
     paddingHorizontal: 15,
   },
   content: {
-    width: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   overlay: {

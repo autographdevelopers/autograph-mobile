@@ -4,21 +4,20 @@ import { View, ScrollView, TouchableOpacity, Text, ActivityIndicator } from 'rea
 import {connect} from 'react-redux';
 import moment from 'moment/moment';
 /** Custom dependencies */
-import { Colors, Fonts } from '../../../Themes/index';
-import { scheduleActionCreators } from '../../../Redux/ScheduleRedux';
-import { FETCHING_STATUS, isTemplateEmpty } from '../../../Lib/utils';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
-import { modalActionCreators, MODALS_IDS } from '../../../Redux/ModalRedux';
 import ScheduleBox from '../../../Components/ScheduleBox';
 import BubbleBackground from '../../../Components/BubbleBackground';
 import CustomDatePicker from '../../../Components/CustomDatePicker';
 import ButtonPrimary from '../../../Components/ButtonPrimary';
 import BindingFromBox from '../../../Components/BindingFromBox';
 import ModalTemplate from '../../../Components/ModalTemplate';
+import { Colors, Fonts } from '../../../Themes/index';
+import { modalActionCreators, MODALS_IDS } from '../../../Redux/ModalRedux';
+import { scheduleActionCreators } from '../../../Redux/ScheduleRedux';
+import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
+import { FETCHING_STATUS, isTemplateEmpty } from '../../../Lib/utils';
 
 class AvailabilityIndex extends Component {
-
   componentWillMount = () => {
     this.props.showScheduleRequest();
   };
@@ -75,7 +74,7 @@ class AvailabilityIndex extends Component {
       );
     } else if (new_template_binding_from) {
       return (
-        <View>
+        <ScrollView contentContainerStyle={{paddingVertical: 15}}>
           <ScheduleBox title={`Aktualny grafik (do ${new_template_binding_from})`}
                        schedule={current_template}
                        onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
@@ -89,7 +88,7 @@ class AvailabilityIndex extends Component {
                        schedule={new_template}
                        onEditPress={this.handleEditPress(TEMPLATE_TYPES.NEW_TEMPLATE)}
                        onRemovePress={this.openRemoveScheduleModal(TEMPLATE_TYPES.NEW_TEMPLATE)} />
-        </View>
+        </ScrollView>
       );
     }
   };
@@ -140,11 +139,9 @@ class AvailabilityIndex extends Component {
     };
 
     return (
-      <View style={{flex: 1, paddingTop: 15}}>
+      <View style={{flex: 1}}>
         {/** SCHEDULE BOXES */}
-        <ScrollView contentContainerStyle={{paddingBottom: 30}}>
           {this.pageContents()}
-        </ScrollView>
 
         {/** CHANGE NEW SCHEDULE BINDING DATE MODAL */}
         <ModalTemplate

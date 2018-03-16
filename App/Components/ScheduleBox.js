@@ -1,15 +1,16 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
 import {
   Text,
   View,
-  ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Colors, Fonts } from '../Themes';
-import ButtonText from './ButtonText';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
-import ScheduleSummary from '../Components/ScheduleSummary';
+/** Custom dependencies */
+import ScheduleSummary from './ScheduleSummary';
+import ButtonText from './ButtonText';
+import { Colors, Fonts } from '../Themes';
 
 export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) => {
   const customScheduleStyles = {
@@ -18,8 +19,7 @@ export default ScheduleBox = ({ schedule, onRemovePress, onEditPress, title }) =
     headerText: styles.weekdayLabel,
     intervalsContainer: styles.intervalsContainer,
     intervalBox: styles.box,
-    intervalText: styles.interval,
-    freeDayBox: {}
+    intervalText: styles.interval
   };
 
   return (
@@ -63,11 +63,6 @@ const styles = {
     color: Colors.black,
     fontSize: Fonts.size.small,
     fontWeight: '500'
-  },
-  intervalsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   weekdayRow: {
     flexDirection: 'row',

@@ -1,18 +1,20 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
 import {
   Text,
   View,
   FlatList,
 } from 'react-native';
-import ButtonPrimary from '../../../Components/ButtonPrimary';
-import { Colors, Fonts } from '../../../Themes/';
 import { connect } from 'react-redux';
-import Slot from '../../../Components/Slot';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import Bubble from '../../../Components/Bubble';
-import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
-import FinalizeFormWizard from './FinalizeFormWizard';
+/** Custom dependencies */
+import ButtonPrimary from '../../../Components/ButtonPrimary';
+import WeekdayBullet from '../../../Components/Bullet';
 import ModalTemplate from '../../../Components/ModalTemplate';
+import FinalizeFormWizard from './FinalizeFormWizard';
+import Slot from '../../../Components/Slot';
+import { Colors, Fonts } from '../../../Themes/index';
+import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
+import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../../../Lib/utils';
 
 const WEEKDAYS = [
@@ -86,7 +88,7 @@ class AvailabilityForm extends Component {
     return WEEKDAYS.map((item, index) => {
       const label = t(`weekdays.short.${WEEKDAYS[index]}`);
 
-      return <Bubble active={index === this.state.currentDayIndex}
+      return <WeekdayBullet active={index === this.state.currentDayIndex}
                      label={label}
                      onPress={this.changeDay(index)}
                      key={`weekday-bubble-${index}`}
@@ -136,7 +138,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 15,
-    paddingHorizontal: 30, // assign to var
+    paddingHorizontal: 30,
   },
   scheduleContainer: {
     paddingHorizontal: 30,
@@ -164,7 +166,5 @@ const mapDispatchToProps = dispatch => ({
   closeModal: () =>  dispatch(modalActionCreators.close()),
   changeFormStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status))
 });
-
-// TODO generate WEEKDAYS constant from translations
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailabilityForm);
