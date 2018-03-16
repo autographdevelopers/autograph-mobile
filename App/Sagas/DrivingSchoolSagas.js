@@ -66,7 +66,7 @@ export function* activate(api, action) {
   yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.drivingSchools.activate, action.id, {verification_code: action.code});
-  console.log(response);
+
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data)); // add in redux
     yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
