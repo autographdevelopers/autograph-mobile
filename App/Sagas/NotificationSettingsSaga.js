@@ -6,7 +6,7 @@ import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* update(api, action) {
-  const response = yield call(api.notificationSettings.update, { employee_notifications_settings_set: action.payload });
+  const response = yield call(api.notificationSettings.update, { employee_notifications_settings: action.payload });
   if (response.ok) {
     yield put(updateNotificationSettings.success());
   } else {

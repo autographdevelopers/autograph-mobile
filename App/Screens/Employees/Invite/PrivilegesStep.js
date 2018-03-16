@@ -26,31 +26,31 @@ class PrivilegesStep extends Component {
     return (
       <Layout>
         <FormErrorMessage>{error}</FormErrorMessage>
-        <FormSection name={'employee_privilege_set'}>
+        <FormSection name={'employee_privileges'}>
           <ScrollView>
             <Field name={'can_manage_employees'} component={CellSwitch}
                    label={'Zarzadzanie pracownikami'}
                    description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac pracownikow ze szkoly oraz nadawac im przywileje.'}
                    onChangeHandler={value => change(
-                     'employee_privilege_set.can_manage_employees', value)}
+                     'employee_privileges.can_manage_employees', value)}
             />
             <Field name={'can_manage_students'} component={CellSwitch}
                    label={'Zarzadzanie kursantami'}
                    description={'Zaproszony uzytkownik bedzie mogl dodawac, usuwac, archwiizowac kursanow oraz nadawać im dostepne lekcje..'}
                    onChangeHandler={value => change(
-                     'employee_privilege_set.can_manage_students', value)}
+                     'employee_privileges.can_manage_students', value)}
             />
             <Field name={'can_modify_schedules'} component={CellSwitch}
                    label={'Pozwalaj na ustalanie grafiku'}
                    description={'Zaproszony uzytkownik bedzie mogl ustawiac grafik.'}
                    onChangeHandler={value => change(
-                     'employee_privilege_set.can_modify_schedules', value)}
+                     'employee_privileges.can_modify_schedules', value)}
             />
             <Field name={'is_driving'} component={CellSwitch}
                    label={'Jest instruktorem'}
                    description={'Lorem ipsum dolor sit melt'}
                    onChangeHandler={value => change(
-                     'employee_privilege_set.is_driving', value)}
+                     'employee_privileges.is_driving', value)}
             />
           </ScrollView>
         </FormSection>

@@ -75,16 +75,16 @@ export const API = {
     reject: id => api.put(`driving_schools/${id}/invitations/reject`)
   },
   scheduleSettings: {
-    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings_set`, params),
-    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings_set`)
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings`, params),
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_settings`)
   },
   scheduleBoundaries: {
     update: (params, id = ':driving_school_id') => api.post(`driving_schools/${id}/schedule_boundaries`, params),
     show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/schedule_boundaries`)
   },
   notificationSettings: {
-    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings_set`),
-    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings_set`, params)
+    show: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employee_notifications_settings`),
+    update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/employee_notifications_settings`, params)
   },
   employees: {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/employees`)
@@ -93,8 +93,8 @@ export const API = {
     index: (id = ':driving_school_id') => api.get(`driving_schools/${id}/students`)
   },
   employeePrivileges: {
-    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/${id}/employees/${employeeID}/employee_privilege_set`),
-    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/${id}/employees/${employeeID}/employee_privilege_set`, data)
+    show: (employeeID=':employee_id', id = ':driving_school_id') => api.get(`driving_schools/${id}/employees/${employeeID}/employee_privileges`),
+    update: (data, employeeID=':employee_id', id = ':driving_school_id') => api.put(`driving_schools/${id}/employees/${employeeID}/employee_privileges`, data)
   },
   schedule: {
     show: (employeeID=':employee_id', id =':driving_school_id') =>

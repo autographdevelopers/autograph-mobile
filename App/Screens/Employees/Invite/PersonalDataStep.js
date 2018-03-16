@@ -57,7 +57,7 @@ export default reduxForm({
     user: {
       type: 'Employee'
     },
-    employee_privilege_set: {
+    employee_privileges: {
       can_manage_employees: true,
       can_manage_students: true,
       can_modify_schedules: false,
