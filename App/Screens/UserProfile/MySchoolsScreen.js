@@ -171,7 +171,8 @@ const styles = StyleSheet.create({
   headerWithBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.snow
+    backgroundColor: Colors.snow,
+    alignItems: 'center'
   },
   listContainer: {
     paddingHorizontal: 15,
