@@ -23,9 +23,7 @@ class AvailabilityIndex extends Component {
   };
 
   handleEditPress = template_type => () => {
-    // const bindingFrom = template_type === TEMPLATE_TYPES.NEW_TEMPLATE ? this.props.new_template_binding_from : null;
-
-    this.props.initForm(this.props[template_type], template_type);
+    this.props.initForm(this.props[template_type], template_type, this.props.new_template_binding_from);
 
     const { user, index } = this.props.navigation.state.params;
 
@@ -37,7 +35,6 @@ class AvailabilityIndex extends Component {
       current_template,
       new_template,
       new_template_binding_from,
-      openModal,
     } = this.props;
 
     if ([FETCHING_STATUS.FETCHING, FETCHING_STATUS.READY].includes(this.props.status) ) {
@@ -80,7 +77,7 @@ class AvailabilityIndex extends Component {
                        onEditPress={this.handleEditPress(TEMPLATE_TYPES.CURRENT_TEMPLATE)}
                        onRemovePress={this.openRemoveScheduleModal(TEMPLATE_TYPES.CURRENT_TEMPLATE)}/>
 
-          <BindingFromBox onPress={openModal(MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE)}
+          <BindingFromBox onPress={this.openBindingDateModal}
                           date={new_template_binding_from}
                           label={'zmiana w grafiku'} />
 
@@ -94,8 +91,12 @@ class AvailabilityIndex extends Component {
   };
 
   closeBindingDateModalCallback = () => {
-    this.props.setBindingFrom(this.props.new_template_binding_from);
     this.props.setFormStatus(FETCHING_STATUS.READY);
+  };
+
+  openBindingDateModal = () => {
+    this.props.setBindingFrom(this.props.new_template_binding_from);
+    this.props.openModal(MODALS_IDS.CHANGE_NEW_SCHEDULE_BINDING_FROM_DATE)();
   };
 
   closeRemoveScheduleModal = () => {
@@ -103,17 +104,7 @@ class AvailabilityIndex extends Component {
   };
 
   openRemoveScheduleModal = whichTemplate => () => {
-    const template_params = {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [],
-      friday: [],
-      saturday: [],
-      sunday: []
-    };
-
-    this.props.initForm(template_params, whichTemplate);
+    this.props.changeWhichScheduleIsModified(whichTemplate);
     this.props.openModal(MODALS_IDS.REMOVE_SCHEDULE)();
   };
 
@@ -123,7 +114,7 @@ class AvailabilityIndex extends Component {
       updateScheduleRequest,
       formStatus,
       setBindingFrom,
-      formData
+      removeScheduleRequestParams
     } = this.props;
 
     const FORMAT = 'YYYY-MM-DD';
@@ -173,7 +164,7 @@ class AvailabilityIndex extends Component {
           modalMsg={'Usuniecie grafiku spodowuje usuniecie wszystkich slotow na jakie mogli sie zapisywac kursanci.'}
         >
 
-          <ButtonPrimary onPress={updateScheduleRequest(formData)}>
+          <ButtonPrimary onPress={updateScheduleRequest(removeScheduleRequestParams)}>
             Zróbmy to!
           </ButtonPrimary>
         </ModalTemplate>
@@ -182,15 +173,39 @@ class AvailabilityIndex extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  current_template: state.schedule.current_template,
-  new_template: state.schedule.new_template,
-  status:  state.schedule.status,
-  formData: state.scheduleForm,
-  formStatus: state.scheduleForm.status,
-  new_template_binding_from: state.schedule.new_template_binding_from,
-  new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from
-});
+const mapStateToProps = state => {
+  let removeParams;
+  const emptyTemplate = {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: []
+  };
+
+  if (state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE) {
+    removeParams = {
+      new_template_binding_from: null,
+      new_template: emptyTemplate
+    }
+  } else if (state.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE) {
+    removeParams = {
+      current_template: emptyTemplate
+    }
+  }
+
+  return {
+    current_template: state.schedule.current_template,
+    new_template: state.schedule.new_template,
+    status: state.schedule.status,
+    removeScheduleRequestParams: removeParams,
+    formStatus: state.scheduleForm.status,
+    new_template_binding_from: state.schedule.new_template_binding_from,
+    new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   openModal: modalID => () => dispatch(modalActionCreators.open(modalID)),
@@ -198,7 +213,8 @@ const mapDispatchToProps = dispatch => ({
   setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),
   showScheduleRequest: () => dispatch(scheduleActionCreators.showRequest()),
   setFormStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status)),
-  initForm: (data, type) => dispatch(scheduleFormActionCreators.initializeForm(data, type)),
+  changeWhichScheduleIsModified: schedule => dispatch(scheduleFormActionCreators.changeWhichScheduleIsModified(schedule)),
+  initForm: (data, type, new_template_binding_from) => dispatch(scheduleFormActionCreators.initializeForm(data, type, new_template_binding_from)),
   updateScheduleRequest: data => () => dispatch(scheduleFormActionCreators.updateRequest(data)),
 });
 

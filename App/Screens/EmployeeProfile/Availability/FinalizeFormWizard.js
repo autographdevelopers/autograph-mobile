@@ -1,3 +1,4 @@
+/** Lib dependencies */
 import React, { Component } from 'react';
 import {
   View,
@@ -8,16 +9,15 @@ import {
 import { connect } from 'react-redux';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-
-import { Colors, Fonts } from '../../../Themes/index';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
-import { isTemplateEmpty } from '../../../Lib/utils';
+/** Custom dependencies */
 import ScheduleSummary from '../../../Components/ScheduleSummary';
 import ButtonPrimary from '../../../Components/ButtonPrimary';
 import StepsIndicators  from '../../../Components/StepsIndicators';
 import CustomDatePicker from '../../../Components/CustomDatePicker';
 import RadioButton from '../../../Components/RadioButton';
+import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
+import { Colors, Fonts } from '../../../Themes/index';
 
 const STEPS = ['Ustawienia', 'Podsumowanie'];
 
@@ -30,10 +30,16 @@ class FinalizeFormWizard extends Component {
   }
 
   submitSchedule = () => {
-    const { template, new_template_binding_from, schedule_type, showBindingFromStep } = this.props;
+    const { template, new_template_binding_from, showBindingFromStep } = this.props;
     const params = {};
-    // schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE &&
-    const templateType = showBindingFromStep && new_template_binding_from ? 'new_template' : 'current_template';
+
+    let templateType;
+
+    if (showBindingFromStep) {
+      templateType = new_template_binding_from == null ? TEMPLATE_TYPES.CURRENT_TEMPLATE : TEMPLATE_TYPES.NEW_TEMPLATE
+    } else {
+      templateType = TEMPLATE_TYPES.CURRENT_TEMPLATE;
+    }
 
     params[templateType] = template;
 
@@ -109,7 +115,7 @@ class FinalizeFormWizard extends Component {
     // TODO: fix this 'width: 100%' issue in modal children
 
     return (
-      <View>
+      <View style={{width: '100%'}}>
         { showBindingFromStep && <StepsIndicators labels={STEPS}
                                                   activeIndex={this.state.step}
                                                   onPress={this.navToStep}
@@ -125,14 +131,30 @@ class FinalizeFormWizard extends Component {
   }
 }
 
-const mapStateToProps = state => ( {
-  openedModalName: state.modals.openedModalId,
-  template: state.scheduleForm.template,
-  new_template_binding_from: state.scheduleForm.new_template_binding_from,
-  schedule_type: state.scheduleForm.schedule_type,
-  status: state.scheduleForm.status,
-  showBindingFromStep: !state.schedule.new_template_binding_from || isTemplateEmpty(state.schedule.new_template) || state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE
-});
+const mapStateToProps = state => {
+  // new_template_binding_from == nil => current_schedule
+  // new_template_binding_from == future => new_schedule
+  // zero future -> current_template and binding_form: nil
+  // zero current -> empty current_schedule
+
+  const showBindingFromStepForCurrentSchedule =
+    state.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.schedule.new_template_binding_from == null;
+
+  const showBindingFromStepForNewSchedule =
+    state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE;
+
+  const showBindingFromStep = showBindingFromStepForCurrentSchedule || showBindingFromStepForNewSchedule;
+
+
+  return {
+    openedModalName: state.modals.openedModalId,
+    template: state.scheduleForm.template,
+    new_template_binding_from: state.scheduleForm.new_template_binding_from,
+    schedule_type: state.scheduleForm.schedule_type,
+    status: state.scheduleForm.status,
+    showBindingFromStep: showBindingFromStep
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),

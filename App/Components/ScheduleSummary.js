@@ -81,7 +81,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   freeDayText: {},
-  weekdaySummary: {},
+  weekdaySummary: {
+    width: '100%'
+  },
   headerTextContainer: {
     marginBottom: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,

@@ -1,12 +1,13 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone, FETCHING_STATUS, generateDailySlots, SLOT_STATUS } from '../Lib/utils';
+import { deepClone, FETCHING_STATUS } from '../Lib/utils';
 
 const { Types, Creators } = createActions({
   toggleSlot: ['weekDay', 'id'],
   changeStatus: ['status'],
-    changeNewTemplateBindingFrom: ['date'],
+  changeNewTemplateBindingFrom: ['date'],
+  changeWhichScheduleIsModified: ['schedule_type'],
   updateRequest: ['data'],
-  initializeForm: ['data', 'schedule_type']
+  initializeForm: ['data', 'schedule_type', 'new_template_binding_from']
 }, { prefix: 'SCHEDULE_FORM_' });
 
 export const scheduleFormActionCreators = Creators;
@@ -20,11 +21,12 @@ const INITIAL_STATE = {
   schedule_type: TEMPLATE_TYPES.CURRENT_TEMPLATE
 };
 
-export const initializeFormHandler = (state, { data, schedule_type }) => {
+export const initializeFormHandler = (state, { data, schedule_type, new_template_binding_from }) => {
   const newState = deepClone(state);
   const templateToBeModified = deepClone(data);
   newState.template = templateToBeModified;
   newState.schedule_type = schedule_type;
+  newState.new_template_binding_from = new_template_binding_from;
   newState.status = FETCHING_STATUS.READY;
 
   return newState;
@@ -44,6 +46,13 @@ export const toggleSlotHandler = (state, { weekDay, id }) => {
     return newState;
 };
 
+export const changeWhichScheduleIsModifiedHandler = (state, {schedule_type}) => {
+  const newState = deepClone(state);
+  newState.schedule_type = schedule_type;
+
+  return newState;
+};
+
 export const changeStatusHandler = (state, { status }) => {
   return { ...deepClone(state), status };
 };
@@ -57,4 +66,5 @@ export const scheduleFormReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: changeStatusHandler,
   [Types.TOGGLE_SLOT]: toggleSlotHandler,
   [Types.CHANGE_NEW_TEMPLATE_BINDING_FROM]: changeNewTemplateBindingFromHandler,
+  [Types.CHANGE_WHICH_SCHEDULE_IS_MODIFIED]: changeWhichScheduleIsModifiedHandler,
 });
