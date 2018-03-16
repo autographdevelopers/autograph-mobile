@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   Text,
   FlatList,
+  SectionList,
   View,
   ActivityIndicator,
   StyleSheet
@@ -22,6 +23,7 @@ import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
 import ButtonText from '../../Components/ButtonText';
 import SchoolActivationInput from './SchoolActivationInput';
 import ModalTemplate from '../../Components/ModalTemplate';
+import SectionHeader from '../../Components/SectionHeader';
 import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import {
   isDrivingSchoolRelationActive,
@@ -103,37 +105,55 @@ class MySchoolsScreen extends Component {
       resetSchoolActivationState
     } = this.props;
 
+    const SECTION_ID = {
+      my_schools: 'Moje szkoły',
+      inviting_schools: 'Zaproszenia do współpracy'
+    };
+
+    const sections = [
+      {id: SECTION_ID.my_schools, data: [...activeDrivingSchools, ...awaitingActivationDrivingSchools] },
+      {id: SECTION_ID.inviting_schools, data: invitingDrivingSchools }
+    ];
+
+    const sectionHeader = {
+      [SECTION_ID.inviting_schools]: title => <SectionHeader title={title}/>,
+      [SECTION_ID.my_schools]: title =>
+        <View style={styles.headerWithBtn}>
+          <SectionHeader title={title}/>
+          <ButtonText
+            onPress={this.navigateToNewDrivingSchoolForm}
+            customTextStyle={{ fontSize: 13 }}
+            customStyle={{ marginTop: 7 }}
+            icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
+            visible={isEmployee(user)}>
+            Dodaj Szkołę
+          </ButtonText>
+      </View>
+    };
+
     return (
       <View style={{ flex: 1 }}>
         <AccountHeader user={this.props.user}/>
         <View style={styles.listContainer}>
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View>
-              <Text style={styles.listHeader}>
-                Moje szkoły
-              </Text>
-              <View style={styles.underline}/>
-            </View>
-            <ButtonText
-              onPress={this.navigateToNewDrivingSchoolForm}
-              customTextStyle={{ fontSize: 13 }}
-              customStyle={{ marginTop: 7 }}
-              icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
-              visible={isEmployee(user)}>
-              Dodaj Szkołę
-            </ButtonText>
-          </View>
-          {this.renderDrivingSchoolsList(
-            [...activeDrivingSchools, ...awaitingActivationDrivingSchools],
-            'Tutaj wyświetlą się szkoły, do których należysz.')}
-          <Text style={styles.listHeader}>
-            Zaproszenia do współpracy
-          </Text>
-          <View style={styles.underline}/>
-          {this.renderDrivingSchoolsList(invitingDrivingSchools,
-            'Tutaj wyświetlą się zaproszenia do szkół.')}
+
+
+          <SectionList
+            sections={sections}
+            stickySectionHeadersEnabled={true}
+            keyExtractor={(s, i) => `drivingSchool-${s.id}`}
+            renderSectionHeader={({section: {id}}) => sectionHeader[id](id)}
+            renderItem={({ item }) =>
+              <DrivingSchoolCell drivingSchool={item}
+                                 acceptInvitationRequest={this.props.acceptInvitationRequest}
+                                 rejectInvitationRequest={this.props.rejectInvitationRequest}
+                                 navigateToSchool={this.navigateToSchoolContext}
+                                 openActivateSchoolModal={this.props.triggerSchoolActivationDialog}
+              />
+            }
+
+          />
         </View>
+
         {this.renderOverlay()}
 
         <ModalTemplate
@@ -150,6 +170,11 @@ class MySchoolsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  headerWithBtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.snow
+  },
   listContainer: {
     flex: 1,
     marginHorizontal: 15,
