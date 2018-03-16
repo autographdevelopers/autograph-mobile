@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import Layout from '../../Components/Layout';
+import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import listProjectorStyles from '../../Styles/ListProjector';
 
@@ -29,7 +30,9 @@ class InvitedEmployeesList extends Component {
             renderItem={({ item, index }) => (
               <ListItem
                 title={`${item.name} ${item.surname}`}
-                subtitle={item.email}
+                subtitle={
+                  <EmployeeRolesSubtitle employeePrivileges={item.privileges}/>
+                }
                 leftIcon={<DefaultAvatar name={item.name} index={index}/>}
                 containerStyle={{ borderBottomWidth: 0 }}
                 onPress={this.goToUserProfile(item, index)}

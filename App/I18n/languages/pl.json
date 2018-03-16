@@ -49,5 +49,8 @@
     }
   },
   "save": "Zapisz",
-  "availability": "Dyspozycyjność"
+  "availability": "Dyspozycyjność",
+  "owner": "Właściciel",
+  "instructor": "Instruktor",
+  "office_employee": "Pracownik biurowy"
 }
