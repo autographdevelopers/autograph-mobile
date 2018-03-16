@@ -12,8 +12,9 @@ export default ListHeader = ({ title }) => {
       paddingLeft: 15
     },
     title: {
-      color: Colors.strongGrey,
-      fontSize: Fonts.size.medium
+      color: Colors.softBlack,
+      fontSize: Fonts.size.medium,
+      fontFamily: Fonts.type.base
     }
   };
 

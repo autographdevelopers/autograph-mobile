@@ -11,7 +11,8 @@ import { employeesActionTypes } from '../Redux/EmployeesRedux';
 import { studentsActionTypes } from '../Redux/StudentsRedux';
 import { employeePrivilegesActionTypes } from '../Redux/EmployeePrivileges';
 import { invitationActionTypes } from '../Redux/InvitationsRedux';
-
+import { scheduleActionTypes } from '../Redux/ScheduleRedux';
+import { scheduleFormActionTypes } from '../Redux/ScheduleFormRedux';
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
@@ -51,6 +52,12 @@ import {
   show as showEmployeePrivilegesSaga
 } from './EmployeePrivilegesSaga';
 
+import {
+  show as showEmployeeScheduleSaga,
+  update as updateEmployeeScheduleSaga
+} from './SchedulesSaga';
+
+
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
 import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
@@ -89,6 +96,9 @@ export default function* root() {
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
 
     takeLatest(updateEmployeePrivileges.REQUEST, updateEmployeePrivilegesSaga, api),
-    takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST, showEmployeePrivilegesSaga, api)
+    takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST, showEmployeePrivilegesSaga, api),
+
+    takeLatest(scheduleActionTypes.SHOW_REQUEST, showEmployeeScheduleSaga, api),
+    takeLatest(scheduleFormActionTypes.UPDATE_REQUEST, updateEmployeeScheduleSaga, api)
   ])
 }

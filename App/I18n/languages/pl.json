@@ -20,5 +20,27 @@
   "reset_password_instruction": "Wpisz adres email użyty podczas rejestracji, aby otrzymać link do odzyskania hasła.",
   "recover_password": "Odzyskaj haslo",
   "success": "Udało się",
-  "password_reset_request_feedback": "Email z linkiem do zresetowania Twojego hasła został wysłany."
+  "password_reset_request_feedback": "Email z linkiem do zresetowania Twojego hasła został wysłany.",
+  "weekdays": {
+    "normal": {
+      "monday": "Poniedzialek",
+      "tuesday": "Wtorek",
+      "wednesday": "Środa",
+      "thursday": "Czwartek",
+      "friday": "Piątek",
+      "saturday": "Sobota",
+      "sunday": "Niedziela"
+    },
+    "short": {
+      "monday": "Pon",
+      "tuesday": "Wt",
+      "wednesday": "Śr",
+      "thursday": "Czw",
+      "friday": "Pt",
+      "saturday": "Sob",
+      "sunday": "Nd"
+    }
+  },
+  "save": "Zapisz",
+  "availability": "Dyspozycyjność"
 }

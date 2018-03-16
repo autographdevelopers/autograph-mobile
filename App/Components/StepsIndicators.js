@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default StepsIndicators = ({ labels, activeIndex }) => {
+export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={}, onPress=(index) => ()=>{} }) => {
   const BULLET_RADIUS = 25;
 
   const styles = StyleSheet.create({
@@ -109,7 +108,9 @@ export default StepsIndicators = ({ labels, activeIndex }) => {
       <Box key={`box-${index}`}>
         <BoxTop style={styles.upperContainer}>
           <LeftLine index={index}/>
-          <Bullet index={index}/>
+          <TouchableOpacity onPress={onPress(index)}>
+            <Bullet index={index}/>
+          </TouchableOpacity>
           <RightLine index={index}/>
         </BoxTop>
         <BoxBottom label={label} index={index}/>
@@ -118,7 +119,7 @@ export default StepsIndicators = ({ labels, activeIndex }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, customContainerStyles]}>
       {renderIndicators()}
     </View>
   );

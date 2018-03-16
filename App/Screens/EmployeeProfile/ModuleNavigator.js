@@ -1,46 +1,40 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import EmployeeProfile from './Profile';
-import EmployeeManagement from './ManageEmployee';
+import Profile from './Profile';
+import EditPrivileges from './Privileges/EditPrivileges';
+import AvailabilityForm from './Availability/AvailabilityForm';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
-import ProfileHeader from '../../Components/ProfileHeader';
+import EmployeeProfileHeader from '../../Components/EmployeeProfileHeader';
+import AvailabilityIndex from './Availability/AvailabilityIndex';
 
 const routeConfigs = {
-  employeeProfile: {
-    screen: EmployeeProfile,
-
+  profile: {
+    screen: Profile,
   },
-  manageEmployee: {
-    screen: EmployeeManagement,
+  editPrivileges: {
+    screen: EditPrivileges,
   },
+  availabilityIndex: {
+    screen: AvailabilityIndex,
+  },
+  setAvailability: {
+    screen: AvailabilityForm
+  }
 };
 
 const navigationConfigs = {
-  navigationOptions: (props) => {
-    const { navigation } = props;
-    const { user, index, title } = navigation.state.params;
-
+  navigationOptions: ({ navigation }) => {
     return {
-      header:
-        <View>
-          <NavHeader navigation={navigation} title={title}/>
-          <ProfileHeader
-            onManagePersonClick={() => navigation.navigate(
-              'manageEmployee', { user, index, title: 'Manage Employee' })}
-            avatarProps={{ name: user.name, index }}
-            user={user}
-            routeName={navigation.state.routeName}
-          />
-        </View>
+      header: <EmployeeProfileHeader navigation={navigation} />
     };
   },
-  initialRouteName: 'employeeProfile',
+  initialRouteName: 'profile',
   initialRouteParams: { title: 'Profile' },
   cardStyle: navStyles.card,
 };
 
-const ProfileNavigation = StackNavigator(routeConfigs, navigationConfigs);
+const EmployeeProfile = StackNavigator(routeConfigs, navigationConfigs);
 
 export default class EmployeeProfileModule extends Component {
   static navigationOptions = { header: null };
@@ -51,16 +45,16 @@ export default class EmployeeProfileModule extends Component {
 
   render() {
     const { user, index } = this.props.navigation.state.params;
-    const { navigation } = this.props;
+    const { navigation, screenProps } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
-        <ProfileNavigation
+        <EmployeeProfile
           navigation={navigation}
-          screenProps={{ user, index }} />
+          screenProps={{ user, index, ...screenProps }} />
       </View>
     );
   }
 }
 
-EmployeeProfileModule.router = ProfileNavigation.router;
+EmployeeProfileModule.router = EmployeeProfile.router;

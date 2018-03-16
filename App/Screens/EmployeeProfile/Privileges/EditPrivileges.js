@@ -5,20 +5,20 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import ButtonPrimary from '../../Components/ButtonPrimary';
-import { Colors, Fonts } from '../../Themes/';
+import ButtonPrimary from '../../../Components/ButtonPrimary';
+import { Colors, Fonts } from '../../../Themes/';
 import { connect } from 'react-redux';
-import Layout from '../../Components/Layout';
-import ListHeader from '../../Components/ListHeader';
+import Layout from '../../../Components/Layout';
+import ListHeader from '../../../Components/ListHeader';
 import { Field, reduxForm } from 'redux-form';
-import CellSwitch from '../../Components/CellWithSwitch';
+import CellSwitch from '../../../Components/CellWithSwitch';
 import {
   employeePrivilegesActionCreators,
   update,
-} from '../../Redux/EmployeePrivileges';
-import LoadingHOC from '../../Containers/LoadingHOC';
+} from '../../../Redux/EmployeePrivileges';
+import LoadingHOC from '../../../Containers/LoadingHOC';
 
-class ManageEmployee extends Component {
+class EditPrivileges extends Component {
 
   submitForm = () => {
     this.props.handleSubmit(update)();
@@ -63,7 +63,7 @@ class ManageEmployee extends Component {
   }
 }
 
-ManageEmployee = reduxForm({
+EditPrivileges = reduxForm({
   form: 'editEmployeePrivileges',
   onSubmitSuccess: (result, dispatch, props) => {
     const title = 'Congratulations!';
@@ -77,9 +77,9 @@ ManageEmployee = reduxForm({
 
     Alert.alert(title, message, buttons);
   },
-})(ManageEmployee);
+})(EditPrivileges);
 
-ManageEmployee = LoadingHOC(ManageEmployee);
+EditPrivileges = LoadingHOC(EditPrivileges);
 
 const mapStateToProps = state => {
   const { currentDrivingSchoolID, currentEmployeeID } = state.context;
@@ -87,7 +87,7 @@ const mapStateToProps = state => {
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: { ...data, currentEmployeeID }, //currentEmployeeID optional, will be hooked api in reqest hook
+    initialValues: { ...data, currentEmployeeID }, //currentEmployeeID optional, will be hooked api in request hook
     status: status,
   };
 };
@@ -96,7 +96,7 @@ const mapDispatchToProps = dispatch => ( {
   requestData: () => dispatch(employeePrivilegesActionCreators.showRequest()),
 } );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageEmployee);
+export default connect(mapStateToProps, mapDispatchToProps)(EditPrivileges);
 
 // TODO extract edit field to separate components because used also in invite form
 // TODO apply onSubmitSuccess on invite forms instead reacting in component will receive props

@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, View, Animated} from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLetterStyle={}, aniamationable=false }) => {
+export default DefaultAvatar = props => {
+  const {
+    name,
+    index,
+    customContainerStyle={},
+    customLetterStyle={}
+  } = props;
+
   const COLORS_PIPELINE = [
     Colors.purple, Colors.yellow, Colors.blue, Colors.salmon, Colors.primaryWarm
   ];
 
-  const pipeSize = COLORS_PIPELINE.length;
-  const SIZE = aniamationable ? '100%' : 40;
+  const SIZE = 40;
 
-  const styles ={
+  const styles = {
     container: {
       marginRight: 15, /** because list-item does not give space between left icon and text */
       width: SIZE,
       height: SIZE,
-      borderRadius: 50,
+      borderRadius: 9999999,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'flex-start',
-      backgroundColor: COLORS_PIPELINE[index%pipeSize]
+      backgroundColor: COLORS_PIPELINE[index%COLORS_PIPELINE.length]
     },
     letter: {
       fontSize: Fonts.size.regular,
@@ -30,8 +35,8 @@ export default DefaultAvatar = ({ name, index, customContainerStyle={}, customLe
   };
 
   return (
-    <View style={[styles.container, customContainerStyle]}>
-      <Text style={[styles.letter, customLetterStyle]}>{name[0].toUpperCase()}</Text>
-    </View>
+    <Animated.View style={[styles.container, customContainerStyle]}>
+      <Animated.Text style={[styles.letter, customLetterStyle]}>{name[0].toUpperCase()}</Animated.Text>
+    </Animated.View>
   )
 }

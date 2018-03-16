@@ -3,10 +3,9 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { Avatar } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Fonts, Colors } from '../Themes/'
-import { FETCHING_STATUS } from '../Lib/utils';
 import { isDrivingSchoolRelationActive, isDrivingSchoolAwaitingActivation, isDrivingSchoolRelationPending } from '../Lib/DrivingSchoolHelpers';
 
-export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool }) => {
+export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool, openActivateSchoolModal }) => {
   renderInvitationButtons = () => {
     if (isDrivingSchoolRelationPending(drivingSchool))
       return (
@@ -25,13 +24,15 @@ export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, re
     if (isDrivingSchoolRelationActive(drivingSchool))
       return <Icon name={'chevron-right'} size={30} color={Colors.primaryWarm}/>
     else if (isDrivingSchoolAwaitingActivation(drivingSchool))
-      return <Text style={{color: Colors.primaryWarm}}>Aktywuj</Text>
-  }
+      return <TouchableOpacity onPress={() => openActivateSchoolModal(drivingSchool.id)}>
+        <Text style={{color: Colors.primaryWarm}}>Aktywuj</Text>
+      </TouchableOpacity>
+  };
 
   handleOnPress = () => {
     if (isDrivingSchoolRelationActive(drivingSchool))
       navigateToSchool(drivingSchool)
-  }
+  };
 
   return (
     <View>

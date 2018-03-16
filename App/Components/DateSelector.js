@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import InputFieldLayout from './InputFieldLayout';
 import DatePicker from 'react-native-datepicker';

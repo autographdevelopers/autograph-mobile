@@ -8,6 +8,7 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../Themes';
 import { contextActionCreators } from '../Redux/ContextRedux';
 import I18n from '../I18n';
+import { modalActionCreators } from '../Redux/ModalRedux';
 
 const styles = StyleSheet.create({
   applicationView: {
@@ -25,13 +26,16 @@ class RootContainer extends Component {
   }
 
   render() {
-    const { setCurrentDrivingSchool,
+    const {
+      setCurrentDrivingSchool,
       setCurrentEmployee,
       setCurrentStudent,
       currentDrivingSchool,
       currentEmployee,
       currentStudent,
-      } = this.props;
+      openModal,
+      closeModal,
+    } = this.props;
 
     return (
       <View style={styles.applicationView}>
@@ -43,7 +47,9 @@ class RootContainer extends Component {
           currentDrivingSchool,
           currentEmployee,
           currentStudent,
-          I18n
+          I18n,
+          openModal,
+          closeModal
         }}/>
       </View>
     );
@@ -56,13 +62,16 @@ const mapStateToProps = state => ( {
   currentStudent: state.context.currentStudentID,
 } );
 
-const mapDispatchToProps = dispatch => ( {
+const mapDispatchToProps = dispatch => ({
   startup: () => dispatch(StartupActions.startup()),
   setCurrentDrivingSchool: id => dispatch(
     contextActionCreators.setCurrentDrivingSchool(id)),
   setCurrentEmployee: id => dispatch(
     contextActionCreators.setCurrentEmployee(id)),
-  setCurrentStudent: id => dispatch(contextActionCreators.setCurrentStudent(id)),
-} );
+  setCurrentStudent: id => dispatch(
+    contextActionCreators.setCurrentStudent(id)),
+    openModal: id => dispatch(modalActionCreators.open(id)),
+    closeModal: () => dispatch(modalActionCreators.close()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
