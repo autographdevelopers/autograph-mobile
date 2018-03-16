@@ -1,38 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
-  StyleSheet,
   Text,
   FlatList,
   View,
-  ScrollView,
   ActivityIndicator,
-  TextInput,
+  StyleSheet
 } from 'react-native';
 import { List } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Colors } from '../../Themes/index';
 
-import { connect } from 'react-redux';
-import { FETCHING_STATUS } from '../../Lib/utils';
+import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import { contextActionCreators } from '../../Redux/ContextRedux';
+import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
+import { schoolActivationActionCreators } from '../../Redux/SchoolActivationRedux';
+import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+
+import AccountHeader from '../../Components/AccountHeader';
+import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
+import ButtonText from '../../Components/ButtonText';
+import SchoolActivationInput from './SchoolActivationInput';
+import ModalTemplate from '../../Components/ModalTemplate';
+import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import {
   isDrivingSchoolRelationActive,
   isDrivingSchoolAwaitingActivation,
   isDrivingSchoolRelationPending,
 } from '../../Lib/DrivingSchoolHelpers';
-import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
-import { invitationActionCreators } from '../../Redux/InvitationsRedux';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-import { contextActionCreators } from '../../Redux/ContextRedux';
+import { FETCHING_STATUS } from '../../Lib/utils';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Colors } from '../../Themes/index';
-
-import AccountHeader from '../../Components/AccountHeader';
-import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
-import ButtonText from '../../Components/ButtonText';
-import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
-import DialogBox from '../../Components/DialogBox';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { schoolActivationActionCreators } from '../../Redux/SchoolActivation';
-import SchoolActivationInput from './SchoolActivationInput';
 
 class MySchoolsScreen extends Component {
   componentWillMount = () => {
@@ -98,7 +95,13 @@ class MySchoolsScreen extends Component {
   };
 
   render() {
-    const { activeDrivingSchools, awaitingActivationDrivingSchools, invitingDrivingSchools, user } = this.props;
+    const { activeDrivingSchools,
+      awaitingActivationDrivingSchools,
+      invitingDrivingSchools,
+      user,
+      schoolActivationStatus,
+      resetSchoolActivationState
+    } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
@@ -132,38 +135,15 @@ class MySchoolsScreen extends Component {
             'Tutaj wyświetlą się zaproszenia do szkół.')}
         </View>
         {this.renderOverlay()}
-        <DialogBox modalName={MODALS_IDS.ACTIVATE_SCHOOL}
-                   dialogTexts={{
-                     title: 'Aktywuj szkołę',
-                     description: 'Aby w pełni korzystać z aplikacji, Twoja szkoła musi zostać zweryfikowana.',
-                   }}
-                   dialogBtn={{
-                     title: 'Activate',
-                     handler: () => {this.props.fetchSchoolsRequest();},
-                   }}
-                   successTexts={{
-                     title: 'Udało się!',
-                     description: 'Twoja szkoła została pomyślnie aktywowana, mozesz teraz w pelni korzystac z mozliwosci AutoGRaph.'
-                   }}
-                   successBtn={{
-                     title: 'Powrót',
-                     handler: this.props.resetSchoolActivationState
-                   }}
-                   failureTexts={{
-                     title: 'Upps, cos poszło nie tak..',
-                     description: 'Lorem ipsum dolor sit melt.'
-                   }}
-                   failureBtn={{
-                     title: 'Powrót',
-                     handler: this.props.resetSchoolActivationState
-                   }}
-                   mode={'primary'}
-                   icon={<MCIcon name={'rocket'} color={Colors.primaryWarm} size={70}/>}
-                   status={this.props.drivingSchools.status}
-                   onModalClose={()=>this.props.resetSchoolActivationState()}
-        >
-          <SchoolActivationInput/>
-        </DialogBox>
+
+        <ModalTemplate
+          modalID={MODALS_IDS.ACTIVATE_SCHOOL}
+          status={schoolActivationStatus}
+          successTitle={'Pomyślnie aktywowano szkołę.'}
+          successMsg={'Możesz teraz w pełni korzystać z usług platformy Autograph.'}
+          closeModalCallback={resetSchoolActivationState}>
+            <SchoolActivationInput/>
+        </ModalTemplate>
       </View>
     );
   }
@@ -204,7 +184,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ drivingSchools, invitations, user }) => ( {
+const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }) => ({
   activeDrivingSchools: Object.values(drivingSchools.hashMap).
     filter(isDrivingSchoolRelationActive),
   invitingDrivingSchools: Object.values(drivingSchools.hashMap).
@@ -214,7 +194,8 @@ const mapStateToProps = ({ drivingSchools, invitations, user }) => ( {
   drivingSchools,
   invitations,
   user,
-} );
+  schoolActivationStatus: schoolActivation.status
+});
 
 const mapDispatchToProps = dispatch => ( {
   fetchSchoolsRequest: () => dispatch(

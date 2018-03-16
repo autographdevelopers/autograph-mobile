@@ -13,6 +13,8 @@ import { employeePrivilegesActionTypes } from '../Redux/EmployeePrivileges';
 import { invitationActionTypes } from '../Redux/InvitationsRedux';
 import { scheduleActionTypes } from '../Redux/ScheduleRedux';
 import { scheduleFormActionTypes } from '../Redux/ScheduleFormRedux';
+import { schoolActivationActionTypes } from '../Redux/SchoolActivationRedux';
+
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
 import { resetPassword } from './ResetPasswordSaga';
@@ -24,7 +26,8 @@ import {
   create as createDrivingSchoolSaga,
   update as updateDrivingSchoolSaga,
   index as indexDrivingSchools,
-  show as showDrivingSchoolSaga
+  show as showDrivingSchoolSaga,
+  activate as activateDrivingSchool
 } from './DrivingSchoolSagas';
 
 import {
@@ -78,6 +81,7 @@ export default function* root() {
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
     takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchools, api),
     takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
+    takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchool, api),
 
     takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
     takeLatest(scheduleBoundariesTypes.SHOW_REQUEST, showScheduleBoundariesSaga, api),

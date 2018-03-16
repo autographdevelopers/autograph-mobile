@@ -67,6 +67,7 @@ export const API = {
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}`, params),
     index: () => api.get('driving_schools'),
     show: () => api.get('driving_schools/:driving_school_id'),
+    activate: (id, params) => api.put(`driving_schools/${id}/activate`, params)
   },
   inviteUser: (params, id = ':driving_school_id') =>  api.post(`driving_schools/${id}/invitations`, params),
 

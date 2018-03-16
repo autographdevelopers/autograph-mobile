@@ -16,7 +16,7 @@ import { studentsReducer } from './StudentsRedux';
 import { employeePrivilegesReducer } from './EmployeePrivileges';
 import { invitationsReducer } from './InvitationsRedux';
 import { modalsReducer } from './ModalRedux';
-import { schoolActivationReducer } from './SchoolActivation';
+import { schoolActivationReducer } from './SchoolActivationRedux';
 import { scheduleFormReducer } from './ScheduleFormRedux';
 import { scheduleReducer } from './ScheduleRedux';
 
