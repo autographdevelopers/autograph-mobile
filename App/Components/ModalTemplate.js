@@ -28,16 +28,15 @@ const CloseModalRow = ({ onPress }) => (
 const ModalLayout = ({children, customContainerStyle, closeWithCallback}) => (
   <View style={[styles.container, customContainerStyle]}>
     <CloseModalRow onPress={closeWithCallback}/>
-    <View style={styles.content}>
-      {children}
-    </View>
+    {children}
   </View>
 );
 
 const Feedback = ({title, message, status, btnTitle, onPressCallback, closeWithCallback, customContainerStyle}) => (
   <ModalLayout customContainerStyle={customContainerStyle} closeWithCallback={closeWithCallback}>
-    {status === FETCHING_STATUS.SUCCESS && <IconM name={'check-circle'} color={Colors.primaryWarm} size={60}/> }
-    {status === FETCHING_STATUS.ERROR && <IconE name={'circle-with-cross'} size={60} color={Colors.red}/> }
+    <View style={styles.content}>
+      {status === FETCHING_STATUS.SUCCESS && <IconM name={'check-circle'} color={Colors.primaryWarm} size={60}/> }
+      {status === FETCHING_STATUS.ERROR && <IconE name={'circle-with-cross'} size={60} color={Colors.red}/> }
       <View style={styles.textArea}>
         <Text style={styles.msgTitle}>{title}</Text>
         {message && <Text style={styles.msgBody}>{message}</Text>}
@@ -45,6 +44,7 @@ const Feedback = ({title, message, status, btnTitle, onPressCallback, closeWithC
       <ButtonPrimary onPress={onPressCallback}>
         {btnTitle}
       </ButtonPrimary>
+    </View>
   </ModalLayout>
 );
 
