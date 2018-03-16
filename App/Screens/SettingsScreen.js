@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
+import { Alert } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import Layout from '../Components/Layout'
 import IconF from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
@@ -26,53 +26,64 @@ export default class SettingsScreen extends Component {
   render() {
     const { navigation } = this.props;
     const navParams = { handleSubmitSuccess: this.saveSuccessCallback, singleton: true };
+    const ICON_SIZE = 25;
 
     return (
       <Layout>
         <ListItem
-          leftIcon={<View style={{justifyContent: 'center', marginRight: 15}}><IconF size={30} name={'cog'} color={Colors.strongGrey} style={{alignSelf: 'center'}} /></View>}
+          leftIcon={<IconF size={ICON_SIZE} name={'cog'} color={Colors.strongGrey} style={styles.icon} />}
           title={'Information'}
           subtitle={'Edit basic info about your school.'}
-          containerStyle={{ borderBottomWidth: 0 }}
+          containerStyle={{ borderBottomWidth: 0, marginLeft: 0 }}
           keyExtractor={(item, index) => index}
+          wrapperStyle={{marginLeft: 0}}
           onPress={() => {
             navigation.navigate('editSchoolInfo', navParams)
           }}
         />
 
         <ListItem
-          leftIcon={<View style={{justifyContent: 'center', marginRight: 15}}><IconM size={30} name={'schedule'} color={Colors.strongGrey} style={{alignSelf: 'center'}} /></View>}
+          leftIcon={<IconM size={ICON_SIZE} name={'schedule'} color={Colors.strongGrey} style={styles.icon} />}
           title={'Schedule Bounadries'}
           subtitle={'Edit schedule boundaries'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
+          wrapperStyle={{marginLeft: 0}}
           onPress={() => {
             navigation.navigate('editScheduleBoundaries', navParams)
           }}
         />
 
         <ListItem
-          leftIcon={<View style={{justifyContent: 'center', marginRight: 15}}><Icon size={30} name={'calendar'} color={Colors.strongGrey}/></View>}
+          leftIcon={<Icon size={ICON_SIZE} name={'calendar'} color={Colors.strongGrey} style={styles.icon}/>}
           title={`Calendar`}
           subtitle={'Edit calendar settings'}
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
+          wrapperStyle={{marginLeft: 0}}
           onPress={() => {
             navigation.navigate('editScheduleSettings', navParams)
           }}
         />
 
-        <ListItem
-          leftIcon={<View style={{justifyContent: 'center', marginRight: 15}}><IconE size={30} name={'trash'} color={Colors.salmon}/></View>}
-          title={`Usun szkole`}
-          subtitle={'Lorem ipsum dolor sit melt'}
-          containerStyle={{ borderBottomWidth: 0 }}
-          keyExtractor={(item, index) => index}
-          onPress={() => {
-            // navigation.navigate('editScheduleSettings', navParams)
-          }}
-        />
+        {/*<ListItem*/}
+          {/*leftIcon={<IconE size={25} name={'trash'} color={Colors.salmon} style={styles.icon}/>}*/}
+          {/*title={`Usun szkole`}*/}
+          {/*subtitle={'Lorem ipsum dolor sit melt'}*/}
+          {/*containerStyle={{ borderBottomWidth: 0 }}*/}
+          {/*keyExtractor={(item, index) => index}*/}
+          {/*wrapperStyle={{marginLeft: 0}}*/}
+          {/*onPress={() => {*/}
+            {/*// navigation.navigate('editScheduleSettings', navParams)*/}
+          {/*}}*/}
+        {/*/>*/}
       </Layout>
     )
   }
 }
+
+const styles = {
+  icon: {
+    marginRight: 15, alignSelf: 'center'
+  }
+};
