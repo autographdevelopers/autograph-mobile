@@ -1,3 +1,4 @@
+/** Built-in modules */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -8,10 +9,9 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
-import { List } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../../Themes/index';
-
+/** Custom modules */
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
 import { contextActionCreators } from '../../Redux/ContextRedux';
 import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
@@ -31,12 +31,15 @@ import {
   isDrivingSchoolRelationPending,
 } from '../../Lib/DrivingSchoolHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
+import Fonts from '../../Themes/Fonts';
 
+/** Constants */
 const SECTION_TITLES = {
   mySchools: 'Moje szkoły',
   invitingSchools: 'Zaproszenia do współpracy'
 };
 
+/** Screen */
 class MySchoolsScreen extends Component {
   componentWillMount = () => {
     this.props.fetchSchoolsRequest();
@@ -93,8 +96,7 @@ class MySchoolsScreen extends Component {
             <SectionHeader title={section.title}/>
             <ButtonText
               onPress={this.navigateToNewDrivingSchoolForm}
-              customTextStyle={{ fontSize: 13 }}
-              customStyle={{ marginTop: 7 }}
+              customTextStyle={{ fontSize: Fonts.size.small }}
               icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
               visible={isEmployee(this.props.user)}>
               Dodaj Szkołę
@@ -208,14 +210,10 @@ const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }
 });
 
 const mapDispatchToProps = dispatch => ( {
-  fetchSchoolsRequest: () => dispatch(
-    drivingSchoolActionCreators.indexRequest()),
-  setCurrentSchoolContext: id => dispatch(
-    contextActionCreators.setCurrentDrivingSchool(id)),
-  acceptInvitationRequest: id => dispatch(
-    invitationActionCreators.acceptRequest(id)),
-  rejectInvitationRequest: id => dispatch(
-    invitationActionCreators.rejectRequest(id)),
+  fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.indexRequest()),
+  setCurrentSchoolContext: id => dispatch(contextActionCreators.setCurrentDrivingSchool(id)),
+  acceptInvitationRequest: id => dispatch(invitationActionCreators.acceptRequest(id)),
+  rejectInvitationRequest: id => dispatch(invitationActionCreators.rejectRequest(id)),
   triggerSchoolActivationDialog: id => {
     dispatch(schoolActivationActionCreators.setSchoolToBeActivated(id));
     dispatch(modalActionCreators.open(MODALS_IDS.ACTIVATE_SCHOOL));
