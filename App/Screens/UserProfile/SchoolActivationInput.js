@@ -11,9 +11,11 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const SchoolActivationInput = props => {
-  const code = props.schoolActivation.inputVerificationCode;
-  const schoolId = props.schoolActivation.schoolId;
-  const { errorMessage } = props.schoolActivation;
+  const {
+    errorMessage,
+    schoolId,
+    inputVerificationCode
+  } = props.schoolActivation;
 
   return (
     <View style={styles.container}>
@@ -23,7 +25,7 @@ const SchoolActivationInput = props => {
         <TextInput
           style={styles.codeInput}
           onChangeText={props.setInputText}
-          value={code}
+          value={inputVerificationCode}
           autoFocus={true}
           autoCapitalize={'none'}
         />
