@@ -12,9 +12,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FormErrorMessage = ({children}) => {
+export default FormErrorMessage = ({children, customStyles={}}) => {
 
-  const message = children ? <Text style={styles.error}>{children}</Text> : null;
+  const message = children ? <Text style={[styles.error, customStyles]}>{children}</Text> : null;
 
   return message
 }

@@ -8,22 +8,28 @@ import {connect} from 'react-redux';
 import { Colors, Fonts } from '../../Themes';
 import { schoolActivationActionCreators } from '../../Redux/SchoolActivationRedux';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
 const SchoolActivationInput = props => {
   const code = props.schoolActivation.inputVerificationCode;
   const schoolId = props.schoolActivation.schoolId;
+  const { errorMessage } = props.schoolActivation;
 
   return (
     <View style={styles.container}>
       <Text style={styles.confirmationInstruction}>Wpisz <Text
         style={{ fontWeight: '400' }}>kod</Text> potwierdzajacy..</Text>
-      <TextInput
-        style={styles.codeInput}
-        onChangeText={props.setInputText}
-        value={code}
-        autoFocus={true}
-      />
-      <View style={{marginBottom: 15, marginTop: 60}}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.codeInput}
+          onChangeText={props.setInputText}
+          value={code}
+          autoFocus={true}
+          autoCapitalize={'none'}
+        />
+        <FormErrorMessage customStyles={{fontFamily: Fonts.type.base}}>{errorMessage}</FormErrorMessage>
+      </View>
+      <View style={{marginBottom: 15}}>
         <ButtonPrimary onPress={props.activationRequest(schoolId, code)}
                        customWrapperStyles={{width: '60%'}}>Aktywuj!</ButtonPrimary>
       </View>
@@ -44,8 +50,10 @@ const styles = {
   codeInput: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.strongGrey,
-    marginTop: 30,
   },
+  inputContainer: {
+    marginVertical: 50
+  }
 };
 
 const mapStateToProps = state => ({
