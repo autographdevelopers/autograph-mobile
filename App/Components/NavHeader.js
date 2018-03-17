@@ -59,9 +59,6 @@ export default NavHeader = ({ navigation, title, back = true, rightIcon, onRight
     }
   });
 
-  console.log('navigation in nav header');
-  console.log(navigation);
-
   return (
     <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1, y: 0.5 }}
                     colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.mainContainer}>
