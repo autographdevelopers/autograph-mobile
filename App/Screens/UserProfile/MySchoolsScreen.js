@@ -66,12 +66,29 @@ class MySchoolsScreen extends Component {
         routeName = 'studentMain';
     }
 
-    navigate('primaryFlow', { drivingSchool: school, user },
-      NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({routeName})]
-    }));
+    // navigate('primaryFlow', { drivingSchool: school, user },
+    //   NavigationActions.reset({
+    //   index: 0,
+    //   actions: [NavigationActions.navigate({routeName})]
+    // }));
+    //
+    //
 
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      key: null,
+      actions: [
+          NavigationActions.navigate(
+            {
+              routeName: 'primaryFlow',
+              params: { drivingSchool: school, user },
+              action: NavigationActions.navigate({routeName})
+            }
+          )
+      ],
+    });
+
+    this.props.navigation.dispatch(resetAction);
   };
 
   blockUIWhenInvitationResponseRequestIsPending = () => {
