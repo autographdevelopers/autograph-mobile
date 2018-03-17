@@ -56,11 +56,18 @@ class StudentsIndex extends Component {
     />
   );
 
-  renderPlaceholder = () => (
-    <Text style={styles.listPlaceholder}>
-      Nie masz jeszcze zadnych kursantó∑, zapros ich do wspolpracy juz teraz!
-    </Text>
-  );
+  renderPlaceholder = () => {
+    if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
+      return (
+        <Text style={styles.listPlaceholder}>
+          Nie masz jeszcze zadnych kursantów, zapros ich do wspolpracy juz
+          teraz!
+        </Text>
+      )
+    } else {
+      return null;
+    }
+  };
 
   render() {
     const {

@@ -62,11 +62,17 @@ class EmployeesIndex extends Component {
     />
   );
 
-  renderPlaceholder = () => (
-    <Text style={styles.listPlaceholder}>
-      Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!
-    </Text>
-  );
+  renderPlaceholder = () => {
+    if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
+      return (
+        <Text style={styles.listPlaceholder}>
+          Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!
+        </Text>
+      )
+    } else {
+      return null;
+    }
+  };
 
   render() {
     const {
