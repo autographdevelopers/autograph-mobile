@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
-import { Text, FlatList, RefreshControl } from 'react-native';
+import { Text, FlatList, RefreshControl, View } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { Fonts, Colors } from '../../Themes/';
 import { connect } from 'react-redux';
 import { studentsActionCreators } from '../../Redux/StudentsRedux';
+import { invitationActionCreators } from '../../Redux/InvitationsRedux';
 import DefaultAvatar from '../../Components/DefaultAvatar';
+import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
+import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
+import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import Layout from '../../Components/Layout';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import listProjectorStyles from '../../Styles/ListProjector';
+import I18n from '../../I18n/index'
+import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
+import ModalTemplate from '../../Components/ModalTemplate'
+import ButtonText from '../../Components/ButtonText'
+import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
 
 class InvitedStudentsList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      student_id: null
+    };
+  }
+
   componentWillMount() {
     this.props.fetchStudents();
   }
@@ -23,10 +40,31 @@ class InvitedStudentsList extends Component {
             data={this.props.employees}
             renderItem={({ item, index }) => (
               <ListItem
-                title={`${item.name} ${item.surname}`}
-                subtitle={item.email}
-                leftIcon={<DefaultAvatar name={item.name} index={index}/>}
+                title={
+                  <InvitationInformationTitle email={item.email}/>
+                }
+                subtitle={
+                  <InvitationInformationSubtitle invitation_sent_at={item.invitation_sent_at}/>
+                }
+                leftIcon={
+                  <DefaultAvatar name={item.name} index={index}/>
+                }
+                rightIcon={
+                  <ButtonText
+                    onPress={
+                      () => this.setState(
+                        {student_id: item.id},
+                        this.props.openDestoryInvitationModal
+                      )
+                    }
+                    customTextStyle={{color: Colors.salmon}}
+                    customStyle={{alignSelf: 'center', marginRight: 5}}>
+                    {I18n.t('withdraw_invitation')}
+                  </ButtonText>
+                }
+                onPressRightIcon={()=>{}}
                 containerStyle={{ borderBottomWidth: 0 }}
+                hideChevron={false}
               />
             )}
             showsVerticalScrollIndicator={false}
@@ -39,6 +77,15 @@ class InvitedStudentsList extends Component {
               />}
           />
         </List>
+
+        <ModalTemplate
+          modalID={MODALS_IDS.DESTROY_INVITATION}
+          status={this.props.invitationDestroyStatus}
+          closeModalCallback={this.props.resetInvitationFetchingStatus}>
+          <DestroyInvitationConfirmation
+            onPress={() => this.props.destroyInvitation({type: 'Student', user_id: this.state.student_id})}
+          />
+        </ModalTemplate>
       </Layout>
     )
   }
@@ -46,11 +93,16 @@ class InvitedStudentsList extends Component {
 
 const mapStateToProps = state => ({
   employees: state.students.pendingIds.map( id => state.students.pending[id]),
-  status: state.students.status
+  status: state.students.status,
+  invitationDestroyStatus: state.invitations.status
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchStudents: () => dispatch(studentsActionCreators.indexRequest())
+  fetchStudents: () => dispatch(studentsActionCreators.indexRequest()),
+  openDestoryInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_INVITATION)),
+  destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
+  resetInvitationFetchingStatus: () =>
+    dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitedStudentsList)

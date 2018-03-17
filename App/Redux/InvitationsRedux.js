@@ -7,6 +7,7 @@ export const invite = createFormAction('INVITE');
 const { Types, Creators } = createActions({
   acceptRequest: ['id'],
   rejectRequest: ['id'],
+  destroyRequest: ['params'],
   changeStatus: ['status']
 }, { prefix: 'INVITATIONS_' });
 

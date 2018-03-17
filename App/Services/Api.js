@@ -72,7 +72,8 @@ export const API = {
 
   invitations: {
     accept: id => api.put(`driving_schools/${id}/invitations/accept`),
-    reject: id => api.put(`driving_schools/${id}/invitations/reject`)
+    reject: id => api.put(`driving_schools/${id}/invitations/reject`),
+    destroy: (params, id = ':driving_school_id') => api.delete(`driving_schools/${id}/invitations`, params),
   },
   scheduleSettings: {
     update: (params, id = ':driving_school_id') => api.put(`driving_schools/${id}/schedule_settings`, params),
