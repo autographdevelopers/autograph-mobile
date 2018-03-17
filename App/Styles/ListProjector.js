@@ -15,12 +15,5 @@ export default styles = {
   },
   contentContainerStyle: {
     paddingBottom: 60 // Height of button + extra space
-  },
-  header: {
-    marginHorizontal: 15,
-    color: Colors.strongGrey,
-    fontSize: Fonts.size.medium,
-    backgroundColor: 'transparent',
-    fontFamily: Fonts.type.base,
-  },
+  }
 };

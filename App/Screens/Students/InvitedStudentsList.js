@@ -45,7 +45,8 @@ class InvitedStudentsList extends Component {
 }
 
 const mapStateToProps = state => ({
-  employees: state.students.pendingIds.map( id => state.students.pending[id]),
+  activeStudents: state.students.activeIds.map( id => state.students.active[id]),
+  pendingStudents: state.students.pendingIds.map( id => state.students.pending[id]),
   status: state.students.status
 });
 

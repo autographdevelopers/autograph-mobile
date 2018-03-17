@@ -26,18 +26,22 @@ const SEGMENTS = [
 ];
 
 const navigationConfigs = {
-  navigationOptions: {
-    header: props => {
-      const handlePress = index => {
-        index === 1 ? props.navigation.navigate(SEGMENTS[index].component) : props.navigation.goBack(null);
-      };
+  navigationOptions: (props) => {
+    return {
+      header: props => {
+        const handlePress = index => {
+          index === 1 ?
+            props.navigation.navigate(SEGMENTS[index].component) :
+            props.navigation.goBack(null);
+        };
 
-      return <SegmentsControl
-        componentProps={{
-          values: SEGMENTS.map(segment => segment.name),
-          selectedIndex: props.navigation.state.index,
-          onTabPress: handlePress
-        }}/>
+        return <SegmentsControl
+          componentProps={{
+            values: SEGMENTS.map(segment => segment.name),
+            selectedIndex: props.navigation.state.index,
+            onTabPress: handlePress
+          }}/>
+      }
     }
   },
   initialRouteName: 'ActiveStudentsList',

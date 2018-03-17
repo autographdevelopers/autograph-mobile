@@ -8,13 +8,11 @@ export default SegmentsControl = ({ componentProps }) => {
     marginTop: 25,
     width: '80%',
     alignSelf: 'center'
-
   };
 
   const tabStyle = {
     borderColor: Colors.primaryWarm,
     paddingVertical: 7,
-
   };
 
   const tabTextStyle = {
