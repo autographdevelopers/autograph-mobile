@@ -66,14 +66,6 @@ class MySchoolsScreen extends Component {
         routeName = 'studentMain';
     }
 
-    // navigate('primaryFlow', { drivingSchool: school, user },
-    //   NavigationActions.reset({
-    //   index: 0,
-    //   actions: [NavigationActions.navigate({routeName})]
-    // }));
-    //
-    //
-
     const resetAction = NavigationActions.reset({
       index: 0,
       key: null,
@@ -185,7 +177,6 @@ class MySchoolsScreen extends Component {
           closeModalCallback={resetSchoolActivationState}>
             <SchoolActivationInput/>
         </ModalTemplate>
-
       </View>
     );
   }
