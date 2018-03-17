@@ -19,7 +19,7 @@ export default InvitationInformationTitle = ({ email }) => {
 const styles = StyleSheet.create({
   invitationText: {
     color: Colors.strongGrey,
-    fontSize: 11,
+    fontSize: Fonts.size.extraSmall,
     fontWeight: '500'
   }
 })

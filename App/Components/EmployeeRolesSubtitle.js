@@ -3,6 +3,8 @@ import { Text, View, StyleSheet } from 'react-native'
 import { Fonts, Colors } from '../Themes/'
 import I18n from '../I18n/index'
 
+const BULLET_SIZE = 5;
+
 export default EmployeeRolesSubtitle = ({ employeePrivileges }) => {
 
   let employeeRolesTexts = []
@@ -15,7 +17,7 @@ export default EmployeeRolesSubtitle = ({ employeePrivileges }) => {
 
   const rolesList = employeeRolesTexts.map((role, i) => {
     return(
-      <View key={i} style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View key={i} style={styles.roleElement}>
         <Text style={styles.roleText}>{role.toUpperCase()}</Text>
         { i !== (employeeRolesTexts.length-1) && <View style={styles.dot}/>}
       </View>
@@ -36,15 +38,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    height: 5,
-    width: 5,
-    borderRadius: 3,
+    height: BULLET_SIZE,
+    width: BULLET_SIZE,
+    borderRadius: BULLET_SIZE/2,
     backgroundColor: Colors.strongGrey,
     marginHorizontal: 5
   },
+  roleElement: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   roleText: {
     color: Colors.strongGrey,
-    fontSize: 11,
+    fontSize: Fonts.size.extraSmall,
     fontWeight: '500'
   }
 })

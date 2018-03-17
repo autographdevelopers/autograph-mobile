@@ -1,8 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import moment from 'moment'
-import { Fonts, Colors } from '../Themes/'
 import I18n from '../I18n/index'
+import { Fonts, Colors } from '../Themes/'
 import ButtonText from './ButtonText'
 
 export default DestroyInvitationConfirmation = ({ onPress }) => {
@@ -14,7 +13,7 @@ export default DestroyInvitationConfirmation = ({ onPress }) => {
       <ButtonText
         onPress={onPress}
         customTextStyle={{color: Colors.salmon}}
-        customStyle={{alignSelf: 'center', marginBottom: 15, marginTop: 10}}>
+        customStyle={styles.buttonText}>
         {I18n.t('withdraw_invitation')}
       </ButtonText>
     </View>
@@ -24,8 +23,13 @@ export default DestroyInvitationConfirmation = ({ onPress }) => {
 const styles = StyleSheet.create({
   text: {
     color: Colors.strongGrey,
-    fontSize: 15,
+    fontSize: Fonts.size.medium,
     fontWeight: '500',
     textAlign: 'center'
+  },
+  buttonText: {
+    alignSelf: 'center',
+    marginBottom: 15,
+    marginTop: 10
   }
 })

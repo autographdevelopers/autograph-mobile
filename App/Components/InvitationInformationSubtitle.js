@@ -7,7 +7,7 @@ import I18n from '../I18n/index'
 export default InvitationInformationSubtitle = ({ invitation_sent_at }) => {
   return (
     <View>
-      <Text style={styles.invitationSenAtText}>
+      <Text style={styles.invitationSentAtText}>
         {`Wysłane ${moment(invitation_sent_at).format('LLL')}`}
       </Text>
     </View>
@@ -15,9 +15,9 @@ export default InvitationInformationSubtitle = ({ invitation_sent_at }) => {
 }
 
 const styles = StyleSheet.create({
-  invitationSenAtText: {
+  invitationSentAtText: {
     color: Colors.strongGrey,
-    fontSize: 11,
+    fontSize: Fonts.size.extraSmall,
     fontWeight: '500'
   }
 })

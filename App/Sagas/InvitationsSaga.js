@@ -54,9 +54,9 @@ export function* destroy(api, action) {
   const response = yield call(api.invitations.destroy, action.params, action.id);
   if (response.ok) {
     if(action.params.type === 'Student')
-      yield put(studentsActionCreators.destroySingle(action.params.user_id));
+      yield put(studentsActionCreators.destroySinglePending(action.params.user_id));
     else if(action.params.type === 'Employee')
-      yield put(employeesActionCreators.destroySingle(action.params.user_id));
+      yield put(employeesActionCreators.destroySinglePending(action.params.user_id));
 
     yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {

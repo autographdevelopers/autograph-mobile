@@ -46,6 +46,10 @@ class StudentsIndex extends Component {
     })
   };
 
+  openConfirmationModal = (studentId) => {
+    this.setState({ studentId }, this.props.openDestroyInvitationModal)
+  }
+
   renderActiveStudent = ({item, index }) => (
     <ListItem
       title={`${item.name} ${item.surname}`}
@@ -68,12 +72,7 @@ class StudentsIndex extends Component {
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       rightIcon={
         <ButtonText
-          onPress={
-            () => this.setState(
-              {studentId: item.id},
-              this.props.openDestoryInvitationModal
-            )
-          }
+          onPress={() => this.openConfirmationModal(item.id)}
           customTextStyle={{color: Colors.salmon}}
           customStyle={{alignSelf: 'center', marginRight: 5}}>
           {I18n.t('withdraw_invitation')}
@@ -154,7 +153,7 @@ class StudentsIndex extends Component {
           </List>
           <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
           <ModalTemplate
-            modalID={MODALS_IDS.DESTROY_INVITATION}
+            modalID={MODALS_IDS.DESTROY_STUDENT_INVITATION}
             status={this.props.invitationDestroyStatus}
             closeModalCallback={this.props.resetInvitationFetchingStatus}>
             <DestroyInvitationConfirmation
@@ -181,7 +180,7 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   studentsIndexRequest: () => dispatch(studentsActionCreators.indexRequest()),
-  openDestoryInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_INVITATION)),
+  openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_STUDENT_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))

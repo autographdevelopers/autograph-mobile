@@ -52,6 +52,9 @@ class EmployeesIndex extends Component {
     this.props.navigation.navigate('userProfile', { user, index });
   };
 
+  openConfirmationModal = (employeeId) =>
+    this.setState({ employeeId }, this.props.openDestroyInvitationModal)
+
   renderActiveEmployee = ({item, index  }) => (
     <ListItem
       title={`${item.name} ${item.surname}`}
@@ -76,12 +79,7 @@ class EmployeesIndex extends Component {
       }
       rightIcon={
         <ButtonText
-          onPress={
-            () => this.setState(
-              {employeeId: item.id},
-              this.props.openDestoryInvitationModal
-            )
-          }
+          onPress={() => this.openConfirmationModal(item.id)}
           customTextStyle={{color: Colors.salmon}}
           customStyle={{alignSelf: 'center', marginRight: 5}}>
           {I18n.t('withdraw_invitation')}
@@ -161,7 +159,7 @@ class EmployeesIndex extends Component {
           </List>
           <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
           <ModalTemplate
-            modalID={MODALS_IDS.DESTROY_INVITATION}
+            modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
             status={this.props.invitationDestroyStatus}
             closeModalCallback={this.props.resetInvitationFetchingStatus}>
             <DestroyInvitationConfirmation
@@ -188,7 +186,7 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest()),
-  openDestoryInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_INVITATION)),
+  openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
