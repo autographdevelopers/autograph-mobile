@@ -15,7 +15,7 @@ import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
-
+import DefaultAvatar from '../Components/DefaultAvatar';
 import { Fonts, Colors } from '../Themes/'
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
@@ -31,7 +31,7 @@ const routeConfigs = {
   mySchoolsScreen: {
     screen: MySchoolsScreen,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={false}/>
+      header: props => <NavHeader navigation={props.navigation} title={'Profil'} back={false}/>
     }
   },
   primaryFlow: {
@@ -42,12 +42,9 @@ const routeConfigs = {
       let rightIcon;
       let onRightIconPress;
 
-      console.log('navigation in nav config');
-      console.log(navigation);
-
       if (['ownerMain', 'employeeMain', 'studentMain'].includes(routes[index].routeName)) {
         title = params.drivingSchool.name;
-        rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
+        rightIcon = <DefaultAvatar name={params.user.name} customSize={25}/>;
         onRightIconPress = () => navigation.navigate('mySchoolsScreen');
       } else if (routes[index].routeName === 'mySchoolsScreen') {
         title = 'Profile';
@@ -60,7 +57,7 @@ const routeConfigs = {
                            title={title}
                            rightIcon={rightIcon}
                            onRightIconPress={onRightIconPress}
-                           close={false}/>
+                           back={false}/>
       }
     }
   },

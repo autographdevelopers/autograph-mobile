@@ -6,9 +6,9 @@ import { Fonts, Colors } from '../Themes/'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
-export default NavHeader = ({ navigation, title, close = false, rightIcon, onRightIconPress }) => {
+export default NavHeader = ({ navigation, title, back = true, rightIcon, onRightIconPress }) => {
   const displayLeftButton = () => {
-    if(!close) {
+    if(back) {
       return (
         <TouchableOpacity onPress={() => navigation.goBack(null)}><FontAwesomeIcon name={'angle-left'} size={30}
                                                                         color={Colors.snow}/></TouchableOpacity>

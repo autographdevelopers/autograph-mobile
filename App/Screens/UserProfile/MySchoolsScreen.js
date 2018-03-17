@@ -66,7 +66,7 @@ class MySchoolsScreen extends Component {
         routeName = 'studentMain';
     }
 
-    navigate('primaryFlow', { drivingSchool: school },
+    navigate('primaryFlow', { drivingSchool: school, user },
       NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({routeName})]
