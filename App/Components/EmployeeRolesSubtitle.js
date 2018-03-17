@@ -15,7 +15,7 @@ export default EmployeeRolesSubtitle = ({ employeePrivileges }) => {
 
   const rolesList = employeeRolesTexts.map((role, i) => {
     return(
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View key={i} style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={styles.roleText}>{role.toUpperCase()}</Text>
         { i !== (employeeRolesTexts.length-1) && <View style={styles.dot}/>}
       </View>

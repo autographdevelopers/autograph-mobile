@@ -4,6 +4,8 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import { contextActionCreators } from '../Redux/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { SubmissionError } from 'redux-form';
+import { schoolActivationActionCreators } from '../Redux/SchoolActivationRedux';
+
 /** redux-form-sagas actions */
 import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
 import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
@@ -57,5 +59,23 @@ export function* show(api, action) {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+  }
+}
+
+export function* activate(api, action) {
+  yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
+
+  const response = yield call(api.drivingSchools.activate, action.id, {verification_code: action.code});
+
+  if (response.ok) {
+    yield put(drivingSchoolActionCreators.saveSingle(response.data)); // add in redux
+    yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+  } else {
+    if (response.status === 403) {
+      yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.READY));
+      yield put(schoolActivationActionCreators.raiseError('Wprowadzono niepoprawny kod potwierdzający.'));
+    } else {
+      yield put(schoolActivationActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+    }
   }
 }
