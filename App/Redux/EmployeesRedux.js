@@ -65,15 +65,11 @@ export const saveCollectionHandler = (state, { data }) => {
 };
 
 export const destroySinglePendingHandler = (state, { employeeId }) => {
-  const pending = deepClone(state).pending;
-  delete pending[employeeId];
-  const pendingIds = state.pendingIds.filter(id => employeeId !== id );
+  const newState = deepClone(state);
+  delete newState.pending[employeeId];
+  newState.pendingIds = newState.pendingIds.filter(id => employeeId !== id );
 
-  return {
-    ...state,
-    pending,
-    pendingIds
-  }
+  return newState
 };
 
 export const updateStatusHandler = (state, { status }) => ({ ...deepClone(state), status });
