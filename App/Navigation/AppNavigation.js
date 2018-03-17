@@ -7,7 +7,7 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
-import { StudentTabNavigator, EmployeeTabNavigator, OwnerTabNavigator } from './TabNavigation';
+
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
@@ -16,35 +16,51 @@ import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
 
+import { Fonts, Colors } from '../Themes/'
+import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
+
+
+import PrimaryFlow from './PrimaryFlow';
+
 const routeConfigs = {
   loginLaunch: {
     screen: LaunchLoginPair
   },
   signUp: { screen: SignUpScreen },
   resetPassword: { screen: ResetPasswordScreen },
-  mySchoolsScreen: { screen: MySchoolsScreen,
+  mySchoolsScreen: {
+    screen: MySchoolsScreen,
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Profil'} close={false}/>
     }
   },
-  employeeMain: {
-    screen: EmployeeTabNavigator, navigationOptions: ({navigation}) => {
-      return {
-        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+  primaryFlow: {
+    screen: PrimaryFlow,
+    navigationOptions: ({navigation}) => {
+      const { routes, index, params } = navigation.state;
+      let title;
+      let rightIcon;
+      let onRightIconPress;
+
+      console.log('navigation in nav config');
+      console.log(navigation);
+
+      if (['ownerMain', 'employeeMain', 'studentMain'].includes(routes[index].routeName)) {
+        title = params.drivingSchool.name;
+        rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
+        onRightIconPress = () => navigation.navigate('mySchoolsScreen');
+      } else if (routes[index].routeName === 'mySchoolsScreen') {
+        title = 'Profile';
+        rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
+        onRightIconPress = () => navigation.goBack(null);
       }
-    }
-  },
-  ownerMain: {
-    screen: OwnerTabNavigator, navigationOptions: ({navigation}) => {
+
       return {
-        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
-      }
-    }
-  },
-  studentMain: {
-    screen: StudentTabNavigator, navigationOptions: ({navigation}) => {
-      return {
-        header: <NavHeader navigation={navigation} title={navigation.state.params.drivingSchool.name}/>
+        header: <NavHeader navigation={navigation}
+                           title={title}
+                           rightIcon={rightIcon}
+                           onRightIconPress={onRightIconPress}
+                           close={false}/>
       }
     }
   },
