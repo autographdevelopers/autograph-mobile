@@ -5,16 +5,17 @@ import { Fonts, Colors } from '../Themes/';
 export default DefaultAvatar = props => {
   const {
     name,
-    index,
+    index=3,
     customContainerStyle={},
-    customLetterStyle={}
+    customLetterStyle={},
+    customSize
   } = props;
 
   const COLORS_PIPELINE = [
     Colors.purple, Colors.yellow, Colors.blue, Colors.salmon, Colors.primaryWarm
   ];
 
-  const SIZE = 40;
+  const SIZE = customSize || 40;
 
   const styles = {
     container: {

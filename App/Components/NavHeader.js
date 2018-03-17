@@ -6,9 +6,9 @@ import { Fonts, Colors } from '../Themes/'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
-export default NavHeader = ({ navigation, title, close = false }) => {
+export default NavHeader = ({ navigation, title, back = true, rightIcon, onRightIconPress }) => {
   const displayLeftButton = () => {
-    if(!close) {
+    if(back) {
       return (
         <TouchableOpacity onPress={() => navigation.goBack(null)}><FontAwesomeIcon name={'angle-left'} size={30}
                                                                         color={Colors.snow}/></TouchableOpacity>
@@ -17,12 +17,14 @@ export default NavHeader = ({ navigation, title, close = false }) => {
   };
 
   const displayRightButton  = () => {
-    if(close) {
+    if(rightIcon) {
       return (
-        <TouchableOpacity onPress={() => navigation.goBack(null)} style={{alignSelf: 'center'}}>
-          <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>
+        <TouchableOpacity onPress={onRightIconPress} style={{alignSelf: 'center'}}>
+          {rightIcon}
         </TouchableOpacity>
       )
+    } else {
+      return null;
     }
   };
 
@@ -61,10 +63,13 @@ export default NavHeader = ({ navigation, title, close = false }) => {
     <LinearGradient start={{ x: 0.0, y: 0.5 }} end={{ x: 1, y: 0.5 }}
                     colors={[Colors.primaryCold, Colors.primaryWarm]} style={styles.mainContainer}>
       <View style={styles.wrapper}>
+
         <View style={styles.leftContainer}>
           {displayLeftButton()}
         </View>
+
         <Text style={styles.title}>{title}</Text>
+
         <View style={styles.rightContainer}>
           {displayRightButton()}
         </View>

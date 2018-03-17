@@ -33,6 +33,7 @@ import {
 } from '../../Lib/DrivingSchoolHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import Fonts from '../../Themes/Fonts';
+import { NavigationActions } from 'react-navigation';
 
 /** Constants */
 const SECTION_TITLES = {
@@ -52,17 +53,34 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToSchoolContext = school => {
-    const { user } = this.props;
+    const { user, navigation: { navigate } } = this.props;
     this.props.setCurrentSchoolContext(school.id);
+    let routeName;
 
-    if(isEmployee(user)) {
-      if(isDrivingSchoolOwner(school))
-        this.props.navigation.navigate('ownerMain', {drivingSchool: school});
+    if ( isEmployee(user) ) {
+      if ( isDrivingSchoolOwner(school) )
+        routeName = 'ownerMain';
       else
-        this.props.navigation.navigate('employeeMain', {drivingSchool: school});
-    }else if(isStudent(user)){
-      this.props.navigation.navigate('studentMain', {drivingSchool: school});
+        routeName = 'employeeMain';
+    } else if ( isStudent(user) ) {
+        routeName = 'studentMain';
     }
+
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      key: null,
+      actions: [
+          NavigationActions.navigate(
+            {
+              routeName: 'primaryFlow',
+              params: { drivingSchool: school, user },
+              action: NavigationActions.navigate({routeName})
+            }
+          )
+      ],
+    });
+
+    this.props.navigation.dispatch(resetAction);
   };
 
   blockUIWhenInvitationResponseRequestIsPending = () => {
