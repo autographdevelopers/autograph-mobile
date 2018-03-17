@@ -9,12 +9,20 @@ import FullScreenInformation from '../../Components/FullScreenInformation';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
 import Layout from '../../Components/Layout';
+import ButtonText from '../../Components/ButtonText';
+import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
+import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
+import ModalTemplate from '../../Components/ModalTemplate';
+import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
 
 import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
+import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
@@ -24,7 +32,8 @@ class EmployeesIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      segmentIndex: 0
+      segmentIndex: 0,
+      employeeId: null
     }
   }
 
@@ -43,10 +52,13 @@ class EmployeesIndex extends Component {
     this.props.navigation.navigate('userProfile', { user, index });
   };
 
+  openConfirmationModal = (employeeId) =>
+    this.setState({ employeeId }, this.props.openDestroyInvitationModal)
+
   renderActiveEmployee = ({item, index  }) => (
     <ListItem
       title={`${item.name} ${item.surname}`}
-      subtitle={item.email}
+      subtitle={<EmployeeRolesSubtitle employeePrivileges={item.privileges}/>}
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       containerStyle={{ borderBottomWidth: 0 }}
       onPress={this.goToUserProfile(item, index)}
@@ -55,10 +67,27 @@ class EmployeesIndex extends Component {
 
   renderPendingEmployee = ({item, index}) => (
     <ListItem
-      title={`${item.name} ${item.surname}`}
-      subtitle={item.email}
-      leftIcon={<DefaultAvatar name={item.name} index={index}/>}
+      title={<InvitationInformationTitle email={item.email}/>}
+      subtitle={
+        <View>
+          <EmployeeRolesSubtitle employeePrivileges={item.privileges}/>
+          <InvitationInformationSubtitle invitation_sent_at={item.invitation_sent_at}/>
+        </View>
+      }
+      leftIcon={
+        <DefaultAvatar name={item.name} index={index}/>
+      }
+      rightIcon={
+        <ButtonText
+          onPress={() => this.openConfirmationModal(item.id)}
+          customTextStyle={{color: Colors.salmon}}
+          customStyle={{alignSelf: 'center', marginRight: 5}}>
+          {I18n.t('withdraw_invitation')}
+        </ButtonText>
+      }
+      onPressRightIcon={()=>{}}
       containerStyle={{ borderBottomWidth: 0 }}
+      hideChevron={false}
     />
   );
 
@@ -129,6 +158,14 @@ class EmployeesIndex extends Component {
               />
           </List>
           <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+          <ModalTemplate
+            modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
+            status={this.props.invitationDestroyStatus}
+            closeModalCallback={this.props.resetInvitationFetchingStatus}>
+            <DestroyInvitationConfirmation
+              onPress={() => this.props.destroyInvitation({type: 'Employee', user_id: this.state.employeeId})}
+            />
+          </ModalTemplate>
         </Layout>
       );
     }
@@ -139,7 +176,8 @@ const mapStateToProps = state => ({
   drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
   pendingEmployees: state.employees.pendingIds.map(id => state.employees.pending[id]),
   activeEmployees: state.employees.activeIds.map(id => state.employees.active[id]),
-  status: state.employees.status
+  status: state.employees.status,
+  invitationDestroyStatus: state.invitations.status
 });
 
 const styles = {
@@ -147,7 +185,11 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest())
+  employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest()),
+  openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
+  destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
+  resetInvitationFetchingStatus: () =>
+    dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeesIndex)

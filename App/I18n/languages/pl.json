@@ -49,5 +49,12 @@
     }
   },
   "save": "Zapisz",
-  "availability": "Dyspozycyjność"
+  "availability": "Dyspozycyjność",
+  "owner": "Właściciel",
+  "instructor": "Instruktor",
+  "office_employee": "Pracownik biurowy",
+  "invitation_sent_at": "Zaproszenie zostało wysłane",
+  "invitation_sent_to": "Zaproszenie wysłane na",
+  "lack_of_privileges": "Nie posiada przywilejów",
+  "withdraw_invitation": "Wycofaj"
 }

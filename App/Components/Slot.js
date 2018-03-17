@@ -38,7 +38,7 @@ export default Slot = ({ id, active=false, containerStyles = {}, onPress = () =>
     },
     intervalInfo: {
       color: Colors.softBlack,
-      fontSize: 11,
+      fontSize: Fonts.size.extraSmall,
       fontFamily: Fonts.type.light,
       textAlign: 'center'
     },

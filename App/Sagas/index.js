@@ -47,7 +47,8 @@ import {
 import {
   create as createInvitation,
   accept as acceptInvitation,
-  reject as rejectInvitation
+  reject as rejectInvitation,
+  destroy as destroyInvitation
 } from './InvitationsSaga';
 
 import {
@@ -95,6 +96,7 @@ export default function* root() {
     takeLatest(invite.REQUEST, createInvitation, api),
     takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitation, api),
     takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitation, api),
+    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitation, api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),

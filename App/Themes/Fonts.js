@@ -13,6 +13,7 @@ const size = {
   regular: 17,
   medium: 15,
   small: 13,
+  extraSmall: 11,
   tiny: 8.5
 };
 

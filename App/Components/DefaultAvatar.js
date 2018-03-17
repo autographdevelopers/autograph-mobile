@@ -24,7 +24,7 @@ export default DefaultAvatar = props => {
       borderRadius: 9999999,
       justifyContent: 'center',
       alignItems: 'center',
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       backgroundColor: COLORS_PIPELINE[index%COLORS_PIPELINE.length]
     },
     letter: {

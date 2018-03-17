@@ -17,6 +17,7 @@ const { Types, Creators } = createActions({
     saveCollection: ['data'],
     changeStatus: ['status'],
     indicateError: ['msg'],
+    destroySinglePending: ['employeeId'],
     indexRequest: null, /* SAGA */
 }, { prefix: 'EMPLOYEES_' });
 
@@ -63,6 +64,14 @@ export const saveCollectionHandler = (state, { data }) => {
   return {...deepClone(state), ...newData};
 };
 
+export const destroySinglePendingHandler = (state, { employeeId }) => {
+  const newState = deepClone(state);
+  delete newState.pending[employeeId];
+  newState.pendingIds = newState.pendingIds.filter(id => employeeId !== id );
+
+  return newState
+};
+
 export const updateStatusHandler = (state, { status }) => ({ ...deepClone(state), status });
 
 /** Reducer */
@@ -72,4 +81,5 @@ export const employeesReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_COLLECTION]: saveCollectionHandler,
   [Types.CHANGE_STATUS]: updateStatusHandler,
   [Types.INDICATE_ERROR]: indicateErrorHandler,
+  [Types.DESTROY_SINGLE_PENDING]: destroySinglePendingHandler,
 });

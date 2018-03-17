@@ -10,11 +10,18 @@ import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import Layout from '../../Components/Layout';
+import ButtonText from '../../Components/ButtonText';
+import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
+import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
+import ModalTemplate from '../../Components/ModalTemplate';
+import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
 
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
 import { studentsActionCreators } from '../../Redux/StudentsRedux';
+import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
@@ -24,7 +31,8 @@ class StudentsIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      segmentIndex: 0
+      segmentIndex: 0,
+      studentId: null
     }
   }
 
@@ -38,10 +46,17 @@ class StudentsIndex extends Component {
     })
   };
 
+  openConfirmationModal = (studentId) =>
+    this.setState({ studentId }, this.props.openDestroyInvitationModal)
+
   renderActiveStudent = ({item, index }) => (
     <ListItem
       title={`${item.name} ${item.surname}`}
-      subtitle={item.email}
+      subtitle={
+        <Text style={{color: Colors.strongGrey, fontSize: 12, fontWeight: '500'}}>
+          {`Tel. ${item.phone_number}`}
+        </Text>
+      }
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       containerStyle={{ borderBottomWidth: 0 }}
     />
@@ -49,10 +64,22 @@ class StudentsIndex extends Component {
 
   renderPendingStudent = ({item, index}) => (
     <ListItem
-      title={`${item.name} ${item.surname}`}
-      subtitle={item.email}
+      title={<InvitationInformationTitle email={item.email}/>}
+      subtitle={
+        <InvitationInformationSubtitle invitation_sent_at={item.invitation_sent_at}/>
+      }
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
+      rightIcon={
+        <ButtonText
+          onPress={() => this.openConfirmationModal(item.id)}
+          customTextStyle={{color: Colors.salmon}}
+          customStyle={{alignSelf: 'center', marginRight: 5}}>
+          {I18n.t('withdraw_invitation')}
+        </ButtonText>
+      }
+      onPressRightIcon={()=>{}}
       containerStyle={{ borderBottomWidth: 0 }}
+      hideChevron={false}
     />
   );
 
@@ -124,6 +151,14 @@ class StudentsIndex extends Component {
             />
           </List>
           <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteStudent')}>Dodaj kursanta</ButtonPrimary>
+          <ModalTemplate
+            modalID={MODALS_IDS.DESTROY_STUDENT_INVITATION}
+            status={this.props.invitationDestroyStatus}
+            closeModalCallback={this.props.resetInvitationFetchingStatus}>
+            <DestroyInvitationConfirmation
+              onPress={() => this.props.destroyInvitation({type: 'Student', user_id: this.state.studentId})}
+            />
+          </ModalTemplate>
         </Layout>
       );
     }
@@ -134,7 +169,8 @@ const mapStateToProps = state => ({
   drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
   activeStudents: state.students.activeIds.map( id => state.students.active[id]),
   pendingStudents: state.students.pendingIds.map( id => state.students.pending[id]),
-  status: state.students.status
+  status: state.students.status,
+  invitationDestroyStatus: state.invitations.status
 });
 
 const styles = {
@@ -142,7 +178,11 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  studentsIndexRequest: () => dispatch(studentsActionCreators.indexRequest())
+  studentsIndexRequest: () => dispatch(studentsActionCreators.indexRequest()),
+  openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_STUDENT_INVITATION)),
+  destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
+  resetInvitationFetchingStatus: () =>
+    dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentsIndex)
