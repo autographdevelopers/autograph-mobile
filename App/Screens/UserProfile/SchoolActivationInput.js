@@ -33,7 +33,7 @@ const SchoolActivationInput = props => {
       </View>
       <View style={{marginBottom: 15}}>
         <ButtonPrimary onPress={props.activationRequest(schoolId, inputVerificationCode)}
-                       customWrapperStyles={{width: '60%'}}>Aktywuj!</ButtonPrimary>
+                       customWrapperStyles={{width: '60%'}}>Aktywuj</ButtonPrimary>
       </View>
     </View>
   )

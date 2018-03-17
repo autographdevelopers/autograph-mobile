@@ -19,6 +19,7 @@ import { schoolActivationActionCreators } from '../../Redux/SchoolActivationRedu
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
 
 import AccountHeader from '../../Components/AccountHeader';
+import SpinnerView from '../../Components/SpinnerView';
 import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
 import ButtonText from '../../Components/ButtonText';
 import SchoolActivationInput from './SchoolActivationInput';
@@ -146,11 +147,7 @@ class MySchoolsScreen extends Component {
           />
         }
 
-        {status === FETCHING_STATUS.FETCHING &&
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <ActivityIndicator size={'large'} color={Colors.primaryWarm}/>
-          </View>
-        }
+        { status === FETCHING_STATUS.FETCHING && <SpinnerView/> }
 
         {this.blockUIWhenInvitationResponseRequestIsPending()}
 

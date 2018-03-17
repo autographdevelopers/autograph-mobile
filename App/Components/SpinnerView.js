@@ -1,37 +1,34 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableOpacity,
-  Modal,
   Text,
   ActivityIndicator,
-  StyleSheet
 } from 'react-native';
 import { Colors, Fonts } from '../Themes/index';
 
-export default SpinnerView = ({label}) => (
-  <View style={styles.spinnerView}>
-    <ActivityIndicator color={Colors.primaryWarm} size={'large'}/>
-  </View>
-);
+/** Fills available space and centers spinner */
 
-const MODAL_SPINNER_MODE_SIZE = 300;
+export default SpinnerView = props => {
+  const {
+    label,
+    customIndicatorStyles={},
+    customContainerStyle={},
+    customLabelStyle={}
+  } = props;
 
-const styles = StyleSheet.create({
-  // triangle: {
-  //   /** shape */
-  //   width: 0,
-  //   height: 0,
-  //   borderTopWidth: MODAL_SPINNER_MODE_SIZE,
-  //   borderRightWidth: MODAL_SPINNER_MODE_SIZE,
-  //   borderRightColor: Colors.subtleGray,
-  //   borderTopColor: 'transparent',
-  //   /** position */
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   left: 0,
-  // },
-  spinnerView: {
+  return (
+    <View style={[styles.container, customContainerStyle]}>
+      <ActivityIndicator color={Colors.primaryWarm}
+                       size={'large'}
+                       style={customIndicatorStyles}/>
+      {label && <Text style={[styles.loaderText, customLabelStyle]}>{label}</Text>}
+    </View>
+  )
+};
+
+const styles = {
+  container: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
@@ -42,4 +39,4 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     backgroundColor: 'transparent',
   }
-});
+};
