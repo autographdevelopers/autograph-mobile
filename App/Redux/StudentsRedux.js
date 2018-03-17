@@ -65,7 +65,7 @@ export const saveCollectionHandler = (state, { data }) => {
 };
 
 export const destroySinglePendingHandler = (state, { studentId }) => {
-  const pending = deepClone(state.pending);
+  const pending = deepClone(state).pending;
   delete pending[studentId];
   const pendingIds = state.pendingIds.filter(id => studentId !== id );
 

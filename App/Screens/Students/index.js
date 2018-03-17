@@ -46,9 +46,8 @@ class StudentsIndex extends Component {
     })
   };
 
-  openConfirmationModal = (studentId) => {
+  openConfirmationModal = (studentId) =>
     this.setState({ studentId }, this.props.openDestroyInvitationModal)
-  }
 
   renderActiveStudent = ({item, index }) => (
     <ListItem
