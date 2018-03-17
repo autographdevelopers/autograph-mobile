@@ -11,6 +11,7 @@ export default EmployeeRolesSubtitle = ({ employeePrivileges }) => {
   if(employeePrivileges.is_driving) employeeRolesTexts.push(I18n.t('instructor'));
   if(employeePrivileges.can_manage_employees || employeePrivileges.can_manage_students || employeePrivileges.can_modify_schedules)
     employeeRolesTexts.push(I18n.t('office_employee'));
+  if(employeeRolesTexts.length === 0) employeeRolesTexts.push(I18n.t('lack_of_privileges'));
 
   const rolesList = employeeRolesTexts.map((role, i) => {
     return(
