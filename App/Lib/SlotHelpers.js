@@ -69,13 +69,17 @@ export const slotHelper = {
   roundTimeToHalfHourInterval: function(t) {
     let time = moment(t, this.TIME_FORMAT);
 
-    if(time.minutes() < 15) {
-      time.minutes(0);
-    } else if(time.minutes() > 45) {
-      time.add(1, 'hours');
-      time.minutes(0);
-    } else if(time.minutes() >= 15 && time.minutes() <= 45) {
-      time.minutes(30);
+    console.log('minutes')
+    console.log(time.minutes())
+    const minutes = parseInt(time.minutes());
+    const hours = parseInt(time.hours());
+
+    if(minutes < 15) {
+      time.minutes(0).hour(hours);
+    } else if(minutes > 45) {
+      time.minutes(0).hours(hours+1);
+    } else if(minutes >= 15 && minutes <= 45) {
+      time.minutes(30).hours(hours);
     }
     return time.format(this.TIME_FORMAT);
   }

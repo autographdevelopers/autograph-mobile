@@ -28,9 +28,9 @@ export default class ScheduleBoundariesView extends Component {
     const { startend } = this.state;
 
     if (startend === 'start_time') {
-      newTimeFrames = _.range(id, value.last)
+      newTimeFrames = _.range(id, value.last() + 1)
     } else if (startend === 'end_time') {
-      newTimeFrames = _.range(value.first, id - 1)
+      newTimeFrames = _.range(value.first(), id)
     }
     this.props.setFormValue(this.props.input.name, newTimeFrames)
   };
