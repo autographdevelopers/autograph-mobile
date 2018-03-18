@@ -48,6 +48,7 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToNewDrivingSchoolForm = () => {
+    //TODO fix bug when trying to navigate to new school page from existing pne(main school flw tabs  )
     this.props.setCurrentSchoolContext(null);
     this.props.navigation.navigate('newDrivingSchool');
   };

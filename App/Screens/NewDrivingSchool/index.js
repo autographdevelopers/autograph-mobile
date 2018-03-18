@@ -57,7 +57,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  initialRouteName: 'step2',
+  initialRouteName: 'step0',
   cardStyle: navStyles.card
 };
 

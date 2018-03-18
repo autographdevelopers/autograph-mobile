@@ -15,6 +15,7 @@ import WeekdayTimeFrames from '../../Components/WeekdayTimeFrames';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Fonts, Colors, Metrics } from '../../Themes/';
 import I18n from '../../I18n/index';
+import {slotHelper} from '../../Lib/SlotHelpers';
 
 const PARAM_NAME = 'valid_time_frames';
 const INITIAL_STATE = {
@@ -104,13 +105,13 @@ class ScheduleBoundaries extends Component {
 
         <FormSection name={PARAM_NAME}>
           <View>
-            <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} />
-            <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
           </View>
         </FormSection>
 
@@ -137,12 +138,12 @@ ScheduleBoundaries = reduxForm({
   }
 })(ScheduleBoundaries);
 
-// ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
+ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 
 const mapStateToProps = state => {
   return {
     drivingSchool: state.context.currentDrivingSchoolID,
-    initialValues: INITIAL_STATE,
+    initialValues: {valid_time_frames: state.scheduleSettings.valid_time_frames},
     status: state.scheduleSettings.status
   }
 };

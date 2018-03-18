@@ -2,6 +2,15 @@ import moment from 'moment/moment';
 
 export const slotHelper = {
   TIME_FORMAT: 'HH:mm',
+  validateFrames: function(frames) {
+    console.log('frames')
+    console.log(frames)
+    if (frames.first() <= frames.last()) {
+      return undefined;
+    } else if (frames.length > 0){
+      return 'Godzina otwarcia musi byc przed godzina zamkniecia.'
+    }
+  },
   summarizeDay: function(daySlots){
     // const sortedSlots = daySlots.sort((prev, next) => prev > next);
     const groupedSlots = this.groupAdjacentSlots(daySlots);
@@ -18,7 +27,7 @@ export const slotHelper = {
         const lastInterval = acc[acc.length - 1];
         const lastSlot = lastInterval[lastInterval.length - 1];
 
-        if ( lastSlot + 1 === current )
+        if ( Math.abs(lastSlot - current) === 1)
           lastInterval.push(current);
         else
           acc.push([current]);
@@ -39,7 +48,8 @@ export const slotHelper = {
   },
 
   idToHour: function(id) {
-    if (id == undefined) return undefined;
+    if (!(typeof id == "number")) return undefined;
+
 
     return moment({ hour: 0, minute: 0 }).add(id * 30, 'minutes').format(this.TIME_FORMAT)
   },
@@ -48,7 +58,7 @@ export const slotHelper = {
     const time = moment(hour, this.TIME_FORMAT);
     const formatted_time = time.format(this.TIME_FORMAT);
     const [hours, minutes] = formatted_time.split(':');
-      console.log(minutes);
+
     if (!['30', '00'].includes(minutes))
       throw 'Minutes must be rounder to half an hour.';
 

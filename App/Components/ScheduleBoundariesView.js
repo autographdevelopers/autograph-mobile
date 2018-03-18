@@ -28,9 +28,8 @@ export default class ScheduleBoundariesView extends Component {
     let newTimeFrames;
 
     if (startend === 'start_time') {
-      // what if last unefined
       if (value.last() !== undefined) {
-        newTimeFrames = _.range(id, value.last());
+        newTimeFrames = _.range(id, value.last() + 1);
       } else {
         newTimeFrames = _.range(id, id + 1);
       }
@@ -38,7 +37,7 @@ export default class ScheduleBoundariesView extends Component {
       if (value.first() !== undefined) {
         newTimeFrames = _.range( value.first(), id);
       } else {
-        newTimeFrames = _.range( id, id + 1);
+        newTimeFrames = _.range( id-1, id);
       }
     }
 
@@ -73,11 +72,19 @@ export default class ScheduleBoundariesView extends Component {
   };
 
   start_time = frames => {
-    return slotHelper.idToHour(frames.first());
+    if (frames.length === 0 ) {
+      return undefined;
+    } else {
+      return slotHelper.idToHour(frames.first());
+    }
   };
 
   end_time = frames => {
-    return slotHelper.idToHour(frames.last() + 1); // ??
+    if (frames.length === 0 ) {
+      return undefined;
+    } else {
+      return slotHelper.idToHour(frames.last() + 1); // ??
+    }
   };
 
   render() {
@@ -106,7 +113,8 @@ export default class ScheduleBoundariesView extends Component {
           <ButtonText onPress={this.applyToAllDays}
                       customStyle={styles.applyToAllDays}
                       position={'flex-start'}>
-            Zastosuj dla kazego dnia</ButtonText>
+            Zastosuj dla kazego dnia
+          </ButtonText>
         </View>
 
         <DatePicker
