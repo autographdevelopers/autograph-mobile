@@ -96,10 +96,11 @@ ScheduleSettings = LoadingHOC(ScheduleSettings);
 
 const mapStateToProps = state => {
   const { currentDrivingSchoolID } = state.context;
+  const {valid_time_frames, ...otherSettings} = state.scheduleSettings;
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: state.scheduleSettings,
+    initialValues: otherSettings,
     status: state.scheduleSettings.status,
   };
 };

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 /** Form steps */
 import InformationStep from './Information';
-import CalendarStep from './ScheduleBoundaries';
+import CalendarStep from './ValidTimeFrames';
 import NotificationsStep from './Notifications';
 import ScheduleSettings from './ScheduleSettings';
 

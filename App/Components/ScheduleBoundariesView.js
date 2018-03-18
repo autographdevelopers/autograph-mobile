@@ -5,10 +5,192 @@ import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
+import { slotHelper } from '../Lib/SlotHelpers';
 import { Fonts, Colors, Metrics } from '../Themes/';
 import CheckBox from './CheckBox';
 import ButtonText from './ButtonText';
 import { roundTimeToHalfHourInterval } from '../Lib/timeHandlers';
+import _ from 'lodash';
+
+const WEEKDAYS = [
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
+];
+
+const HOUR_PLACEHOLDER = '-:-';
+
+export default class ScheduleBoundariesView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      startend: 'start_time',
+      currentWeekday: 0
+    };
+  }
+
+  nextDay = () => {
+    this.setState({
+      currentWeekday: (this.state.currentWeekday + 1) % WEEKDAYS.length
+    });
+  };
+
+  prevDay = () => {
+    this.setState({
+      currentWeekday: (this.state.currentWeekday - 1) === -1 ? WEEKDAYS.length - 1 : (this.state.currentWeekday - 1)
+    });
+  };
+
+  setTime = time => {
+    const { input: {value} } = this.props;
+    const roundedTime = slotHelper.roundTimeToHalfHourInterval(time);
+    const currentDay = WEEKDAYS[this.state.currentWeekday];
+
+    let newState = _.cloneDeep(value);
+
+    const id = slotHelper.hourToId(roundedTime);
+    if (this.state.startend === 'start_time') {
+      newState[currentDay][0] = id;
+      const x = newState[currentDay].last - id;
+      // for let i =
+    } else if (this.state.startend === 'end_time') {
+      newState[currentDay][1] = id;
+    }
+
+    const newWeekdays = [].concat(this.props.value),
+      timeArray = time.split(':'),
+      m = timeArray[1],
+      h = timeArray[0];
+
+    const { hour, minutes } = roundTimeToHalfHourInterval(h, m);
+    const datetime = moment();
+
+    datetime.hours(hour);
+    datetime.minutes(minutes);
+    newWeekdays[this.state.currentWeekday][this.state.startend] = datetime;
+
+    this.props.setValue(newWeekdays);
+  };
+
+  openDatePicker = startend => () => {
+    this.setState({
+      startend: startend
+    });
+
+    this.datePicker.onPressDate();
+  };
+
+  clearDay = index => () => {
+    // const newWeekdays = [].concat(this.props.value);
+    // newWeekdays[index]['start_time'] = null;
+    // newWeekdays[index]['end_time'] = null;
+    //
+    // this.props.setValue(newWeekdays);
+  };
+
+  applyToAllDays = () => {
+    // const newWeekdays = this.props.value.map((element, index) => ({
+    //   ...this.props.value[this.state.currentWeekday],
+    //   weekday: element.weekday
+    // }));
+    //
+    // this.props.setValue(newWeekdays);
+  };
+
+  start_time = day => {
+    const { input: {value} } = this.props;
+    const currentDayTimeFrames = value[day];
+    console.log('start')
+    console.log(day)
+    console.log(value)
+    console.log(currentDayTimeFrames)
+    console.log(currentDayTimeFrames.first)
+    return slotHelper.idToHour(currentDayTimeFrames.first()) || HOUR_PLACEHOLDER;
+  };
+
+  end_time = day => {
+    const { input: {value} } = this.props;
+    const currentDayTimeFrames = value[day];
+    console.log('end')
+    console.log(day)
+    console.log(value)
+    console.log(currentDayTimeFrames)
+    console.log(currentDayTimeFrames.last + 1)
+    return slotHelper.idToHour(currentDayTimeFrames.last() + 1) || HOUR_PLACEHOLDER;
+  };
+
+  render() {
+    const { input: {value} } = this.props;
+
+    console.log('render method!!')
+
+    return (
+      <ScrollView>
+        <View style={[styles.currentWeekdayRow, styles.row]}>
+          <TouchableOpacity onPress={this.prevDay}>
+            <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
+          </TouchableOpacity>
+          <Text style={styles.currentWeekday}>{WEEKDAYS[this.state.currentWeekday]}</Text>
+          <TouchableOpacity onPress={this.nextDay}>
+            <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
+          </TouchableOpacity>
+        </View>
+
+        <View style={[styles.row, styles.timeIntervalRow]}>
+          <Text>od</Text>
+          <TouchableOpacity onPress={this.openDatePicker('start_time')}>
+            <Text style={styles.hour}>
+              {this.start_time(WEEKDAYS[this.state.currentWeekday])}
+            </Text>
+          </TouchableOpacity>
+
+          <Text>do</Text>
+          <TouchableOpacity onPress={this.openDatePicker('end_time')}>
+            <Text style={styles.hour}>
+              {this.end_time(WEEKDAYS[this.state.currentWeekday])}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays} position={'flex-start'}>Zastosuj
+            dla kazego dnia</ButtonText>
+        </View>
+        {
+          WEEKDAYS.map((day, index) => {
+            const [start_id, end_id] = value[day];
+            const checked = (typeof(start_id) !== undefined) && (typeof(end_id) !== undefined);
+
+            return (
+              <View style={styles.dayRow} key={`day-${index}`}>
+                <View style={styles.weekdayLabelContainer}>
+                  <CheckBox value={checked} setValue={()=>{}}/>
+                  <Text style={styles.weekdayLabel}>{day}</Text>
+                </View>
+
+                <View style={styles.weekdayInfo}>
+                  <Text>
+                    {`${this.start_time(day)} - ${this.end_time(day)}`}
+                  </Text>
+                </View>
+              </View>
+            )
+          })
+        }
+        <DatePicker
+          style={styles.datepicker}
+          ref={picker => this.datePicker = picker}
+          date={this[this.state.startend](WEEKDAYS[this.state.currentWeekday])}
+          showIcon={false}
+          mode='time'
+          format={slotHelper.TIME_FORMAT}
+          minuteInterval={30}
+          confirmBtnText='Potwierdz'
+          cancelBtnText='Anuluj'
+          onDateChange={this.setTime}
+        />
+      </ScrollView>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   title: {
@@ -71,152 +253,3 @@ const styles = StyleSheet.create({
     marginVertical: 10
   }
 });
-
-const WEEKDAYS = [
-  'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota', 'Niedziela'
-];
-
-const TIME_FORMAT = 'HH:mm';
-
-export default class ScheduleBoundariesView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startend: 'start_time',
-      currentWeekday: 0
-    };
-  }
-
-  nextDay = () => {
-    this.setState({
-      currentWeekday: (this.state.currentWeekday + 1) % WEEKDAYS.length
-    });
-  };
-
-  prevDay = () => {
-    this.setState({
-      currentWeekday: (this.state.currentWeekday - 1) === -1 ? WEEKDAYS.length - 1 : (this.state.currentWeekday - 1)
-    });
-  };
-
-  setTime = time => {
-    const newWeekdays = [].concat(this.props.value), // TODO deep or shallow copy?
-      timeArray = time.split(':'),
-      m = timeArray[1],
-      h = timeArray[0];
-
-    const { hour, minutes } = roundTimeToHalfHourInterval(h, m);
-    const datetime = moment();
-
-    datetime.hours(hour);
-    datetime.minutes(minutes);
-    newWeekdays[this.state.currentWeekday][this.state.startend] = datetime;
-
-    this.props.setValue(newWeekdays);
-  };
-
-  openDatePicker = startend => () => {
-    this.setState({
-      startend: startend
-    });
-
-    this.datePicker.onPressDate();
-  };
-
-  isIntervalSet = index => {
-    const { start_time, end_time } = this.props.value[index];
-    return start_time && end_time;
-  };
-
-  clearDay = index => () => {
-    const newWeekdays = [].concat(this.props.value);
-    newWeekdays[index]['start_time'] = null;
-    newWeekdays[index]['end_time'] = null;
-
-    this.props.setValue(newWeekdays);
-  };
-
-  applyToAllDays = () => {
-    const newWeekdays = this.props.value.map((element, index) => ({
-      ...this.props.value[this.state.currentWeekday],
-      weekday: element.weekday
-    }));
-
-    this.props.setValue(newWeekdays);
-  };
-
-  currentStartEndTime = (startend, value) => (this.displayTime(value[this.state.currentWeekday][startend]));
-
-  displayTime = datetime => (
-    datetime ? datetime.format(TIME_FORMAT) : '-:-'
-  );
-
-  render() {
-    const { value } = this.props;
-
-    return (
-      <ScrollView>
-        <View style={[styles.currentWeekdayRow, styles.row]}>
-          <TouchableOpacity onPress={this.prevDay}>
-            <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
-          </TouchableOpacity>
-          <Text style={styles.currentWeekday}>{WEEKDAYS[this.state.currentWeekday]}</Text>
-          <TouchableOpacity onPress={this.nextDay}>
-            <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
-          </TouchableOpacity>
-        </View>
-
-        <View style={[styles.row, styles.timeIntervalRow]}>
-          <Text>od</Text>
-          <TouchableOpacity onPress={this.openDatePicker('start_time')}><Text
-            style={styles.hour}>{this.currentStartEndTime('start_time', value)}</Text></TouchableOpacity>
-
-          <Text>do</Text>
-          <TouchableOpacity onPress={this.openDatePicker('end_time')}><Text
-            style={styles.hour}>{this.currentStartEndTime('end_time', value)}</Text></TouchableOpacity>
-        </View>
-
-        <View>
-          <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays} position={'flex-start'}>Zastosuj
-            dla kazego dnia</ButtonText>
-        </View>
-        {
-          WEEKDAYS.map((element, index) => {
-            const { start_time, end_time } = value[index];
-
-            return (
-            <View style={styles.dayRow} key={`day-${index}`}>
-              <View style={styles.weekdayLabelContainer}>
-                <CheckBox value={this.isIntervalSet(index)} setValue={this.clearDay(index)}/>
-                <Text style={styles.weekdayLabel}>{element}</Text>
-              </View>
-
-              <View style={styles.weekdayInfo}>
-                <Text>
-                  {this.displayTime(start_time)} - {this.displayTime(end_time)}
-                </Text>
-                {
-                  start_time && end_time && end_time.isBefore(start_time) &&
-                  <Text style={{color: Colors.salmon}}>Koniec przed poczatkiem.</Text>
-                }
-              </View>
-            </View>
-            )
-          })
-        }
-        <DatePicker
-          style={styles.datepicker}
-          ref={picker => this.datePicker = picker}
-          date={this.displayTime(value[this.state.currentWeekday][this.state.startend])}
-          showIcon={false}
-          mode='time'
-          format={TIME_FORMAT}
-          minuteInterval={30}
-          confirmBtnText='Potwierdz'
-          cancelBtnText='Anuluj'
-          onDateChange={date => this.setTime(date)}
-        />
-      </ScrollView>
-    );
-  }
-}

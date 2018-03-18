@@ -11,7 +11,7 @@ import InviteStudentForm from '../Screens/Students/InviteForm';
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
-import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
+import ScheduleBoundaries from '../Screens/NewDrivingSchool/ValidTimeFrames';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
