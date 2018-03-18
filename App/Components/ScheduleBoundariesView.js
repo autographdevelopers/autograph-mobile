@@ -21,34 +21,18 @@ export default class ScheduleBoundariesView extends Component {
   }
 
   setTime = time => {
-    // const { input: {value} } = this.props;
-    // const roundedTime = slotHelper.roundTimeToHalfHourInterval(time);
-    // const currentDay = WEEKDAYS[this.state.currentWeekday];
-    //
-    // let newState = _.cloneDeep(value);
-    //
-    // const id = slotHelper.hourToId(roundedTime);
-    // if (this.state.startend === 'start_time') {
-    //   newState[currentDay][0] = id;
-    //   const x = newState[currentDay].last - id;
-    //   // for let i =
-    // } else if (this.state.startend === 'end_time') {
-    //   newState[currentDay][1] = id;
-    // }
-    //
-    // const newWeekdays = [].concat(this.props.value),
-    //   timeArray = time.split(':'),
-    //   m = timeArray[1],
-    //   h = timeArray[0];
-    //
-    // const { hour, minutes } = roundTimeToHalfHourInterval(h, m);
-    // const datetime = moment();
-    //
-    // datetime.hours(hour);
-    // datetime.minutes(minutes);
-    // newWeekdays[this.state.currentWeekday][this.state.startend] = datetime;
-    //
-    // this.props.setValue(newWeekdays);
+    const { input: {value} } = this.props;
+    const roundedTime = slotHelper.roundTimeToHalfHourInterval(time);
+    const id = slotHelper.hourToId(roundedTime);
+    let newTimeFrames;
+    const { startend } = this.state;
+
+    if (startend === 'start_time') {
+      newTimeFrames = _.range(id, value.last)
+    } else if (startend === 'end_time') {
+      newTimeFrames = _.range(value.first, id - 1)
+    }
+    this.props.setFormValue(this.props.input.name, newTimeFrames)
   };
 
   openDatePicker = startend => () => {

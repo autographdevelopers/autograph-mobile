@@ -86,7 +86,7 @@ class ScheduleBoundaries extends Component {
           </TouchableOpacity>
         </View>
 
-        <Field name={WEEKDAYS[this.state.currentWeekday]} component={ScheduleBoundariesPicker} />
+        <Field name={WEEKDAYS[this.state.currentWeekday]} component={ScheduleBoundariesPicker} setFormValue={change}/>
 
         <Field name={'monday'} component={WeekdayTimeFrames} />
         <Field name={'tuesday'} component={WeekdayTimeFrames} />

@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   weekdayInfo: {
-    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
     marginVertical: 5,
+    marginLeft: 5,
     flexDirection: 'row'
   },
   weekdayLabelContainer: {

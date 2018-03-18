@@ -72,8 +72,8 @@ export const slotHelper = {
     if(time.minutes() < 15) {
       time.minutes(0);
     } else if(time.minutes() > 45) {
-      time.minutes(0);
       time.add(1, 'hours');
+      time.minutes(0);
     } else if(time.minutes() >= 15 && time.minutes() <= 45) {
       time.minutes(30);
     }
