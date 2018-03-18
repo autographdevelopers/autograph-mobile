@@ -70,7 +70,7 @@ class ScheduleBoundaries extends Component {
 
   render() {
     console.log(this.props);
-    const { change, error, navigation, submitting } = this.props;
+    const { change, error, navigation, submitting, initialize } = this.props;
     const currentDay= I18n.t(`weekdays.normal.${WEEKDAYS[this.state.currentWeekday]}`);
 
     return (
@@ -86,15 +86,18 @@ class ScheduleBoundaries extends Component {
           </TouchableOpacity>
         </View>
 
-        <Field name={WEEKDAYS[this.state.currentWeekday]} component={ScheduleBoundariesPicker} setFormValue={change}/>
+        <Field name={WEEKDAYS[this.state.currentWeekday]}
+               component={ScheduleBoundariesPicker}
+               setFormValue={change}
+               initForm={initialize}/>
 
-        <Field name={'monday'} component={WeekdayTimeFrames} />
-        <Field name={'tuesday'} component={WeekdayTimeFrames} />
-        <Field name={'wednesday'} component={WeekdayTimeFrames} />
-        <Field name={'thursday'} component={WeekdayTimeFrames} />
-        <Field name={'friday'} component={WeekdayTimeFrames} />
-        <Field name={'saturday'} component={WeekdayTimeFrames} />
-        <Field name={'sunday'} component={WeekdayTimeFrames} />
+        <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} />
+        <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} />
 
 
         {navigation.state.params && navigation.state.params.singleton &&

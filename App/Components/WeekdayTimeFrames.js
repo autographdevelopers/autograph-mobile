@@ -4,19 +4,22 @@ import { slotHelper } from '../Lib/SlotHelpers';
 import CheckBox from './CheckBox';
 import I18n from '../I18n/index';
 
-export default WeekdayTimeFrames = ({input, meta}) => {
+export default WeekdayTimeFrames = props => {
+  const {setFormValue, input: {name, value}} = props;
+
   return (
     <View style={styles.dayRow}>
       <View style={styles.weekdayLabelContainer}>
-        <CheckBox value={true} setValue={()=>{}}/>
-        <Text style={styles.weekdayLabel}>{I18n.t(`weekdays.normal.${input.name}`)}</Text>
+        <CheckBox value={value.length >=1} setValue={()=>setFormValue(name, [])}/>
+        <Text style={styles.weekdayLabel}>{I18n.t(`weekdays.normal.${name}`)}</Text>
       </View>
 
       <View style={styles.weekdayInfo}>
-          {slotHelper.summarizeDay(input.value).map((interval, index) => (
-            <Text>{interval} </Text>
+          {slotHelper.summarizeDay(value).map((interval, index) => (
+            <Text key={index}>{interval} </Text>
             ))
           }
+          {value.length === 0 && <Text> - : -  - : - </Text>}
       </View>
     </View>
   );

@@ -21,18 +21,29 @@ export default class ScheduleBoundariesView extends Component {
   }
 
   setTime = time => {
-    const { input: {value} } = this.props;
+    const { input: {value, name}, setFormValue } = this.props;
+    const { startend } = this.state;
     const roundedTime = slotHelper.roundTimeToHalfHourInterval(time);
     const id = slotHelper.hourToId(roundedTime);
+
     let newTimeFrames;
-    const { startend } = this.state;
 
     if (startend === 'start_time') {
-      newTimeFrames = _.range(id, value.last() + 1)
+      // what if last unefined
+      if (value.last() !== undefined) {
+        newTimeFrames = _.range(id, value.last());
+      } else {
+        newTimeFrames = _.range(id, id + 1);
+      }
     } else if (startend === 'end_time') {
-      newTimeFrames = _.range(value.first(), id)
+      if (value.first() !== undefined) {
+        newTimeFrames = _.range( value.first(), id);
+      } else {
+        newTimeFrames = _.range( id, id + 1);
+      }
     }
-    this.props.setFormValue(this.props.input.name, newTimeFrames)
+
+    setFormValue(name, newTimeFrames);
   };
 
   openDatePicker = startend => () => {
@@ -43,38 +54,34 @@ export default class ScheduleBoundariesView extends Component {
     this.datePicker.onPressDate();
   };
 
-  clearDay = index => () => {
-    // const newWeekdays = [].concat(this.props.value);
-    // newWeekdays[index]['start_time'] = null;
-    // newWeekdays[index]['end_time'] = null;
-    //
-    // this.props.setValue(newWeekdays);
-  };
 
   applyToAllDays = () => {
-    // const newWeekdays = this.props.value.map((element, index) => ({
-    //   ...this.props.value[this.state.currentWeekday],
-    //   weekday: element.weekday
-    // }));
-    //
-    // this.props.setValue(newWeekdays);
+    const {input: {value}} = this.props;
+
+    const timeFrames = {
+      monday: _.cloneDeep(value),
+      tuesday: _.cloneDeep(value),
+      wednesday: _.cloneDeep(value),
+      thursday: _.cloneDeep(value),
+      friday: _.cloneDeep(value),
+      saturday: _.cloneDeep(value),
+      sunday: _.cloneDeep(value),
+    }
+
+    this.props.initForm(timeFrames);
   };
 
   start_time = frames => {
-    console.log(frames)
-    console.log(frames.first)
-    return slotHelper.idToHour(frames.first()) || HOUR_PLACEHOLDER;
+    return slotHelper.idToHour(frames.first());
   };
 
   end_time = frames => {
-    console.log('end')
-    console.log(frames)
-    console.log(frames.last + 1)
-    return slotHelper.idToHour(frames.last() + 1) || HOUR_PLACEHOLDER;
+    return slotHelper.idToHour(frames.last() + 1); // ??
   };
 
   render() {
-    const { input: {value} } = this.props;
+    const { input: {value}, initForm } = this.props;
+
 
     return (
       <View>
@@ -83,27 +90,29 @@ export default class ScheduleBoundariesView extends Component {
           <Text>od</Text>
           <TouchableOpacity onPress={this.openDatePicker('start_time')}>
             <Text style={styles.hour}>
-              {this.start_time(value)}
+              {this.start_time(value) || HOUR_PLACEHOLDER}
             </Text>
           </TouchableOpacity>
 
           <Text>do</Text>
           <TouchableOpacity onPress={this.openDatePicker('end_time')}>
             <Text style={styles.hour}>
-              {this.end_time(value)}
+              {this.end_time(value) || HOUR_PLACEHOLDER}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View>
-          <ButtonText onPress={this.applyToAllDays} customStyle={styles.applyToAllDays} position={'flex-start'}>
+          <ButtonText onPress={this.applyToAllDays}
+                      customStyle={styles.applyToAllDays}
+                      position={'flex-start'}>
             Zastosuj dla kazego dnia</ButtonText>
         </View>
 
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={this[this.state.startend](value)}
+          date={this[this.state.startend](value) || '12:00'}
           showIcon={false}
           mode='time'
           format={slotHelper.TIME_FORMAT}

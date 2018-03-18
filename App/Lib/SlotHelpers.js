@@ -48,7 +48,7 @@ export const slotHelper = {
     const time = moment(hour, this.TIME_FORMAT);
     const formatted_time = time.format(this.TIME_FORMAT);
     const [hours, minutes] = formatted_time.split(':');
-
+      console.log(minutes);
     if (!['30', '00'].includes(minutes))
       throw 'Minutes must be rounder to half an hour.';
 
