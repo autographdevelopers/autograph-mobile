@@ -99,6 +99,7 @@ class ScheduleBoundaries extends Component {
         <Field name={`${PARAM_NAME}.${WEEKDAYS[this.state.currentWeekday]}`}
                component={ScheduleBoundariesPicker}
                setFormValue={change}
+               paramName={PARAM_NAME}
                initForm={initialize}/>
 
         <FormSection name={PARAM_NAME}>

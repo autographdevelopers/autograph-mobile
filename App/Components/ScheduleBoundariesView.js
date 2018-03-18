@@ -55,19 +55,21 @@ export default class ScheduleBoundariesView extends Component {
 
 
   applyToAllDays = () => {
-    const { input: { value } } = this.props;
+    const { input: { value }, paramName } = this.props;
 
-    const timeFrames = {
-      monday: _.cloneDeep(value),
-      tuesday: _.cloneDeep(value),
-      wednesday: _.cloneDeep(value),
-      thursday: _.cloneDeep(value),
-      friday: _.cloneDeep(value),
-      saturday: _.cloneDeep(value),
-      sunday: _.cloneDeep(value),
+    const params = {
+      [paramName]: {
+        monday: _.cloneDeep(value),
+        tuesday: _.cloneDeep(value),
+        wednesday: _.cloneDeep(value),
+        thursday: _.cloneDeep(value),
+        friday: _.cloneDeep(value),
+        saturday: _.cloneDeep(value),
+        sunday: _.cloneDeep(value),
+      }
     };
 
-    this.props.initForm(timeFrames);
+    this.props.initForm(params);
   };
 
   start_time = frames => {
