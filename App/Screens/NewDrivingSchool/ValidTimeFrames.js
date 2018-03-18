@@ -61,6 +61,12 @@ class ScheduleBoundaries extends Component {
     });
   };
 
+  setDay = index => () => {
+    this.setState({
+      currentWeekday: index
+    });
+  };
+
   render() {
     const {
       change,
@@ -104,6 +110,8 @@ class ScheduleBoundaries extends Component {
                      key={`day-summary-checkbox-row-${index}`}
                      component={WeekdayTimeFrames}
                      setFormValue={change}
+                     active={index===currentDay}
+                     handlePress={this.setDay(index)}
                      validate={slotHelper.validateFrames}/>
             ))}
           </View>
@@ -162,7 +170,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 35,
     width: '50%',
     fontSize: Fonts.size.regular,
-    color: Colors.softBlack,
     textAlign: 'center'
   },
   row: {

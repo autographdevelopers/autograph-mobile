@@ -109,7 +109,7 @@ export default class ScheduleBoundariesView extends Component {
           </TouchableOpacity>
         </View>
 
-        <View>
+        <View style={styles.applyToAllDaysContainer}>
           <ButtonText onPress={this.applyToAllDays}
                       customStyle={styles.applyToAllDays}
                       position={'flex-start'}>
@@ -174,5 +174,8 @@ const styles = StyleSheet.create({
   },
   applyToAllDays: {
     marginVertical: 10
+  },
+  applyToAllDaysContainer: {
+    paddingVertical: 15
   }
 });
