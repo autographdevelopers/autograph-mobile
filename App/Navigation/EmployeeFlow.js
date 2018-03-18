@@ -13,9 +13,6 @@ const routeConfigs = {
   mySchoolsScreen: {
     screen: MySchoolsScreen
   },
-  newDrivingSchool: {
-    screen: NewDrivingSchoolWizardForm
-  }
 };
 
 const navigationConfigs = {
