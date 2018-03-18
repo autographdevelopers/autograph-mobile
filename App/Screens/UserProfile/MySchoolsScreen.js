@@ -55,16 +55,18 @@ class MySchoolsScreen extends Component {
   navigateToSchoolContext = school => {
     const { user, navigation: { navigate } } = this.props;
     this.props.setCurrentSchoolContext(school.id);
-    let routeName;
+
+    let userType;
 
     if ( isEmployee(user) ) {
       if ( isDrivingSchoolOwner(school) )
-        routeName = 'ownerMain';
+        userType = 'owner';
       else
-        routeName = 'employeeMain';
+        userType = 'employee';
     } else if ( isStudent(user) ) {
-        routeName = 'studentMain';
+        userType = 'student';
     }
+
 
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -72,9 +74,8 @@ class MySchoolsScreen extends Component {
       actions: [
           NavigationActions.navigate(
             {
-              routeName: 'primaryFlow',
+              routeName: `${userType}Flow`,
               params: { drivingSchool: school, user },
-              action: NavigationActions.navigate({routeName})
             }
           )
       ],

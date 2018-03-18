@@ -83,7 +83,6 @@ export default class ScheduleBoundariesView extends Component {
   render() {
     const { input: {value}, initForm } = this.props;
 
-
     return (
       <View>
 

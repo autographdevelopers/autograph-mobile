@@ -119,6 +119,6 @@ const navigationConfig = {
   }
 };
 
+export const OwnerTabNavigator = TabNavigator(ownerRoutesConfigs, navigationConfig);
 export const EmployeeTabNavigator = TabNavigator(employeeRoutesConfigs, navigationConfig);
 export const StudentTabNavigator = TabNavigator(studentRoutesConfigs, navigationConfig);
-export const OwnerTabNavigator = TabNavigator(ownerRoutesConfigs, navigationConfig);
