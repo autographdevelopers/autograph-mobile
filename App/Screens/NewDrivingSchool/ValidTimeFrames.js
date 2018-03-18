@@ -18,22 +18,10 @@ import I18n from '../../I18n/index';
 import {slotHelper} from '../../Lib/SlotHelpers';
 
 const PARAM_NAME = 'valid_time_frames';
-const INITIAL_STATE = {
-  [PARAM_NAME]: {
-    monday: [0, 1],
-    tuesday: [0, 1],
-    wednesday: [0, 1],
-    thursday: [0, 1],
-    friday: [0, 1],
-    saturday: [0, 1],
-    sunday: [0, 1],
-  }
-};
 
 const WEEKDAYS = [
   'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
 ];
-
 
 const FORM_ID = FORM_IDS.SCHEDULE_BOUNDARIES;
 
@@ -82,7 +70,9 @@ class ScheduleBoundaries extends Component {
       initialize
     } = this.props;
 
-    const currentDay= I18n.t(`weekdays.normal.${WEEKDAYS[this.state.currentWeekday]}`);
+    const currentDay = this.state.currentWeekday;
+
+    const currentDayLabel= I18n.t(`weekdays.normal.${WEEKDAYS[currentDay]}`);
 
     return (
       <Layout customStyles={{paddingTop: 0}}>
@@ -91,26 +81,30 @@ class ScheduleBoundaries extends Component {
           <TouchableOpacity onPress={this.prevDay}>
             <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
           </TouchableOpacity>
-          <Text style={styles.currentWeekday}>{currentDay}</Text>
+          <Text style={styles.currentWeekday}>{currentDayLabel}</Text>
           <TouchableOpacity onPress={this.nextDay}>
             <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
           </TouchableOpacity>
         </View>
 
-        {WEEKDAYS.map((day, index) => (
-          <View style={this.state.currentWeekday === index ? {} : {height: 0, width: 0}} key={`picker-${index}`}>
-            <Field name={`${PARAM_NAME}.${day}`}
-                   component={ScheduleBoundariesPicker}
-                   setFormValue={change}
-                   paramName={PARAM_NAME}
-                   initForm={initialize}/>
-          </View>
-        ))}
-
         <FormSection name={PARAM_NAME}>
           <View>
             {WEEKDAYS.map((day, index) => (
-              <Field name={day} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+              <View style={currentDay === index ? {} : styles.hide} key={`picker-${index}`}>
+                <Field name={day}
+                       component={ScheduleBoundariesPicker}
+                       setFormValue={change}
+                       paramName={PARAM_NAME}
+                       initForm={initialize}/>
+              </View>
+            ))}
+
+            {WEEKDAYS.map((day, index) => (
+              <Field name={day}
+                     key={`day-summary-checkbox-row-${index}`}
+                     component={WeekdayTimeFrames}
+                     setFormValue={change}
+                     validate={slotHelper.validateFrames}/>
             ))}
           </View>
         </FormSection>
@@ -143,7 +137,7 @@ ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 const mapStateToProps = state => {
   return {
     drivingSchool: state.context.currentDrivingSchoolID,
-    initialValues: {valid_time_frames: state.scheduleSettings.valid_time_frames},
+    initialValues: {[PARAM_NAME]: state.scheduleSettings[PARAM_NAME]},
     status: state.scheduleSettings.status
   }
 };
@@ -154,12 +148,15 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 
-
 const styles = StyleSheet.create({
   currentWeekdayRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  hide: {
+    height: 0,
+    width: 0
   },
   currentWeekday: {
     marginHorizontal: 35,
