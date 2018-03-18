@@ -14,6 +14,7 @@ import { invitationActionTypes } from '../Redux/InvitationsRedux';
 import { scheduleActionTypes } from '../Redux/ScheduleRedux';
 import { scheduleFormActionTypes } from '../Redux/ScheduleFormRedux';
 import { schoolActivationActionTypes } from '../Redux/SchoolActivationRedux';
+import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
 
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
@@ -61,6 +62,11 @@ import {
   update as updateEmployeeScheduleSaga
 } from './SchedulesSaga';
 
+import {
+  show as showDrivingCourse,
+  update as updateDrivingCourse
+} from './DrivingCourseSaga';
+
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
@@ -105,6 +111,9 @@ export default function* root() {
     takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST, showEmployeePrivilegesSaga, api),
 
     takeLatest(scheduleActionTypes.SHOW_REQUEST, showEmployeeScheduleSaga, api),
-    takeLatest(scheduleFormActionTypes.UPDATE_REQUEST, updateEmployeeScheduleSaga, api)
+    takeLatest(scheduleFormActionTypes.UPDATE_REQUEST, updateEmployeeScheduleSaga, api),
+
+    takeLatest(drivingCourseActionTypes.SHOW_REQUEST, showDrivingCourse, api),
+    takeLatest(drivingCourseActionTypes.UPDATE_REQUEST, updateDrivingCourse, api),
   ])
 }

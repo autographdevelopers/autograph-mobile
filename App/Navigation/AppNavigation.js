@@ -15,6 +15,7 @@ import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
+import StudentProfile from '../Screens/StudentProfile/ModuleNavigator';
 import DefaultAvatar from '../Components/DefaultAvatar';
 import { Fonts, Colors } from '../Themes/'
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
@@ -84,6 +85,10 @@ const routeConfigs = {
   },
   userProfile: {
     screen: EmployeeProfileModule,
+  },
+  studentProfile: {
+    screen: StudentProfile,
+    navigationOptions: { header: null }
   }
 }
 

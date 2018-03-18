@@ -20,6 +20,7 @@ import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
 import { studentsActionCreators } from '../../Redux/StudentsRedux';
+import { contextActionCreators } from '../../Redux/ContextRedux';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 
@@ -49,6 +50,11 @@ class StudentsIndex extends Component {
   openConfirmationModal = (studentId) =>
     this.setState({ studentId }, this.props.openDestroyInvitationModal)
 
+  goToStudentProfile = (user, index) => () => {
+    this.props.setCurrentStudent(user.id);
+    this.props.navigation.navigate('studentProfile', { user, index });
+  };
+
   renderActiveStudent = ({item, index }) => (
     <ListItem
       title={`${item.name} ${item.surname}`}
@@ -57,6 +63,7 @@ class StudentsIndex extends Component {
           {`Tel. ${item.phone_number}`}
         </Text>
       }
+      onPress={this.goToStudentProfile(item, index)}
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       containerStyle={{ borderBottomWidth: 0 }}
     />
@@ -179,6 +186,7 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   studentsIndexRequest: () => dispatch(studentsActionCreators.indexRequest()),
+  setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_STUDENT_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
