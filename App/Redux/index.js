@@ -9,7 +9,6 @@ import { drivingSchoolReducer } from './DrivingSchoolRedux';
 import { contextReducer } from './ContextRedux';
 import { notificationsSettingsSetReducer } from './EmployeeNotificationsSettingsSetRedux';
 import { scheduleSettingsReducer } from './ScheduleSettingsRedux';
-import { scheduleBoundariesReducer } from './ScheduleBoundariesRedux';
 import formActionSaga from 'redux-form-saga';
 import { employeesReducer } from './EmployeesRedux';
 import { studentsReducer } from './StudentsRedux';
@@ -31,7 +30,6 @@ export const reducers = combineReducers({
   context: contextReducer,
   notificationsSettingsSet: notificationsSettingsSetReducer,
   scheduleSettings: scheduleSettingsReducer,
-  scheduleBoundaries: scheduleBoundariesReducer,
   employees: employeesReducer,
   students: studentsReducer,
   employeePrivileges: employeePrivilegesReducer,

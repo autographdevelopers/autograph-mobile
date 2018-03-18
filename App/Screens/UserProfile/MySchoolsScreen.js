@@ -48,23 +48,36 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToNewDrivingSchoolForm = () => {
+    //TODO fix bug when trying to navigate to new school page from existing pne(main school flw tabs  )
     this.props.setCurrentSchoolContext(null);
-    this.props.navigation.navigate('newDrivingSchool');
+
+    const resetAction = NavigationActions.reset({
+      index: 1,
+      key: null,
+      actions: [
+        NavigationActions.navigate({ routeName: `mySchoolsScreen`}),
+        NavigationActions.navigate({ routeName: `newDrivingSchool`})
+      ],
+    });
+
+    this.props.navigation.dispatch(resetAction);
   };
 
   navigateToSchoolContext = school => {
     const { user, navigation: { navigate } } = this.props;
     this.props.setCurrentSchoolContext(school.id);
-    let routeName;
+
+    let userType;
 
     if ( isEmployee(user) ) {
       if ( isDrivingSchoolOwner(school) )
-        routeName = 'ownerMain';
+        userType = 'owner';
       else
-        routeName = 'employeeMain';
+        userType = 'employee';
     } else if ( isStudent(user) ) {
-        routeName = 'studentMain';
+        userType = 'student';
     }
+
 
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -72,9 +85,8 @@ class MySchoolsScreen extends Component {
       actions: [
           NavigationActions.navigate(
             {
-              routeName: 'primaryFlow',
+              routeName: `${userType}Flow`,
               params: { drivingSchool: school, user },
-              action: NavigationActions.navigate({routeName})
             }
           )
       ],
