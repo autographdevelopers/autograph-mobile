@@ -23,7 +23,7 @@ export default WeekdayTimeFrames = props => {
               <Text key={index}>{interval} </Text>
               ))
             }
-            {value.length === 0 && <Text>NIE CZYNNE</Text>}
+            {value.length === 0 && <Text>NIECZYNNE</Text>}
         </View>
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
