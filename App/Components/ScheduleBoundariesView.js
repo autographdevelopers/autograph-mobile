@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
-
-import { slotHelper } from '../Lib/SlotHelpers';
-import { Fonts, Colors, Metrics } from '../Themes/';
-import ButtonText from './ButtonText';
-import { roundTimeToHalfHourInterval } from '../Lib/timeHandlers';
 import _ from 'lodash';
 
+import { slotHelper } from '../Lib/SlotHelpers';
+import { Fonts, Colors } from '../Themes/';
+import ButtonText from './ButtonText';
+
 const HOUR_PLACEHOLDER = '-:-';
+const DEFAULT_HOUR = '12:00';
 
 export default class ScheduleBoundariesView extends Component {
   constructor(props) {
@@ -56,7 +55,7 @@ export default class ScheduleBoundariesView extends Component {
 
 
   applyToAllDays = () => {
-    const {input: {value}} = this.props;
+    const { input: { value } } = this.props;
 
     const timeFrames = {
       monday: _.cloneDeep(value),
@@ -66,7 +65,7 @@ export default class ScheduleBoundariesView extends Component {
       friday: _.cloneDeep(value),
       saturday: _.cloneDeep(value),
       sunday: _.cloneDeep(value),
-    }
+    };
 
     this.props.initForm(timeFrames);
   };
@@ -112,7 +111,7 @@ export default class ScheduleBoundariesView extends Component {
         <DatePicker
           style={styles.datepicker}
           ref={picker => this.datePicker = picker}
-          date={this[this.state.startend](value) || '12:00'}
+          date={this[this.state.startend](value) || DEFAULT_HOUR}
           showIcon={false}
           mode='time'
           format={slotHelper.TIME_FORMAT}

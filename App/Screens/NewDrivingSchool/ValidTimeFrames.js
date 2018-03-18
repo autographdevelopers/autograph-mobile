@@ -69,8 +69,14 @@ class ScheduleBoundaries extends Component {
   };
 
   render() {
-    console.log(this.props);
-    const { change, error, navigation, submitting, initialize } = this.props;
+    const {
+      change,
+      error,
+      navigation,
+      submitting,
+      initialize
+    } = this.props;
+
     const currentDay= I18n.t(`weekdays.normal.${WEEKDAYS[this.state.currentWeekday]}`);
 
     return (
