@@ -11,7 +11,9 @@ export default WeekdayTimeFrames = props => {
     <View style={styles.dayRow}>
       <View style={styles.weekdayLabelContainer}>
         <CheckBox value={value.length >=1} setValue={()=>setFormValue(name, [])}/>
-        <Text style={styles.weekdayLabel}>{I18n.t(`weekdays.normal.${name}`)}</Text>
+        <Text style={styles.weekdayLabel}>
+          {I18n.t(`weekdays.normal.${name.split('.').last()}`)}
+          </Text>
       </View>
 
       <View style={styles.weekdayInfo}>

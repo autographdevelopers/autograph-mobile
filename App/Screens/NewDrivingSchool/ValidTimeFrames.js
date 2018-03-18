@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, FormSection } from 'redux-form';
 import {
   scheduleSettingsActionCreators,
   updateScheduleSettings,
@@ -16,19 +16,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Fonts, Colors, Metrics } from '../../Themes/';
 import I18n from '../../I18n/index';
 
+const PARAM_NAME = 'valid_time_frames';
 const INITIAL_STATE = {
-    monday: [0, 32],
-    tuesday: [0, 40],
-    wednesday: [0, 40],
-    thursday: [0, 40],
-    friday: [0, 40],
-    saturday: [0, 40],
-    sunday: [0, 40],
+  [PARAM_NAME]: {
+    monday: [0, 1],
+    tuesday: [0, 1],
+    wednesday: [0, 1],
+    thursday: [0, 1],
+    friday: [0, 1],
+    saturday: [0, 1],
+    sunday: [0, 1],
+  }
 };
 
 const WEEKDAYS = [
   'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
 ];
+
 
 const FORM_ID = FORM_IDS.SCHEDULE_BOUNDARIES;
 
@@ -92,19 +96,22 @@ class ScheduleBoundaries extends Component {
           </TouchableOpacity>
         </View>
 
-        <Field name={WEEKDAYS[this.state.currentWeekday]}
+        <Field name={`${PARAM_NAME}.${WEEKDAYS[this.state.currentWeekday]}`}
                component={ScheduleBoundariesPicker}
                setFormValue={change}
                initForm={initialize}/>
 
-        <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} />
-        <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} />
-
+        <FormSection name={PARAM_NAME}>
+          <View>
+            <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} />
+            <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} />
+          </View>
+        </FormSection>
 
         {navigation.state.params && navigation.state.params.singleton &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
