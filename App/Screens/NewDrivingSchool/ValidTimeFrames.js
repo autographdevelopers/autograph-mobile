@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import {
@@ -11,9 +11,12 @@ import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
 import FORM_IDS from './Constants';
 import LoadingHOC from '../../Containers/LoadingHOC';
+import WeekdayTimeFrames from '../../Components/WeekdayTimeFrames';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Fonts, Colors, Metrics } from '../../Themes/';
+import I18n from '../../I18n/index';
 
 const INITIAL_STATE = {
-  valid_time_frames: {
     monday: [0, 32],
     tuesday: [0, 40],
     wednesday: [0, 40],
@@ -21,14 +24,21 @@ const INITIAL_STATE = {
     friday: [0, 40],
     saturday: [0, 40],
     sunday: [0, 40],
-  }
 };
+
+const WEEKDAYS = [
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
+];
 
 const FORM_ID = FORM_IDS.SCHEDULE_BOUNDARIES;
 
 class ScheduleBoundaries extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      currentWeekday: 0
+    };
 
     if (this.props.screenProps && this.props.screenProps.bindScreenRef) {
       const key = this.props.navigation.state.routeName;
@@ -46,15 +56,47 @@ class ScheduleBoundaries extends Component {
     this.props.handleSubmit(updateScheduleSettings)();
   };
 
+  nextDay = () => {
+    this.setState({
+      currentWeekday: (this.state.currentWeekday + 1) % WEEKDAYS.length
+    });
+  };
+
+  prevDay = () => {
+    this.setState({
+      currentWeekday: (this.state.currentWeekday - 1) === -1 ? WEEKDAYS.length - 1 : (this.state.currentWeekday - 1)
+    });
+  };
+
   render() {
     console.log(this.props);
     const { change, error, navigation, submitting } = this.props;
+    const currentDay= I18n.t(`weekdays.normal.${WEEKDAYS[this.state.currentWeekday]}`);
 
     return (
-      <Layout>
+      <Layout customStyles={{paddingTop: 0}}>
         <FormErrorMessage>{error}</FormErrorMessage>
-        <Field name={'valid_time_frames'}
-               component={ScheduleBoundariesPicker} />
+        <View style={[styles.currentWeekdayRow, styles.row]}>
+          <TouchableOpacity onPress={this.prevDay}>
+            <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
+          </TouchableOpacity>
+          <Text style={styles.currentWeekday}>{currentDay}</Text>
+          <TouchableOpacity onPress={this.nextDay}>
+            <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
+          </TouchableOpacity>
+        </View>
+
+        <Field name={WEEKDAYS[this.state.currentWeekday]} component={ScheduleBoundariesPicker} />
+
+        <Field name={'monday'} component={WeekdayTimeFrames} />
+        <Field name={'tuesday'} component={WeekdayTimeFrames} />
+        <Field name={'wednesday'} component={WeekdayTimeFrames} />
+        <Field name={'thursday'} component={WeekdayTimeFrames} />
+        <Field name={'friday'} component={WeekdayTimeFrames} />
+        <Field name={'saturday'} component={WeekdayTimeFrames} />
+        <Field name={'sunday'} component={WeekdayTimeFrames} />
+
+
         {navigation.state.params && navigation.state.params.singleton &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
         }
@@ -94,8 +136,29 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 
-/**
- @1 since arrow functions does NOT autobind context,
- the function will look for "this" in outside context frame which is React Component(ScheduleBoundaries).
- Alternatively one can use this.props.setValue.apply(this, [arg]) in mentioned component.
- **/
+
+const styles = StyleSheet.create({
+  currentWeekdayRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  currentWeekday: {
+    marginHorizontal: 35,
+    width: '50%',
+    fontSize: Fonts.size.regular,
+    color: Colors.softBlack,
+    textAlign: 'center'
+  },
+  row: {
+    flexDirection: 'row',
+    marginVertical: 10
+  },
+  dayRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  applyToAllDays: {
+    marginVertical: 10
+  }
+});
