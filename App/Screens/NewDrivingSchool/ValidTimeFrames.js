@@ -97,21 +97,21 @@ class ScheduleBoundaries extends Component {
           </TouchableOpacity>
         </View>
 
-        <Field name={`${PARAM_NAME}.${WEEKDAYS[this.state.currentWeekday]}`}
-               component={ScheduleBoundariesPicker}
-               setFormValue={change}
-               paramName={PARAM_NAME}
-               initForm={initialize}/>
+        {WEEKDAYS.map((day, index) => (
+          <View style={this.state.currentWeekday === index ? {} : {height: 0, width: 0}} key={`picker-${index}`}>
+            <Field name={`${PARAM_NAME}.${day}`}
+                   component={ScheduleBoundariesPicker}
+                   setFormValue={change}
+                   paramName={PARAM_NAME}
+                   initForm={initialize}/>
+          </View>
+        ))}
 
         <FormSection name={PARAM_NAME}>
           <View>
-            <Field name={'monday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'tuesday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'wednesday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'thursday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'friday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'saturday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
-            <Field name={'sunday'} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            {WEEKDAYS.map((day, index) => (
+              <Field name={day} component={WeekdayTimeFrames} setFormValue={change} validate={slotHelper.validateFrames}/>
+            ))}
           </View>
         </FormSection>
 
