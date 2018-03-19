@@ -1,5 +1,4 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { createFormAction } from 'redux-form-saga';
 import { deepClone } from '../Lib/utils';
 import { FETCHING_STATUS } from '../Lib/utils';
 
@@ -9,7 +8,6 @@ const { Types, Creators } = createActions({
   saveSingle: ['data'],
   changeStatus: ['status'],
   updateRequest: ['data'],
-  /* SAGAS */
   showRequest: null
 }, { prefix: 'DRIVING_COURSE_' });
 

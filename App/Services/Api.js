@@ -111,6 +111,12 @@ export const API = {
       api.get(`driving_schools/${id}/students/${studentID}/driving_course`),
     update: (params, studentID=':student_id', id =':driving_school_id') =>
       api.put(`driving_schools/${id}/students/${studentID}/driving_course`, params),
+  },
+  drivingLesson: {
+    index: (params, id =':driving_school_id') =>
+      api.get(`driving_schools/${id}/driving_lessons`, params),
+    cancel: (drivingLessonId, id =':driving_school_id') =>
+      api.put(`driving_schools/${id}/driving_lessons/${drivingLessonId}/cancel`)
   }
 };
 

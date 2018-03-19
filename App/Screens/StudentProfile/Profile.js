@@ -8,26 +8,43 @@ import Fonts from '../../Themes/Fonts';
 import listProjectorStyles from '../../Styles/ListProjector';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
 import { contextActionCreators } from '../../Redux/ContextRedux';
-import { drivingCourseActionCreators, drivingCourseActionTypes } from '../../Redux/DrivingCourseRedux';
+import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
+import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import ModalTemplate from '../../Components/ModalTemplate';
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
+import DrivingLessonsList from '../../Components/DrivingLessonsList';
+import CancelDrivingLesson from '../../Components/CancelDrivingLesson';
 
 class Profile extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      drivingLessonId: null
+    };
+  }
+
   componentDidMount = () => {
-    console.tron.log(drivingCourseActionTypes);
     this.props.fetchDrivingCourse()
+    this.props.fetchDrivingLessons({ student_id: this.props.studentId })
   }
 
   componentWillUnmount = () => {
     this.props.setCurrentStudent(null);
   };
 
+  openDrivingLessonCancelModal = (id) => {
+    this.setState({drivingLessonId: id},
+      () => this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
+    )
+  }
+
   render() {
-    const { drivingCourse } = this.props
+    const { drivingCourse, drivingLesson } = this.props
 
     return (
       <Layout>
@@ -39,7 +56,7 @@ class Profile extends Component {
           </View>
 
           <ButtonText
-            onPress={this.props.openChangeAvailableHoursModal}
+            onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
             customTextStyle={{ fontSize: Fonts.size.small }}
             icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
             Edytuj
@@ -62,7 +79,6 @@ class Profile extends Component {
         {/*-------------*/}
 
 
-
         <View style={styles.headerWithBtn}>
 
           <View>
@@ -77,8 +93,19 @@ class Profile extends Component {
           </ButtonText>
         </View>
 
-        <View style={listProjectorStyles.containerStyle}>
+        <View style={[listProjectorStyles.containerStyle, { flex: 0 }]}>
+          <DrivingLessonsList
+            onCancelPress={this.openDrivingLessonCancelModal}
+            drivingLesson={drivingLesson}
+            userContext={'employee'}/>
         </View>
+
+        <ModalTemplate
+          modalID={MODALS_IDS.CANCEL_DRIVING_LESSON}
+          status={drivingLesson.status}
+          closeModalCallback={this.props.resetDrivingLessonFetchingStatus}>
+          <CancelDrivingLesson onPress={() => this.props.cancelDrivingLesson(this.state.drivingLessonId)}/>
+        </ModalTemplate>
         {/*-------------*/}
 
         <View style={styles.headerWithBtn}>
@@ -124,14 +151,19 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-  drivingCourse: state.drivingCourse
+  drivingCourse: state.drivingCourse,
+  drivingLesson: state.drivingLesson,
+  studentId: state.context.currentStudentID
 });
 
 const mapDispatchToProps = dispatch => ({
   setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   fetchDrivingCourse: () => dispatch(drivingCourseActionCreators.showRequest()),
-  openChangeAvailableHoursModal: () => dispatch(modalActionCreators.open(MODALS_IDS.CHANGE_AVAILABLE_HOURS)),
+  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params)),
+  cancelDrivingLesson: (id) => dispatch(drivingLessonActionCreators.cancelRequest(id)),
+  openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
+  resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
   updateDrivingCourse: (data) => dispatch(drivingCourseActionCreators.updateRequest(data))
 });
 

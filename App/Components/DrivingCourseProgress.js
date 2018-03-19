@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
-import SpinnerView from '../Components/SpinnerView';
-
-import {
-  isDrivingSchoolRelationActive,
-  isDrivingSchoolAwaitingActivation,
-  isDrivingSchoolRelationPending
-} from '../Lib/DrivingSchoolHelpers';
 
 export default DrivingCourseProgress = ({ drivingCourse }) => {
-  const { status, data } = drivingCourse
+  const { status, data } = drivingCourse;
 
   return (
     <View style={styles.container}>
