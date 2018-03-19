@@ -62,7 +62,7 @@ class AvailabilityForm extends Component {
 
   renderSchedule = () => {
     const day = WEEKDAYS[this.state.currentDayIndex];
-    const slotsIds = new Array(48).fill(0).map((_, index) => ({id: index}));
+    const slotsIds = this.props.valid_time_frames[day].map((_, index) => ({id: index}));
 
     return <FlatList
       showsVerticalScrollIndicator={false}
@@ -156,6 +156,7 @@ const styles = {
 const mapStateToProps = state => ({
   schedule: state.scheduleForm.template,
   formStatus: state.scheduleForm.status,
+  valid_time_frames: state.scheduleSettings.valid_time_frames
 });
 
 const mapDispatchToProps = dispatch => ({
