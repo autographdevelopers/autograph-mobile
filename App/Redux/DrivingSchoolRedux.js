@@ -5,6 +5,7 @@ import { FETCHING_STATUS } from '../Lib/utils';
 
 export const createDrivingSchool = createFormAction('CREATE_DRIVING_SCHOOL');
 export const updateDrivingSchool = createFormAction('UPDATE_DRIVING_SCHOOL');
+export const confirmDrivingSchoolRegistration = createFormAction('CONFIRM_DRIVING_SCHOOL_REGISTRATION_REQUEST');
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -15,7 +16,7 @@ const { Types, Creators } = createActions({
   changeStatus: ['status'],
   /* SAGAS */
   indexRequest: null,
-  showRequest: null
+  showRequest: null,
 }, { prefix: 'DRIVING_SCHOOL_' });
 
 export const drivingSchoolActionTypes = Types;

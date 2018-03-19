@@ -26,7 +26,8 @@ import {
   update as updateDrivingSchoolSaga,
   index as indexDrivingSchools,
   show as showDrivingSchoolSaga,
-  activate as activateDrivingSchool
+  activate as activateDrivingSchool,
+  confirmRegistration as confirmDrivingSchoolRegistrationSaga
 } from './DrivingSchoolSagas';
 
 import {
@@ -39,10 +40,10 @@ import {
   show as showScheduleSettingsSaga } from './ScheduleSettingsSaga';
 
 import {
-  create as createInvitation,
-  accept as acceptInvitation,
-  reject as rejectInvitation,
-  destroy as destroyInvitation
+  create as createInvitationSaga,
+  accept as acceptInvitationSaga,
+  reject as rejectInvitationSaga,
+  destroy as destroyInvitationSaga
 } from './InvitationsSaga';
 
 import {
@@ -58,8 +59,12 @@ import {
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
-import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
-import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
+import {
+  createDrivingSchool,
+  updateDrivingSchool,
+  confirmDrivingSchoolRegistration
+} from '../Redux/DrivingSchoolRedux';
+
 import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettingsSetRedux';
 import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
 import { login } from '../Redux/SessionRedux';
@@ -75,6 +80,7 @@ export default function* root() {
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
     takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchools, api),
     takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
+    takeLatest(confirmDrivingSchoolRegistration.REQUEST, confirmDrivingSchoolRegistrationSaga, api),
     takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchool, api),
 
     takeLatest(updateScheduleSettings.REQUEST, updateScheduleSettingsSaga, api),
@@ -83,10 +89,10 @@ export default function* root() {
     takeLatest(updateNotificationSettings.REQUEST, updateNotificationSettingsSaga, api),
     takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api),
 
-    takeLatest(invite.REQUEST, createInvitation, api),
-    takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitation, api),
-    takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitation, api),
-    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitation, api),
+    takeLatest(invite.REQUEST, createInvitationSaga, api),
+    takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitationSaga, api),
+    takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitationSaga, api),
+    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitationSaga, api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
