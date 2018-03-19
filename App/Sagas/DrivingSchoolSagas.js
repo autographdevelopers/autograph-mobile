@@ -7,8 +7,11 @@ import { SubmissionError } from 'redux-form';
 import { schoolActivationActionCreators } from '../Redux/SchoolActivationRedux';
 
 /** redux-form-sagas actions */
-import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
-import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
+import {
+  createDrivingSchool,
+  updateDrivingSchool,
+  confirmDrivingSchoolRegistration
+} from '../Redux/DrivingSchoolRedux';
 
 export function* create(api, action) {
   const response = yield call(api.drivingSchools.create, { driving_school: action.payload });
@@ -59,6 +62,18 @@ export function* show(api, action) {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+  }
+}
+
+export function* confirmRegistration(api, action) {
+  const response = yield call(api.drivingSchools.confirm_registration);
+  if (response.ok) {
+    yield put(drivingSchoolActionCreators.saveSingle(response.data));
+    yield put(confirmDrivingSchoolRegistration.success());
+  } else {
+    const errors = gatherErrorsFromResponse(response, api);
+    const formError = new SubmissionError(errors);
+    yield put(confirmDrivingSchoolRegistration.failure(formError));
   }
 }
 
