@@ -16,3 +16,4 @@
 // import './Stories/ListHeader.story';
 // import './Stories/Slot.story';
 // import './Stories/DialogBox.story';
+import './Stories/SearchInput.story';

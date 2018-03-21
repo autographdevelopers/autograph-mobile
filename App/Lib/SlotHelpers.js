@@ -79,8 +79,6 @@ export const slotHelper = {
   roundTimeToHalfHourInterval: function(t) {
     let time = moment(t, this.TIME_FORMAT);
 
-    console.log('minutes')
-    console.log(time.minutes())
     const minutes = parseInt(time.minutes());
     const hours = parseInt(time.hours());
 

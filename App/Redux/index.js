@@ -19,8 +19,8 @@ import { schoolActivationReducer } from './SchoolActivationRedux';
 import { scheduleFormReducer } from './ScheduleFormRedux';
 import { scheduleReducer } from './ScheduleRedux';
 import { calendarReducer } from './CalendarRedux';
-import { slotReducer } from './SlotsRedux';
-import { drivingLessonReducer } from './DrivingLessonsRedux';
+// import { slotReducer } from './SlotsRedux';
+// import { drivingLessonReducer } from './DrivingLessonsRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -42,8 +42,8 @@ export const reducers = combineReducers({
   schedule: scheduleReducer,
   scheduleForm: scheduleFormReducer,
   calendar: calendarReducer,
-  slots: slotReducer,
-  drivingLesson: drivingLessonReducer
+  // slots: slotReducer,
+  // drivingLesson: drivingLessonReducer
 });
 
 export default () => {
