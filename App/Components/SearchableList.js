@@ -3,7 +3,6 @@ import { View, SectionList } from 'react-native';
 import SearchInput from './SearchInput';
 import { peopleHelper } from '../Lib/PeopleHelpers';
 import { SearchBar } from 'react-native-elements';
-import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 import { Fonts, Colors } from '../Themes/';
 
 export default class SearchableList extends Component{
@@ -65,6 +64,6 @@ export default class SearchableList extends Component{
 
 const styles = {
   searchbarWrapper: {
-    marginVertical: 15
+    marginBottom: 15
   }
 };

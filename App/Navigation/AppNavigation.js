@@ -18,7 +18,7 @@ import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
 import DefaultAvatar from '../Components/DefaultAvatar';
 import { Fonts, Colors } from '../Themes/'
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
-
+import EmployeeSearchableList from '../Components/EmployeesSearchableList';
 
 import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
@@ -96,8 +96,14 @@ const routeConfigs = {
   },
   userProfile: {
     screen: EmployeeProfileModule,
+  },
+  searchEmployee: {
+    screen: EmployeeSearchableList,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Wybierz pracownika'}/>
+    }
   }
-}
+};
 
 const navigationConfigs = {
   headerMode: 'float',

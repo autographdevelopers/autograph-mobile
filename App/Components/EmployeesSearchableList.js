@@ -6,11 +6,16 @@ import ActiveEmployeeCell from './ActiveEmployeeCell';
 import ListHeaderSmall from '../Components/ListHeaderSmall';
 
 const EmployeesSearchableList = props => {
+  const handlePress = () => {
+    const callback = props.navigation.state.params.onResultPress || props.onResultPress;
+    callback && callback();
+  };
+
   return (
     <SearchableList
       data={props.employees}
       renderSectionHeader={({section}) => <ListHeaderSmall label={section.title}/>}
-      renderItem={({item, index}) => <ActiveEmployeeCell employee={item} index={index}/>}
+      renderItem={({item, index}) => <ActiveEmployeeCell employee={item} index={index} onPress={handlePress}/>}
     />
   )
 };
