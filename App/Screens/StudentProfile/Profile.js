@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Layout from '../../Components/Layout';
-import SectionHeader from '../../Components/SectionHeader';
-import ButtonText from '../../Components/ButtonText';
-import { Colors } from '../../Themes/index';
-import Fonts from '../../Themes/Fonts';
-import listProjectorStyles from '../../Styles/ListProjector';
-import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import { contextActionCreators } from '../../Redux/ContextRedux';
 import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
 import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
-import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
+import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
+import { canManageStudents } from '../../Lib/AuthorizationHelpers';
+import { Colors, Fonts } from '../../Themes/';
+
 import ModalTemplate from '../../Components/ModalTemplate';
+import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
+import Layout from '../../Components/Layout';
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Components/DrivingLessonsList';
 import CancelDrivingLesson from '../../Components/CancelDrivingLesson';
+import ButtonText from '../../Components/ButtonText';
 
 class Profile extends Component {
   constructor(props) {
@@ -44,23 +45,22 @@ class Profile extends Component {
   }
 
   render() {
-    const { drivingCourse, drivingLesson } = this.props
+    const { drivingCourse, drivingLesson, drivingSchool } = this.props
 
     return (
       <Layout>
-        {/*-------------*/}
         <View style={styles.headerWithBtn}>
           <View>
             <Text style={styles.headerText}>Postępy</Text>
             <View style={styles.underline}/>
           </View>
 
-          <ButtonText
+          {canManageStudents(drivingSchool) && <ButtonText
             onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
             customTextStyle={{ fontSize: Fonts.size.small }}
             icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
             Edytuj
-          </ButtonText>
+          </ButtonText>}
         </View>
 
         <View style={[listProjectorStyles.containerStyle, { flex: 0 }]}>
@@ -76,8 +76,6 @@ class Profile extends Component {
             onPress={this.props.updateDrivingCourse}
           />
         </ModalTemplate>
-        {/*-------------*/}
-
 
         <View style={styles.headerWithBtn}>
 
@@ -97,6 +95,7 @@ class Profile extends Component {
           <DrivingLessonsList
             onCancelPress={this.openDrivingLessonCancelModal}
             drivingLesson={drivingLesson}
+            canManageStudents={canManageStudents(drivingSchool)}
             userContext={'employee'}/>
         </View>
 
@@ -104,26 +103,11 @@ class Profile extends Component {
           modalID={MODALS_IDS.CANCEL_DRIVING_LESSON}
           status={drivingLesson.status}
           closeModalCallback={this.props.resetDrivingLessonFetchingStatus}>
-          <CancelDrivingLesson onPress={() => this.props.cancelDrivingLesson(this.state.drivingLessonId)}/>
+          <CancelDrivingLesson
+            onPress={() => this.props.cancelDrivingLesson(this.state.drivingLessonId)}
+            drivingLesson={drivingLesson.hashMap[this.state.drivingLessonId]}
+          />
         </ModalTemplate>
-        {/*-------------*/}
-
-        <View style={styles.headerWithBtn}>
-
-          <View>
-            <Text style={styles.headerText}>Aktywności</Text>
-            <View style={styles.underline}/>
-          </View>
-
-          <ButtonText
-            onPress={() => {}}
-            customTextStyle={{ fontSize: Fonts.size.small }}>
-            Pokaż wszystkie
-          </ButtonText>
-        </View>
-
-        <View style={listProjectorStyles.containerStyle}>
-        </View>
       </Layout>
     );
   }
@@ -153,7 +137,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   drivingCourse: state.drivingCourse,
   drivingLesson: state.drivingLesson,
-  studentId: state.context.currentStudentID
+  studentId: state.context.currentStudentID,
+  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID]
 });
 
 const mapDispatchToProps = dispatch => ({

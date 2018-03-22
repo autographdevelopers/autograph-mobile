@@ -9,14 +9,14 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import DefaultAvatar from '../Components/DefaultAvatar';
 import ButtonText from '../Components/ButtonText';
 
-export default DrivingLessonsList = ({ drivingLesson, userContext, onCancelPress }) => {
+export default DrivingLessonsList = ({ drivingLesson, userContext, onCancelPress, canManageStudents }) => {
   const { status, hashMap, allIDs } = drivingLesson
 
   return (
     <View>
       { (status === FETCHING_STATUS.READY || status === FETCHING_STATUS.SUCCESS) &&
       <View>
-        {renderDrivingLessons(hashMap, allIDs, userContext, onCancelPress)}
+        {renderDrivingLessons(hashMap, allIDs, userContext, onCancelPress, canManageStudents)}
       </View>
       }
 
@@ -29,7 +29,7 @@ export default DrivingLessonsList = ({ drivingLesson, userContext, onCancelPress
   )
 }
 
-const renderDrivingLessons = (hashMap, allIDs, userContext, onCancelPress) => {
+const renderDrivingLessons = (hashMap, allIDs, userContext, onCancelPress, canManageStudents) => {
   return allIDs.map((id) => {
     let data = hashMap[id]
     return (<ListItem
@@ -40,7 +40,7 @@ const renderDrivingLessons = (hashMap, allIDs, userContext, onCancelPress) => {
       containerStyle={{ borderBottomWidth: 0 }}
       subtitleStyle={styles.subtitle}
       rightIcon={
-        <ButtonText
+        canManageStudents && <ButtonText
           onPress={() => onCancelPress(data.id)}
           customTextStyle={{color: Colors.salmon, fontSize: Fonts.size.small}}
           customStyle={{alignSelf: 'center', marginRight: 5}}>
