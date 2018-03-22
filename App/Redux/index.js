@@ -43,7 +43,7 @@ export const reducers = combineReducers({
   schedule: scheduleReducer,
   scheduleForm: scheduleFormReducer,
   drivingCourse: drivingCourseReducer,
-  drivingLesson: drivingLessonReducer,
+  drivingLessons: drivingLessonReducer,
 });
 
 export default () => {

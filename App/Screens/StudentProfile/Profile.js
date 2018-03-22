@@ -25,7 +25,7 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      drivingLessonId: null
+      currentDrivingLessonId: null
     };
   }
 
@@ -39,13 +39,14 @@ class Profile extends Component {
   };
 
   openDrivingLessonCancelModal = (id) => {
-    this.setState({drivingLessonId: id},
+    this.setState({currentDrivingLessonId: id},
       () => this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
     )
   }
 
   render() {
-    const { drivingCourse, drivingLesson, drivingSchool } = this.props
+    const { drivingCourse, drivingLessons, drivingSchool } = this.props
+    const { currentDrivingLessonId } = this.state
 
     return (
       <Layout>
@@ -94,18 +95,18 @@ class Profile extends Component {
         <View style={[listProjectorStyles.containerStyle, { flex: 0 }]}>
           <DrivingLessonsList
             onCancelPress={this.openDrivingLessonCancelModal}
-            drivingLesson={drivingLesson}
+            drivingLessons={drivingLessons}
             canManageStudents={canManageStudents(drivingSchool)}
             userContext={'employee'}/>
         </View>
 
         <ModalTemplate
           modalID={MODALS_IDS.CANCEL_DRIVING_LESSON}
-          status={drivingLesson.status}
+          status={drivingLessons.status}
           closeModalCallback={this.props.resetDrivingLessonFetchingStatus}>
           <CancelDrivingLesson
-            onPress={() => this.props.cancelDrivingLesson(this.state.drivingLessonId)}
-            drivingLesson={drivingLesson.hashMap[this.state.drivingLessonId]}
+            onPress={() => this.props.cancelDrivingLesson(currentDrivingLessonId)}
+            drivingLesson={drivingLessons.hashMap[currentDrivingLessonId]}
           />
         </ModalTemplate>
       </Layout>
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   drivingCourse: state.drivingCourse,
-  drivingLesson: state.drivingLesson,
+  drivingLessons: state.drivingLessons,
   studentId: state.context.currentStudentID,
   drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID]
 });
