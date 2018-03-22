@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements'
 import { Colors, Fonts } from '../Themes/index';
+import MapView, { Marker } from 'react-native-maps';
 
 import Layout from '../Components/Layout';
 
@@ -28,6 +29,8 @@ class DrivingSchoolInformation extends Component {
   }
 
   renderAdditionalInformation = drivinShoolAdditionalInformation => {
+    if(drivinShoolAdditionalInformation.length === 0) { return }
+
     return (
       <View style={styles.segment}>
         <Text style={styles.subtitle}>o szkole</Text>
@@ -53,6 +56,25 @@ class DrivingSchoolInformation extends Component {
     return (
       <View style={styles.segment}>
         <Text style={styles.subtitle}>lokalizacja</Text>
+        <Text style={styles.localizationSegment}>{`${drivingSchool.country}, ${drivingSchool.city}`}</Text>
+        <Text style={styles.localizationSegment}>{`ul. ${drivingSchool.street}, ${drivingSchool.zip_code}`}</Text>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: parseFloat(drivingSchool.latitude),
+            longitude: parseFloat(drivingSchool.longitude),
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          <Marker
+            coordinate={{
+              latitude: parseFloat(drivingSchool.latitude),
+              longitude: parseFloat(drivingSchool.longitude),
+            }}
+            title={drivingSchool.name}
+          />
+        </MapView>
       </View>
     )
   }
@@ -62,7 +84,7 @@ class DrivingSchoolInformation extends Component {
       return (
         <View key={index} style={styles.contactSegment}>
           <Text style={styles.strongGrey}>email: </Text>
-          <Text style={styles.softBlack} >{email}</Text>
+          <Text style={styles.softBlack}>{email}</Text>
         </View>
       )
     })
@@ -92,7 +114,7 @@ class DrivingSchoolInformation extends Component {
     const { drivingSchool } = this.props
 
     return (
-      <Layout style={styles.container}>
+      <Layout>
         {this.renderHeader(drivingSchool.name)}
         {this.renderAdditionalInformation(drivingSchool.additional_information)}
         {this.renderContactInformation(drivingSchool)}
@@ -110,7 +132,7 @@ export default connect(mapStateToProps)(DrivingSchoolInformation)
 
 const styles = StyleSheet.create({
   segment: {
-    marginBottom: 15
+    marginBottom: 15,
   },
   header: {
     flexDirection: 'row',
@@ -132,16 +154,27 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: Fonts.size.medium,
     color: Colors.strongGrey,
-    marginBottom: 5
+    marginBottom: 5,
+    fontWeight: '400'
   },
   contactSegment: {
     flexDirection: 'row',
-    marginBottom:2
+    marginBottom: 2
   },
   strongGrey: {
     color: Colors.strongGrey
   },
   softBlack: {
+    color: Colors.softBlack
+  },
+  map: {
+    marginTop: 10,
+    width: '100%',
+    height: 200
+  },
+  localizationSegment: {
+    flexDirection: 'row',
+    marginBottom: 2,
     color: Colors.softBlack
   }
 });
