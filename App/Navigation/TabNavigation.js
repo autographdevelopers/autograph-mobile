@@ -3,6 +3,7 @@ import CalendarScreen from '../Screens/CalendarScreen';
 import EmployeesScreen from '../Screens/Employees/index';
 import StudentsScreen from '../Screens/Students/index';
 import SettingsScreen from '../Screens/SettingsScreen';
+import DrivingSchoolInformation from '../Screens/DrivingSchoolInformation';
 import { TabNavigator } from 'react-navigation';
 import { Colors, Fonts } from '../Themes';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -104,6 +105,13 @@ const studentRoutesConfigs = {
     screen: ActivitiesScreen,
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
+      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
+    }
+  },
+  drivingSchoolInformation: {
+    screen: DrivingSchoolInformation,
+    navigationOptions: {
+      tabBarLabel: I18n.t('driving_school_information'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
     }
   }
