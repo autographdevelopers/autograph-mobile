@@ -112,7 +112,7 @@ const studentRoutesConfigs = {
     screen: DrivingSchoolInformation,
     navigationOptions: {
       tabBarLabel: I18n.t('driving_school_information'),
-      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
+      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'information-outline'} color={tintColor}/> ),
     }
   }
 }
