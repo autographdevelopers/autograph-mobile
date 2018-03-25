@@ -27,9 +27,9 @@ import { index as studentsIndexSaga } from './StudentsSaga';
 import {
   create as createDrivingSchoolSaga,
   update as updateDrivingSchoolSaga,
-  index as indexDrivingSchools,
+  index as indexDrivingSchoolsSaga,
   show as showDrivingSchoolSaga,
-  activate as activateDrivingSchool
+  activate as activateDrivingSchoolSaga
 } from './DrivingSchoolSagas';
 
 import {
@@ -47,10 +47,10 @@ import {
   show as showScheduleSettingsSaga } from './ScheduleSettingsSaga';
 
 import {
-  create as createInvitation,
-  accept as acceptInvitation,
-  reject as rejectInvitation,
-  destroy as destroyInvitation
+  create as createInvitationSaga,
+  accept as acceptInvitationSaga,
+  reject as rejectInvitationSaga,
+  destroy as destroyInvitationSaga
 } from './InvitationsSaga';
 
 import {
@@ -64,13 +64,13 @@ import {
 } from './SchedulesSaga';
 
 import {
-  show as showDrivingCourse,
-  update as updateDrivingCourse
+  show as showDrivingCourseSaga,
+  update as updateDrivingCourseSaga
 } from './DrivingCourseSaga';
 
 import {
-  index as indexDrivingLesson,
-  cancel as cancelDrivingLesson,
+  index as indexDrivingLessonSaga,
+  cancel as cancelDrivingLessonSaga,
 } from './DrivingLessonSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
@@ -91,9 +91,9 @@ export default function* root() {
 
     takeLatest(createDrivingSchool.REQUEST, createDrivingSchoolSaga, api),
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
-    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchools, api),
+    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchoolsSaga, api),
     takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
-    takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchool, api),
+    takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchoolSaga, api),
 
     takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
     takeLatest(scheduleBoundariesTypes.SHOW_REQUEST, showScheduleBoundariesSaga, api),
@@ -104,10 +104,10 @@ export default function* root() {
     takeLatest(updateNotificationSettings.REQUEST, updateNotificationSettingsSaga, api),
     takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api),
 
-    takeLatest(invite.REQUEST, createInvitation, api),
-    takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitation, api),
-    takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitation, api),
-    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitation, api),
+    takeLatest(invite.REQUEST, createInvitationSaga, api),
+    takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitationSaga, api),
+    takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitationSaga, api),
+    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitationSaga, api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
@@ -118,10 +118,10 @@ export default function* root() {
     takeLatest(scheduleActionTypes.SHOW_REQUEST, showEmployeeScheduleSaga, api),
     takeLatest(scheduleFormActionTypes.UPDATE_REQUEST, updateEmployeeScheduleSaga, api),
 
-    takeLatest(drivingCourseActionTypes.SHOW_REQUEST, showDrivingCourse, api),
-    takeLatest(drivingCourseActionTypes.UPDATE_REQUEST, updateDrivingCourse, api),
+    takeLatest(drivingCourseActionTypes.SHOW_REQUEST, showDrivingCourseSaga, api),
+    takeLatest(drivingCourseActionTypes.UPDATE_REQUEST, updateDrivingCourseSaga, api),
 
-    takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLesson, api),
-    takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLesson, api),
+    takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLessonSaga, api),
+    takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLessonSaga, api),
   ])
 }
