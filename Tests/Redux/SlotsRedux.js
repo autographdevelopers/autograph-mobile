@@ -60,17 +60,17 @@ const store3 = {
 test('correctly populates empty store', () => {
   const state = slotReducer(INITIAL_STATE, slotActionCreators.save(testSlots1));
 
-  expect(state).toBe(store1);
+  expect(state.data).toBe(store1);
 });
 
 test('correctly adds new slots to existing ones', () => {
   const state = slotReducer(store1, slotActionCreators.save(testSlots2));
 
-  expect(state).toBe(store2);
+  expect(state.data).toBe(store2);
 });
 
 test('correctly adds single slot to existing ones', () => {
   const state = slotReducer(store2, slotActionCreators.save(testSlot3));
 
-  expect(state).toBe(store3);
+  expect(state.data).toBe(store3);
 });
