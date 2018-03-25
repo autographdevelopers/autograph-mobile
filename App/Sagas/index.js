@@ -28,7 +28,7 @@ import {
   update as updateDrivingSchoolSaga,
   index as indexDrivingSchoolsSaga,
   show as showDrivingSchoolSaga,
-  activate as activateDrivingSchoolSaga
+  activate as activateDrivingSchoolSaga,
   confirmRegistration as confirmDrivingSchoolRegistrationSaga
 } from './DrivingSchoolSagas';
 
