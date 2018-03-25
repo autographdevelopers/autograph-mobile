@@ -18,6 +18,8 @@ import { modalsReducer } from './ModalRedux';
 import { schoolActivationReducer } from './SchoolActivationRedux';
 import { scheduleFormReducer } from './ScheduleFormRedux';
 import { scheduleReducer } from './ScheduleRedux';
+import { drivingCourseReducer } from './DrivingCourseRedux';
+import { drivingLessonReducer } from './DrivingLessonRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -37,7 +39,9 @@ export const reducers = combineReducers({
   modals: modalsReducer,
   schoolActivation: schoolActivationReducer,
   schedule: scheduleReducer,
-  scheduleForm: scheduleFormReducer
+  scheduleForm: scheduleFormReducer,
+  drivingCourse: drivingCourseReducer,
+  drivingLessons: drivingLessonReducer,
 });
 
 export default () => {
