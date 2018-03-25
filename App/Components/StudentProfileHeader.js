@@ -140,7 +140,6 @@ export default class StudentProfileHeader extends Component  {
       height: this.variableAvatarSize
     };
 
-    console.tron.log(this.variableTextButtonIconSize)
     return (
 
       <View>
