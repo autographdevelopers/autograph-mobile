@@ -56,5 +56,6 @@
   "invitation_sent_at": "Zaproszenie zostało wysłane",
   "invitation_sent_to": "Zaproszenie wysłane na",
   "lack_of_privileges": "Nie posiada przywilejów",
-  "withdraw_invitation": "Wycofaj"
+  "withdraw_invitation": "Wycofaj",
+  "driving_school_information": "Informacje o szkole"
 }

@@ -24,7 +24,7 @@ const responseHook = response => {
 
 const requestHook = request => {
   const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-  const { currentDrivingSchoolID, currentEmployeeID } = store.getState().context;
+  const { currentDrivingSchoolID, currentEmployeeID, currentStudentID } = store.getState().context;
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;
@@ -34,6 +34,8 @@ const requestHook = request => {
   request.url = request.url.replace(':driving_school_id', currentDrivingSchoolID);
 
   request.url = request.url.replace(':employee_id', currentEmployeeID);
+
+  request.url = request.url.replace(':student_id', currentStudentID);
 };
 
 const api = apisauce.create({
@@ -104,7 +106,23 @@ export const API = {
       api.get(`driving_schools/:driving_school_id/employees/:employee_id/schedule`),
     update: (params, employeeID=':employee_id', id =':driving_school_id') =>
       api.put(`driving_schools/:driving_school_id/employees/:employee_id/schedule`, params)
-  }
+  },
+  drivingCourse: {
+    show: (studentID=':student_id', id =':driving_school_id') =>
+      api.get(`driving_schools/${id}/students/${studentID}/driving_course`),
+    update: (params, studentID=':student_id', id =':driving_school_id') =>
+      api.put(`driving_schools/${id}/students/${studentID}/driving_course`, params),
+  },
+  drivingLesson: {
+    index: (params, id =':driving_school_id') =>
+      api.get(`driving_schools/${id}/driving_lessons`, params),
+    cancel: (drivingLessonId, id =':driving_school_id') =>
+      api.put(`driving_schools/${id}/driving_lessons/${drivingLessonId}/cancel`)
+  },
+  slots: {
+    index: (driving_school_id=':driving_school_id', employee_id=':employee_id') =>
+      api.get(`driving_schools/${driving_school_id}/employees/${employee_id}/slots`)
+  },
 };
 
 // TODO update header when school name changed

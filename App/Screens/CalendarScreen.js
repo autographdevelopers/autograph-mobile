@@ -34,7 +34,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id))
+  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
+  slotsIndexRequest: () => dispatch()
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)
