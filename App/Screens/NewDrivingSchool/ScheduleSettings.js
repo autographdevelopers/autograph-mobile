@@ -75,19 +75,7 @@ ScheduleSettings = reduxForm({
     try {
       navigation.state.params.handleSubmitSuccess();
     } catch ( error ) {
-      const { screenProps } = props;
-      const { navKey } = screenProps;
-      const title = 'Congratulations!';
-      const message = 'Your registration completed successfully. Once we verify your request you can start your work.';
-      const goToStartScreen = NavigationActions.back({ key: navKey });
-      const buttons = [
-        {
-          text: 'OK', onPress: () => {
-            navigation.dispatch(goToStartScreen);
-          },
-        }];
-
-      Alert.alert(title, message, buttons);
+      navigation.navigate('step4');
     }
   },
 })(ScheduleSettings);
@@ -96,10 +84,11 @@ ScheduleSettings = LoadingHOC(ScheduleSettings);
 
 const mapStateToProps = state => {
   const { currentDrivingSchoolID } = state.context;
+  const {valid_time_frames, ...otherSettings} = state.scheduleSettings;
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: state.scheduleSettings,
+    initialValues: otherSettings,
     status: state.scheduleSettings.status,
   };
 };

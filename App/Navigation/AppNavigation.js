@@ -11,7 +11,7 @@ import InviteStudentForm from '../Screens/Students/InviteForm';
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
-import ScheduleBoundaries from '../Screens/NewDrivingSchool/ScheduleBoundaries';
+import ScheduleBoundaries from '../Screens/NewDrivingSchool/ValidTimeFrames';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
@@ -21,7 +21,34 @@ import { Fonts, Colors } from '../Themes/'
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
 
-import PrimaryFlow from './PrimaryFlow';
+import EmployeeFlow from './EmployeeFlow';
+import StudentFlow from './StudentFlow';
+import OwnerFlow from './OwnerFlow';
+
+const primaryFlowNavigationOptions = ({navigation}) => {
+  const { routes, index, params } = navigation.state;
+  let title;
+  let rightIcon;
+  let onRightIconPress;
+
+  if (routes[index].routeName === 'schoolMain') {
+    title = params.drivingSchool.name;
+    rightIcon = <DefaultAvatar name={params.user.name} customSize={25}/>;
+    onRightIconPress = () => navigation.navigate('mySchoolsScreen');
+  } else if (routes[index].routeName === 'mySchoolsScreen') {
+    title = 'Profile';
+    rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
+    onRightIconPress = () => navigation.goBack(null);
+  }
+
+  return {
+    header: <NavHeader navigation={navigation}
+                       title={title}
+                       rightIcon={rightIcon}
+                       onRightIconPress={onRightIconPress}
+                       back={false}/>
+  }
+};
 
 const routeConfigs = {
   loginLaunch: {
@@ -35,32 +62,17 @@ const routeConfigs = {
       header: props => <NavHeader navigation={props.navigation} title={'Profil'} back={false}/>
     }
   },
-  primaryFlow: {
-    screen: PrimaryFlow,
-    navigationOptions: ({navigation}) => {
-      const { routes, index, params } = navigation.state;
-      let title;
-      let rightIcon;
-      let onRightIconPress;
-
-      if (['ownerMain', 'employeeMain', 'studentMain'].includes(routes[index].routeName)) {
-        title = params.drivingSchool.name;
-        rightIcon = <DefaultAvatar name={params.user.name} customSize={25}/>;
-        onRightIconPress = () => navigation.navigate('mySchoolsScreen');
-      } else if (routes[index].routeName === 'mySchoolsScreen') {
-        title = 'Profile';
-        rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
-        onRightIconPress = () => navigation.goBack(null);
-      }
-
-      return {
-        header: <NavHeader navigation={navigation}
-                           title={title}
-                           rightIcon={rightIcon}
-                           onRightIconPress={onRightIconPress}
-                           back={false}/>
-      }
-    }
+  employeeFlow: {
+    screen: EmployeeFlow,
+    navigationOptions: primaryFlowNavigationOptions
+  },
+  ownerFlow: {
+    screen: OwnerFlow,
+    navigationOptions: primaryFlowNavigationOptions
+  },
+  studentFlow: {
+    screen: StudentFlow,
+    navigationOptions: primaryFlowNavigationOptions
   },
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
   inviteEmployee: { screen: InviteEmployeeWizardForm },
@@ -97,5 +109,7 @@ const navigationConfigs = {
   initialRouteName: 'loginLaunch',
   cardStyle: styles.card
 };
+
+
 
 export default StackNavigator(routeConfigs, navigationConfigs);

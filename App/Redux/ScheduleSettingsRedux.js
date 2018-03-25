@@ -4,6 +4,17 @@ import { createReducer, createActions } from 'reduxsauce';
 
 export const INITIAL_STATE = {
   status: FETCHING_STATUS.READY,
+  valid_time_frames: {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  },
+  last_minute_booking_enabled: false,
+  last_minute_booking_enabled: false
 };
 
 /** Action Types/Creators */

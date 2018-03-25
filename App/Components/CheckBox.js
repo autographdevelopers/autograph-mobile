@@ -26,7 +26,7 @@ export default CheckBox = ({ value, setValue }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={setValue}>
-        {value && <Icon name={'check'} color={Colors.snow} size={12}/>}
+        { value && <Icon name={'check'} color={Colors.snow} size={12}/> }
       </TouchableOpacity>
     </View>
   );

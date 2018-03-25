@@ -7,9 +7,10 @@ import { connect } from 'react-redux';
 
 /** Form steps */
 import InformationStep from './Information';
-import CalendarStep from './ScheduleBoundaries';
+import CalendarStep from './ValidTimeFrames';
 import NotificationsStep from './Notifications';
 import ScheduleSettings from './ScheduleSettings';
+import ConfirmRegistration from './ConfirmRegistration';
 
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
@@ -18,6 +19,7 @@ import StepsIndicators from '../../Components/StepsIndicators';
 import FORM_IDS from './Constants';
 import NavHeader from '../../Components/NavHeader';
 
+const STEPS_LABELS = ['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia', 'Posumowanie'];
 
 const routeConfigs = {
   step0: {
@@ -25,7 +27,7 @@ const routeConfigs = {
     navigationOptions: {
       header: props => {
         return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
-          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={0}/></View>)
+          labels={STEPS_LABELS} activeIndex={0}/></View>)
       }
     }
   },
@@ -34,7 +36,7 @@ const routeConfigs = {
     navigationOptions: {
       header: props => {
         return (<View><NavHeader navigation={props.navigation} title={'Powiadomienia'}/><StepsIndicators
-          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={1}/></View>)
+          labels={STEPS_LABELS} activeIndex={1}/></View>)
       }
     }
   },
@@ -42,7 +44,7 @@ const routeConfigs = {
     screen: CalendarStep,
     navigationOptions: {
       header: props => <View><NavHeader navigation={props.navigation} title={'Kalendarz'}/><StepsIndicators
-        labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={2}/></View>
+        labels={STEPS_LABELS} activeIndex={2}/></View>
     }
   },
   step3: {
@@ -50,7 +52,16 @@ const routeConfigs = {
     navigationOptions: {
       header: props => {
         return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
-          labels={['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia']} activeIndex={3}/></View>)
+          labels={STEPS_LABELS} activeIndex={3}/></View>)
+      }
+    }
+  },
+  step4: {
+    screen: ConfirmRegistration,
+    navigationOptions: {
+      header: props => {
+        return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
+          labels={STEPS_LABELS} activeIndex={4}/></View>)
       }
     }
   }
@@ -85,6 +96,10 @@ class NewDrivingSchoolWizardForm extends Component {
       step3: {
         ref: null,
         formID: FORM_IDS.SCHEDULE_SETTINGS
+      },
+      step4: {
+        ref: null,
+        formID: FORM_IDS.CONFIRM_REGISTRATION
       }
     };
 

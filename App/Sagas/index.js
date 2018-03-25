@@ -5,7 +5,6 @@ import { API as api } from '../Services/Api';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
-import { scheduleBoundariesTypes } from '../Redux/ScheduleBoundariesRedux';
 import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsSettingsSetRedux';
 import { employeesActionTypes } from '../Redux/EmployeesRedux';
 import { studentsActionTypes } from '../Redux/StudentsRedux';
@@ -30,17 +29,13 @@ import {
   index as indexDrivingSchoolsSaga,
   show as showDrivingSchoolSaga,
   activate as activateDrivingSchoolSaga
+  confirmRegistration as confirmDrivingSchoolRegistrationSaga
 } from './DrivingSchoolSagas';
 
 import {
   update as updateNotificationSettingsSaga,
   show as showNotificationSettingsSaga
 } from './NotificationSettingsSaga';
-
-import {
-  update as updateScheduleBoundariesSaga,
-  show as  showScheduleBoundariesSaga
-} from './ScheduleBoundariesSaga';
 
 import {
   update as updateScheduleSettingsSaga,
@@ -75,10 +70,13 @@ import {
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
-import { createDrivingSchool } from '../Redux/DrivingSchoolRedux';
-import { updateDrivingSchool } from '../Redux/DrivingSchoolRedux';
+import {
+  createDrivingSchool,
+  updateDrivingSchool,
+  confirmDrivingSchoolRegistration
+} from '../Redux/DrivingSchoolRedux';
+
 import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettingsSetRedux';
-import { updateScheduleBoundaries } from '../Redux/ScheduleBoundariesRedux';
 import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
 import { login } from '../Redux/SessionRedux';
 import { update as updateEmployeePrivileges } from '../Redux/EmployeePrivileges';
@@ -94,9 +92,7 @@ export default function* root() {
     takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchoolsSaga, api),
     takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
     takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchoolSaga, api),
-
-    takeLatest(updateScheduleBoundaries.REQUEST, updateScheduleBoundariesSaga, api),
-    takeLatest(scheduleBoundariesTypes.SHOW_REQUEST, showScheduleBoundariesSaga, api),
+    takeLatest(confirmDrivingSchoolRegistration.REQUEST, confirmDrivingSchoolRegistrationSaga, api),
 
     takeLatest(updateScheduleSettings.REQUEST, updateScheduleSettingsSaga, api),
     takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api),

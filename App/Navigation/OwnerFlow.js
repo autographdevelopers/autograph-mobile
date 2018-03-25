@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import { StudentTabNavigator, EmployeeTabNavigator, OwnerTabNavigator } from './TabNavigation';
+import { OwnerTabNavigator } from './TabNavigation';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import styles from './Styles/NavigationStyles';
+import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool';
 
 const routeConfigs = {
-  employeeMain: {
-    screen: EmployeeTabNavigator
-  },
-  ownerMain: {
+  schoolMain: {
     screen: OwnerTabNavigator
-  },
-  studentMain: {
-    screen: StudentTabNavigator
   },
   mySchoolsScreen: {
     screen: MySchoolsScreen
@@ -22,7 +17,8 @@ const routeConfigs = {
 const navigationConfigs = {
   mode: 'modal',
   headerMode: 'none',
-  cardStyle: styles.card
+  cardStyle: styles.card,
+  initialRouteName: 'schoolMain'
 };
 
 export default StackNavigator(routeConfigs, navigationConfigs);
