@@ -56,3 +56,5 @@ buck-out/
 #
 .env.example
 .env
+
+ios/Pods/
