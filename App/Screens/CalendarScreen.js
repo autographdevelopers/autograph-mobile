@@ -11,6 +11,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
 import { slotHelper } from '../Lib/SlotHelpers';
+import { Fonts, Colors } from '../Themes/';
 
 class CalendarScreen extends Component {
 
@@ -47,10 +48,20 @@ class CalendarScreen extends Component {
     } = this.props;
 
     // TODO filter and sort
-    const processedSlots = _(Object.values(slots)).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
+    const slotsCollection = Object.values(slots);
+    const sortedSlots = slotsCollection.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
+    const employeeSlots = sortedSlots.filter( slot => slot.employee_id === currentEmployee.id);
+    const processedSlots = _(employeeSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
+
+    const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
+      acc[current] = { marked: true };
+      return acc;
+    }, {});
+
+
     // TODO display loader when fetching
     return (
-      <ScrollView contentContainerStyle={{flex: 1}}>
+      <View style={{flex: 1}}>
         <TouchableOpacity onPress={()=>navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>
           <Text>Find Employee</Text>
         </TouchableOpacity>
@@ -58,16 +69,31 @@ class CalendarScreen extends Component {
         <View style={{flex: 1}}>
           <Agenda
             current={currentDay}
-            items={processedSlots}
-            renderItem={(item, firstItemInDay) => <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/> }
+            markedDates={markedItems}
+            items={{[currentDay]: processedSlots[currentDay]}}
+            firstDay={1}
+            renderItem={(item, firstItemInDay) => <View style={{alignSelf: 'flex-end'}}><AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/></View> }
             onDayPress={this.onDayPress}
             rowHasChanged={(r1, r2) => {return r1.start_time !== r2.start_time}}
+            theme={{
+              'stylesheet.agenda.list': {
+                day: {
+                  marginTop: 0,
+                  width: 63,
+                  // paddingVertical: 15,
+                  // paddingHorizontal: 15,
+                }
+              }
+            }}
+            // renderDay={(date, item) => { console.tron.log(date); console.tron.log(item); return (<View style={{flex: 1}}><Text style={{textAlign: 'center'}}>{date.day}</Text></View>) }}
           />
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }
+
+// stylesheet.agenda.list.day
 
 const mapStateToProps = (state) => ({
   currentEmployee: state.employees.active[state.context.currentEmployeeID],
