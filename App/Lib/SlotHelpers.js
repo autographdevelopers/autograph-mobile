@@ -1,4 +1,5 @@
 import moment from 'moment/moment';
+import momentTimezone from 'moment-timezone';
 
 export const slotHelper = {
   TIME_FORMAT: 'HH:mm',
@@ -90,5 +91,8 @@ export const slotHelper = {
       time.minutes(30).hours(hours);
     }
     return time.format(this.TIME_FORMAT);
+  },
+  dateTimeToTimeZoneHour: function(datetime, timezone='Europe/Warsaw') {
+    return momentTimezone(datetime).tz(timezone).format(this.TIME_FORMAT)
   }
 };

@@ -10,6 +10,7 @@ import { calendarActionCreators } from '../Redux/CalendarRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
+import { slotHelper } from '../Lib/SlotHelpers';
 
 class CalendarScreen extends Component {
 
@@ -58,7 +59,7 @@ class CalendarScreen extends Component {
           <Agenda
             current={currentDay}
             items={processedSlots}
-            renderItem={(item, firstItemInDay) => {return (<AvailableSlot/>);}}
+            renderItem={(item, firstItemInDay) => <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/> }
             onDayPress={this.onDayPress}
             rowHasChanged={(r1, r2) => {return r1.start_time !== r2.start_time}}
           />

@@ -16,9 +16,11 @@ import { scheduleActionCreators } from '../../../Redux/ScheduleRedux';
 import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
 import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../../Lib/utils';
+import { scheduleSettingsActionCreators } from '../../../Redux/ScheduleSettingsRedux';
 
 class AvailabilityIndex extends Component {
   componentWillMount = () => {
+    this.props.showScheduleSettingsRequest();
     this.props.showScheduleRequest();
   };
 
@@ -35,9 +37,11 @@ class AvailabilityIndex extends Component {
       current_template,
       new_template,
       new_template_binding_from,
+      scheduleStatus,
+      scheduleSettingsStatus
     } = this.props;
 
-    if ([FETCHING_STATUS.FETCHING, FETCHING_STATUS.READY].includes(this.props.status) ) {
+    if ([FETCHING_STATUS.FETCHING, FETCHING_STATUS.READY].includes(scheduleStatus) || [FETCHING_STATUS.FETCHING, FETCHING_STATUS.READY].includes(scheduleSettingsStatus)) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator animating size="large" color={Colors.primaryWarm}/>
@@ -199,8 +203,9 @@ const mapStateToProps = state => {
   return {
     current_template: state.schedule.current_template,
     new_template: state.schedule.new_template,
-    status: state.schedule.status,
     removeScheduleRequestParams: removeParams,
+    scheduleStatus: state.schedule.status,
+    scheduleSettingsStatus: state.scheduleSettings.status,
     formStatus: state.scheduleForm.status,
     new_template_binding_from: state.schedule.new_template_binding_from,
     new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from
@@ -212,6 +217,7 @@ const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(modalActionCreators.close()),
   setBindingFrom: date => dispatch(scheduleFormActionCreators.changeNewTemplateBindingFrom(date)),
   showScheduleRequest: () => dispatch(scheduleActionCreators.showRequest()),
+  showScheduleSettingsRequest: () => dispatch(scheduleSettingsActionCreators.showRequest()),
   setFormStatus: status => dispatch(scheduleFormActionCreators.changeStatus(status)),
   changeWhichScheduleIsModified: schedule => dispatch(scheduleFormActionCreators.changeWhichScheduleIsModified(schedule)),
   initForm: (data, type, new_template_binding_from) => dispatch(scheduleFormActionCreators.initializeForm(data, type, new_template_binding_from)),

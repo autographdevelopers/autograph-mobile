@@ -33,6 +33,7 @@
     "format-json": "^1.0.3",
     "lodash": "^4.17.5",
     "moment": "^2.19.3",
+    "moment-timezone": "^0.5.14",
     "npm": "^5.7.1",
     "prop-types": "15.6.0",
     "qs": "^6.5.1",

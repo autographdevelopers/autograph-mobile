@@ -105,7 +105,7 @@ export const API = {
   },
   schedule: {
     show: (employeeID=':employee_id', id =':driving_school_id') =>
-      api.get(`driving_schools/${id}/employees/${employeeID}schedule`),
+      api.get(`driving_schools/${id}/employees/${employeeID}/schedule`),
     update: (params, employeeID=':employee_id', id =':driving_school_id') =>
       api.put(`driving_schools/${id}/employees/${employeeID}/schedule`, params)
   },
