@@ -31,7 +31,9 @@ class FinalizeFormWizard extends Component {
 
   submitSchedule = () => {
     const { template, new_template_binding_from, showBindingFromStep } = this.props;
-    const params = {};
+    const params = {
+      repetition_period_in_weeks: 2
+    };
 
     let templateType;
 

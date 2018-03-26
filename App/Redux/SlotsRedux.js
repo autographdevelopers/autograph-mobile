@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
+import { FETCHING_STATUS } from '../Lib/utils';
 import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */
@@ -6,8 +7,9 @@ import _ from 'lodash';
 const INFINITY = 999;
 
 const { Types, Creators } = createActions({
-  indexRequest: null,
-  save: ['data']
+  indexRequest: ['daySelected', 'employeeId'],
+  save: ['data'],
+  changeStatus: ['status']
 }, { prefix: 'SLOTS_' });
 
 export const slotActionTypes = Types;
@@ -26,7 +28,9 @@ export const INITIAL_STATE = {
   //  }, ...
   // },
   // allIds: [...],
-  // status: ...
+  data: {},
+  allIds: [],
+  status: FETCHING_STATUS.READY
 };
 
 /* ------------- Handlers ------------- */
@@ -50,8 +54,16 @@ export const saveHandler = (state, { data }) => {
   return newState;
 };
 
+export const changeStatusHandler = (state, {status}) => {
+  const newState = _.cloneDeep(state);
+  newState.status = status;
+
+  return newState;
+};
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const slotReducer = createReducer(INITIAL_STATE, {
-  [slotActionTypes.SAVE]: saveHandler
+  [slotActionTypes.SAVE]: saveHandler,
+  [slotActionTypes.CHANGE_STATUS]: changeStatusHandler
 });

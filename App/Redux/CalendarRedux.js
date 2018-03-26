@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
+import moment from 'moment'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -6,14 +7,14 @@ const { Types, Creators } = createActions({
   setDay: ['daySelected'],
 });
 
-export const calendarTypes = Types;
+export const calendarActionTypes = Types;
 export const calendarActionCreators = Creators;
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = {
   // date format: YYYY-mm-dd
-  daySelected: null
+  daySelected: moment().format('YYYY-MM-DD')
 };
 
 /* ------------- Handlers ------------- */

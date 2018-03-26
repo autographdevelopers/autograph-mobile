@@ -15,12 +15,16 @@ import { scheduleFormActionTypes } from '../Redux/ScheduleFormRedux';
 import { schoolActivationActionTypes } from '../Redux/SchoolActivationRedux';
 import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionTypes } from '../Redux/DrivingLessonRedux';
+import { slotActionTypes } from '../Redux/SlotsRedux';
+import { calendarActionTypes } from '../Redux/CalendarRedux';
 
 /* ------------- Sagas ------------- */
 import { LogIn } from './LogInSaga';
+
 import { resetPassword } from './ResetPasswordSaga';
 
 import { index as employeesIndexSaga } from './EmployeesSaga';
+
 import { index as studentsIndexSaga } from './StudentsSaga';
 
 import {
@@ -67,6 +71,8 @@ import {
   index as indexDrivingLessonSaga,
   cancel as cancelDrivingLessonSaga,
 } from './DrivingLessonSaga';
+
+import { index as indexSlotsSaga } from './SlotsSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/InvitationsRedux';
@@ -119,5 +125,7 @@ export default function* root() {
 
     takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLessonSaga, api),
     takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLessonSaga, api),
+
+    takeLatest(slotActionTypes.INDEX_REQUEST, indexSlotsSaga, api),
   ])
 }
