@@ -44,23 +44,27 @@ class CalendarScreen extends Component {
       currentEmployee,
       currentDay,
       slots,
-      navigation: {navigate}
+      lessons,
+      navigation: { navigate }
     } = this.props;
 
-    // TODO filter and sort
     const slotsCollection = Object.values(slots);
-    const sortedSlots = slotsCollection.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
-    const employeeSlots = sortedSlots.filter( slot => slot.employee_id === currentEmployee.id);
+    const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id);
+    const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null);
+    const lesson_ids = employeeSlots.filter( slot => slot.driving_lesson_id !== null).map(slot => slot.driving_lesson_id);
+    const drivingLessons = lesson_ids.map(id => lessons[id]);
 
-    const processedSlots = _(employeeSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
+    const slotsWithLessonsUnion = [...drivingLessons, ...emptyEmployeeSlots];
+
+    const sortedSlots = slotsWithLessonsUnion.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
+
+    const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
 
     const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
       acc[current] = { marked: true };
       return acc;
     }, {});
 
-
-    // TODO display loader when fetching
     return (
       <View style={{flex: 1}}>
         <View style={styles.employeeSelectorRow}>
@@ -89,15 +93,12 @@ class CalendarScreen extends Component {
                 }
               }
             }}
-            // renderDay={(date, item) => { console.tron.log(date); console.tron.log(item); return (<View style={{flex: 1}}><Text style={{textAlign: 'center'}}>{date.day}</Text></View>) }}
           />
         </View>
       </View>
     )
   }
 }
-
-// stylesheet.agenda.list.day
 
 const styles = {
   employeeSelectorRow: {
@@ -125,6 +126,7 @@ const styles = {
 const mapStateToProps = (state) => ({
   currentEmployee: state.employees.active[state.context.currentEmployeeID],
   currentDay: state.calendar.daySelected,
+  lessons: state.drivingLessons.hashMap,
   slots: state.slots.data
 });
 
