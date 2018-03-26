@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import styles from './placeholderStyles';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import EmployeesSearchableList from '../Components/EmployeesSearchableList';
+import {  Agenda } from 'react-native-calendars';
 import {contextActionCreators} from '../Redux/ContextRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { calendarActionCreators } from '../Redux/CalendarRedux';
@@ -12,6 +10,7 @@ import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
 import { slotHelper } from '../Lib/SlotHelpers';
 import { Fonts, Colors } from '../Themes/';
+import ButtonText from '../Components/ButtonText';
 
 class CalendarScreen extends Component {
 
@@ -36,7 +35,8 @@ class CalendarScreen extends Component {
   };
 
   onDayPress = day => {
-    this.props.slotsIndexRequest(day.dateString);
+    const { currentEmployee } = this.props;
+    this.props.slotsIndexRequest(day.dateString, currentEmployee.id);
   };
 
   render() {
@@ -51,6 +51,7 @@ class CalendarScreen extends Component {
     const slotsCollection = Object.values(slots);
     const sortedSlots = slotsCollection.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
     const employeeSlots = sortedSlots.filter( slot => slot.employee_id === currentEmployee.id);
+
     const processedSlots = _(employeeSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
 
     const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
@@ -62,10 +63,13 @@ class CalendarScreen extends Component {
     // TODO display loader when fetching
     return (
       <View style={{flex: 1}}>
-        <TouchableOpacity onPress={()=>navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>
-          <Text>Find Employee</Text>
-        </TouchableOpacity>
-        {currentEmployee && <Text>{`${currentEmployee.name} ${currentEmployee.surname}`}</Text>}
+        <View style={styles.employeeSelectorRow}>
+          <View style={styles.row}>
+            <Text style={styles.employeeSelectorLabel}>Wyświetl dla </Text>
+            {currentEmployee && <Text style={styles.employeeSelected}>{`${currentEmployee.name} ${currentEmployee.surname}`}</Text> }
+          </View>
+          <ButtonText customTextStyle={{fontSize: Fonts.size.small}} onPress={()=>navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>Zmień</ButtonText>
+        </View>
         <View style={{flex: 1}}>
           <Agenda
             current={currentDay}
@@ -79,7 +83,7 @@ class CalendarScreen extends Component {
               'stylesheet.agenda.list': {
                 day: {
                   marginTop: 0,
-                  width: 63,
+                  width: 0,
                   // paddingVertical: 15,
                   // paddingHorizontal: 15,
                 }
@@ -94,6 +98,29 @@ class CalendarScreen extends Component {
 }
 
 // stylesheet.agenda.list.day
+
+const styles = {
+  employeeSelectorRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 10
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  employeeSelectorLabel: {
+    color: Colors.strongGrey,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.base,
+    paddingRight: 15
+  },
+  employeeSelected: {
+    color: Colors.softBlack,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.medium
+  }
+};
 
 const mapStateToProps = (state) => ({
   currentEmployee: state.employees.active[state.context.currentEmployeeID],

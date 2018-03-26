@@ -17,7 +17,7 @@ export default FreeSlot = ({hour='12:00'}) => {
 const styles = {
   body: {
     flex: 1,
-    backgroundColor: Colors.lightGrey,
+    backgroundColor: Colors.snow,
     justifyContent: 'center'
   },
   text: {
