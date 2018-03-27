@@ -4,6 +4,8 @@ import { Fonts, Colors } from '../Themes/index';
 import DefaultAvatar from './DefaultAvatar';
 import { PieChart } from 'react-native-svg-charts';
 import ButtonText from '../Components/ButtonText';
+import { slotHelper } from '../Lib/SlotHelpers';
+import _ from 'lodash';
 
 const MoreIndicator = () => (
   <View style={styles.dotsWrapper}>
@@ -11,45 +13,56 @@ const MoreIndicator = () => (
     <View style={styles.dot}/>
     <View style={styles.dot}/>
   </View>
-)
+);
 
-export default EmployeeAvailabilitySummaryCell = props => {
+const SmallPill = ({interval}) => (
+  <View style={styles.intervalContainer}>
+    <Text style={styles.intervalText}>{interval}</Text>
+  </View>
+);
+
+const PIE_CHART_SIZE = 40;
+
+export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
+  const pieChartData = slots.map(slot => {
+    const isLesson = slot.driving_lesson_id !== null;
+
+    return {
+      value: isLesson,
+      svg: {
+        fill: isLesson ? Colors.primaryWarm : Colors.yellowDark,
+        key: `slot-${slot.id}`
+      }
+    }
+  });
+
+  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
+  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(slot));
+  const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
+  const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);
+  const lessonsCount = _.groupBy(lessonSlots, slot => slot.driving_lesson_id ).length;
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <View>
-          <Text style={styles.header}>Wojciech Pośpieszyński</Text>
+          <Text style={styles.header}>{`${employee.name} ${employee.surname}`}</Text>
           <View style={styles.underline}/>
         </View>
-        <DefaultAvatar name={'W'} customContainerStyle={{marginRight: 0}} customSize={30}/>
+        <DefaultAvatar name={employee.name[0]} customContainerStyle={{marginRight: 0}} customSize={30}/>
       </View>
       <View style={styles.chartRow}>
-        <PieChart style={{ height: 40, width: 40 }}
-                  data={[{value: Math.random(1,3), svg: {fill: Colors.yellowDark}, key: `pie-1`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-2`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-3`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-4`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-5`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-6`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-7`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-8`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-9`},
-                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-10`}]}
+        <PieChart style={{ height: PIE_CHART_SIZE, width: PIE_CHART_SIZE }}
+                  data={pieChartData}
                   innerRadius={0}
                   padAngle={0}
                   />
         <View style={styles.key}>
-          <Text style={styles.takenSlots}>Umówionych jazd (5)</Text>
-          <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text>
+          <Text style={styles.takenSlots}>{`Umówionych jazd (${lessonsCount})`}</Text>
+          { availableIntervals.length !== 0 && <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text> }
           <View style={styles.intervalCollection}>
-            <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
-            <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
-            <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
-            <MoreIndicator/>
-            {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
-            {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
-            {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
-            {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
+            { availableIntervals.slice(0,3).map(interval => <SmallPill interval={interval} />) }
+            { availableIntervals.length > 3 && <MoreIndicator/> }
           </View>
         </View>
       </View>
