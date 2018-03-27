@@ -10,9 +10,14 @@ export default class ActivitiesScreen extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.text}>ACTIVITIES</Text>
-        <Text style={styles.soon}>soon</Text>
+      <ScrollView style={{paddingHorizontal: 15}}>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
+        <EmployeeAvailabilitySummaryCell/>
         <EmployeeAvailabilitySummaryCell/>
       </ScrollView>
     )

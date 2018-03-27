@@ -25,8 +25,18 @@ export default EmployeeAvailabilitySummaryCell = props => {
       </View>
       <View style={styles.chartRow}>
         <PieChart style={{ height: 40, width: 40 }}
-                  data={[{value: 1, svg: {fill: Colors.yellowDark}, key: `pie-1`}, {value: 2, svg: {fill: Colors.primaryWarm}, key: `pie-2`}]}
+                  data={[{value: Math.random(1,3), svg: {fill: Colors.yellowDark}, key: `pie-1`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-2`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-3`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-4`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-5`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-6`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-7`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-8`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-9`},
+                    {value: Math.random(1,3), svg: {fill: Colors.primaryWarm}, key: `pie-10`}]}
                   innerRadius={0}
+                  padAngle={0}
                   />
         <View style={styles.key}>
           <Text style={styles.takenSlots}>Umówionych jazd (5)</Text>
@@ -34,8 +44,8 @@ export default EmployeeAvailabilitySummaryCell = props => {
           <View style={styles.intervalCollection}>
             <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
             <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
-            {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
-            {/*<MoreIndicator/>*/}
+            <View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>
+            <MoreIndicator/>
             {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
             {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
             {/*<View style={styles.intervalContainer}><Text style={styles.intervalText}>12:00 - 13:00</Text></View>*/}
@@ -79,7 +89,7 @@ const styles = {
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 5,
+    marginTop: 10,
   },
   chartRow: {
     flexDirection: 'row',
@@ -117,7 +127,8 @@ const styles = {
     marginRight: 5,
   },
   intervalText: {
-    color: Colors.softBlack,
+    color: Colors.black,
+    fontFamily: Fonts.type.light,
     fontSize: Fonts.size.extraSmall,
   },
   intervalCollection: {
@@ -127,14 +138,14 @@ const styles = {
     alignItems: 'center'
   },
   dot: {
-    width: 3,
-    height: 3,
+    width: 2,
+    height: 2,
     backgroundColor: Colors.strongGrey,
     borderRadius: 2
   },
   dotsWrapper: {
     flexDirection: 'row',
-    width: 15,
+    width: 10,
     height: Fonts.size.extraSmall,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
