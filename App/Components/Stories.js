@@ -17,8 +17,9 @@
 // import './Stories/Slot.story';
 // import './Stories/DialogBox.story';
 // import './Stories/SearchInput.story';
-import './Stories/SlotLayout.story';
-import './Stories/SlotBookingBy3rdPart.story';
-import './Stories/FreeSlot.story';
-import './Stories/DriveSlot.story';
-import './Stories/SelectedSlot.story';
+// import './Stories/SlotLayout.story';
+// import './Stories/SlotBookingBy3rdPart.story';
+// import './Stories/FreeSlot.story';
+// import './Stories/DriveSlot.story';
+// import './Stories/SelectedSlot.story';
+import './Stories/EmployeeAvailabilitySummaryCell.story';
