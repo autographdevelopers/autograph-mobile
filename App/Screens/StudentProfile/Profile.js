@@ -29,7 +29,7 @@ class Profile extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.props.fetchDrivingCourse()
     this.props.fetchDrivingLessons({ student_id: this.props.studentId })
   }

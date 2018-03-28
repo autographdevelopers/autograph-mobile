@@ -49,7 +49,7 @@ class EmployeesIndex extends Component {
 
   goToUserProfile = (user, index) => () => {
     this.props.screenProps.setCurrentEmployee(user.id);
-    this.props.navigation.navigate('userProfile', { user, index });
+    this.props.navigation.navigate('employeeProfile', { user, index });
   };
 
   openConfirmationModal = (employeeId) =>
