@@ -7,17 +7,19 @@ import Layout from '../Components/Layout';
 import { ListItem } from 'react-native-elements';
 import UniversalCell from '../Components/UniversalCell';
 import IconF from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import { sessionActionCreators } from '../Redux/SessionRedux';
 
-export default class PersonalSettings extends Component {
+class PersonalSettings extends Component {
 
   renderSectionHeader = ({section}) => <SectionHeader title={section.title}/>
 
-  renderListItem = ({item}) =>
+  renderListItem = ({item}) => (
     <UniversalCell
       title={item.field}
       subtitle={item.value}
     />
-
+  )
 
 
   render() {
@@ -61,7 +63,7 @@ export default class PersonalSettings extends Component {
           renderItem={this.renderListItem}
         />
         <View style={styles.btnContainer}>
-          <ButtonText icon={<IconF name={'sign-out'} size={13} color={Colors.primaryWarm}/>}>
+          <ButtonText icon={<IconF name={'sign-out'} size={13} color={Colors.primaryWarm}/>} onPress={this.props.logout}>
             Wyloguj
           </ButtonText>
         </View>
@@ -81,3 +83,9 @@ const styles = {
     backgroundColor: Colors.lightGrey
   }
 };
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(sessionActionCreators.destroyRequest())
+});
+
+export default connect(null, mapDispatchToProps)(PersonalSettings)

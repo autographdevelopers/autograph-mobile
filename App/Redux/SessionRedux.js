@@ -6,7 +6,9 @@ import { createFormAction } from 'redux-form-saga';
 const { Types, Creators } = createActions({
   setUserSession: ['sessionMetadata'],
   setAuthenticationErrorMessage: ['errorMessage'],
-  clearAuthenticationErrorMessage: null
+  clearAuthenticationErrorMessage: null,
+  destroyRequest: null,
+  resetState: null
 });
 
 export const login = createFormAction('LOGIN');
@@ -38,10 +40,13 @@ export const clearAuthenticationErrorMessageHandler = (state, _) => {
   return { ...state, errorMessage: null };
 };
 
+export const resetStateHandler = state => INITIAL_STATE;
+
 /* ------------- Gather all handlers to create single reducer ------------- */
 
 export const sessionReducer = createReducer(INITIAL_STATE, {
   [Types.SET_USER_SESSION]: setUserSessionHandler,
   [Types.SET_AUTHENTICATION_ERROR_MESSAGE]: setAuthenticationErrorMessageHandler,
-  [Types.CLEAR_AUTHENTICATION_ERROR_MESSAGE]: clearAuthenticationErrorMessageHandler
+  [Types.CLEAR_AUTHENTICATION_ERROR_MESSAGE]: clearAuthenticationErrorMessageHandler,
+  [Types.RESET_STATE]: resetStateHandler
 });
