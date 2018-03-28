@@ -50,7 +50,7 @@ export default class SettingsScreen extends Component {
           keyExtractor={(item, index) => index}
           wrapperStyle={{marginLeft: 0}}
           onPress={() => {
-            navigation.navigate('editScheduleBoundaries', navParams)
+            navigation.navigate('editValidTimeFrames', navParams)
           }}
         />
 

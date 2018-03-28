@@ -7,12 +7,12 @@ import {
 /** Custom dependencies */
 import { Colors, Fonts } from '../Themes';
 
-export default SectionHeader = ({title}) => (
+export default SectionHeader = ({title, customTextStyles={}, customUnderlineStyles={}}) => (
   <View style={styles.container}>
-    <Text style={styles.listHeader}>
+    <Text style={[styles.listHeader, customTextStyles]}>
       {title}
     </Text>
-    <View style={styles.underline}/>
+    <View style={[styles.underline, customUnderlineStyles]}/>
   </View>
 )
 

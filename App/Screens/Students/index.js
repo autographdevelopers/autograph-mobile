@@ -140,7 +140,7 @@ class StudentsIndex extends Component {
             onTabPress: this.changeTab
           }}
           />
-          <List containerStyle={listProjectorStyles.containerStyle}>
+          <List containerStyle={[listProjectorStyles.containerStyle, {flex: 1}]}>
             <FlatList
               contentContainerStyle={listProjectorStyles.contentContainerStyle}
               data={list[segmentIndex].data}
