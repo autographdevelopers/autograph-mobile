@@ -13,7 +13,8 @@ export default ButtonText = ({ children, position, onPress, customStyle={}, cust
     },
     button: {
       alignSelf: position,
-      flexDirection: 'row'
+      flexDirection: 'row',
+      alignItems: 'center'
     }
   });
 

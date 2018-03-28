@@ -148,6 +148,8 @@ class MySchoolsScreen extends Component {
       invitingDrivingSchools,
       schoolActivationStatus,
       resetSchoolActivationState,
+      navigation,
+      user,
       drivingSchools: { status }
     } = this.props;
 
@@ -164,7 +166,7 @@ class MySchoolsScreen extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <AccountHeader user={this.props.user}/>
+        <AccountHeader user={user} navigation={navigation}/>
 
         { status === FETCHING_STATUS.SUCCESS &&
           <SectionList

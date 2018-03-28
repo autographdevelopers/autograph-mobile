@@ -2,6 +2,7 @@ import { takeLatest, all } from 'redux-saga/effects';
 import { API as api } from '../Services/Api';
 
 /* ------------- Types ------------- */
+import { sessionActionTypes } from '../Redux/SessionRedux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
 import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
@@ -17,7 +18,11 @@ import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionTypes } from '../Redux/DrivingLessonRedux';
 
 /* ------------- Sagas ------------- */
-import { LogIn } from './LogInSaga';
+import {
+  create as LoginSaga,
+  destroy as LogoutSaga,
+} from './SessionSaga';
+
 import { resetPassword } from './ResetPasswordSaga';
 
 import { index as employeesIndexSaga } from './EmployeesSaga';
@@ -84,7 +89,9 @@ import { update as updateEmployeePrivileges } from '../Redux/EmployeePrivileges'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield all([
-    takeLatest(login.REQUEST, LogIn, api),
+    takeLatest(login.REQUEST, LoginSaga, api),
+    takeLatest(sessionActionTypes.DESTROY_REQUEST, LogoutSaga, api),
+
     takeLatest(resetPasswordTypes.RESET_PASSWORD_REQUEST, resetPassword, api),
 
     takeLatest(createDrivingSchool.REQUEST, createDrivingSchoolSaga, api),

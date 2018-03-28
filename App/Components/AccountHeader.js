@@ -18,7 +18,7 @@ export default AccountHeader = ({navigation, title, user}) => {
         <Text style={styles.welcomeText}>{user.name} {user.surname}</Text>
         <ButtonText
           position={'flex-start'}
-          onPress={() => {}}
+          onPress={() => {navigation.navigate('personalSettings', {user})}}
           customTextStyle={{fontSize: Fonts.size.small}}
           customStyle={{marginTop: 7}}
           icon={<Icon name={'settings'} size={16} color={Colors.primaryWarm}/>}>

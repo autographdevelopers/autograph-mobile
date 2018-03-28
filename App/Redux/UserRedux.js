@@ -28,9 +28,7 @@ export const setUserHandler = (state, { user: { id, name, surname, email, gender
   return { ...state, id, name, surname, email, gender, type, birthDay, time_zone }
 };
 
-export const clearUserHandler = (state, _) => {
-  return { ...state, ...INITIAL_STATE }
-};
+export const clearUserHandler = state => INITIAL_STATE;
 
 /* ------------- Gather all handlers to create single reducer ------------- */
 
