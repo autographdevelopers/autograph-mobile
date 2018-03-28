@@ -26,6 +26,13 @@ LocaleConfig.defaultLocale = 'pl';
 
 class CalendarScreen extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state= {
+      currentEmployeeId: null
+    }
+  }
+
   prepareSlotsData = () => {
 
     // TODO: how to handle dates on the edge of a week?
@@ -38,16 +45,18 @@ class CalendarScreen extends Component {
   };
 
   onEmployeeSelected = id => {
-    const { navigation, setCurrentEmployee, currentDay } = this.props;
-    setCurrentEmployee(id);
+    const { navigation, currentDay } = this.props;
+    this.setState({
+      currentEmployeeId: id
+    });
     navigation.goBack(null);
 
     this.props.slotsIndexRequest(currentDay, id);
   };
 
   onDayPress = day => {
-    const { currentEmployee } = this.props;
-    this.props.slotsIndexRequest(day.dateString, currentEmployee.id);
+    const { currentEmployeeId } = this.state;
+    this.props.slotsIndexRequest(day.dateString, currentEmployeeId);
   };
 
   renderCell = (item, firstItemInDay) => {
@@ -60,13 +69,15 @@ class CalendarScreen extends Component {
 
   render() {
     const {
-      currentEmployee,
       currentDay,
       slots,
       lessons,
       selectDay,
+      employees,
       navigation: { navigate }
     } = this.props;
+
+    const currentEmployee = employees[this.state.currentEmployeeId];
 
     const slotsCollection = Object.values(slots);
     const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id);
@@ -148,7 +159,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-  currentEmployee: state.employees.active[state.context.currentEmployeeID],
+  employees: state.employees.active,
   currentDay: state.calendar.daySelected,
   lessons: state.drivingLessons.hashMap,
   slots: state.slots.data
