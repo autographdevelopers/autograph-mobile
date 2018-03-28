@@ -3,8 +3,6 @@ import { StackNavigator } from 'react-navigation';
 import { EmployeeTabNavigator } from './TabNavigation';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import styles from './Styles/NavigationStyles';
-import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
-
 
 const routeConfigs = {
   schoolMain: {
