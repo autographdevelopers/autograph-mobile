@@ -28,6 +28,8 @@ import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
 
+import PersonalSettings from '../Screens/PersonalSettings';
+
 const primaryFlowNavigationOptions = ({navigation}) => {
   // TODO: refactor this shit
   const { routes, index, params } = navigation.state;
@@ -124,6 +126,10 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
 /** ==NAVIGATION SETUP================== */
 const routeConfigs = {
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
+  personalSettings: { screen: PersonalSettings,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
+    }},
   ...NOT_AUTHENTICATED_USER_SCREENS,
   ...USERS_FLOWS_SCREENS,
   ...INVITE_USER_SCREENS,

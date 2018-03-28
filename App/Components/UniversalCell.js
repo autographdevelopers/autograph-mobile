@@ -11,12 +11,8 @@ export default UniversalCell = ({ title, subtitle, avatar, CustomTitle, CustomRi
 
   const styles = StyleSheet.create({
     container: {
-      paddingHorizontal: 15,
       height: !!!subtitle && !!!avatar ? DEFAULT_HEIGHT : LARGER_HEIGHT,
       width: '100%',
-      borderColor: Colors.mediumGrey,
-      borderBottomWidth: separator === 'full' ? 1 : 0,
-      borderTopWidth: separator === 'full' && topLine ? 1 : 0
     },
     body: {
       flex: 1,
@@ -35,7 +31,7 @@ export default UniversalCell = ({ title, subtitle, avatar, CustomTitle, CustomRi
     },
     title: {
       color: Colors.black,
-      fontSize: Fonts.size.regular,
+      fontSize: Fonts.size.medium,
       marginBottom: subtitle ? 3 : 0
     },
     subtitle: {
