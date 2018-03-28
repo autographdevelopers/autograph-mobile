@@ -19,6 +19,7 @@ import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Components/DrivingLessonsList';
 import CancelDrivingLesson from '../../Components/CancelDrivingLesson';
 import ButtonText from '../../Components/ButtonText';
+import SectionHeader from '../../Components/SectionHeader';
 
 class Profile extends Component {
   constructor(props) {
@@ -30,7 +31,7 @@ class Profile extends Component {
   }
 
   componentWillMount = () => {
-    this.props.fetchDrivingCourse()
+    this.props.fetchDrivingCourse();
     this.props.fetchDrivingLessons({ student_id: this.props.studentId })
   }
 
@@ -51,20 +52,21 @@ class Profile extends Component {
     return (
       <Layout>
         <View style={styles.headerWithBtn}>
-          <View>
-            <Text style={styles.headerText}>Postępy</Text>
-            <View style={styles.underline}/>
-          </View>
 
-          {canManageStudents(drivingSchool) && <ButtonText
-            onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
-            customTextStyle={{ fontSize: Fonts.size.small }}
-            icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
-            Edytuj
-          </ButtonText>}
+          <SectionHeader title={'Postępy'} customTextStyles={styles.headerText} customUnderlineStyles={styles.underline}/>
+
+          {
+            canManageStudents(drivingSchool) &&
+              <ButtonText
+                onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
+                customTextStyle={{ fontSize: Fonts.size.small }}
+                icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+                Edytuj
+              </ButtonText>
+          }
         </View>
 
-        <View style={[listProjectorStyles.containerStyle, { flex: 0 }]}>
+        <View style={[listProjectorStyles.containerStyle]}>
           <DrivingCourseProgress drivingCourse={drivingCourse}/>
         </View>
 
@@ -80,10 +82,7 @@ class Profile extends Component {
 
         <View style={styles.headerWithBtn}>
 
-          <View>
-            <Text style={styles.headerText}>Nadchodzące jazdy</Text>
-            <View style={styles.underline}/>
-          </View>
+          <SectionHeader title={'Nadchodzące jazdy'} customTextStyles={styles.headerText} customUnderlineStyles={styles.underline}/>
 
           <ButtonText
             onPress={() => {}}
@@ -92,7 +91,7 @@ class Profile extends Component {
           </ButtonText>
         </View>
 
-        <View style={[listProjectorStyles.containerStyle, { flex: 0 }]}>
+        <View style={[listProjectorStyles.containerStyle]}>
           <DrivingLessonsList
             onCancelPress={this.openDrivingLessonCancelModal}
             drivingLessons={drivingLessons}
