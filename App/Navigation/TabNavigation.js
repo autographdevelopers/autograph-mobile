@@ -14,7 +14,6 @@ import Icons from 'react-native-vector-icons/EvilIcons';
 import IconsOcticons from 'react-native-vector-icons/Octicons';
 import React, { Component } from 'react';
 import I18n from '../I18n';
-import NavHeader from '../Components/NavHeader';
 
 const employeeRoutesConfigs = {
   calendar: {

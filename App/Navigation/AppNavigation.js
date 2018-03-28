@@ -1,31 +1,39 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
+import styles from './Styles/NavigationStyles';
+import NavHeader from '../Components/NavHeader';
+import DefaultAvatar from '../Components/DefaultAvatar';
+import { Fonts, Colors } from '../Themes/';
+import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
+
 import LaunchLoginPair from '../Screens/LaunchLoginPair/ModuleNavigator';
 import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
+
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
 
-import styles from './Styles/NavigationStyles';
-import NavHeader from '../Components/NavHeader';
+import ValidTimeFrames from '../Screens/NewDrivingSchool/ValidTimeFrames';
 import DrivingSchoolInfo from '../Screens/NewDrivingSchool/Information';
-import ScheduleBoundaries from '../Screens/NewDrivingSchool/ValidTimeFrames';
 import ScheduleSettings from '../Screens/NewDrivingSchool/ScheduleSettings';
-import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
-import EmployeeProfileModule from '../Screens/EmployeeProfile/ModuleNavigator';
+
 import StudentProfile from '../Screens/StudentProfile/ModuleNavigator';
-import DefaultAvatar from '../Components/DefaultAvatar';
-import { Fonts, Colors } from '../Themes/'
-import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
-import EmployeeSearchableList from '../Components/EmployeesSearchableList';
+import EmployeeProfile from '../Screens/EmployeeProfile/ModuleNavigator';
+import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 
 import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
 
+import EmployeeSearchableList from '../Components/EmployeesSearchableList';
+
+import PersonalSettings from '../Screens/PersonalSettings';
+
 const primaryFlowNavigationOptions = ({navigation}) => {
+  // TODO: refactor this shit
   const { routes, index, params } = navigation.state;
   let title;
   let rightIcon;
@@ -50,18 +58,51 @@ const primaryFlowNavigationOptions = ({navigation}) => {
   }
 };
 
-const routeConfigs = {
-  loginLaunch: {
-    screen: LaunchLoginPair
+/** == SCREENS GROUPS  ================== */
+const SETTINGS_SCREENS = {
+  editSchoolInfo: {
+    screen: DrivingSchoolInfo,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Informacje'}/>
+    }
   },
-  signUp: { screen: SignUpScreen },
-  resetPassword: { screen: ResetPasswordScreen },
+  editValidTimeFrames: {
+    screen: ValidTimeFrames,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Godziny jazd'}/>
+    }
+  },
+  editScheduleSettings: {
+    screen: ScheduleSettings,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
+    }
+  },
+};
+
+const PROFILE_SCREENS = {
+  employeeProfile: {
+    screen: EmployeeProfile,
+    navigationOptions: { header: null }
+  },
+  studentProfile: {
+    screen: StudentProfile,
+    navigationOptions: { header: null }
+  },
   mySchoolsScreen: {
     screen: MySchoolsScreen,
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Profil'} back={false}/>
     }
-  },
+  }
+};
+
+const INVITE_USER_SCREENS = {
+  inviteEmployee: { screen: InviteEmployeeWizardForm },
+  inviteStudent: { screen: InviteStudentForm }
+};
+
+const USERS_FLOWS_SCREENS = {
   employeeFlow: {
     screen: EmployeeFlow,
     navigationOptions: primaryFlowNavigationOptions
@@ -73,31 +114,24 @@ const routeConfigs = {
   studentFlow: {
     screen: StudentFlow,
     navigationOptions: primaryFlowNavigationOptions
+  }
+};
+
+const NOT_AUTHENTICATED_USER_SCREENS = {
+  loginLaunch: {
+    screen: LaunchLoginPair
   },
+  signUp: { screen: SignUpScreen },
+  resetPassword: { screen: ResetPasswordScreen },
+};
+
+/** ==NAVIGATION SETUP================== */
+const routeConfigs = {
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
-  inviteEmployee: { screen: InviteEmployeeWizardForm },
-  inviteStudent: { screen: InviteStudentForm },
-  editSchoolInfo: {
-    screen: DrivingSchoolInfo,
+  personalSettings: { screen: PersonalSettings,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Informacje'}/>
-    }
-  },
-  editScheduleBoundaries: {
-    screen: ScheduleBoundaries,
-    navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Godziny jazd'}/>
-    }
-  },
-  editScheduleSettings: {
-    screen: ScheduleSettings,
-    navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
-    }
-  },
-  userProfile: {
-    screen: EmployeeProfileModule,
-  },
+      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
+    }},
   searchEmployee: {
     screen: EmployeeSearchableList,
     navigationOptions: {
@@ -105,10 +139,11 @@ const routeConfigs = {
                                   title={'Wybierz pracownika'}/>
     }
   },
-  studentProfile: {
-    screen: StudentProfile,
-    navigationOptions: { header: null }
-  }
+  ...NOT_AUTHENTICATED_USER_SCREENS,
+  ...USERS_FLOWS_SCREENS,
+  ...INVITE_USER_SCREENS,
+  ...SETTINGS_SCREENS,
+  ...PROFILE_SCREENS
 };
 
 const navigationConfigs = {
@@ -116,7 +151,5 @@ const navigationConfigs = {
   initialRouteName: 'loginLaunch',
   cardStyle: styles.card
 };
-
-
 
 export default StackNavigator(routeConfigs, navigationConfigs);

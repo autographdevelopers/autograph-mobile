@@ -3,7 +3,6 @@ import { Colors, Fonts } from '../Themes/';
 export default styles = {
   containerStyle: {
     backgroundColor: Colors.snow,
-    flex: 1,
     borderBottomWidth: 0,
     borderTopWidth: 0,
     shadowOpacity: 0.15,

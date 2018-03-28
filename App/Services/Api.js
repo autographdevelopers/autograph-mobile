@@ -53,8 +53,6 @@ const api = apisauce.create({
 api.addResponseTransform(responseHook);
 api.addRequestTransform(requestHook);
 
-
-
 export const API = {
   problemCodes: {
     SERVER_ERROR,
@@ -63,7 +61,10 @@ export const API = {
     TIMEOUT_ERROR,
     CONNECTION_ERROR
   },
-  logIn: (email, password) => api.post('auth/sign_in', { email, password }),
+  session: {
+    destroy: () => api.delete('auth/sign_out'),
+    create: (email, password) => api.post('auth/sign_in', { email, password })
+  },
   signUp: userData => api.post('auth', userData),
   resetPassword: email => api.post('auth/password', { email }),
   drivingSchools: {

@@ -16,7 +16,8 @@ const AVATAR_SMALL_SIZE = 45;
 const AVATAR_LETTER_SMALL_FONT = 25;
 const AVATAR_LETTER_LARGE_FONT = 30;
 const AVATAR_LARGE_SIZE = 70;
-const TEXT_HEIGHT = Fonts.size.medium;
+const FONT_SIZE = Fonts.size.medium;
+const TEXT_HEIGHT = FONT_SIZE + 6;
 
 const LINKS = ['editPrivileges', 'availabilityIndex'];
 
@@ -24,7 +25,8 @@ export default class EmployeeProfileHeader extends Component  {
 
   variableAvatarSize = new Animated.Value(AVATAR_LARGE_SIZE);
   variableAvatarFontSize = new Animated.Value(AVATAR_LETTER_LARGE_FONT);
-  variableFontSize = new Animated.Value(TEXT_HEIGHT);
+  variableFontSize = new Animated.Value(FONT_SIZE);
+  variableTextHeight = new Animated.Value(TEXT_HEIGHT);
   variableOpacity = new Animated.Value(1);
 
   constructor(props) {
@@ -35,6 +37,7 @@ export default class EmployeeProfileHeader extends Component  {
       avatarSizeGoal: AVATAR_SMALL_SIZE,
       avatarLetterSizeGoal: AVATAR_LETTER_SMALL_FONT,
       opacityGoal: 0,
+      fontSizeGoal: 0,
       textHeightGoal: 0,
       animate: false
     };
@@ -47,7 +50,7 @@ export default class EmployeeProfileHeader extends Component  {
       avatarSizeGoal: [AVATAR_SMALL_SIZE, AVATAR_LARGE_SIZE][newOpacityGoal],
       avatarLetterSizeGoal: [AVATAR_LETTER_SMALL_FONT, AVATAR_LETTER_LARGE_FONT][newOpacityGoal],
       opacityGoal: newOpacityGoal,
-      textHeightGoal: [0, TEXT_HEIGHT][newOpacityGoal],
+      fontSizeGoal: [0, FONT_SIZE][newOpacityGoal],
       animate: false
     })
   };
@@ -75,14 +78,21 @@ export default class EmployeeProfileHeader extends Component  {
       Animated.timing(
         this.variableFontSize,
         {
-          toValue: this.state.textHeightGoal,
+          toValue: this.state.fontSizeGoal,
+          duration: DURATION,
+        },
+      ),
+      Animated.timing(
+        this.variableTextHeight,
+        {
+          toValue: this.state.fontSizeGoal,
           duration: DURATION,
         },
       ),
       Animated.timing(
         this.variableOpacity,
         {
-          toValue: this.state.textHeightGoal,
+          toValue: this.state.fontSizeGoal,
           duration: DURATION,
         },
       )]).start(
@@ -133,6 +143,8 @@ export default class EmployeeProfileHeader extends Component  {
 
             <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
 
+            <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`tel. ${user.phone_number}`}</Animated.Text>
+
             <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
 
             <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' }))}
@@ -169,7 +181,7 @@ const styles = {
   primaryInfo: {
     color: Colors.softBlack,
     fontSize: Fonts.size.regular,
-    fontWeight: 'bold',
+    fontWeight: '400',
   },
   secondaryInfo: {
     color: Colors.strongGrey,

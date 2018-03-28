@@ -34,27 +34,4 @@ const navigationConfigs = {
   cardStyle: navStyles.card,
 };
 
-const EmployeeProfile = StackNavigator(routeConfigs, navigationConfigs);
-
-export default class EmployeeProfileModule extends Component {
-  static navigationOptions = { header: null };
-
-  componentWillUnmount = () => {
-    this.props.screenProps.setCurrentEmployee(null);
-  };
-
-  render() {
-    const { user, index } = this.props.navigation.state.params;
-    const { navigation, screenProps } = this.props;
-
-    return (
-      <View style={{ flex: 1 }}>
-        <EmployeeProfile
-          navigation={navigation}
-          screenProps={{ user, index, ...screenProps }} />
-      </View>
-    );
-  }
-}
-
-EmployeeProfileModule.router = EmployeeProfile.router;
+export default StackNavigator(routeConfigs, navigationConfigs);
