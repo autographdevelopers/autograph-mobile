@@ -95,15 +95,20 @@ class ScheduleBoundaries extends Component {
 
         <FormSection name={PARAM_NAME}>
           <View>
-            {WEEKDAYS.map((day, index) => (
-              <View style={currentDay === index ? {} : styles.hide} key={`picker-${index}`}>
-                <Field name={day}
-                       component={ScheduleBoundariesPicker}
-                       setFormValue={change}
-                       paramName={PARAM_NAME}
-                       initForm={initialize}/>
-              </View>
-            ))}
+            {WEEKDAYS.map((day, index) => {
+                if( currentDay === index) {
+                  return (
+                    <Field name={day}
+                           component={ScheduleBoundariesPicker}
+                           setFormValue={change}
+                           paramName={PARAM_NAME}
+                           initForm={initialize}
+                    />
+                  )
+                } else {
+                  return null;
+                }
+            })}
 
             {WEEKDAYS.map((day, index) => (
               <Field name={day}

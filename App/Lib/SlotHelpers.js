@@ -1,4 +1,5 @@
 import moment from 'moment/moment';
+import momentTimezone from 'moment-timezone';
 
 export const slotHelper = {
   TIME_FORMAT: 'HH:mm',
@@ -79,8 +80,6 @@ export const slotHelper = {
   roundTimeToHalfHourInterval: function(t) {
     let time = moment(t, this.TIME_FORMAT);
 
-    console.log('minutes')
-    console.log(time.minutes())
     const minutes = parseInt(time.minutes());
     const hours = parseInt(time.hours());
 
@@ -92,5 +91,8 @@ export const slotHelper = {
       time.minutes(30).hours(hours);
     }
     return time.format(this.TIME_FORMAT);
+  },
+  dateTimeToTimeZoneHour: function(datetime, timezone='Europe/Warsaw') {
+    return momentTimezone(datetime).tz(timezone).format(this.TIME_FORMAT)
   }
 };

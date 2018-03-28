@@ -28,6 +28,8 @@ import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
 
+import EmployeeSearchableList from '../Components/EmployeesSearchableList';
+
 import PersonalSettings from '../Screens/PersonalSettings';
 
 const primaryFlowNavigationOptions = ({navigation}) => {
@@ -130,6 +132,13 @@ const routeConfigs = {
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
     }},
+  searchEmployee: {
+    screen: EmployeeSearchableList,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation}
+                                  title={'Wybierz pracownika'}/>
+    }
+  },
   ...NOT_AUTHENTICATED_USER_SCREENS,
   ...USERS_FLOWS_SCREENS,
   ...INVITE_USER_SCREENS,

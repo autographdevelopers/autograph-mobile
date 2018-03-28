@@ -1,13 +1,15 @@
 const colors = {
   primaryWarm: '#00C098',
   primaryCold: '#00E1C9',
-  success: '#45DB5E',
   salmon: '#FA5C78',
   lightGrey: '#EFEFF4',
   subtleGray: 'rgba(0,0,0,0.03)',
   mediumGrey: '#CECED2',
   strongGrey: '#8E8E93',
   softBlack: '#3C3F43',
+  blue: '#2DAAFE',
+
+  success: '#45DB5E',
   black: '#000000',
   yellowLight: '#FFDF02',
   yellowDark: '#FFBF00',
@@ -15,7 +17,6 @@ const colors = {
   purple: '#9A66B0',
   paleYellow: '#ffef80',
   yellow: '#FFCC02',
-  blue: '#2DAAFE',
   red: '#FF3B30',
   green: '#4CDA64',
 

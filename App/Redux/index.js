@@ -18,6 +18,8 @@ import { modalsReducer } from './ModalRedux';
 import { schoolActivationReducer } from './SchoolActivationRedux';
 import { scheduleFormReducer } from './ScheduleFormRedux';
 import { scheduleReducer } from './ScheduleRedux';
+import { calendarReducer } from './CalendarRedux';
+import { slotReducer } from './SlotsRedux';
 import { drivingCourseReducer } from './DrivingCourseRedux';
 import { drivingLessonReducer } from './DrivingLessonRedux';
 
@@ -40,6 +42,8 @@ export const reducers = combineReducers({
   schoolActivation: schoolActivationReducer,
   schedule: scheduleReducer,
   scheduleForm: scheduleFormReducer,
+  calendar: calendarReducer,
+  slots: slotReducer,
   drivingCourse: drivingCourseReducer,
   drivingLessons: drivingLessonReducer,
 });

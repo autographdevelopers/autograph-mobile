@@ -1,14 +1,174 @@
 import React, { Component } from 'react';
-import { Text, ScrollView } from 'react-native';
-import styles from './placeholderStyles';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import {  Agenda, LocaleConfig } from 'react-native-calendars';
+import {contextActionCreators} from '../Redux/ContextRedux';
+import { slotActionCreators } from '../Redux/SlotsRedux';
+import { calendarActionCreators } from '../Redux/CalendarRedux';
+import moment from 'moment';
+import _ from 'lodash';
+import AvailableSlot from '../Components/Slots/FreeSlot';
+import DrivingLessonCell from '../Components/Slots/DriveSlot';
 
-export default class CalendarScreen extends Component {
+import { slotHelper } from '../Lib/SlotHelpers';
+import { Fonts, Colors } from '../Themes/';
+import ButtonText from '../Components/ButtonText';
+import CustomDatePicker from '../Components/CustomDatePicker';
+
+LocaleConfig.locales['pl'] = {
+  monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
+  monthNamesShort: ['Sty.','Lut.','Mar','Kwi.','Maj.','Cze.','Lip.','Sie.','Wrz.','Paź.','Lis.','Gru.'],
+  dayNames: ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+  dayNamesShort: ['Pn.','Wt.','Śr.','Czw.','Pt.','Sob.','Nd.']
+};
+
+LocaleConfig.defaultLocale = 'pl';
+
+class CalendarScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state= {
+      currentEmployeeId: null
+    }
+  }
+
+  prepareSlotsData = () => {
+
+    // TODO: how to handle dates on the edge of a week?
+
+    // TODO: consider
+    // TODO: How do I know wheather I already have this slots(from taht range) I don;t need to send the request..?
+
+    // TODO: Retrive driving lessons IDs..here?
+    // TODO: driving lessons index request here?
+  };
+
+  onEmployeeSelected = id => {
+    const { navigation, currentDay } = this.props;
+    this.setState({
+      currentEmployeeId: id
+    });
+    navigation.goBack(null);
+
+    this.props.slotsIndexRequest(currentDay, id);
+  };
+
+  onDayPress = day => {
+    const { currentEmployeeId } = this.state;
+    this.props.slotsIndexRequest(day.dateString, currentEmployeeId);
+  };
+
+  renderCell = (item, firstItemInDay) => {
+    if(item.employee && item.student && item.driving_lesson_id) {
+      return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
+    } else if (item.driving_lesson_id === null){
+      return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/>;
+    }
+  };
+
   render() {
+    const {
+      currentDay,
+      slots,
+      lessons,
+      selectDay,
+      employees,
+      navigation: { navigate }
+    } = this.props;
+
+    const currentEmployee = employees[this.state.currentEmployeeId];
+
+    const slotsCollection = Object.values(slots);
+    const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id);
+    const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null);
+    const lesson_ids = employeeSlots.filter( slot => slot.driving_lesson_id !== null).map(slot => slot.driving_lesson_id);
+    const drivingLessons = lesson_ids.map(id => lessons[id]);
+
+    const slotsWithLessonsUnion = [...drivingLessons, ...emptyEmployeeSlots];
+
+    const sortedSlots = slotsWithLessonsUnion.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
+
+    const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
+
+    const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
+      acc[current] = { marked: true };
+      return acc;
+    }, {});
+
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.text}>CALENDAR</Text>
-        <Text style={styles.soon}>soon</Text>
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <View style={styles.employeeSelectorRow}>
+          <View style={styles.row}>
+            <Text style={styles.employeeSelectorLabel}>Wyświetl dla </Text>
+            {currentEmployee && <Text style={styles.employeeSelected}>{`${currentEmployee.name} ${currentEmployee.surname}`}</Text> }
+          </View>
+          <ButtonText customTextStyle={{fontSize: Fonts.size.small}} onPress={() => navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>Zmień</ButtonText>
+        </View>
+
+        {/*<CustomDatePicker datePickerConfiguration={{date: currentDay, onDateChange: selectDay}} />*/}
+
+        <View style={{flex: 1}}>
+          <Agenda
+            current={currentDay}
+            selected={currentDay}
+            markedDates={markedItems}
+            items={{[currentDay]: processedSlots[currentDay]}}
+            firstDay={1}
+            renderItem={this.renderCell}
+            onDayPress={this.onDayPress}
+            rowHasChanged={(r1, r2) => r1.start_time !== r2.start_time}
+            theme={{
+              'stylesheet.agenda.list': {
+                day: {
+                  marginTop: 0,
+                  width: 0,
+                  // paddingVertical: 15,
+                  // paddingHorizontal: 15,
+                }
+              }
+            }}
+          />
+        </View>
+      </View>
     )
   }
 }
+
+const styles = {
+  employeeSelectorRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 10
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  employeeSelectorLabel: {
+    color: Colors.strongGrey,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.base,
+    paddingRight: 15
+  },
+  employeeSelected: {
+    color: Colors.softBlack,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.medium
+  }
+};
+
+const mapStateToProps = (state) => ({
+  employees: state.employees.active,
+  currentDay: state.calendar.daySelected,
+  lessons: state.drivingLessons.hashMap,
+  slots: state.slots.data
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
+  slotsIndexRequest: (day, employeeId )=> dispatch(slotActionCreators.indexRequest(day, employeeId)),
+  selectDay: day => dispatch(calendarActionCreators.setDay(day))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

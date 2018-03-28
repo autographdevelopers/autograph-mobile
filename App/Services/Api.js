@@ -1,5 +1,7 @@
 import { store } from '../Containers/App';
 import { sessionActionCreators } from '../Redux/SessionRedux';
+const queryString = require('qs');
+
 import apisauce, {
   SERVER_ERROR,
   CLIENT_ERROR,
@@ -104,9 +106,9 @@ export const API = {
   },
   schedule: {
     show: (employeeID=':employee_id', id =':driving_school_id') =>
-      api.get(`driving_schools/:driving_school_id/employees/:employee_id/schedule`),
+      api.get(`driving_schools/${id}/employees/${employeeID}/schedule`),
     update: (params, employeeID=':employee_id', id =':driving_school_id') =>
-      api.put(`driving_schools/:driving_school_id/employees/:employee_id/schedule`, params)
+      api.put(`driving_schools/${id}/employees/${employeeID}/schedule`, params)
   },
   drivingCourse: {
     show: (studentID=':student_id', id =':driving_school_id') =>
@@ -116,10 +118,14 @@ export const API = {
   },
   drivingLesson: {
     index: (params, id =':driving_school_id') =>
-      api.get(`driving_schools/${id}/driving_lessons`, params),
+      api.get(`driving_schools/${id}/driving_lessons?${queryString.stringify(params)}`),
     cancel: (drivingLessonId, id =':driving_school_id') =>
       api.put(`driving_schools/${id}/driving_lessons/${drivingLessonId}/cancel`)
-  }
+  },
+  slots: {
+    index: (params, employee_id=':employee_id', driving_school_id=':driving_school_id') =>
+      api.get(`driving_schools/${driving_school_id}/employees/${employee_id}/slots?${queryString.stringify(params)}`)
+  },
 };
 
 // TODO update header when school name changed
