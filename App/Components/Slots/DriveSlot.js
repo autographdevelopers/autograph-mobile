@@ -3,17 +3,29 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 import DefaultAvatar from '../DefaultAvatar';
+import moment from 'moment/moment';
+import { slotHelper } from '../../Lib/SlotHelpers';
 
-export default DriveSlot = props => {
+export default DriveSlot = ({employee, student, slots}) => {
+
+  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
+  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
+  const sortedSlots = freeSlotIds.sort((a, b) => a > b);
+
+  const interval = slotHelper.summarizeDay(sortedSlots)[0];
 
   return (
-    <SlotLayout borderLeftColor={Colors.primaryWarm} hour={'12:00'}>
+    <SlotLayout borderLeftColor={Colors.primaryWarm} hour={moment(slots[0].start_time).format(slotHelper.TIME_FORMAT)}>
       <TouchableOpacity style={styles.body}>
+
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <DefaultAvatar name={'W'} customSize={30}/>
-          <Text>Wojciech Pośpieszyński</Text>
+          <Text>{`${student.name} ${student.surname}`}</Text>
         </View>
-        <View style={styles.pill}><Text style={styles.intervalText}>11:00 - 12:00</Text></View>
+
+        <View style={styles.pill}>
+          <Text style={styles.intervalText}>{interval}</Text>
+        </View>
       </TouchableOpacity>
     </SlotLayout>
   );

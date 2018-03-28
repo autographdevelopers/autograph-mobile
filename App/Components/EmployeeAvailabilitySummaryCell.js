@@ -6,6 +6,9 @@ import { PieChart } from 'react-native-svg-charts';
 import ButtonText from '../Components/ButtonText';
 import { slotHelper } from '../Lib/SlotHelpers';
 import _ from 'lodash';
+import moment from 'moment/moment';
+
+// TODO: There is quite a lot of logic here, extract it to some container and let component only render ready data.
 
 const MoreIndicator = () => (
   <View style={styles.dotsWrapper}>
@@ -37,13 +40,14 @@ export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
   });
 
   const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
-  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(slot));
+  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
   const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
   const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);
   const lessonsCount = _.groupBy(lessonSlots, slot => slot.driving_lesson_id ).length;
 
   return (
     <View style={styles.container}>
+
       <View style={styles.row}>
         <View>
           <Text style={styles.header}>{`${employee.name} ${employee.surname}`}</Text>
@@ -51,6 +55,7 @@ export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
         </View>
         <DefaultAvatar name={employee.name[0]} customContainerStyle={{marginRight: 0}} customSize={30}/>
       </View>
+
       <View style={styles.chartRow}>
         <PieChart style={{ height: PIE_CHART_SIZE, width: PIE_CHART_SIZE }}
                   data={pieChartData}
@@ -59,20 +64,26 @@ export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
                   />
         <View style={styles.key}>
           <Text style={styles.takenSlots}>{`Umówionych jazd (${lessonsCount})`}</Text>
+
           { availableIntervals.length !== 0 && <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text> }
+
           <View style={styles.intervalCollection}>
-            { availableIntervals.slice(0,3).map(interval => <SmallPill interval={interval} />) }
+            { availableIntervals.slice(0, 3).map(interval => <SmallPill interval={interval} />) }
             { availableIntervals.length > 3 && <MoreIndicator/> }
           </View>
+
         </View>
       </View>
+
       <View style={styles.footer}>
         <Text style={styles.footerTxt}>Sprawdź całą dyspozycyjność lub umów jazdę</Text>
-        <ButtonText customTextStyle={{ fontSize: Fonts.size.extraSmall}}>Sprawdź grafik</ButtonText>
+        <ButtonText customTextStyle={{ fontSize: Fonts.size.extraSmall }}>Sprawdź grafik</ButtonText>
       </View>
+
     </View>
   );
 }
+const DOT_SIZE = 2;
 
 const styles = {
   container: {
@@ -88,7 +99,7 @@ const styles = {
     shadowRadius: 8,
     borderRadius: 8,
 
-    marginVertical: 15 // todo remove
+    marginVertical: 15 // only for testing lists TODO: remove
   },
   takenSlots: {
     color: Colors.primaryWarm,
@@ -151,10 +162,10 @@ const styles = {
     alignItems: 'center'
   },
   dot: {
-    width: 2,
-    height: 2,
+    width: DOT_SIZE,
+    height: DOT_SIZE,
     backgroundColor: Colors.strongGrey,
-    borderRadius: 2
+    borderRadius: DOT_SIZE/2
   },
   dotsWrapper: {
     flexDirection: 'row',

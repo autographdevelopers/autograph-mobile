@@ -11,14 +11,14 @@ export default class ActivitiesScreen extends Component {
   render() {
     return (
       <ScrollView style={{paddingHorizontal: 15}}>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
-        <EmployeeAvailabilitySummaryCell/>
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
+        {/*<EmployeeAvailabilitySummaryCell/>*/}
       </ScrollView>
     )
   }

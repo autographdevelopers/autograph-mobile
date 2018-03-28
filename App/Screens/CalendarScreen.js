@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import {  Agenda } from 'react-native-calendars';
+import {  Agenda, LocaleConfig } from 'react-native-calendars';
 import {contextActionCreators} from '../Redux/ContextRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { calendarActionCreators } from '../Redux/CalendarRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
+import DrivingLessonCell from '../Components/Slots/DriveSlot';
+
 import { slotHelper } from '../Lib/SlotHelpers';
 import { Fonts, Colors } from '../Themes/';
 import ButtonText from '../Components/ButtonText';
+import CustomDatePicker from '../Components/CustomDatePicker';
+
+LocaleConfig.locales['pl'] = {
+  monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
+  monthNamesShort: ['Sty.','Lut.','Mar','Kwi.','Maj.','Cze.','Lip.','Sie.','Wrz.','Paź.','Lis.','Gru.'],
+  dayNames: ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+  dayNamesShort: ['Pn.','Wt.','Śr.','Czw.','Pt.','Sob.','Nd.']
+};
+
+LocaleConfig.defaultLocale = 'pl';
 
 class CalendarScreen extends Component {
 
@@ -20,7 +32,6 @@ class CalendarScreen extends Component {
 
     // TODO: consider
     // TODO: How do I know wheather I already have this slots(from taht range) I don;t need to send the request..?
-    // TODO: If Api returns no slots for newly selected employee I am left out with slots from previous employee
 
     // TODO: Retrive driving lessons IDs..here?
     // TODO: driving lessons index request here?
@@ -39,12 +50,21 @@ class CalendarScreen extends Component {
     this.props.slotsIndexRequest(day.dateString, currentEmployee.id);
   };
 
+  renderCell = (item, firstItemInDay) => {
+    if(item.employee && item.student && item.driving_lesson_id) {
+      return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
+    } else if (item.driving_lesson_id === null){
+      return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/>;
+    }
+  };
+
   render() {
     const {
       currentEmployee,
       currentDay,
       slots,
       lessons,
+      selectDay,
       navigation: { navigate }
     } = this.props;
 
@@ -72,17 +92,21 @@ class CalendarScreen extends Component {
             <Text style={styles.employeeSelectorLabel}>Wyświetl dla </Text>
             {currentEmployee && <Text style={styles.employeeSelected}>{`${currentEmployee.name} ${currentEmployee.surname}`}</Text> }
           </View>
-          <ButtonText customTextStyle={{fontSize: Fonts.size.small}} onPress={()=>navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>Zmień</ButtonText>
+          <ButtonText customTextStyle={{fontSize: Fonts.size.small}} onPress={() => navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>Zmień</ButtonText>
         </View>
+
+        {/*<CustomDatePicker datePickerConfiguration={{date: currentDay, onDateChange: selectDay}} />*/}
+
         <View style={{flex: 1}}>
           <Agenda
             current={currentDay}
+            selected={currentDay}
             markedDates={markedItems}
             items={{[currentDay]: processedSlots[currentDay]}}
             firstDay={1}
-            renderItem={(item, firstItemInDay) => <View style={{alignSelf: 'flex-end'}}><AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/></View> }
+            renderItem={this.renderCell}
             onDayPress={this.onDayPress}
-            rowHasChanged={(r1, r2) => {return r1.start_time !== r2.start_time}}
+            rowHasChanged={(r1, r2) => r1.start_time !== r2.start_time}
             theme={{
               'stylesheet.agenda.list': {
                 day: {
@@ -133,7 +157,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
   slotsIndexRequest: (day, employeeId )=> dispatch(slotActionCreators.indexRequest(day, employeeId)),
-  selectDay: day => dispatch(calendarActionCreators.setDay(day.dateString))
+  selectDay: day => dispatch(calendarActionCreators.setDay(day))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)
