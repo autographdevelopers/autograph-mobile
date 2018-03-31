@@ -8,10 +8,10 @@ export default SelectedSlot = props => {
   return (
     <SlotLayout borderLeftColor={Colors.yellowDark} hour={'12:00'}>
       <View style={styles.body}>
-        {/*<View style={styles.headerRow}>*/}
-          {/*<Text style={styles.header}><Text style={styles.selected}>WYBRANO</Text><Text> (8:00 - 9:00)</Text></Text>*/}
-          {/*<View style={styles.bullet}/>*/}
-        {/*</View>*/}
+        <View style={styles.headerRow}>
+          <Text style={styles.header}><Text style={styles.selected}>WYBRANO</Text><Text> (8:00 - 9:00)</Text></Text>
+          <View style={styles.bullet}/>
+        </View>
         <View style={styles.btn}>
           <Text style={styles.btnLabel}>ANULUJ</Text>
         </View>

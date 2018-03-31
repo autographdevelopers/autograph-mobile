@@ -8,12 +8,14 @@ import { calendarActionCreators } from '../Redux/CalendarRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
+import SelectedSlot from '../Components/Slots/SelectedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 
 import { slotHelper } from '../Lib/SlotHelpers';
 import { Fonts, Colors } from '../Themes/';
 import ButtonText from '../Components/ButtonText';
 import CustomDatePicker from '../Components/CustomDatePicker';
+import { path } from 'ramda';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
@@ -23,6 +25,12 @@ LocaleConfig.locales['pl'] = {
 };
 
 LocaleConfig.defaultLocale = 'pl';
+
+const SOCKET_COMMANDS = {
+  SUBSCRIBE: 'subscribe',
+  MESSAGE: 'message',
+  LOCK_SLOT: 'lock_slot'
+};
 
 class CalendarScreen extends Component {
 
@@ -45,27 +53,117 @@ class CalendarScreen extends Component {
   };
 
   onEmployeeSelected = id => {
-    const { navigation, currentDay } = this.props;
+    const { navigation, currentDay, slotsIndexRequest } = this.props;
+
     this.setState({
       currentEmployeeId: id
-    });
-    navigation.goBack(null);
+    }, () => {
+      this.connectToSocketChannel();
 
-    this.props.slotsIndexRequest(currentDay, id);
+      const requestParams = this.buildRequestParams(currentDay);
+
+      slotsIndexRequest(requestParams);
+    });
+
+    navigation.goBack(null);
   };
 
   onDayPress = day => {
-    const { currentEmployeeId } = this.state;
-    this.props.slotsIndexRequest(day.dateString, currentEmployeeId);
+    const { dateString } = day;
+
+    const requestParams = this.buildRequestParams(dateString);
+
+    this.props.slotsIndexRequest(requestParams, dateString);
   };
 
   renderCell = (item, firstItemInDay) => {
+    console.log('Rendering SLOT');
+
     if(item.employee && item.student && item.driving_lesson_id) {
       return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
-    } else if (item.driving_lesson_id === null){
-      return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)}/>;
+    } else if (moment(item.release_at).isAfter(moment())){
+      return <SelectedSlot />
+    } else if (item.driving_lesson_id === null) {
+      return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)} slot={item} onPress={this.lockSlot}/>;
     }
   };
+
+  buildRequestParams = date => {
+    return {
+      ...this.getWeekRange(date),
+      employee_id: this.state.currentEmployeeId
+    }
+  };
+
+  lockSlot = slot => () => {
+    const dataParams = this.buildDataParam(SOCKET_COMMANDS.LOCK_SLOT, { slot_id: slot.id });
+    const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
+
+    this.socket.send(params);
+  };
+
+  getWeekRange = day => {
+    const day2 = moment(day, 'YYYY-MM-DD');
+    const from = day2.startOf('week').format('YYYY-MM-DD');
+    const to = day2.endOf('week').format('YYYY-MM-DD');
+
+    return {
+      by_start_time: {
+        from,
+        to
+      }
+    };
+  };
+
+  buildTransmissionParams = (command, data={}) => {
+    const params = JSON.stringify({
+      command,
+      identifier: JSON.stringify({
+        channel: `SlotsChannel`,
+        employee_id: this.state.currentEmployeeId,
+        driving_school_id: this.props.drivingSchoolID
+      }),
+      data: JSON.stringify(data)
+    });
+
+    return params;
+  };
+
+  buildDataParam = (action, data) => {
+    return {
+      action,
+      ...data
+    }
+  };
+
+  connectToSocketChannel = () => {
+    const { uid, clientId, accessToken } = this.props.session;
+    const endpoint = `ws://localhost:3000/api/v1/cable?uid=${uid}&client=${clientId}&token=${accessToken}`;
+
+    this.socket = new WebSocket(endpoint);
+
+    const params = this.buildTransmissionParams(SOCKET_COMMANDS.SUBSCRIBE);
+
+    this.socket.onopen = () => {
+      this.socket.send(params);
+    };
+
+    this.socket.onmessage = (event) => {
+      const data = event.data;
+      const receievedData = JSON.parse(data)
+
+      const { message } = receievedData;
+
+      if(message && message.type !== 'ping') {
+        switch(message.type) {
+          case  'SLOT_CHANGED':
+            const { slot } = message;
+            this.props.saveSlots([slot])
+        }
+      }
+
+    }
+  }
 
   render() {
     const {
@@ -76,6 +174,8 @@ class CalendarScreen extends Component {
       employees,
       navigation: { navigate }
     } = this.props;
+
+    console.tron.log('Rendering Calendar screen');
 
     const currentEmployee = employees[this.state.currentEmployeeId];
 
@@ -91,10 +191,10 @@ class CalendarScreen extends Component {
 
     const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
 
-    const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
-      acc[current] = { marked: true };
-      return acc;
-    }, {});
+    // const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
+    //   acc[current] = { marked: true };
+    //   return acc;
+    // }, {});
 
     return (
       <View style={{flex: 1}}>
@@ -108,16 +208,15 @@ class CalendarScreen extends Component {
 
         {/*<CustomDatePicker datePickerConfiguration={{date: currentDay, onDateChange: selectDay}} />*/}
 
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, height: 600}}>
           <Agenda
             current={currentDay}
             selected={currentDay}
-            markedDates={markedItems}
             items={{[currentDay]: processedSlots[currentDay]}}
             firstDay={1}
             renderItem={this.renderCell}
             onDayPress={this.onDayPress}
-            rowHasChanged={(r1, r2) => r1.start_time !== r2.start_time}
+            rowHasChanged={(r1, r2) => (r1.release_at !== r2.release_at) || (r1.driving_lesson_id !== r2.driving_lesson_id) || (r1.locking_user_id !== r2.locking_user_id) }
             theme={{
               'stylesheet.agenda.list': {
                 day: {
@@ -162,13 +261,16 @@ const mapStateToProps = (state) => ({
   employees: state.employees.active,
   currentDay: state.calendar.daySelected,
   lessons: state.drivingLessons.hashMap,
-  slots: state.slots.data
+  slots: state.slots.data,
+  session: state.session,
+  drivingSchoolID: state.context.currentDrivingSchoolID
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
-  slotsIndexRequest: (day, employeeId )=> dispatch(slotActionCreators.indexRequest(day, employeeId)),
-  selectDay: day => dispatch(calendarActionCreators.setDay(day))
+  slotsIndexRequest: (params, daySelected)=> dispatch(slotActionCreators.indexRequest(params, daySelected)),
+  selectDay: day => dispatch(calendarActionCreators.setDay(day)),
+  saveSlots: slots => dispatch(slotActionCreators.save(slots))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

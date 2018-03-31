@@ -7,7 +7,7 @@ import _ from 'lodash';
 const INFINITY = 999;
 
 const { Types, Creators } = createActions({
-  indexRequest: ['daySelected', 'employeeId'],
+  indexRequest: ['params', 'daySelected'],
   save: ['data'],
   changeStatus: ['status']
 }, { prefix: 'SLOTS_' });
@@ -46,6 +46,8 @@ export const saveHandler = (state, { data }) => {
    * even when there will be only one element so that I can process
    * single slot and collection in the same way.
    */
+
+  console.tron.log(slots);
 
   _.forEach(slots, slot => newState.data[slot.id] = slot);
 
