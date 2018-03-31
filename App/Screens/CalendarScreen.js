@@ -29,7 +29,8 @@ LocaleConfig.defaultLocale = 'pl';
 const SOCKET_COMMANDS = {
   SUBSCRIBE: 'subscribe',
   MESSAGE: 'message',
-  LOCK_SLOT: 'lock_slot'
+  LOCK_SLOT: 'lock_slot',
+  UNLOCK_SLOT: 'unlock_slot'
 };
 
 class CalendarScreen extends Component {
@@ -82,7 +83,7 @@ class CalendarScreen extends Component {
     if(item.employee && item.student && item.driving_lesson_id) {
       return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
     } else if (moment(item.release_at).isAfter(moment())){
-      return <SelectedSlot />
+      return <SelectedSlot slot={item} onPressCancel={this.unlockSlot} />
     } else if (item.driving_lesson_id === null) {
       return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)} slot={item} onPress={this.lockSlot}/>;
     }
@@ -97,6 +98,13 @@ class CalendarScreen extends Component {
 
   lockSlot = slot => () => {
     const dataParams = this.buildDataParam(SOCKET_COMMANDS.LOCK_SLOT, { slot_id: slot.id });
+    const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
+
+    this.socket.send(params);
+  };
+
+  unlockSlot = slot => () => {
+    const dataParams = this.buildDataParam(SOCKET_COMMANDS.UNLOCK_SLOT, { slot_id: slot.id });
     const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
 
     this.socket.send(params);

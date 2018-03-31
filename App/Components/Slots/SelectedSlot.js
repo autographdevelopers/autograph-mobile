@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 
-export default SelectedSlot = props => {
+export default SelectedSlot = ({onPressCancel, slot}) => {
 
   return (
     <SlotLayout borderLeftColor={Colors.yellowDark} hour={'12:00'}>
@@ -12,9 +12,9 @@ export default SelectedSlot = props => {
           <Text style={styles.header}><Text style={styles.selected}>WYBRANO</Text><Text> (8:00 - 9:00)</Text></Text>
           <View style={styles.bullet}/>
         </View>
-        <View style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onPressCancel(slot)}>
           <Text style={styles.btnLabel}>ANULUJ</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </SlotLayout>
   );
