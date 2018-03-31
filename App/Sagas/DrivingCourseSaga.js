@@ -5,7 +5,7 @@ import { drivingCourseActionCreators } from '../Redux/DrivingCourseRedux';
 export function* show(api, action) {
   yield put(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
-  const response = yield call(api.drivingCourse.show);
+  const response = yield call(api.drivingCourse.show, action.studentId);
 
   if (response.ok) {
     yield put(drivingCourseActionCreators.saveSingle(response.data));

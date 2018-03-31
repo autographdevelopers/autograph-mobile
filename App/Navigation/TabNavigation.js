@@ -1,5 +1,6 @@
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import CalendarScreen from '../Screens/CalendarScreen';
+import StudentDashboard from '../Screens/StudentDashboard'
 import EmployeesScreen from '../Screens/Employees/index';
 import StudentsScreen from '../Screens/Students/index';
 import SettingsScreen from '../Screens/SettingsScreen';
@@ -87,7 +88,7 @@ const ownerRoutesConfigs = {
 
 const studentRoutesConfigs = {
   calendar: {
-    screen: CalendarScreen,
+    screen: StudentDashboard,
     navigationOptions: {
       tabBarLabel: I18n.t('myCourse'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'view-dashboard'} color={tintColor}/> ),
