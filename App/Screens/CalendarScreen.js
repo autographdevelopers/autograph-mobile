@@ -9,6 +9,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
 import SelectedSlot from '../Components/Slots/SelectedSlot';
+import SlotBookingBy3rdParty from '../Components/Slots/BookingBy3rdParty';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 
 import { slotHelper } from '../Lib/SlotHelpers';
@@ -82,8 +83,12 @@ class CalendarScreen extends Component {
 
     if(item.employee && item.student && item.driving_lesson_id) {
       return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
-    } else if (moment(item.release_at).isAfter(moment())){
-      return <SelectedSlot slot={item} onPressCancel={this.unlockSlot} />
+    } else if (moment(item.release_at).isAfter(moment()) ) {
+      if (this.props.currentUser.id === item.locking_user_id) {
+        return <SelectedSlot slot={item} onPressCancel={this.unlockSlot} />
+      } else {
+        return <SlotBookingBy3rdParty/>
+      }
     } else if (item.driving_lesson_id === null) {
       return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)} slot={item} onPress={this.lockSlot}/>;
     }
@@ -271,7 +276,8 @@ const mapStateToProps = (state) => ({
   lessons: state.drivingLessons.hashMap,
   slots: state.slots.data,
   session: state.session,
-  drivingSchoolID: state.context.currentDrivingSchoolID
+  drivingSchoolID: state.context.currentDrivingSchoolID,
+  currentUser: state.user
 });
 
 const mapDispatchToProps = (dispatch) => ({
