@@ -84,7 +84,7 @@ class CalendarScreen extends Component {
 
     if(item.employee && item.student && item.driving_lesson_id) {
       return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
-    } else if (moment(item.release_at).isAfter(moment()) ) {
+    } else if (moment(item.release_at).isAfter(moment())) {
       if (this.props.currentUser.id === item.locking_user_id) {
         return <SelectedSlot slot={item} handleTimeout={this.releaseSlot(item)} onPressCancel={this.unlockSlot} />
       } else {
@@ -109,10 +109,78 @@ class CalendarScreen extends Component {
   };
 
   lockSlot = slot => () => {
-    const dataParams = this.buildDataParam(SOCKET_COMMANDS.LOCK_SLOT, { slot_id: slot.id });
-    const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
+    const currentEmployee = this.props.employees[this.state.currentEmployeeId];
+    const slotsCollection = Object.values(this.props.slots);
 
-    this.socket.send(params);
+    const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id );
+
+    console.log("employeeSlots");
+    console.log(employeeSlots);
+
+// TODO take into consideration only for a given day
+
+
+    const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null );
+
+    console.log("emptyEmployeeSlots");
+    console.log(emptyEmployeeSlots);
+
+
+    const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) );
+
+    console.log("selectedSlots");
+    console.log(selectedSlots);
+
+    const sortedSelectedSlots = selectedSlots.sort( (left, right) => moment.utc(left.start_time).diff(moment.utc(right.start_time)) );
+
+
+    console.log("sortedSelectedSlots");
+    console.log(sortedSelectedSlots);
+
+    const groupedSelections = sortedSelectedSlots.reduce((acc, current) => {
+      if (acc.length && moment(_.last(_.last(acc))).diff(moment(current.start_time), 'minutes') === -30 ) {
+        acc.last.push(current);
+      }
+      else {
+        acc.push([current]);
+      }
+
+      return acc;
+    }, []);
+
+    let valid = false;
+
+    console.log('********************');
+
+    console.log(groupedSelections);
+
+    if(groupedSelections.length === 0)
+      valid = true;
+
+    _.each(groupedSelections, group => {
+      console.log('Already selected group');
+      console.log(groupedSelections);
+
+
+      const adjacentToBeginningOfSelectionBlock  = moment(slot.start_time).add(30, 'minutes').diff(moment(group[0].start_time)) === 0;
+      console.log('adjacentToBeginningOfSelectionBlock');
+      console.log(adjacentToBeginningOfSelectionBlock);
+
+      const adjacentToEndOfSelectionBlock  = moment(slot.start_time).subtract(30, 'minutes').diff(moment(_.last(group).start_time)) === 0;
+      console.log('adjacentToEndOfSelectionBlock');
+      console.log(adjacentToEndOfSelectionBlock);
+
+      if ( adjacentToBeginningOfSelectionBlock || adjacentToEndOfSelectionBlock ) {
+        valid = true;
+      }
+    });
+
+    if (valid) {
+      const dataParams = this.buildDataParam(SOCKET_COMMANDS.LOCK_SLOT, { slot_id: slot.id });
+      const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
+
+      this.socket.send(params);
+    }
   };
 
   unlockSlot = slot => () => {
@@ -207,7 +275,7 @@ class CalendarScreen extends Component {
 
     const slotsWithLessonsUnion = [...drivingLessons, ...emptyEmployeeSlots];
 
-    const sortedSlots = slotsWithLessonsUnion.sort((slotA, slotB) => new Date(slotA.start_time) > new Date(slotB.start_time) );
+    const sortedSlots = slotsWithLessonsUnion.sort((left, right) => moment.utc(left.start_time).diff(moment.utc(right.start_time)) );
 
     const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
 
