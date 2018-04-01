@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
+import { slotHelper } from '../../Lib/SlotHelpers';
 
 export default SlotLayout = props => {
 
   const {
-    hour,
+    slot,
     children,
     borderLeftColor=Colors.strongGrey
   } = props;
@@ -39,7 +40,7 @@ export default SlotLayout = props => {
   return (
     <View style={styles.container}>
       <View style={styles.hourColumn}>
-        <Text style={styles.hour}>{hour}</Text>
+        <Text style={styles.hour}>{slotHelper.dateTimeToTimeZoneHour(slot.start_time)}</Text>
       </View>
       <View style={styles.body}>
         {children}

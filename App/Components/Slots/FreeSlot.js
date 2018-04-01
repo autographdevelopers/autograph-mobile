@@ -7,7 +7,7 @@ export default FreeSlot = ({ hour='12:00', slot, onPress=()=>()=>{} }) => {
   console.log('UMÓW JAZDĘ is being rendered');
 
   return (
-    <SlotLayout borderLeftColor={Colors.strongGrey} hour={hour}>
+    <SlotLayout borderLeftColor={Colors.strongGrey} slot={slot}>
       <TouchableOpacity style={styles.body} onPress={onPress(slot)}>
         <Text style={styles.text}>UMÓW JAZDĘ</Text>
       </TouchableOpacity>

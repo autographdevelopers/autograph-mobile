@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 export default SelectedSlot = ({onPressCancel, slot, remainingSeconds }) => {
 
   return (
-    <SlotLayout borderLeftColor={Colors.yellowDark} hour={'12:00'}>
+    <SlotLayout borderLeftColor={Colors.yellowDark} slot={slot}>
       <View style={styles.body}>
         <View style={styles.headerRow}>
           <Text style={styles.header}><Text style={styles.selected}>WYBRANO</Text><Text> (8:00 - 9:00)</Text></Text>

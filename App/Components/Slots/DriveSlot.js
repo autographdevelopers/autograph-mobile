@@ -15,7 +15,7 @@ export default DriveSlot = ({employee, student, slots}) => {
   const interval = slotHelper.summarizeDay(sortedSlots)[0];
 
   return (
-    <SlotLayout borderLeftColor={Colors.primaryWarm} hour={moment(slots[0].start_time).format(slotHelper.TIME_FORMAT)}>
+    <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slots[0]} >
       <TouchableOpacity style={styles.body}>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

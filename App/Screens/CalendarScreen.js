@@ -88,10 +88,10 @@ class CalendarScreen extends Component {
       if (this.props.currentUser.id === item.locking_user_id) {
         return <SelectedSlot slot={item} handleTimeout={this.releaseSlot(item)} onPressCancel={this.unlockSlot} />
       } else {
-        return <SlotBookingBy3rdParty/>
+        return <SlotBookingBy3rdParty slot={item}/>
       }
     } else if (item.driving_lesson_id === null) {
-      return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)} slot={item} onPress={this.lockSlot}/>;
+      return <AvailableSlot slot={item} onPress={this.lockSlot}/>;
     }
   };
 

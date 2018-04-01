@@ -7,7 +7,7 @@ import Spinner from 'react-native-spinkit';
 export default SlotBookingBy3rdParty = props => {
 
   return (
-    <SlotLayout borderLeftColor={Colors.strongGrey} hour={'12:00'}>
+    <SlotLayout borderLeftColor={Colors.strongGrey} slot={props.slot}>
       <View style={styles.body}>
         <View style={styles.row}>
           <Text style={styles.text}>Ktoś właśnie rezerwuje jazdę o tej porze</Text>
