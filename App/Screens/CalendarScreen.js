@@ -127,7 +127,7 @@ class CalendarScreen extends Component {
     console.log(emptyEmployeeSlots);
 
 
-    const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) );
+    const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) && this.props.currentUser.id === slot.locking_user_id );
 
     console.log("selectedSlots");
     console.log(selectedSlots);
