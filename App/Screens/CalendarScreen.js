@@ -18,6 +18,9 @@ import ButtonText from '../Components/ButtonText';
 import CustomDatePicker from '../Components/CustomDatePicker';
 import { path } from 'ramda';
 import { toastActionCreators } from '../Redux/ToastRedux';
+import ButtonPrimary from '../Components/ButtonPrimary';
+import SpinnerView from '../Components/SpinnerView';
+import { FETCHING_STATUS } from '../Lib/utils';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
@@ -256,7 +259,33 @@ class CalendarScreen extends Component {
     }
   }
 
+  getSelectedInterval = () => {
+
+    const currentEmployee = this.props.employees[this.state.currentEmployeeId];
+
+      const slotsCollection = Object.values(this.props.slots) || [];
+
+      const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id );
+
+      const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null );
+
+      const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) && this.props.currentUser.id === slot.locking_user_id );
+
+      return selectedSlots;
+  };
+
+  bookSelectedSlotsLabel = slots => {
+    const from = moment(slots[0].start_time).format('HH:mm');
+    const to = moment(_.last(slots).start_time).add(30, 'minutes').format('HH:mm');
+
+    return `Umów jazdę ${from} - ${to}`
+  };
+
   render() {
+    // if(this.props.slotsStatus !== FETCHING_STATUS.SUCCESS)
+    //   return <SpinnerView/>;
+
+
     const {
       currentDay,
       slots,
@@ -282,10 +311,15 @@ class CalendarScreen extends Component {
 
     const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
 
+
+
     // const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
     //   acc[current] = { marked: true };
     //   return acc;
     // }, {});
+
+
+    const selectedInterval = this.getSelectedInterval();
 
     return (
       <View style={{flex: 1}}>
@@ -319,6 +353,7 @@ class CalendarScreen extends Component {
               }
             }}
           />
+          { selectedInterval.length > 0 && <ButtonPrimary>{this.bookSelectedSlotsLabel(selectedInterval)}</ButtonPrimary> }
         </View>
       </View>
     )
@@ -350,6 +385,7 @@ const styles = {
 
 const mapStateToProps = (state) => ({
   employees: state.employees.active,
+  slotsStatus: state.slots.status,
   currentDay: state.calendar.daySelected,
   lessons: state.drivingLessons.hashMap,
   slots: state.slots.data,
