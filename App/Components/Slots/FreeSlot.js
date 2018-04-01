@@ -4,6 +4,7 @@ import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 
 export default FreeSlot = ({ hour='12:00', slot, onPress=()=>()=>{} }) => {
+  console.log('UMÓW JAZDĘ is being rendered');
 
   return (
     <SlotLayout borderLeftColor={Colors.strongGrey} hour={hour}>

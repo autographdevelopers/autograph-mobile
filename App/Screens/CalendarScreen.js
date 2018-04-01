@@ -8,7 +8,7 @@ import { calendarActionCreators } from '../Redux/CalendarRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
-import SelectedSlot from '../Components/Slots/SelectedSlot';
+import SelectedSlot from '../Containers/Slots/SelectedSlot';
 import SlotBookingBy3rdParty from '../Components/Slots/BookingBy3rdParty';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 
@@ -81,17 +81,24 @@ class CalendarScreen extends Component {
   renderCell = (item, firstItemInDay) => {
     console.log('Rendering SLOT');
 
+
     if(item.employee && item.student && item.driving_lesson_id) {
       return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
     } else if (moment(item.release_at).isAfter(moment()) ) {
       if (this.props.currentUser.id === item.locking_user_id) {
-        return <SelectedSlot slot={item} onPressCancel={this.unlockSlot} />
+        return <SelectedSlot slot={item} handleTimeout={this.releaseSlot(item)} onPressCancel={this.unlockSlot} />
       } else {
         return <SlotBookingBy3rdParty/>
       }
     } else if (item.driving_lesson_id === null) {
       return <AvailableSlot hour={slotHelper.dateTimeToTimeZoneHour(item.start_time)} slot={item} onPress={this.lockSlot}/>;
     }
+  };
+
+  releaseSlot = slot => () => {
+    const releasedSlot = _.cloneDeep(slot);
+    releasedSlot.release_at = null;
+    this.props.saveSlots(releasedSlot);
   };
 
   buildRequestParams = date => {
@@ -188,7 +195,7 @@ class CalendarScreen extends Component {
       navigation: { navigate }
     } = this.props;
 
-    console.tron.log('Rendering Calendar screen');
+    console.log('Rendering Calendar screen');
 
     const currentEmployee = employees[this.state.currentEmployeeId];
 
