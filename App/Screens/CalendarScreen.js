@@ -17,6 +17,7 @@ import { Fonts, Colors } from '../Themes/';
 import ButtonText from '../Components/ButtonText';
 import CustomDatePicker from '../Components/CustomDatePicker';
 import { path } from 'ramda';
+import { toastActionCreators } from '../Redux/ToastRedux';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
@@ -180,6 +181,8 @@ class CalendarScreen extends Component {
       const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
 
       this.socket.send(params);
+    } else {
+      this.props.displayToastMsg('Możesz wybrać tylko sloty, ktory utworzą ciągłość..')
     }
   };
 
@@ -359,7 +362,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
   slotsIndexRequest: (params, daySelected)=> dispatch(slotActionCreators.indexRequest(params, daySelected)),
   selectDay: day => dispatch(calendarActionCreators.setDay(day)),
-  saveSlots: slots => dispatch(slotActionCreators.save(slots))
+  saveSlots: slots => dispatch(slotActionCreators.save(slots)),
+  displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

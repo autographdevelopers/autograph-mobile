@@ -1,4 +1,4 @@
-import { takeLatest, all } from 'redux-saga/effects';
+import { takeLatest, takeEvery, all } from 'redux-saga/effects';
 import { API as api } from '../Services/Api';
 
 /* ------------- Types ------------- */
@@ -18,8 +18,11 @@ import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionTypes } from '../Redux/DrivingLessonRedux';
 import { slotActionTypes } from '../Redux/SlotsRedux';
 import { calendarActionTypes } from '../Redux/CalendarRedux';
+import { toastActionTypes } from '../Redux/ToastRedux';
 
 /* ------------- Sagas ------------- */
+
+import { displayToastMessageSaga } from './ToastSaga';
 
 import {
   create as LoginSaga,
@@ -95,6 +98,9 @@ import { update as updateEmployeePrivileges } from '../Redux/EmployeePrivileges'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield all([
+    takeEvery(toastActionTypes.DISPLAY_TOAST_MESSAGE, displayToastMessageSaga),
+
+
     takeLatest(login.REQUEST, LoginSaga, api),
     takeLatest(sessionActionTypes.DESTROY_REQUEST, LogoutSaga, api),
 
