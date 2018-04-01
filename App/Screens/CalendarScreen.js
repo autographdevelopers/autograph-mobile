@@ -353,7 +353,8 @@ class CalendarScreen extends Component {
               }
             }}
           />
-          { selectedInterval.length > 0 && <ButtonPrimary>{this.bookSelectedSlotsLabel(selectedInterval)}</ButtonPrimary> }
+          { selectedInterval.length > 0 && <ButtonPrimary customWrapperStyles={{minWidth: '70%'}}>
+            {this.bookSelectedSlotsLabel(selectedInterval)}</ButtonPrimary> }
         </View>
       </View>
     )
