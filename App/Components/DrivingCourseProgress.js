@@ -1,27 +1,77 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { PieChart } from 'react-native-svg-charts';
+import { Text as SvgText, G, Circle, TSpan } from 'react-native-svg';
+
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
+
+const PIE_CHART_WIDTH = 120;
 
 export default DrivingCourseProgress = ({ drivingCourse }) => {
   const { status, data } = drivingCourse;
 
+  const pieChartData = [
+    {
+      key: 1,
+      amount: data.available_hours,
+      svg: { fill: Colors.lightGrey }
+    },
+    {
+      key: 2,
+      amount: data.used_hours,
+      svg: { fill: Colors.primaryWarm }
+    },
+    {
+      key: 3,
+      amount: data.booked_hours,
+      svg: { fill: Colors.yellowLight }
+    }
+  ]
+
   return (
-    <View style={styles.container}>
+    <View>
       { (status === FETCHING_STATUS.READY || status === FETCHING_STATUS.SUCCESS) &&
-      <View>
-        <View style={styles.row}>
-          <Text style={styles.text}>Dostępne godziny:</Text>
-          <Text style={styles.hoursIndicator}>{data.available_hours}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.text}>Przejeżdżone godziny:</Text>
-          <Text style={styles.hoursIndicator}>{data.used_hours}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.text}>Zarezerwowane godziny:</Text>
-          <Text style={styles.hoursIndicator}>{data.booked_hours}</Text>
+      <View style={styles.container}>
+        <PieChart
+          style={{ width: PIE_CHART_WIDTH }}
+          valueAccessor={({ item }) => item.amount}
+          data={pieChartData}
+          outerRadius={'92%'}
+          innerRadius={'100%'}
+          renderDecorator={({ item, pieCentroid, labelCentroid, index }) => (
+            <G key={index}>
+              <SvgText
+                fill={Colors.strongGrey}
+                fontWeight="300"
+                textAnchor="middle">
+                <TSpan fontSize={25}>
+                  {parseInt((data.used_hours / (data.available_hours + data.used_hours + data.booked_hours)) * 100)}
+                </TSpan>
+                <TSpan fontSize={10} dy='10' x='0'>
+                  % godzin
+                </TSpan>
+                <TSpan fontSize={10} dy='10' x='0'>
+                  wykorzystanych
+                </TSpan>
+              </SvgText>
+            </G>
+          )}
+        />
+        <View style={styles.rightSegmentWrapper}>
+          <View style={[styles.row, {borderLeftColor: Colors.lightGrey}]}>
+            <Text style={styles.hoursIndicator}>{data.available_hours}</Text>
+            <Text style={styles.text}>Dostępne godziny</Text>
+          </View>
+          <View style={[styles.row, {borderLeftColor: Colors.primaryWarm}]}>
+            <Text style={styles.hoursIndicator}>{data.used_hours}</Text>
+            <Text style={styles.text}>Przejeżdżone godziny</Text>
+          </View>
+          <View style={[styles.row, {borderLeftColor: Colors.yellowLight}]}>
+            <Text style={styles.hoursIndicator}>{data.booked_hours}</Text>
+            <Text style={styles.text}>Zarezerwowane godziny</Text>
+          </View>
         </View>
       </View>
       }
@@ -37,12 +87,16 @@ export default DrivingCourseProgress = ({ drivingCourse }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    height: PIE_CHART_WIDTH
+  },
+  rightSegmentWrapper: {
     justifyContent: 'space-around',
     marginLeft: 15,
-    height: 70
   },
   row: {
-    flexDirection: 'row',
+    paddingLeft: 10,
+    borderLeftWidth: 5
   },
   text: {
     fontSize: Fonts.size.small,
@@ -51,7 +105,7 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   hoursIndicator: {
-    fontSize: Fonts.size.small,
+    fontSize: Fonts.size.regular,
     fontWeight: '400'
   }
 });
