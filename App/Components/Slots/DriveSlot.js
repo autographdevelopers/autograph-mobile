@@ -5,14 +5,11 @@ import React, { Component } from 'react';
 import DefaultAvatar from '../DefaultAvatar';
 import moment from 'moment/moment';
 import { slotHelper } from '../../Lib/SlotHelpers';
+import _ from 'lodash';
 
 export default DriveSlot = ({employee, student, slots}) => {
-
-  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
-  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
-  const sortedSlots = freeSlotIds.sort((a, b) => a > b);
-
-  const interval = slotHelper.summarizeDay(sortedSlots)[0];
+  const from = moment(_.first(slots).start_time).format('HH:mm');
+  const to = moment(_.last(slots).start_time).add(30, 'minutes').format('HH:mm');
 
   return (
     <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slots[0]} >
@@ -24,7 +21,7 @@ export default DriveSlot = ({employee, student, slots}) => {
         </View>
 
         <View style={styles.pill}>
-          <Text style={styles.intervalText}>{interval}</Text>
+          <Text style={styles.intervalText}>{`${from} - ${to}`}</Text>
         </View>
       </TouchableOpacity>
     </SlotLayout>

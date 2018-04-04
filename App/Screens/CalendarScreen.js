@@ -92,7 +92,13 @@ class CalendarScreen extends Component {
 
   renderCell = (slot, firstItemInDay) => {
 
-    if(slot.employee && slot.student && slot.driving_lesson_id) {
+    console.tron.log('**RENDER CELL SWITCH**');
+    console.tron.log('**SLOT:**');
+    console.tron.log(slot);
+
+    if(slot.employee && slot.student && slot.slots) {
+      console.tron.log('**RENDER DrivingLessonCell**');
+
       return <DrivingLessonCell employee={slot.employee}
                                 student={slot.student}
                                 slots={slot.slots}/>
@@ -313,9 +319,15 @@ class CalendarScreen extends Component {
       selectedEmployee,
       dataForAgenda,
       lessonInterval,
-      createLessonStatus
+      drivingLessonStatus,
+      slotsStatus,
     } = this.props;
 
+    if([slotsStatus, drivingLessonStatus].includes(FETCHING_STATUS.FETCHING))
+      return <SpinnerView/>;
+
+    console.tron.log('dataForAgenda');
+    console.tron.log(dataForAgenda);
 
     return (
       <View style={{flex: 1}}>
@@ -354,7 +366,7 @@ class CalendarScreen extends Component {
 
         <ModalTemplate
           modalID={MODALS_IDS.CREATE_DRIVING_LESSON}
-          status={createLessonStatus}
+          status={drivingLessonStatus}
         >
           <BookLessonWidget/>
         </ModalTemplate>
@@ -410,7 +422,7 @@ const mapStateToProps = state => {
     selectedEmployee: state.employees.active[state.calendar.selectedEmployeeId],
     daySelected: state.calendar.daySelected,
     slotsStatus: state.slots.status,
-    createLessonStatus: state.drivingLessons.status,
+    drivingLessonStatus: state.drivingLessons.status,
     session: state.session,
     drivingSchoolID: state.context.currentDrivingSchoolID,
     currentUser: state.user
