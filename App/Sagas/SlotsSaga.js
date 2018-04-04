@@ -22,7 +22,7 @@ export function* index(api, action) {
 
   if (slots_response.ok && lessons_response.ok) {
     yield put(slotActionCreators.save(slots_response.data));
-    yield put(drivingLessonActionCreators.saveCollection(lessons_response.data));
+    yield put(drivingLessonActionCreators.save(lessons_response.data));
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
     yield put(slotActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {

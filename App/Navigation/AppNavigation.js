@@ -29,6 +29,7 @@ import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
 
 import EmployeeSearchableList from '../Components/EmployeesSearchableList';
+import StudentSearchablelist from '../Components/StudentsSearchableList';
 
 import PersonalSettings from '../Screens/PersonalSettings';
 
@@ -125,13 +126,7 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
   resetPassword: { screen: ResetPasswordScreen },
 };
 
-/** ==NAVIGATION SETUP================== */
-const routeConfigs = {
-  newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
-  personalSettings: { screen: PersonalSettings,
-    navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
-    }},
+const SEARCH_SCREENS = {
   searchEmployee: {
     screen: EmployeeSearchableList,
     navigationOptions: {
@@ -139,6 +134,23 @@ const routeConfigs = {
                                   title={'Wybierz pracownika'}/>
     }
   },
+  searchStudent: {
+    screen: StudentSearchablelist,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation}
+                                  title={'Wybierz kursanta'}/>
+    }
+  }
+};
+
+/** ==NAVIGATION SETUP================== */
+const routeConfigs = {
+  newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
+  personalSettings: { screen: PersonalSettings,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
+    }},
+  ...SEARCH_SCREENS,
   ...NOT_AUTHENTICATED_USER_SCREENS,
   ...USERS_FLOWS_SCREENS,
   ...INVITE_USER_SCREENS,

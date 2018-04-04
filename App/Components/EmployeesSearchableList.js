@@ -6,7 +6,7 @@ import ActiveEmployeeCell from './ActiveEmployeeCell';
 import ListHeaderSmall from '../Components/ListHeaderSmall';
 
 const EmployeesSearchableList = props => {
-  const handlePress = id =>() => {
+  const handlePress = id => () => {
     const callback = props.navigation.state.params.onResultPress || props.onResultPress;
     callback && callback(id);
   };

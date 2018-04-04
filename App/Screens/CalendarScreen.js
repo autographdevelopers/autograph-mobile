@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import {  Agenda, LocaleConfig } from 'react-native-calendars';
-import {contextActionCreators} from '../Redux/ContextRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { calendarActionCreators } from '../Redux/CalendarRedux';
+import { bookLessonActionCreators } from '../Redux/BookLesson';
+import { modalActionCreators } from '../Redux/ModalRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
 import SelectedSlot from '../Containers/Slots/SelectedSlot';
 import SlotBookingBy3rdParty from '../Components/Slots/BookingBy3rdParty';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
+import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import ModalTemplate from '../Components/ModalTemplate';
 
-import { slotHelper } from '../Lib/SlotHelpers';
 import { Fonts, Colors } from '../Themes/';
 import ButtonText from '../Components/ButtonText';
 import CustomDatePicker from '../Components/CustomDatePicker';
@@ -21,6 +23,13 @@ import { toastActionCreators } from '../Redux/ToastRedux';
 import ButtonPrimary from '../Components/ButtonPrimary';
 import SpinnerView from '../Components/SpinnerView';
 import { FETCHING_STATUS } from '../Lib/utils';
+import { MODALS_IDS } from '../Redux/ModalRedux';
+import BookLessonWidget from '../Components/BookLessonWidget'
+import {
+  slotsAndLessonsForDay,
+  selectedSlots,
+  lessonInterval
+} from '../Selectors/slots';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
@@ -31,71 +40,74 @@ LocaleConfig.locales['pl'] = {
 
 LocaleConfig.defaultLocale = 'pl';
 
-const SOCKET_COMMANDS = {
+const REQUEST_COMMANDS = {
   SUBSCRIBE: 'subscribe',
   MESSAGE: 'message',
+};
+
+const SERVER_ACTIONS = {
   LOCK_SLOT: 'lock_slot',
   UNLOCK_SLOT: 'unlock_slot'
 };
 
+const SLOTS_CHANNEL_NAME = `SlotsChannel`;
+
+const SERVER_FEEDBACKS = {
+  SLOT_CHANGED: 'SLOT_CHANGED'
+};
+
 class CalendarScreen extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state= {
-      currentEmployeeId: null
-    }
-  }
-
-  prepareSlotsData = () => {
-
-    // TODO: how to handle dates on the edge of a week?
-
-    // TODO: consider
-    // TODO: How do I know wheather I already have this slots(from taht range) I don;t need to send the request..?
-
-    // TODO: Retrive driving lessons IDs..here?
-    // TODO: driving lessons index request here?
-  };
-
   onEmployeeSelected = id => {
-    const { navigation, currentDay, slotsIndexRequest } = this.props;
+    const {
+      navigation: { goBack },
+      daySelected,
+      slotsIndexRequest,
+      selectEmployee
+    } = this.props;
 
-    this.setState({
-      currentEmployeeId: id
-    }, () => {
-      this.connectToSocketChannel();
+    selectEmployee(id);
 
-      const requestParams = this.buildRequestParams(currentDay);
+    this.connectToSocketChannel(id);
 
-      slotsIndexRequest(requestParams);
-    });
+    const requestParams = {
+      ...this.getWeekRange(daySelected),
+      employee_id: id
+    };
 
-    navigation.goBack(null);
+    slotsIndexRequest(requestParams);
+
+    goBack(null);
   };
 
   onDayPress = day => {
     const { dateString } = day;
-
-    const requestParams = this.buildRequestParams(dateString);
+    const requestParams = {
+      ...this.getWeekRange(dateString),
+      employee_id: this.props.selectedEmployee.id
+    };
 
     this.props.slotsIndexRequest(requestParams, dateString);
   };
 
-  renderCell = (item, firstItemInDay) => {
-    console.log('Rendering SLOT');
+  renderCell = (slot, firstItemInDay) => {
 
+    if(slot.employee && slot.student && slot.driving_lesson_id) {
+      return <DrivingLessonCell employee={slot.employee}
+                                student={slot.student}
+                                slots={slot.slots}/>
+    } else if (moment(slot.release_at).isAfter(moment())) {
+      if (this.props.currentUser.id === slot.locking_user_id) {
+        const onCancelPress = this.isOnEdgeOfSelection(slot) ? this.unlockSlot : false;
 
-    if(item.employee && item.student && item.driving_lesson_id) {
-      return <DrivingLessonCell employee={item.employee} student={item.student} slots={item.slots}/>
-    } else if (moment(item.release_at).isAfter(moment())) {
-      if (this.props.currentUser.id === item.locking_user_id) {
-        return <SelectedSlot slot={item} handleTimeout={this.releaseSlot(item)} onPressCancel={this.unlockSlot} />
+        return <SelectedSlot slot={slot}
+                             handleTimeout={this.releaseSlot(slot)}
+                             onPressCancel={onCancelPress} />
       } else {
-        return <SlotBookingBy3rdParty slot={item}/>
+        return <SlotBookingBy3rdParty slot={slot}/>
       }
-    } else if (item.driving_lesson_id === null) {
-      return <AvailableSlot slot={item} onPress={this.lockSlot}/>;
+    } else if (slot.driving_lesson_id === null) {
+      return <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
     }
   };
 
@@ -105,95 +117,75 @@ class CalendarScreen extends Component {
     this.props.saveSlots(releasedSlot);
   };
 
-  buildRequestParams = date => {
-    return {
-      ...this.getWeekRange(date),
-      employee_id: this.state.currentEmployeeId
-    }
-  };
 
   lockSlot = slot => () => {
-    const currentEmployee = this.props.employees[this.state.currentEmployeeId];
-    const slotsCollection = Object.values(this.props.slots);
+    let isSlotAValidSelection = false;
 
-    const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id );
+    const { selectedSlots } = this.props;
+    const firstOfSelected = _.first(selectedSlots);
+    const lastOfSelected = _.last(selectedSlots);
 
-    console.log("employeeSlots");
-    console.log(employeeSlots);
+    if(selectedSlots.length === 0) {
+      isSlotAValidSelection = true;
+    } else {
+      const adjacentToBeginningOfSelectionBlock  = moment(slot.start_time)
+        .add(30, 'minutes')
+        .diff(moment(firstOfSelected.start_time)) === 0;
 
-// TODO take into consideration only for a given day
+      const adjacentToEndOfSelectionBlock  = moment(slot.start_time)
+        .subtract(30, 'minutes')
+        .diff(moment(lastOfSelected.start_time)) === 0;
 
+      if (adjacentToBeginningOfSelectionBlock || adjacentToEndOfSelectionBlock)
+        isSlotAValidSelection = true;
+    }
 
-    const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null );
+    if (isSlotAValidSelection) {
+      const dataParams = this.buildDataParam(SERVER_ACTIONS.LOCK_SLOT, { slot_id: slot.id });
+      const transmissionParams = this.buildTransmissionParams(
+        REQUEST_COMMANDS.MESSAGE,
+        this.getChannelIdentifier(),
+        dataParams
+      );
 
-    console.log("emptyEmployeeSlots");
-    console.log(emptyEmployeeSlots);
+      this.socketTransmit(transmissionParams);
 
-
-    const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) && this.props.currentUser.id === slot.locking_user_id );
-
-    console.log("selectedSlots");
-    console.log(selectedSlots);
-
-    const sortedSelectedSlots = selectedSlots.sort( (left, right) => moment.utc(left.start_time).diff(moment.utc(right.start_time)) );
-
-
-    console.log("sortedSelectedSlots");
-    console.log(sortedSelectedSlots);
-
-    const groupedSelections = sortedSelectedSlots.reduce((acc, current) => {
-      if (acc.length && moment(_.last(_.last(acc))).diff(moment(current.start_time), 'minutes') === -30 ) {
-        acc.last.push(current);
-      }
-      else {
-        acc.push([current]);
-      }
-
-      return acc;
-    }, []);
-
-    let valid = false;
-
-    console.log('********************');
-
-    console.log(groupedSelections);
-
-    if(groupedSelections.length === 0)
-      valid = true;
-
-    _.each(groupedSelections, group => {
-      console.log('Already selected group');
-      console.log(groupedSelections);
-
-
-      const adjacentToBeginningOfSelectionBlock  = moment(slot.start_time).add(30, 'minutes').diff(moment(group[0].start_time)) === 0;
-      console.log('adjacentToBeginningOfSelectionBlock');
-      console.log(adjacentToBeginningOfSelectionBlock);
-
-      const adjacentToEndOfSelectionBlock  = moment(slot.start_time).subtract(30, 'minutes').diff(moment(_.last(group).start_time)) === 0;
-      console.log('adjacentToEndOfSelectionBlock');
-      console.log(adjacentToEndOfSelectionBlock);
-
-      if ( adjacentToBeginningOfSelectionBlock || adjacentToEndOfSelectionBlock ) {
-        valid = true;
-      }
-    });
-
-    if (valid) {
-      const dataParams = this.buildDataParam(SOCKET_COMMANDS.LOCK_SLOT, { slot_id: slot.id });
-      const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
-
-      this.socket.send(params);
     } else {
       this.props.displayToastMsg('Możesz wybrać tylko sloty, ktory utworzą ciągłość..')
     }
   };
 
-  unlockSlot = slot => () => {
-    const dataParams = this.buildDataParam(SOCKET_COMMANDS.UNLOCK_SLOT, { slot_id: slot.id });
-    const params = this.buildTransmissionParams(SOCKET_COMMANDS.MESSAGE, dataParams);
+  isOnEdgeOfSelection = (slot) => {
+    const { selectedSlots } = this.props;
+    const firstSlotInSelection = _.first(selectedSlots);
+    const lastSlotInSelection = _.last(selectedSlots);
 
-    this.socket.send(params);
+    const edgeSlotsIds = [firstSlotInSelection, lastSlotInSelection].map(slot => slot.id);
+
+    return edgeSlotsIds.includes(slot.id);
+  };
+
+  unlockSlot = slot => () => {
+      const dataParams = this.buildDataParam(
+        SERVER_ACTIONS.UNLOCK_SLOT, { slot_id: slot.id }
+      );
+
+      const transmissionParams = this.buildTransmissionParams(
+        REQUEST_COMMANDS.MESSAGE,
+        this.getChannelIdentifier(),
+        dataParams
+      );
+
+      this.socketTransmit(transmissionParams);
+
+  };
+
+  socketTransmit = (params) => {
+    if(this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(params);
+    } else {
+      this.props.displayToastMsg('Nie udało się wysłac sygnału. Brak połączenia.')
+    }
   };
 
   getWeekRange = day => {
@@ -209,18 +201,12 @@ class CalendarScreen extends Component {
     };
   };
 
-  buildTransmissionParams = (command, data={}) => {
-    const params = JSON.stringify({
+  buildTransmissionParams = (command, identifier, data={}) => {
+    return JSON.stringify({
       command,
-      identifier: JSON.stringify({
-        channel: `SlotsChannel`,
-        employee_id: this.state.currentEmployeeId,
-        driving_school_id: this.props.drivingSchoolID
-      }),
+      identifier: JSON.stringify(identifier),
       data: JSON.stringify(data)
-    });
-
-    return params;
+    })
   };
 
   buildDataParam = (action, data) => {
@@ -230,138 +216,167 @@ class CalendarScreen extends Component {
     }
   };
 
-  connectToSocketChannel = () => {
+  getChannelIdentifier = emp_id => {
+    const employee_id = emp_id || this.props.selectedEmployee.id;
+    const driving_school_id = this.props.drivingSchoolID;
+
+    return {
+      employee_id,
+      driving_school_id,
+      channel: SLOTS_CHANNEL_NAME
+    };
+  };
+
+  connectToSocketChannel = emp_id => {
     const { uid, clientId, accessToken } = this.props.session;
     const endpoint = `ws://localhost:3000/api/v1/cable?uid=${uid}&client=${clientId}&token=${accessToken}`;
 
     this.socket = new WebSocket(endpoint);
 
-    const params = this.buildTransmissionParams(SOCKET_COMMANDS.SUBSCRIBE);
+    const employeeSlotsChannelIdentifier = this.getChannelIdentifier(emp_id);
+    const subscribeParams = this.buildTransmissionParams(
+      REQUEST_COMMANDS.SUBSCRIBE,
+      employeeSlotsChannelIdentifier
+    );
 
     this.socket.onopen = () => {
-      this.socket.send(params);
+      this.socketTransmit(subscribeParams);
     };
 
     this.socket.onmessage = (event) => {
       const data = event.data;
-      const receievedData = JSON.parse(data)
+      const receievedData = JSON.parse(data);
 
       const { message } = receievedData;
 
       if(message && message.type !== 'ping') {
         switch(message.type) {
-          case  'SLOT_CHANGED':
-            const { slot } = message;
-            this.props.saveSlots([slot])
+          case SERVER_FEEDBACKS.SLOT_CHANGED:
+            this.props.saveSlots(message.slot)
         }
       }
 
     }
-  }
-
-  getSelectedInterval = () => {
-
-    const currentEmployee = this.props.employees[this.state.currentEmployeeId];
-
-      const slotsCollection = Object.values(this.props.slots) || [];
-
-      const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id );
-
-      const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null );
-
-      const selectedSlots = emptyEmployeeSlots.filter( slot => moment(slot.release_at).isAfter(moment.utc()) && this.props.currentUser.id === slot.locking_user_id );
-
-      return selectedSlots;
   };
 
-  bookSelectedSlotsLabel = slots => {
-    const from = moment(slots[0].start_time).format('HH:mm');
-    const to = moment(_.last(slots).start_time).add(30, 'minutes').format('HH:mm');
+  agendaItemChanged = (r1, r2) => {
+    return (r1.release_at !== r2.release_at) ||
+      (r1.driving_lesson_id !== r2.driving_lesson_id) ||
+      (r1.locking_user_id !== r2.locking_user_id)
+  };
 
-    return `Umów jazdę ${from} - ${to}`
+  goToSelectEmployeeScreen = () => {
+    this.props.navigation.navigate('searchEmployee',
+      { onResultPress: this.onEmployeeSelected })
+  };
+
+  goToSelectStudentScreen = () => {
+    this.props.navigation.navigate('searchStudent',
+      { onResultPress: this.onStudentsSelected })
+  };
+
+  onStudentsSelected = id => {
+    this.props.setBookLessonParams({student_id: id});
+
+    this.props.navigation.goBack(null);
+    this.props.openModal(MODALS_IDS.CREATE_DRIVING_LESSON);
+  };
+
+  handleBookLessonBtnPress = () => {
+    const {
+      selectedSlots,
+      drivingSchoolID,
+      lessonInterval,
+      daySelected,
+      selectedEmployee,
+      setBookLessonParams,
+      resetDrivingLessonsStatus
+    } = this.props;
+
+    const bookLessonParams = {
+      employee_id: selectedEmployee.id,
+      driving_school_id: drivingSchoolID,
+      fromHour: lessonInterval.from,
+      toHour: lessonInterval.to,
+      date: daySelected,
+      slot_ids: selectedSlots.map(slot => slot.id)
+    };
+
+    resetDrivingLessonsStatus();
+    setBookLessonParams(bookLessonParams);
+    this.goToSelectStudentScreen();
   };
 
   render() {
-    // if(this.props.slotsStatus !== FETCHING_STATUS.SUCCESS)
-    //   return <SpinnerView/>;
-
-
     const {
-      currentDay,
-      slots,
-      lessons,
-      selectDay,
-      employees,
-      navigation: { navigate }
+      daySelected,
+      selectedEmployee,
+      dataForAgenda,
+      lessonInterval,
+      createLessonStatus
     } = this.props;
 
-    console.log('Rendering Calendar screen');
-
-    const currentEmployee = employees[this.state.currentEmployeeId];
-
-    const slotsCollection = Object.values(slots);
-    const employeeSlots = slotsCollection.filter( slot => slot.employee_id === currentEmployee.id);
-    const emptyEmployeeSlots = employeeSlots.filter( slot => slot.driving_lesson_id === null);
-    const lesson_ids = employeeSlots.filter( slot => slot.driving_lesson_id !== null).map(slot => slot.driving_lesson_id);
-    const drivingLessons = lesson_ids.map(id => lessons[id]);
-
-    const slotsWithLessonsUnion = [...drivingLessons, ...emptyEmployeeSlots];
-
-    const sortedSlots = slotsWithLessonsUnion.sort((left, right) => moment.utc(left.start_time).diff(moment.utc(right.start_time)) );
-
-    const processedSlots = _(sortedSlots).groupBy(slot => moment(slot.start_time).format('YYYY-MM-DD')).value();
-
-
-
-    // const markedItems = Object.keys(processedSlots).reduce( (acc, current) => {
-    //   acc[current] = { marked: true };
-    //   return acc;
-    // }, {});
-
-
-    const selectedInterval = this.getSelectedInterval();
 
     return (
       <View style={{flex: 1}}>
         <View style={styles.employeeSelectorRow}>
           <View style={styles.row}>
             <Text style={styles.employeeSelectorLabel}>Wyświetl dla </Text>
-            {currentEmployee && <Text style={styles.employeeSelected}>{`${currentEmployee.name} ${currentEmployee.surname}`}</Text> }
+            {selectedEmployee &&
+              <Text style={styles.employeeSelected}>
+                {`${selectedEmployee.name} ${selectedEmployee.surname}`}
+              </Text>
+            }
           </View>
-          <ButtonText customTextStyle={{fontSize: Fonts.size.small}} onPress={() => navigate('searchEmployee', {onResultPress: this.onEmployeeSelected})}>Zmień</ButtonText>
+          <ButtonText customTextStyle={styles.changeEmployeeBtn} onPress={this.goToSelectEmployeeScreen}>
+            Zmień
+          </ButtonText>
         </View>
 
-        {/*<CustomDatePicker datePickerConfiguration={{date: currentDay, onDateChange: selectDay}} />*/}
+        {/*<CustomDatePicker datePickerConfiguration={{date: daySelected, onDateChange: selectDay}} />*/}
 
-        <View style={{flex: 1, height: 600}}>
+        <View style={styles.agendaWrapper}>
           <Agenda
-            current={currentDay}
-            selected={currentDay}
-            items={{[currentDay]: processedSlots[currentDay]}}
+            current={daySelected}
+            selected={daySelected}
+            items={dataForAgenda}
             firstDay={1}
             renderItem={this.renderCell}
             onDayPress={this.onDayPress}
-            rowHasChanged={(r1, r2) => (r1.release_at !== r2.release_at) || (r1.driving_lesson_id !== r2.driving_lesson_id) || (r1.locking_user_id !== r2.locking_user_id) }
-            theme={{
-              'stylesheet.agenda.list': {
-                day: {
-                  marginTop: 0,
-                  width: 0,
-                  // paddingVertical: 15,
-                  // paddingHorizontal: 15,
-                }
-              }
-            }}
+            rowHasChanged={this.agendaItemChanged}
+            theme={styles.customAgendaThemeConfig}
           />
-          { selectedInterval.length > 0 && <ButtonPrimary customWrapperStyles={{minWidth: '70%'}}>
-            {this.bookSelectedSlotsLabel(selectedInterval)}</ButtonPrimary> }
+          { lessonInterval &&
+          <ButtonPrimary customWrapperStyles={{minWidth: '70%'}} onPress={this.handleBookLessonBtnPress}>
+            {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to}`}
+          </ButtonPrimary> }
         </View>
+
+        <ModalTemplate
+          modalID={MODALS_IDS.CREATE_DRIVING_LESSON}
+          status={createLessonStatus}
+        >
+          <BookLessonWidget/>
+        </ModalTemplate>
+
       </View>
     )
   }
 }
 
 const styles = {
+  agendaWrapper: {
+    flex: 1,
+    height: 600
+  },
+  customAgendaThemeConfig: {
+    'stylesheet.agenda.list': {
+      day: {
+        marginTop: 0,
+        width: 0,
+      }
+    }
+  },
   employeeSelectorRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -381,26 +396,36 @@ const styles = {
     color: Colors.softBlack,
     fontSize: Fonts.size.small,
     fontFamily: Fonts.type.medium
+  },
+  changeEmployeeBtn: {
+    fontSize: Fonts.size.small
   }
 };
 
-const mapStateToProps = (state) => ({
-  employees: state.employees.active,
-  slotsStatus: state.slots.status,
-  currentDay: state.calendar.daySelected,
-  lessons: state.drivingLessons.hashMap,
-  slots: state.slots.data,
-  session: state.session,
-  drivingSchoolID: state.context.currentDrivingSchoolID,
-  currentUser: state.user
-});
+const mapStateToProps = state => {
+  return {
+    dataForAgenda: slotsAndLessonsForDay(state),
+    selectedSlots: selectedSlots(state),
+    lessonInterval: lessonInterval(state),
+    selectedEmployee: state.employees.active[state.calendar.selectedEmployeeId],
+    daySelected: state.calendar.daySelected,
+    slotsStatus: state.slots.status,
+    createLessonStatus: state.drivingLessons.status,
+    session: state.session,
+    drivingSchoolID: state.context.currentDrivingSchoolID,
+    currentUser: state.user
+  }
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
-  slotsIndexRequest: (params, daySelected)=> dispatch(slotActionCreators.indexRequest(params, daySelected)),
+  slotsIndexRequest: (params, daySelected) => dispatch(slotActionCreators.indexRequest(params, daySelected)),
   selectDay: day => dispatch(calendarActionCreators.setDay(day)),
+  selectEmployee: id => dispatch(calendarActionCreators.selectEmployee(id)),
   saveSlots: slots => dispatch(slotActionCreators.save(slots)),
-  displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg))
+  displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg)),
+  setBookLessonParams: params => dispatch(bookLessonActionCreators.setParams(params)),
+  openModal: id => dispatch(modalActionCreators.open(id)),
+  resetDrivingLessonsStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen)

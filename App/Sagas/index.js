@@ -78,6 +78,7 @@ import {
 import {
   index as indexDrivingLessonSaga,
   cancel as cancelDrivingLessonSaga,
+  create as createDrivingLessonSaga
 } from './DrivingLessonSaga';
 
 import { index as indexSlotsSaga } from './SlotsSaga';
@@ -138,6 +139,7 @@ export default function* root() {
 
     takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLessonSaga, api),
     takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLessonSaga, api),
+    takeLatest(drivingLessonActionTypes.CREATE_REQUEST, createDrivingLessonSaga, api),
 
     takeLatest(slotActionTypes.INDEX_REQUEST, indexSlotsSaga, api),
   ])

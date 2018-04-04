@@ -37,21 +37,10 @@ export const INITIAL_STATE = {
 
 export const saveHandler = (state, { data }) => {
   const newState = _.cloneDeep(state);
-
   const slots = _.flattenDepth([data], INFINITY);
 
-  /**
-   * Because I want a single handler for saving array of slots and single slot
-   * I use this mechanism to make sure that I end up with an array of slots
-   * even when there will be only one element so that I can process
-   * single slot and collection in the same way.
-   */
-
-  console.tron.log(slots);
-
-  _.forEach(slots, slot => newState.data[slot.id] = slot);
-
-  newState.allIds = Object.values(newState.data).map(item => item.id);
+  _.each(slots, slot => newState.data[slot.id] = slot);
+  newState.allIds = Object.keys(newState.data);
 
   return newState;
 };
