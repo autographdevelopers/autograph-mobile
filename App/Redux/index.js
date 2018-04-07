@@ -23,6 +23,8 @@ import { slotReducer } from './SlotsRedux';
 import { drivingCourseReducer } from './DrivingCourseRedux';
 import { drivingLessonReducer } from './DrivingLessonRedux';
 import { bookLessonReducer } from './BookLesson';
+import { employeeDailyAgendaReducer } from './employeeDailyAgendaRedux';
+import { employeesSummaryAgendaReducer } from './EmployeesSummaryAgendaRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -47,7 +49,9 @@ export const reducers = combineReducers({
   slots: slotReducer,
   drivingCourse: drivingCourseReducer,
   drivingLessons: drivingLessonReducer,
-  bookLesson: bookLessonReducer
+  bookLesson: bookLessonReducer,
+  employeeDailyAgenda: employeeDailyAgendaReducer,
+  employeesSummaryAgenda: employeesSummaryAgendaReducer
 });
 
 export default () => {

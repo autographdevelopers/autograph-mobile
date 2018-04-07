@@ -25,9 +25,12 @@ import SpinnerView from '../Components/SpinnerView';
 import { FETCHING_STATUS } from '../Lib/utils';
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import BookLessonWidget from '../Components/BookLessonWidget'
+import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
+
 import {
   slotsAndLessonsForDay,
   selectedSlots,
+  dailySlotsForEachEmployee,
   lessonInterval
 } from '../Selectors/slots';
 
@@ -58,6 +61,15 @@ const SERVER_FEEDBACKS = {
 
 class CalendarScreen extends Component {
 
+  componentWillMount = () => {
+    this.props.slotsIndexRequest({
+      by_start_time: {
+        from: this.props.daySelected,
+        to: this.props.daySelected,
+      }
+    })
+  };
+
   onEmployeeSelected = id => {
     const {
       navigation: { goBack },
@@ -84,36 +96,41 @@ class CalendarScreen extends Component {
     const { dateString } = day;
     const requestParams = {
       ...this.getWeekRange(dateString),
-      employee_id: this.props.selectedEmployee.id
     };
+
+    if (this.props.selectedEmployee) {
+      requestParams['employee_id'] = this.props.selectedEmployee.id;
+    }
 
     this.props.slotsIndexRequest(requestParams, dateString);
   };
 
   renderCell = (slot, firstItemInDay) => {
 
-    console.tron.log('**RENDER CELL SWITCH**');
-    console.tron.log('**SLOT:**');
-    console.tron.log(slot);
+    if (this.props.selectedEmployee) {
+      console.tron.log('RENDERING REGULAR SLOTS');
 
-    if(slot.employee && slot.student && slot.slots) {
-      console.tron.log('**RENDER DrivingLessonCell**');
+      if ( slot.employee && slot.student && slot.slots ) {
+        return <DrivingLessonCell employee={slot.employee}
+                                  student={slot.student}
+                                  slots={slot.slots}/>
+      } else if ( moment(slot.release_at).isAfter(moment()) ) {
+        if ( this.props.currentUser.id === slot.locking_user_id ) {
+          const onCancelPress = this.isOnEdgeOfSelection(slot) ?
+            this.unlockSlot :
+            false;
 
-      return <DrivingLessonCell employee={slot.employee}
-                                student={slot.student}
-                                slots={slot.slots}/>
-    } else if (moment(slot.release_at).isAfter(moment())) {
-      if (this.props.currentUser.id === slot.locking_user_id) {
-        const onCancelPress = this.isOnEdgeOfSelection(slot) ? this.unlockSlot : false;
-
-        return <SelectedSlot slot={slot}
-                             handleTimeout={this.releaseSlot(slot)}
-                             onPressCancel={onCancelPress} />
-      } else {
-        return <SlotBookingBy3rdParty slot={slot}/>
+          return <SelectedSlot slot={slot}
+                               handleTimeout={this.releaseSlot(slot)}
+                               onPressCancel={onCancelPress}/>
+        } else {
+          return <SlotBookingBy3rdParty slot={slot}/>
+        }
+      } else if ( slot.driving_lesson_id === null ) {
+        return <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
       }
-    } else if (slot.driving_lesson_id === null) {
-      return <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
+    } else {
+        return <EmployeeAvailabilitySummaryCell slots={slot} employee={{name: 'John', surname: 'Doe'}} />
     }
   };
 
@@ -266,9 +283,7 @@ class CalendarScreen extends Component {
   };
 
   agendaItemChanged = (r1, r2) => {
-    return (r1.release_at !== r2.release_at) ||
-      (r1.driving_lesson_id !== r2.driving_lesson_id) ||
-      (r1.locking_user_id !== r2.locking_user_id)
+    return r1 !== r2
   };
 
   goToSelectEmployeeScreen = () => {
@@ -317,17 +332,22 @@ class CalendarScreen extends Component {
     const {
       daySelected,
       selectedEmployee,
-      dataForAgenda,
+      slotsAndLessonsForDay,
       lessonInterval,
+      employeesDailySlots,
       drivingLessonStatus,
-      slotsStatus,
+      slotsStatus
     } = this.props;
 
-    if([slotsStatus, drivingLessonStatus].includes(FETCHING_STATUS.FETCHING))
-      return <SpinnerView/>;
+    if([drivingLessonStatus, slotsStatus].includes(FETCHING_STATUS.FETCHING)) return <SpinnerView/>;
 
-    console.tron.log('dataForAgenda');
-    console.tron.log(dataForAgenda);
+    let dataForAgenda;
+
+    if (selectedEmployee) {
+      dataForAgenda = slotsAndLessonsForDay;
+    } else {
+      dataForAgenda = employeesDailySlots;
+    }
 
     return (
       <View style={{flex: 1}}>
@@ -354,6 +374,7 @@ class CalendarScreen extends Component {
             items={dataForAgenda}
             firstDay={1}
             renderItem={this.renderCell}
+            renderEmptyDate={(a)=><Text>dsadssa</Text>}
             onDayPress={this.onDayPress}
             rowHasChanged={this.agendaItemChanged}
             theme={styles.customAgendaThemeConfig}
@@ -416,9 +437,10 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    dataForAgenda: slotsAndLessonsForDay(state),
+    slotsAndLessonsForDay: slotsAndLessonsForDay(state),
     selectedSlots: selectedSlots(state),
     lessonInterval: lessonInterval(state),
+    employeesDailySlots: dailySlotsForEachEmployee(state),
     selectedEmployee: state.employees.active[state.calendar.selectedEmployeeId],
     daySelected: state.calendar.daySelected,
     slotsStatus: state.slots.status,

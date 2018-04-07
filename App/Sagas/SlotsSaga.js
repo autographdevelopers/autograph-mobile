@@ -21,8 +21,9 @@ export function* index(api, action) {
   const lessons_response = yield call(api.drivingLesson.index, { employee_id, driving_lessons_ids });
 
   if (slots_response.ok && lessons_response.ok) {
-    yield put(slotActionCreators.save(slots_response.data));
     yield put(drivingLessonActionCreators.save(lessons_response.data));
+    // ORDER OF SAVES MATTERS
+    yield put(slotActionCreators.save(slots_response.data));
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
     yield put(slotActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {

@@ -10,6 +10,11 @@ import moment from 'moment/moment';
 
 // TODO: There is quite a lot of logic here, extract it to some container and let component only render ready data.
 
+// const PIE_COLOR = {
+//   true: Colors.primaryWarm,
+//   false: Colors.yellowDark
+// };
+
 const MoreIndicator = () => (
   <View style={styles.dotsWrapper}>
     <View style={styles.dot}/>
@@ -27,23 +32,28 @@ const SmallPill = ({interval}) => (
 const PIE_CHART_SIZE = 40;
 
 export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
-  const pieChartData = slots.map(slot => {
-    const isLesson = slot.driving_lesson_id !== null;
-
-    return {
-      value: isLesson,
-      svg: {
-        fill: isLesson ? Colors.primaryWarm : Colors.yellowDark,
-        key: `slot-${slot.id}`
-      }
-    }
-  });
-
   const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
   const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
   const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
   const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);
-  const lessonsCount = _.groupBy(lessonSlots, slot => slot.driving_lesson_id ).length;
+  const lessonsCount = _.chain(lessonSlots).groupBy('driving_lesson_id').keys().value().length;
+
+  const pieChartData =  [
+    {
+      key: 1,
+      svg: {
+        fill: Colors.primaryWarm
+      },
+      value: slots.length - freeSlots.length
+    },
+    {
+      key: 2,
+      svg: {
+        fill: Colors.yellowDark
+      },
+      value: freeSlots.length
+    }
+  ];
 
   return (
     <View style={styles.container}>
@@ -68,7 +78,7 @@ export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
           { availableIntervals.length !== 0 && <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text> }
 
           <View style={styles.intervalCollection}>
-            { availableIntervals.slice(0, 3).map(interval => <SmallPill interval={interval} />) }
+            { availableIntervals.slice(0, 3).map((interval, index) => <SmallPill key={index} interval={interval} />) }
             { availableIntervals.length > 3 && <MoreIndicator/> }
           </View>
 
