@@ -1,16 +1,14 @@
-/** == Built-in modules ================================*/
+/** == Built-in modules ================================ */
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-/** == Custom modules ================================= */
+/** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
 import ModalTemplate from '../Components/ModalTemplate';
 import ButtonPrimary from '../Components/ButtonPrimary';
-import BookLessonWidget from '../Components/BookLessonWidget'
-/** == Agenda Items =================================== */
+import BookLessonWidget from '../Components/BookLessonWidget';
 import AvailableSlot from '../Components/Slots/FreeSlot';
-import SelectedSlot from '../Containers/Slots/SelectedSlot';
-import SlotBookingBy3rdParty from '../Components/Slots/BookingBy3rdParty';
+import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/employeeDailyAgendaRedux';
@@ -80,30 +78,29 @@ class EmployeeDailyAgenda extends Component {
     _.each(this.props.selectedSlots, this.socket.unlockSlot);
   };
 
-  renderSlot = (slot, _) => {
+  renderAgendaItem = (slot, _) => {
+    let agendaItem;
     if ( slot.employee && slot.student && slot.slots ) {
 
-      return <DrivingLessonCell employee={slot.employee}
+      agendaItem = <DrivingLessonCell employee={slot.employee}
                                 student={slot.student}
                                 slots={slot.slots}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
-      if (this.props.currentUser.id === slot.locking_user_id ) {
         const onCancelPress = this.isOnEdgeOfSelection(slot) ?
           () => this.socket.unlockSlot(slot):
           false;
 
-
-        return <SelectedSlot slot={slot}
-                             handleTimeout={this.releaseSlot(slot)}
-                             onPressCancel={onCancelPress}/>
-      } else {
-
-        return <SlotBookingBy3rdParty slot={slot}/>
-      }
+      agendaItem = <LockedSlot slot={slot}
+                           handleTimeout={this.releaseSlot(slot)}
+                           onPressCancel={onCancelPress}
+                           lockedByCurrentUser={this.props.currentUser.id === slot.locking_user_id}
+              />
     } else if ( slot.driving_lesson_id === null ) {
-
-      return <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
+      agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
     }
+
+
+    return agendaItem;
   };
 
   isOnEdgeOfSelection = slot => {
@@ -135,11 +132,11 @@ class EmployeeDailyAgenda extends Component {
     } else {
       const adjacentToBeginningOfSelectionBlock  = moment(slot.start_time)
         .add(30, 'minutes')
-        .diff(moment(firstOfSelected.start_time)) === 0;
+        .diff(firstOfSelected.start_time) === 0;
 
       const adjacentToEndOfSelectionBlock  = moment(slot.start_time)
         .subtract(30, 'minutes')
-        .diff(moment(lastOfSelected.start_time)) === 0;
+        .diff(lastOfSelected.start_time) === 0;
 
       if (adjacentToBeginningOfSelectionBlock || adjacentToEndOfSelectionBlock)
         isSlotAValidSelection = true;
@@ -201,7 +198,7 @@ class EmployeeDailyAgenda extends Component {
           selected={selectedDay}
           onDayPress={this.onDaySelected}
           items={employeeDailyAgendaItems}
-          renderItem={this.renderSlot}
+          renderItem={this.renderAgendaItem}
         />
         { lessonInterval &&
         <ButtonPrimary customWrapperStyles={{minWidth: '70%'}} onPress={this.handleBookLessonBtnPress}>

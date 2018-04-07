@@ -9,7 +9,7 @@ import { modalActionCreators } from '../Redux/ModalRedux';
 import moment from 'moment';
 import _ from 'lodash';
 import AvailableSlot from '../Components/Slots/FreeSlot';
-import SelectedSlot from '../Containers/Slots/SelectedSlot';
+import SelectedSlot from '../Containers/Slots/LockedSlot';
 import SlotBookingBy3rdParty from '../Components/Slots/BookingBy3rdParty';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
