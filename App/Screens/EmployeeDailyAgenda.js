@@ -187,7 +187,6 @@ class EmployeeDailyAgenda extends Component {
   };
 
 
-
   render() {
     const {
       employeeDailyAgendaItems,

@@ -84,7 +84,7 @@ export const getEmployeeDailyAgenda = createSelector(
 export const getSelectedSlots = createSelector(
   [getEmployeeSlots, getCurrentUser],
   (slots, currentUser) => slots.filter( slot => {
-    return moment(slot.release_at).isAfter(moment.utc()) && currentUser.id === slot.locking_user_id
+    return moment(slot.release_at).isAfter(moment()) && currentUser.id === slot.locking_user_id && slot.driving_lesson_id === null
   })
 );
 
