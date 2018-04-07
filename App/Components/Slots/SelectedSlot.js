@@ -23,7 +23,7 @@ export default SelectedSlot = ({onPressCancel, slot, remainingSeconds }) => {
         </View>
 
         {allowUnlock &&
-          <TouchableOpacity style={styles.btn} onPress={onPressCancel(slot)}>
+          <TouchableOpacity style={styles.btn} onPress={onPressCancel}>
             <Text style={styles.btnLabel}>ANULUJ</Text>
           </TouchableOpacity>
         }

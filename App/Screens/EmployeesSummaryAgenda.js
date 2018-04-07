@@ -6,6 +6,7 @@ import { slotActionCreators } from '../Redux/SlotsRedux';
 import moment from 'moment';
 import { employeesSummaryAgendaActionCreators } from '../Redux/EmployeesSummaryAgendaRedux';
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
+import {employeeDailyAgendaActionCreators} from '../Redux/employeeDailyAgendaRedux';
 
 class EmployeesSummaryAgenda extends Component {
   componentWillMount() {
@@ -31,7 +32,12 @@ class EmployeesSummaryAgenda extends Component {
     const id = employeeSlots[0].employee_id;
     const employee = this.props.employees[id] || {};
 
-    return <EmployeeAvailabilitySummaryCell slots={employeeSlots} employee={employee} />
+    return <EmployeeAvailabilitySummaryCell slots={employeeSlots}
+                                            employee={employee}
+                                            onCalendarPress={() => {
+                                              this.props.initDailyAgenda(this.props.selectedDay, id);
+                                              this.props.navigation.navigate('employeeDailyAgenda', { employeeId: id })
+                                            }}/>
   };
 
   getWeekRange = day => {
@@ -47,9 +53,6 @@ class EmployeesSummaryAgenda extends Component {
 
   render() {
     const { employeesSummaryAgendaItems, selectedDay } = this.props;
-
-    console.log('employeesSummaryAgendaItems');
-    console.log(employeesSummaryAgendaItems);
 
     return (
       <AgendaWrapper
@@ -71,7 +74,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   slotsIndexRequest: params => dispatch(slotActionCreators.indexRequest(params)),
-  setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day))
+  setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
+  initDailyAgenda: (day, employeeId) => dispatch(employeeDailyAgendaActionCreators.init(day, employeeId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeesSummaryAgenda);

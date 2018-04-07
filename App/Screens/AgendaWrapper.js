@@ -27,7 +27,6 @@ export default class AgendaWrapper extends Component {
       <Agenda
         selected={selected}
         items={items}
-        firstDay={1}
         rowHasChanged={this.agendaItemChanged}
         renderItem={renderItem}
         onDayPress={onDayPress}

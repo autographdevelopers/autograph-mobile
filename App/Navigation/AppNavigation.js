@@ -33,6 +33,8 @@ import StudentSearchablelist from '../Components/StudentsSearchableList';
 
 import PersonalSettings from '../Screens/PersonalSettings';
 
+import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgenda';
+
 const primaryFlowNavigationOptions = ({navigation}) => {
   // TODO: refactor this shit
   const { routes, index, params } = navigation.state;
@@ -150,6 +152,12 @@ const routeConfigs = {
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
     }},
+  employeeDailyAgenda: {
+    screen: EmployeeDailyAgenda,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Daily Agenda'}/>
+    }
+  },
   ...SEARCH_SCREENS,
   ...NOT_AUTHENTICATED_USER_SCREENS,
   ...USERS_FLOWS_SCREENS,

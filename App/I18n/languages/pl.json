@@ -57,5 +57,7 @@
   "invitation_sent_to": "Zaproszenie wysłane na",
   "lack_of_privileges": "Nie posiada przywilejów",
   "withdraw_invitation": "Wycofaj",
-  "driving_school_information": "Informacje o szkole"
+  "driving_school_information": "Informacje o szkole",
+  "lost_connection_with_server": "Utracono połączenie z serwerem.",
+  "slots_not_adjacent": "Możesz zaznaczać tylko sloty przystające do siebie."
 }
