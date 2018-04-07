@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
 import ModalTemplate from '../Components/ModalTemplate';
-import ButtonPrimary from '../Components/ButtonPrimary';
 import BookLessonWidget from '../Components/BookLessonWidget';
 import AvailableSlot from '../Components/Slots/FreeSlot';
 import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
+import BlockButton from '../Components/BlockButton';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/employeeDailyAgendaRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
@@ -172,13 +172,11 @@ class EmployeeDailyAgenda extends Component {
 
     resetDrivingLessonsStatus();
     setBookLessonParams(bookLessonParams);
-
     navigate('searchStudent', { onResultPress: this.onStudentsSelected })
   };
 
   onStudentsSelected = id => {
     this.props.setBookLessonParams({student_id: id});
-
     this.props.navigation.goBack(null);
     this.props.openModal(MODALS_IDS.CREATE_DRIVING_LESSON);
   };
@@ -201,9 +199,10 @@ class EmployeeDailyAgenda extends Component {
           renderItem={this.renderAgendaItem}
         />
         { lessonInterval &&
-        <ButtonPrimary customWrapperStyles={{minWidth: '70%'}} onPress={this.handleBookLessonBtnPress}>
-          {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to}`}
-        </ButtonPrimary> }
+          <BlockButton customWrapperStyles={{minWidth: '70%'}} onPress={this.handleBookLessonBtnPress}>
+            {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
+          </BlockButton>
+        }
 
         <ModalTemplate
           modalID={MODALS_IDS.CREATE_DRIVING_LESSON}
