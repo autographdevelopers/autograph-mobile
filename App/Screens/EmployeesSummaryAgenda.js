@@ -1,5 +1,6 @@
 /** == Built-in modules ================================ */
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 /** == Custom modules ================================ */
@@ -34,12 +35,16 @@ class EmployeesSummaryAgenda extends Component {
     const id = employeeSlots[0].employee_id;
     const employee = this.props.employees[id] || {};
 
-    return <EmployeeAvailabilitySummaryCell slots={employeeSlots}
-                                            employee={employee}
-                                            onCalendarPress={() => {
-                                              this.props.initDailyAgenda(this.props.selectedDay, id);
-                                              this.props.navigation.navigate('employeeDailyAgenda', { employeeId: id })
-                                            }}/>
+    return (
+      <View style={{paddingVertical: 5, paddingHorizontal: 15}}>
+        <EmployeeAvailabilitySummaryCell slots={employeeSlots}
+                                                employee={employee}
+                                                onCalendarPress={() => {
+                                                  this.props.initDailyAgenda(this.props.selectedDay, id);
+                                                  this.props.navigation.navigate('employeeDailyAgenda', { employeeId: id })
+                                                }}/>
+      </View>
+    )
   };
 
   getWeekRange = day => {
@@ -51,7 +56,6 @@ class EmployeesSummaryAgenda extends Component {
       by_start_time: { from, to }
     };
   };
-
 
   render() {
     const { employeesSummaryAgendaItems, selectedDay } = this.props;

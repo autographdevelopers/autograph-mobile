@@ -106,7 +106,6 @@ const styles = {
     shadowOffset: { height: 0, width: 0 },
     shadowRadius: 8,
     borderRadius: 8,
-    marginVertical: 5
   },
   takenSlots: {
     color: Colors.primaryWarm,
