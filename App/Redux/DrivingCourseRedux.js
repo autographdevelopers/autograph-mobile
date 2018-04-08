@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   saveSingle: ['data'],
   changeStatus: ['status'],
   updateRequest: ['data'],
-  showRequest: null
+  showRequest: ['studentId']
 }, { prefix: 'DRIVING_COURSE_' });
 
 export const drivingCourseActionTypes = Types;

@@ -76,7 +76,7 @@ class LoginScreen extends Component {
 export default reduxForm({
   form: 'login',
   initialValues: {
-    email: 'owner@gmail.com',
+    email: 'student@gmail.com',
     password: 'password',
   },
   onSubmitSuccess: (result, dispatch, props) => {

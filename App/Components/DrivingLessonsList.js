@@ -9,7 +9,7 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import DefaultAvatar from '../Components/DefaultAvatar';
 import ButtonText from '../Components/ButtonText';
 
-export default class DrivingLessonsList extends Component {//= ({ drivingLessons, userContext, onCancelPress, canManageStudents }) => {
+export default class DrivingLessonsList extends Component {
 
   renderDrivingLessons = () => {
     const { status, hashMap, allIDs } = this.props.drivingLessons
