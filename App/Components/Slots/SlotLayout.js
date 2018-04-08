@@ -26,7 +26,7 @@ export default SlotLayout = props => {
       borderLeftWidth: 3,
       borderLeftColor: borderLeftColor,
       borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: Colors.strongGrey
+      borderTopColor: Colors.mediumGrey
     },
     hour: {
       fontSize: Fonts.size.small,

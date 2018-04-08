@@ -23,8 +23,8 @@ import { slotReducer } from './SlotsRedux';
 import { drivingCourseReducer } from './DrivingCourseRedux';
 import { drivingLessonReducer } from './DrivingLessonRedux';
 import { bookLessonReducer } from './BookLesson';
-import { employeeDailyAgendaReducer } from './employeeDailyAgendaRedux';
-import { employeesSummaryAgendaReducer } from './EmployeesSummaryAgendaRedux';
+import { employeeDailyAgendaReducer } from './AgendaRedux';
+import { employeesSummaryAgendaReducer } from './AgendaRedux';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({

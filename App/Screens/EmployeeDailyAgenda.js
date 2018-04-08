@@ -13,7 +13,7 @@ import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 import BlockButton from '../Components/BlockButton';
 /** == Action Creators ================================ */
-import { employeeDailyAgendaActionCreators } from '../Redux/employeeDailyAgendaRedux';
+import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
@@ -28,6 +28,7 @@ import {
 import I18n from '../I18n';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
@@ -50,29 +51,46 @@ class EmployeeDailyAgenda extends Component {
     const { selectedDay, slotsIndexRequest } = this.props;
     const params = this._buildParams(selectedDay);
 
-    slotsIndexRequest(params);
+    slotsIndexRequest(params, SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY);
   }
 
   componentWillUnmount() {
     this.unLockAllSlots();
   }
 
-  _buildParams = date => ({
-    employee_id: this.props.employeeId,
-    by_start_time: {
-      from: date,
-      to: date
+  _buildParams = date => {
+    const referenceDay = moment(date, 'YYYY-MM-DD');
+    const from = referenceDay.startOf('week').format('YYYY-MM-DD');
+    const to = referenceDay.endOf('week').format('YYYY-MM-DD');
+
+    return {
+      employee_id: this.props.employeeId,
+      by_start_time: {
+        from,
+        to
+      }
     }
-  });
+  };
 
   onDaySelected = date => {
     this.unLockAllSlots();
     const { dateString } = date;
-    const { slotsIndexRequest, setDay } = this.props;
-    const params = this._buildParams(dateString);
-
-    slotsIndexRequest(params);
+    const { slotsIndexRequest, setDay, cacheHistory } = this.props;
     setDay(dateString);
+
+    let shouldFetchData = true;
+    _.each(cacheHistory, (frame) => {
+     if( moment().isBefore(frame.expireAt) && moment(dateString).isBetween(frame.dataFrom, frame.dataTo, 'seconds', '[]')) {
+       shouldFetchData = false;
+     }
+    });
+
+    if (shouldFetchData) {
+      const params = this._buildParams(dateString);
+
+      slotsIndexRequest(params,
+        SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY);
+    }
   };
 
   unLockAllSlots = () => {
@@ -239,10 +257,11 @@ const mapStateToProps = state => ({
   selectedSlots: getSelectedSlots(state),
   lessonInterval: getLessonInterval(state),
   drivingLessonStatus: state.drivingLessons.status,
+  cacheHistory: state.employeeDailyAgenda.cacheHistory
 });
 
 const mapDispatchToProps = dispatch => ({
-  slotsIndexRequest: params => dispatch(slotActionCreators.indexRequest(params)),
+  slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
   setDay: day => dispatch(employeeDailyAgendaActionCreators.setDay(day)),
   saveSlots: slots => dispatch(slotActionCreators.save(slots)),
   displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg)),

@@ -7,13 +7,18 @@ import _ from 'lodash';
 const INFINITY = 999;
 
 const { Types, Creators } = createActions({
-  indexRequest: ['params', 'daySelected'],
+  indexRequest: ['params', 'callback'],
   save: ['data'],
   changeStatus: ['status']
 }, { prefix: 'SLOTS_' });
 
 export const slotActionTypes = Types;
 export const slotActionCreators = Creators;
+
+export const SLOTS_FETCHED_CALLBACKS = {
+  SUMMARY_AGENDA_PUSH_CACHE_HISTORY: 'SUMMARY_AGENDA_PUSH_CACHE_HISTORY',
+  DAILY_AGENDA_PUSH_CACHE_HISTORY: 'DAILY_AGENDA_PUSH_CACHE_HISTORY',
+};
 
 /* ------------- Initial State ------------- */
 
