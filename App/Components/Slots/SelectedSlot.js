@@ -23,11 +23,14 @@ export default SelectedSlot = ({onPressCancel, slot, remainingSeconds, isFirst, 
         </View>
 
         {allowUnlock &&
+        <View style={styles.btnWrapper}>
+          {isLast && !isFirst && <View style={[styles.arrow, styles.arrowTop]}/>}
           <TouchableOpacity style={styles.btn} onPress={onPressCancel}>
             <Text style={styles.btnLabel}>ANULUJ</Text>
           </TouchableOpacity>
+          {isFirst && !isLast && <View style={[styles.arrow, styles.arrowBottom]}/>}
+        </View>
         }
-        {isLast && <View style={styles.arrowTop}/>}
       </View>
     </SlotLayout>
   );
@@ -88,10 +91,23 @@ const styles = {
     fontSize: Fonts.size.small,
   },
   arrowTop: {
+    borderBottomWidth: 10,
+    borderBottomColor: Colors.lightGrey
+  },
+  arrowBottom: {
+    borderTopWidth: 10,
+    borderTopColor: Colors.lightGrey
+  },
+  arrow: {
     width: 0,
     height: 0,
-    borderLeftWidth: 60,
-    borderRightWidth: 60,
-    borderBottomWidth: 120,
+    borderLeftWidth: 10,
+    borderLeftColor: 'transparent',
+
+    borderRightColor: 'transparent',
+    borderRightWidth: 10,
+  },
+  btnWrapper: {
+    alignItems: 'center'
   }
 };

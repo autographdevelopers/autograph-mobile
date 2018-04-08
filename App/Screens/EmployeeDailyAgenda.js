@@ -79,7 +79,7 @@ class EmployeeDailyAgenda extends Component {
     _.each(this.props.selectedSlots, this.socket.unlockSlot);
   };
 
-  renderAgendaItem = (slot, _) => {
+  renderAgendaItem = (slot, dsas) => {
     let agendaItem;
     const { selectedSlots, currentUser } = this.props;
     if ( slot.employee && slot.student && slot.slots ) {
@@ -90,16 +90,15 @@ class EmployeeDailyAgenda extends Component {
         const onCancelPress = this.isOnEdgeOfSelection(slot) ?
           () => this.socket.unlockSlot(slot):
           false;
-        // const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
-        // const isLast = slot.id === (_.last(selectedSlots) || {}).id;
-        // ???
-        // _.last([1]);
+        const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
+        const isLast = slot.id === (_.last(selectedSlots) || {}).id;
+
         agendaItem = <LockedSlot slot={slot}
                            handleTimeout={this.releaseSlot(slot)}
                            onPressCancel={onCancelPress}
                            lockedByCurrentUser={currentUser.id === slot.locking_user_id}
-                           isFirst={true}
-                           isLast={true}
+                           isFirst={isFirst}
+                           isLast={isLast}
                       />
     } else if ( slot.driving_lesson_id === null ) {
       agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
@@ -126,6 +125,11 @@ class EmployeeDailyAgenda extends Component {
   };
 
   lockSlot = slot => () => {
+    console.log('LODASH 222')
+    console.log(_.last)
+    console.log(_)
+
+
     let isSlotAValidSelection = false;
 
     const { selectedSlots } = this.props;
@@ -193,6 +197,9 @@ class EmployeeDailyAgenda extends Component {
       lessonInterval,
       drivingLessonStatus
     } = this.props;
+
+    console.log('employeeDailyAgendaItems');
+    console.log(employeeDailyAgendaItems);
 
     return (
       <View style={{flex: 1}}>
