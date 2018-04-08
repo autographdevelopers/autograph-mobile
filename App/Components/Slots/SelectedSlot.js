@@ -4,7 +4,7 @@ import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 import momentTimezone from 'moment-timezone';
 
-export default SelectedSlot = ({onPressCancel, slot, remainingSeconds }) => {
+export default SelectedSlot = ({onPressCancel, slot, remainingSeconds, isFirst, isLast }) => {
   const from =  momentTimezone(slot.start_time).tz('Europe/Warsaw').format('HH:mm');
   const to = momentTimezone(slot.start_time).add(30, 'minutes').tz('Europe/Warsaw').format('HH:mm');
 
@@ -27,6 +27,7 @@ export default SelectedSlot = ({onPressCancel, slot, remainingSeconds }) => {
             <Text style={styles.btnLabel}>ANULUJ</Text>
           </TouchableOpacity>
         }
+        {isLast && <View style={styles.arrowTop}/>}
       </View>
     </SlotLayout>
   );
@@ -85,5 +86,12 @@ const styles = {
     color: Colors.primaryWarm,
     fontFamily: Fonts.type.medium,
     fontSize: Fonts.size.small,
+  },
+  arrowTop: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 60,
+    borderRightWidth: 60,
+    borderBottomWidth: 120,
   }
 };

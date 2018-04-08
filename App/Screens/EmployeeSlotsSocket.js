@@ -74,7 +74,7 @@ export class EmployeeSlotsSocket {
   };
 
   _socketTransmit = params => {
-    if(this._socket.readyState === WebSocket.OPEN) {
+    if (this._socket.readyState === WebSocket.OPEN) {
       this._socket.send(params);
     } else {
       this._onTransmissionError();

@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import _ from 'lodash';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
 import ModalTemplate from '../Components/ModalTemplate';
@@ -12,6 +14,7 @@ import DrivingLessonCell from '../Components/Slots/DriveSlot';
 import BlockButton from '../Components/BlockButton';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/employeeDailyAgendaRedux';
+import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { toastActionCreators } from '../Redux/ToastRedux';
@@ -23,13 +26,11 @@ import {
   getLessonInterval
 } from '../Selectors/slots';
 import I18n from '../I18n';
-import moment from 'moment';
-import _ from 'lodash';
-/** == Sockets ======================================== */
-import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
+/** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+/** == Sockets ======================================== */
+import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
 
 
 class EmployeeDailyAgenda extends Component {
@@ -80,8 +81,8 @@ class EmployeeDailyAgenda extends Component {
 
   renderAgendaItem = (slot, _) => {
     let agendaItem;
+    const { selectedSlots, currentUser } = this.props;
     if ( slot.employee && slot.student && slot.slots ) {
-
       agendaItem = <DrivingLessonCell employee={slot.employee}
                                 student={slot.student}
                                 slots={slot.slots}/>
@@ -89,16 +90,20 @@ class EmployeeDailyAgenda extends Component {
         const onCancelPress = this.isOnEdgeOfSelection(slot) ?
           () => this.socket.unlockSlot(slot):
           false;
-
-      agendaItem = <LockedSlot slot={slot}
+        // const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
+        // const isLast = slot.id === (_.last(selectedSlots) || {}).id;
+        // ???
+        // _.last([1]);
+        agendaItem = <LockedSlot slot={slot}
                            handleTimeout={this.releaseSlot(slot)}
                            onPressCancel={onCancelPress}
-                           lockedByCurrentUser={this.props.currentUser.id === slot.locking_user_id}
-              />
+                           lockedByCurrentUser={currentUser.id === slot.locking_user_id}
+                           isFirst={true}
+                           isLast={true}
+                      />
     } else if ( slot.driving_lesson_id === null ) {
       agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
     }
-
 
     return agendaItem;
   };
@@ -181,7 +186,6 @@ class EmployeeDailyAgenda extends Component {
     this.props.openModal(MODALS_IDS.CREATE_DRIVING_LESSON);
   };
 
-
   render() {
     const {
       employeeDailyAgendaItems,
@@ -199,7 +203,8 @@ class EmployeeDailyAgenda extends Component {
           renderItem={this.renderAgendaItem}
         />
         { lessonInterval &&
-          <BlockButton customWrapperStyles={{minWidth: '70%'}} onPress={this.handleBookLessonBtnPress}>
+          <BlockButton customWrapperStyles={{minWidth: '70%'}}
+                       onPress={this.handleBookLessonBtnPress}>
             {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
           </BlockButton>
         }

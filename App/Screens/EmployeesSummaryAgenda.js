@@ -1,12 +1,17 @@
+/** == Built-in modules ================================ */
 import React, { Component } from 'react';
-import AgendaWrapper from './AgendaWrapper';
 import { connect } from 'react-redux';
-import { getEmployeesSummaryAgenda } from '../Selectors/slots';
-import { slotActionCreators } from '../Redux/SlotsRedux';
 import moment from 'moment';
-import { employeesSummaryAgendaActionCreators } from '../Redux/EmployeesSummaryAgendaRedux';
+/** == Custom modules ================================ */
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
-import {employeeDailyAgendaActionCreators} from '../Redux/employeeDailyAgendaRedux';
+import AgendaWrapper from './AgendaWrapper';
+/** == Action Creators ================================ */
+import { employeesSummaryAgendaActionCreators } from '../Redux/EmployeesSummaryAgendaRedux';
+import { employeeDailyAgendaActionCreators } from '../Redux/employeeDailyAgendaRedux';
+import { slotActionCreators } from '../Redux/SlotsRedux';
+/** == Utilities  ================================ */
+import { getEmployeesSummaryAgenda } from '../Selectors/slots';
+
 
 class EmployeesSummaryAgenda extends Component {
   componentWillMount() {
@@ -18,12 +23,9 @@ class EmployeesSummaryAgenda extends Component {
 
   onDaySelected = date => {
     const { dateString } = date;
-    const { left, right } = this.props.fetchedDataBoundaries;
 
-    if(!moment(dateString).isBetween(left, right, 'day')) {
-      const dateRangeParams = this.getWeekRange(dateString);
-      this.props.slotsIndexRequest(dateRangeParams);
-    }
+    const dateRangeParams = this.getWeekRange(dateString);
+    this.props.slotsIndexRequest(dateRangeParams);
 
     this.props.setDay(dateString);
   };
@@ -68,7 +70,6 @@ class EmployeesSummaryAgenda extends Component {
 const mapStateToProps = state => ({
   employees: state.employees.active,
   selectedDay: state.employeesSummaryAgenda.daySelected,
-  fetchedDataBoundaries: state.employeesSummaryAgenda.fetchedDataBoundaries,
   employeesSummaryAgendaItems: getEmployeesSummaryAgenda(state)
 });
 

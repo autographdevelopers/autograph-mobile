@@ -145,7 +145,7 @@ const SEARCH_SCREENS = {
   }
 };
 
-/** ==NAVIGATION SETUP================== */
+/** == NAVIGATION SETUP ================== */
 const routeConfigs = {
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
   personalSettings: { screen: PersonalSettings,
