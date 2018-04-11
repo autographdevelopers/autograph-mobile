@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {  Agenda, LocaleConfig } from 'react-native-calendars';
-import moment from 'moment';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],

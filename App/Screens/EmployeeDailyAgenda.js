@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import _ from 'lodash';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
@@ -26,6 +26,7 @@ import {
   getLessonInterval
 } from '../Selectors/slots';
 import I18n from '../I18n';
+import { timeHelpers } from '../Lib/timeHandlers';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
@@ -59,37 +60,27 @@ class EmployeeDailyAgenda extends Component {
   }
 
   _buildParams = date => {
-    const referenceDay = moment(date, 'YYYY-MM-DD');
-    const from = referenceDay.startOf('week').format('YYYY-MM-DD');
-    const to = referenceDay.endOf('week').format('YYYY-MM-DD');
+    const { time_zone } = this.props.currentSchool;
 
     return {
       employee_id: this.props.employeeId,
-      by_start_time: {
-        from,
-        to
-      }
+      ...timeHelpers.getWeekRange(date, time_zone)
     }
   };
 
   onDaySelected = date => {
     this.unLockAllSlots();
     const { dateString } = date;
-    const { slotsIndexRequest, setDay, cacheHistory } = this.props;
+    const { slotsIndexRequest, setDay, cacheHistory, currentSchool: { time_zone } } = this.props;
     setDay(dateString);
 
-    let shouldFetchData = true;
-    _.each(cacheHistory, (frame) => {
-     if( moment().isBefore(frame.expireAt) && moment(dateString).isBetween(frame.dataFrom, frame.dataTo, 'seconds', '[]')) {
-       shouldFetchData = false;
-     }
-    });
-
-    if (shouldFetchData) {
+    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone)) {
       const params = this._buildParams(dateString);
 
-      slotsIndexRequest(params,
-        SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY);
+      slotsIndexRequest(
+        params,
+        SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY
+      );
     }
   };
 
@@ -143,10 +134,6 @@ class EmployeeDailyAgenda extends Component {
   };
 
   lockSlot = slot => () => {
-    console.log('LODASH 222')
-    console.log(_.last)
-    console.log(_)
-
 
     let isSlotAValidSelection = false;
 
@@ -216,9 +203,6 @@ class EmployeeDailyAgenda extends Component {
       drivingLessonStatus
     } = this.props;
 
-    console.log('employeeDailyAgendaItems');
-    console.log(employeeDailyAgendaItems);
-
     return (
       <View style={{flex: 1}}>
         <AgendaWrapper
@@ -254,6 +238,7 @@ const mapStateToProps = state => ({
   currentUser: state.user,
   session: state.session,
   schoolId: state.context.currentDrivingSchoolID,
+  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
   selectedSlots: getSelectedSlots(state),
   lessonInterval: getLessonInterval(state),
   drivingLessonStatus: state.drivingLessons.status,

@@ -20,6 +20,7 @@ export function* index(api, action) {
   const driving_lessons_ids = slots_response.data.filter( slot => slot.driving_lesson_id !== null).map(slot => slot.driving_lesson_id);
 
   const { employee_id } = params;
+
   const lessons_response = yield call(api.drivingLesson.index, { employee_id, driving_lessons_ids });
 
   if (slots_response.ok && lessons_response.ok) {

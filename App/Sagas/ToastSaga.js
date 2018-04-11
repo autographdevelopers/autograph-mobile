@@ -5,9 +5,6 @@ export function* displayToastMessageSaga(action) {
 
   const config = configuration || {};
 
-  console.log(configuration);
-  console.log(message);
-
   Toast.show(message, {
     duration: Toast.durations.LONG,
     position: Toast.positions.TOP,

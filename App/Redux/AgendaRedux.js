@@ -1,11 +1,11 @@
 import { createReducer, createActions } from 'reduxsauce';
-import moment from 'moment'
+import moment from 'moment-timezone';
 import _ from 'lodash';
 
 /** == INIT STATES ================================ */
 
 export const COMMON_STATE = {
-  daySelected: moment().format('YYYY-MM-DD'),
+  daySelected: moment.tz('Poland').format('YYYY-MM-DD'),
   cacheHistory: [
     // {
     // dataFrom,
@@ -34,7 +34,7 @@ export const pushToCacheHistoryHandler = (state, { from, to }) => {
   newState.cacheHistory.push({
     dataFrom: from,
     dataTo: to,
-    expireAt: moment().add(5, 'minutes').format()
+    expireAt: moment.tz('Poland').add(5, 'minutes').format()
   });
 
   return newState;
@@ -67,9 +67,6 @@ const createAgendaReducer = (initialState, types, additionalHandlers={} ) => {
 /** == SUMMARY AGENDA REDUX =================================== */
 
 const employeesSummaryAgenda = createAgendaActions('EMPLOYEES_SUMMARY_AGENDA/');
-console.log(employeesSummaryAgenda);
-console.log(employeesSummaryAgenda.Types);
-console.log(employeesSummaryAgenda.Creators);
 export const employeesSummaryAgendaTypes = employeesSummaryAgenda.Types;
 export const employeesSummaryAgendaActionCreators = employeesSummaryAgenda.Creators;
 export const employeesSummaryAgendaReducer = createAgendaReducer(

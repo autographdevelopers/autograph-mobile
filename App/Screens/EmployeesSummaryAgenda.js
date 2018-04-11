@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
 /** == Custom modules ================================ */
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
 import AgendaWrapper from './AgendaWrapper';
@@ -13,32 +13,28 @@ import { slotActionCreators } from '../Redux/SlotsRedux';
 /** == Utilities  ================================ */
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
-import _ from 'lodash';
+import { timeHelpers } from '../Lib/timeHandlers';
 
 class EmployeesSummaryAgenda extends Component {
   componentWillMount() {
-    const { selectedDay } = this.props;
-    const dateRangeParams = this.getWeekRange(selectedDay);
+    const { selectedDay, currentSchool } = this.props;
+    const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
 
     this.props.slotsIndexRequest(dateRangeParams, SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY);
   }
 
   onDaySelected = date => {
     const { dateString } = date;
+    const { currentSchool: { time_zone }, slotsIndexRequest, cacheHistory } = this.props;
     this.props.setDay(dateString);
 
+    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone)) {
+      const dateRangeParams = timeHelpers.getWeekRange(dateString, time_zone);
 
-    let shouldFetchData = true;
-    _.each(this.props.cacheHistory, (frame) => {
-      if( moment().isBefore(frame.expireAt) && moment(dateString).isBetween(frame.dataFrom, frame.dataTo, 'seconds', '[]')) {
-        shouldFetchData = false;
-      }
-    });
-
-    if (shouldFetchData) {
-      const dateRangeParams = this.getWeekRange(dateString);
-
-      this.props.slotsIndexRequest(dateRangeParams, SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY);
+      slotsIndexRequest(
+        dateRangeParams,
+        SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY
+      );
     }
   };
 
@@ -60,15 +56,7 @@ class EmployeesSummaryAgenda extends Component {
     )
   };
 
-  getWeekRange = day => {
-    const referenceDay = moment(day, 'YYYY-MM-DD');
-    const from = referenceDay.startOf('week').format('YYYY-MM-DD');
-    const to = referenceDay.endOf('week').format('YYYY-MM-DD');
 
-    return {
-      by_start_time: { from, to }
-    };
-  };
 
   render() {
     const { employeesSummaryAgendaItems, selectedDay } = this.props;
@@ -89,7 +77,8 @@ const mapStateToProps = state => ({
   selectedDay: state.employeesSummaryAgenda.daySelected,
   employeesSummaryAgendaState: state.employeesSummaryAgenda,
   employeesSummaryAgendaItems: getEmployeesSummaryAgenda(state),
-  cacheHistory: state.employeesSummaryAgenda.cacheHistory
+  cacheHistory: state.employeesSummaryAgenda.cacheHistory,
+  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
 });
 
 const mapDispatchToProps = dispatch => ({
