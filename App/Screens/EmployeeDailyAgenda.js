@@ -8,9 +8,10 @@ import _ from 'lodash';
 import AgendaWrapper from './AgendaWrapper';
 import ModalTemplate from '../Components/ModalTemplate';
 import BookLessonWidget from '../Components/BookLessonWidget';
-import AvailableSlot from '../Components/Slots/FreeSlot';
+import AvailableSlot from '../Components/Slots/AvailableSlot';
 import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
+import BreakSlot from '../Components/Slots/BreakSlot';
 import BlockButton from '../Components/BlockButton';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
@@ -91,7 +92,10 @@ class EmployeeDailyAgenda extends Component {
   renderAgendaItem = (slot, dsas) => {
     let agendaItem;
     const { selectedSlots, currentUser } = this.props;
-    if ( slot.employee && slot.student && slot.slots ) {
+
+    if (slot.isBreakSlot) {
+      agendaItem = <BreakSlot slot={slot}/>
+    } else if ( slot.employee && slot.student && slot.slots ) {
       agendaItem = <DrivingLessonCell employee={slot.employee}
                                 student={slot.student}
                                 slots={slot.slots}/>
@@ -202,6 +206,9 @@ class EmployeeDailyAgenda extends Component {
       lessonInterval,
       drivingLessonStatus
     } = this.props;
+
+    console.log('employeeDailyAgendaItems');
+    console.log(employeeDailyAgendaItems);
 
     return (
       <View style={{flex: 1}}>

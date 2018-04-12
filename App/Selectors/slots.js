@@ -49,7 +49,10 @@ export const getEmployeeSlotsForADay = createSelector(
 export const getSlotsNotBelongingToLesson = createSelector(
   [getEmployeeSlotsForADay],
   slots => {
-    return slots.filter( slot => slot.driving_lesson_id === null)
+    return slots.filter( slot => slot.driving_lesson_id === null ).map(slot => {
+      const end_time = moment.utc(slot.start_time).add(30, 'minutes').format();
+      return { ...slot, end_time }
+    })
   }
 );
 
@@ -64,27 +67,67 @@ export const lessonsForSlots = createSelector(
   [getSlotsHavingToLesson, getLessons],
   (slots, lessons) => {
     return _.chain(slots)
-            .map(slot => slot.driving_lesson_id)
-            .uniq()
-            .map(id => lessons[id])
-            .value();
+            .groupBy( slot => slot.driving_lesson_id )
+            .values()
+            .map(lessonSlots => {
+              const lessonId = lessonSlots[0].driving_lesson_id;
+              const sorted = lessonSlots
+                .sort((left, right) => moment(left.start_time).diff(moment(right.start_time)));
+              const lastSlotStartTime = _.last(sorted).start_time;
+              const end_time = moment.utc(lastSlotStartTime).add(30, 'minutes').format()
+              return { ...lessons[lessonId], end_time }
+            })
+            .value()
   }
 );
+
 
 export const getEmployeeDailyAgenda = createSelector(
   [getSlotsNotBelongingToLesson, lessonsForSlots],
   (slots, lessons) => {
-    const lessonsAndSlots = [...slots, ...lessons]
-      .sort((left, right) => moment.utc(left.start_time).diff(moment.utc(right.start_time)));
+    console.log('slots')
+    console.log(slots)
+    console.log('lessons')
+    console.log(lessons)
 
-    return _.groupBy(lessonsAndSlots, item => moment(item.start_time).format('YYYY-MM-DD'))
+
+
+    const lessonsAndSlots = [...slots, ...lessons]
+      .sort((left, right) => moment(left.start_time).diff(moment(right.start_time)));
+
+    const withPossibleBreaks = lessonsAndSlots.reduce((acc, current, index, array) => {
+      if(!(_.last(array) === current) && !(_.first(array) === current) ) {
+        console.log('in');
+        let differenceInMinutes = moment(array[index+1].start_time).diff(current.end_time, 'minutes');
+        console.log('differenceInMinutes');
+        console.log(differenceInMinutes);
+
+        if(differenceInMinutes > 0) {
+          acc.push([current, { isBreakSlot: true, start_time: current.end_time}]);
+
+          return acc;
+        }
+      }
+      acc.push(current);
+
+      return acc;
+    }, []);
+
+    console.log('withPossibleBreaks');
+    console.log(withPossibleBreaks);
+
+    const all =  _.chain(withPossibleBreaks)
+                  .flattenDeep()
+                  .value();
+
+    return  { [moment.utc(all[0].start_time).format('YYYY-MM-DD')]: all }
   }
 );
 
 export const getSelectedSlots = createSelector(
   [getEmployeeSlotsForADay, getCurrentUser],
   (slots, currentUser) => slots.filter( slot => {
-    return moment(slot.release_at).isAfter(moment.utc()) && currentUser.id === slot.locking_user_id && slot.driving_lesson_id === null
+    return moment(slot.release_at).isAfter() && currentUser.id === slot.locking_user_id && slot.driving_lesson_id === null
   })
 );
 

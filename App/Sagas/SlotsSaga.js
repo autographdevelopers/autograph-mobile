@@ -28,14 +28,20 @@ export function* index(api, action) {
     // ORDER OF SAVES MATTERS !
     yield put(slotActionCreators.save(slots_response.data));
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+
     yield put(slotActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
 
     switch(action.callback) {
       case SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY:
-        yield put(employeeDailyAgendaActionCreators.pushCacheHistory(params.by_start_time.from, params.by_start_time.to));
+        yield put(employeeDailyAgendaActionCreators.pushCacheHistory(
+          params.by_start_time.from, params.by_start_time.to
+        ));
         break;
       case SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY:
-        yield put(employeesSummaryAgendaActionCreators.pushCacheHistory(params.by_start_time.from, params.by_start_time.to));
+        yield put(employeesSummaryAgendaActionCreators.pushCacheHistory(
+          params.by_start_time.from,
+          params.by_start_time.to
+        ));
         break;
     }
   } else {
