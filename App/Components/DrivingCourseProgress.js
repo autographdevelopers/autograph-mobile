@@ -3,29 +3,55 @@ import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PieChart } from 'react-native-svg-charts';
 import { Text as SvgText, G, Circle, TSpan } from 'react-native-svg';
+import moment from 'moment/moment';
 
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 const PIE_CHART_WIDTH = 120;
 
-export default DrivingCourseProgress = ({ drivingCourse }) => {
+export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) => {
+  const calculateUsedHours = () =>
+    drivingLessonsData.filter(drivingLesson =>
+      drivingLesson.status === 'active' && moment().isAfter(drivingLesson.start_time)
+    ).reduce((slotsCount, drivingLesson) => {
+        return slotsCount + drivingLesson.slots.length
+      }, 0) * 0.5
+
+  const calculateBookedHours = () =>
+    drivingLessonsData.filter(drivingLesson =>
+      drivingLesson.status === 'active' && moment().isBefore(drivingLesson.start_time)
+    ).reduce((slotsCount, drivingLesson) => {
+        return slotsCount + drivingLesson.slots.length
+      }, 0) * 0.5
+
   const { status, data } = drivingCourse;
+  const availableHours = data.available_hours;
+  const usedHours = calculateUsedHours();
+  const bookedHours = calculateBookedHours();
+
+  const divisor = availableHours + usedHours + bookedHours;
+  let propgress;
+
+  if(divisor === 0)
+    propgress = 0.0
+  else
+    progress = parseInt((usedHours / divisor) * 100)
 
   const pieChartData = [
     {
       key: 1,
-      amount: data.available_hours,
+      amount: availableHours,
       svg: { fill: Colors.lightGrey }
     },
     {
       key: 2,
-      amount: data.used_hours,
+      amount: usedHours,
       svg: { fill: Colors.primaryWarm }
     },
     {
       key: 3,
-      amount: data.booked_hours,
+      amount: bookedHours,
       svg: { fill: Colors.yellowLight }
     }
   ]
@@ -47,7 +73,7 @@ export default DrivingCourseProgress = ({ drivingCourse }) => {
                 fontWeight="300"
                 textAnchor="middle">
                 <TSpan fontSize={25}>
-                  {parseInt((data.used_hours / (data.available_hours + data.used_hours + data.booked_hours)) * 100)}
+                  {progress}
                 </TSpan>
                 <TSpan fontSize={10} dy='10' x='0'>
                   % godzin
@@ -61,15 +87,15 @@ export default DrivingCourseProgress = ({ drivingCourse }) => {
         />
         <View style={styles.rightSegmentWrapper}>
           <View style={[styles.row, {borderLeftColor: Colors.lightGrey}]}>
-            <Text style={styles.hoursIndicator}>{data.available_hours}</Text>
+            <Text style={styles.hoursIndicator}>{availableHours}</Text>
             <Text style={styles.text}>Dostępne godziny</Text>
           </View>
           <View style={[styles.row, {borderLeftColor: Colors.primaryWarm}]}>
-            <Text style={styles.hoursIndicator}>{data.used_hours}</Text>
+            <Text style={styles.hoursIndicator}>{usedHours}</Text>
             <Text style={styles.text}>Przejeżdżone godziny</Text>
           </View>
           <View style={[styles.row, {borderLeftColor: Colors.yellowLight}]}>
-            <Text style={styles.hoursIndicator}>{data.booked_hours}</Text>
+            <Text style={styles.hoursIndicator}>{bookedHours}</Text>
             <Text style={styles.text}>Zarezerwowane godziny</Text>
           </View>
         </View>

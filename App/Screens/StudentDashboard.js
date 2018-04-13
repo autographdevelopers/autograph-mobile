@@ -1,15 +1,18 @@
 /** Built-in modules */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment/moment';
 /** Custom modules */
 import { drivingCourseActionCreators } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
-import DrivingLessonsList from '../Components/DrivingLessonsList';
+import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import listProjectorStyles from '../Styles/ListProjector';
 import { Colors, Fonts } from '../Themes/';
+import { DRIVING_LESSON_TYPES } from '../Lib/DrivingLessonHelpers';
+
 
 /** Screen */
 class StudentDashboard extends Component {
@@ -19,19 +22,32 @@ class StudentDashboard extends Component {
 
   componentWillMount = () => {
     this.props.fetchDrivingCourse(this.props.user.id);
-    this.props.fetchDrivingLessons({ student_id: this.props.user.id, upcoming: true, active: true })
+    this.props.fetchDrivingLessons({ student_id: this.props.user.id })
+  }
+
+  upcomingDrivingLessons = () => {
+    const  { drivingLessons } = this.props;
+
+    return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
+      (DRIVING_LESSON_TYPES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
+    )
   }
 
   render() {
+    const { user } = this.props;
+    const { drivingLessons } = this.props;
+
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <SectionHeader
           title={'Postępy'}
           customTextStyles={styles.headerText}
           customUnderlineStyles={styles.underline} />
 
         <View style={styles.drivingCourseProgressWrapper}>
-          <DrivingCourseProgress drivingCourse={this.props.drivingCourse} />
+          <DrivingCourseProgress
+            drivingCourse={this.props.drivingCourse}
+            drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
         </View>
 
         <View style={styles.headerWithBtn}>
@@ -41,7 +57,7 @@ class StudentDashboard extends Component {
             customUnderlineStyles={styles.underline} />
 
           <ButtonText
-            onPress={() => {}}
+            onPress={() => this.props.navigation.navigate('drivingLessons', { studentId: user.id })}
             customTextStyle={{ fontSize: Fonts.size.small }}>
             Pokaż wszystkie
           </ButtonText>
@@ -49,12 +65,13 @@ class StudentDashboard extends Component {
 
         <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
           <DrivingLessonsList
-            onCancelPress={() => {}}
-            drivingLessons={this.props.drivingLessons}
-            canManageStudents={true}
-            userContext={'student'} />
+            drivingLessons={this.upcomingDrivingLessons()}
+            userContext={'employee'}
+            fetchingStatus={drivingLessons.status}
+            scrollEnabled={false}
+          />
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }

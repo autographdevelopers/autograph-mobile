@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import moment from 'moment/moment';
 
 import { contextActionCreators } from '../../Redux/ContextRedux';
 import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
@@ -9,6 +10,7 @@ import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
+import { DRIVING_LESSON_TYPES } from '../../Lib/DrivingLessonHelpers';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Colors, Fonts } from '../../Themes/';
 
@@ -16,8 +18,7 @@ import ModalTemplate from '../../Components/ModalTemplate';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
 import Layout from '../../Components/Layout';
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
-import DrivingLessonsList from '../../Components/DrivingLessonsList';
-import CancelDrivingLesson from '../../Components/CancelDrivingLesson';
+import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
 import SectionHeader from '../../Components/SectionHeader';
 
@@ -45,6 +46,14 @@ class Profile extends Component {
     )
   }
 
+  upcomingDrivingLessons = () => {
+    const  { drivingLessons } = this.props;
+
+    return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
+      (DRIVING_LESSON_TYPES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
+    )
+  }
+
   render() {
     const { drivingCourse, drivingLessons, drivingSchool } = this.props
     const { currentDrivingLessonId } = this.state
@@ -69,7 +78,9 @@ class Profile extends Component {
         </View>
 
         <View style={styles.drivingCourseProgressWrapper}>
-          <DrivingCourseProgress drivingCourse={drivingCourse} />
+          <DrivingCourseProgress
+            drivingCourse={drivingCourse}
+            drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
         </View>
 
         <ModalTemplate
@@ -89,7 +100,7 @@ class Profile extends Component {
             customUnderlineStyles={styles.underline} />
 
           <ButtonText
-            onPress={() => {}}
+            onPress={() => this.props.navigation.navigate('drivingLessons', { studentId: this.props.studentId })}
             customTextStyle={{ fontSize: Fonts.size.small }}>
             Pokaż wszystkie
           </ButtonText>
@@ -97,21 +108,12 @@ class Profile extends Component {
 
         <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
           <DrivingLessonsList
-            onCancelPress={this.openDrivingLessonCancelModal}
-            drivingLessons={drivingLessons}
-            canManageStudents={canManageStudents(drivingSchool)}
-            userContext={'employee'}/>
-        </View>
-
-        <ModalTemplate
-          modalID={MODALS_IDS.CANCEL_DRIVING_LESSON}
-          status={drivingLessons.status}
-          closeModalCallback={this.props.resetDrivingLessonFetchingStatus}>
-          <CancelDrivingLesson
-            onPress={() => this.props.cancelDrivingLesson(currentDrivingLessonId)}
-            drivingLesson={drivingLessons.hashMap[currentDrivingLessonId]}
+            drivingLessons={this.upcomingDrivingLessons()}
+            userContext={'employee'}
+            fetchingStatus={drivingLessons.status}
+            scrollEnabled={false}
           />
-        </ModalTemplate>
+        </View>
       </Layout>
     );
   }
@@ -155,7 +157,6 @@ const mapDispatchToProps = dispatch => ({
   setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   fetchDrivingCourse: () => dispatch(drivingCourseActionCreators.showRequest()),
   fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params)),
-  cancelDrivingLesson: (id) => dispatch(drivingLessonActionCreators.cancelRequest(id)),
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
   resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),

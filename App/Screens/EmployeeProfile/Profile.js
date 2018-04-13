@@ -11,25 +11,31 @@ import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
 import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
 import { canManageEmployees, canManageStudents } from '../../Lib/AuthorizationHelpers';
 import listProjectorStyles from '../../Styles/ListProjector';
-import DrivingLessonsList from '../../Components/DrivingLessonsList';
+import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import { Colors, Fonts } from '../../Themes/';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class Profile extends Component {
 
-  componentWillMount = () => {
-    this.props.fetchDrivingLessons({ employee_id: this.props.employeeId })
-  };
+  componentWillMount = () =>
+    this.props.fetchDrivingLessons({
+      employee_id: this.props.employeeId,
+      upcoming: true,
+      active: true
+    })
 
-  componentWillUnmount = () => {
+  componentWillUnmount = () =>
     this.props.setCurrentEmployee(null);
-  };
 
   render() {
+    const  { drivingLessons } = this.props;
+
     return (
       <Layout>
         <View style={styles.headerWithBtn}>
-          <SectionHeader title={'Nadchodzące jazdy'} customTextStyles={styles.headerText} customUnderlineStyles={styles.underline}/>
+          <SectionHeader title={'Nadchodzące jazdy'}
+                         customTextStyles={styles.headerText}
+                         customUnderlineStyles={styles.underline}/>
           {
             canManageEmployees(this.props.drivingSchool) &&
               <ButtonText
@@ -42,10 +48,10 @@ class Profile extends Component {
         </View>
         <View style={[listProjectorStyles.containerStyle]}>
           <DrivingLessonsList
-            onCancelPress={this.openDrivingLessonCancelModal}
-            drivingLessons={this.props.drivingLessons}
-            canManageStudents={canManageStudents(this.props.drivingSchool)}
-            userContext={'employee'}/>
+            drivingLessons={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}
+            userContext={'student'}
+            fetchingStatus={drivingLessons.status}
+            scrollEnabled={false} />
         </View>
       </Layout>
 

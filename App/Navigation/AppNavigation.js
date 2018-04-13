@@ -24,6 +24,8 @@ import StudentProfile from '../Screens/StudentProfile/ModuleNavigator';
 import EmployeeProfile from '../Screens/EmployeeProfile/ModuleNavigator';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 
+import DrivingLessonsScreen from '../Screens/DrivingLessonsScreen';
+
 import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
@@ -125,6 +127,15 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
   resetPassword: { screen: ResetPasswordScreen },
 };
 
+const DRIVING_LESSONS = {
+  drivingLessons: {
+    screen: DrivingLessonsScreen,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation} title={'Lista jazd'}/>
+    }
+  }
+}
+
 /** ==NAVIGATION SETUP================== */
 const routeConfigs = {
   newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
@@ -143,7 +154,8 @@ const routeConfigs = {
   ...USERS_FLOWS_SCREENS,
   ...INVITE_USER_SCREENS,
   ...SETTINGS_SCREENS,
-  ...PROFILE_SCREENS
+  ...PROFILE_SCREENS,
+  ...DRIVING_LESSONS
 };
 
 const navigationConfigs = {
