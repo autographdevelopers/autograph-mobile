@@ -9,42 +9,25 @@ import DefaultAvatar from '../Components/DefaultAvatar';
 
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { DRIVING_LESSON_TYPES } from '../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 
 export default DrivingLessonsListItem = ({
-                                           listKey,
                                            drivingLesson,
                                            userCanCancelLesson,
                                            userContext,
                                            onCancelPress }) => {
 
   const rightIcon = () => {
-    const isFuture = moment().isBefore(drivingLesson.start_time)
-
-    if(isFuture){
-      if(drivingLesson.status === DRIVING_LESSON_TYPES.ACTIVE && userCanCancelLesson)
-        return (
-          <ButtonText
-            onPress={() => onCancelPress(drivingLesson.id)}
-            customTextStyle={{color: Colors.salmon, fontSize: Fonts.size.small}}
-            customStyle={{alignSelf: 'center', marginRight: 5}}>
-            Odwołaj
-          </ButtonText>
-        )
-      else if(drivingLesson.status === DRIVING_LESSON_TYPES.CANCELED)
-        return (
-          <Text>Odwołana</Text>
-        )
-    }else{
-      if(drivingLesson.status === DRIVING_LESSON_TYPES.CANCELED)
-        return (
-          <Text>Odwołana</Text>
-        )
-      else if(drivingLesson.status === DRIVING_LESSON_TYPES.ACTIVE)
-        return (
-          <Text>Odbyta</Text>
-        )
-    }
+    if (drivingLesson.status === DRIVING_LESSON_STATUSES.CANCELED)
+      return <Text style={styles.canceledText}>Odwołana</Text>
+    else if (drivingLesson.status === DRIVING_LESSON_STATUSES.ACTIVE &&
+      userCanCancelLesson && moment().isBefore(drivingLesson.start_time))
+      return <ButtonText
+        onPress={() => onCancelPress(drivingLesson.id)}
+        customTextStyle={{color: Colors.salmon, fontSize: Fonts.size.small}}
+        customStyle={{alignSelf: 'center', marginRight: 5}}>
+        Odwołaj
+      </ButtonText>
   }
 
   const subtitle = () =>
@@ -72,5 +55,11 @@ const styles = StyleSheet.create({
     color: Colors.strongGrey,
     fontSize: Fonts.size.small,
     fontWeight: '500'
+  },
+  canceledText: {
+    color: Colors.strongGrey,
+    fontSize: Fonts.size.small,
+    fontWeight: '500',
+    alignSelf: 'center'
   }
 });

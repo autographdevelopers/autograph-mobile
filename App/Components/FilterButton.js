@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import Icon from 'react-native-vector-icons/Feather';
@@ -18,11 +18,8 @@ export default FilterButton = ({ onPress, children}) => {
       shadowOpacity: 0.25,
       shadowRadius: 10,
       elevation: 1,
-      shadowOffset: { width: 0, height: 2 },
-      position: 'absolute',
-      zIndex: 9999999,
-      bottom: 20,
-      right: 20,
+      backgroundColor: Colors.snow,
+      shadowOffset: { width: 0, height: 2 }
     },
     title: {
       fontSize: Fonts.size.small,
@@ -36,13 +33,22 @@ export default FilterButton = ({ onPress, children}) => {
       borderLeftWidth: 1,
       borderLeftColor: Colors.primaryWarm,
     },
+    wrapper: {
+      position: 'absolute',
+      zIndex: 9999999,
+      backgroundColor: 'transparent',
+      bottom: 20,
+      right: 20,
+    }
   });
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Icon name="filter" size={20} color={Colors.primaryWarm} />
-      <Text style={styles.title}>filtruj</Text>
-    </TouchableOpacity>
+    <View style={styles.wrapper}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Icon name="filter" size={20} color={Colors.primaryWarm} />
+        <Text style={styles.title}>filtruj</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

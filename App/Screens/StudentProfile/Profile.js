@@ -10,7 +10,7 @@ import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import { DRIVING_LESSON_TYPES } from '../../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES } from '../../Lib/DrivingLessonHelpers';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Colors, Fonts } from '../../Themes/';
 
@@ -50,7 +50,7 @@ class Profile extends Component {
     const  { drivingLessons } = this.props;
 
     return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
-      (DRIVING_LESSON_TYPES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
+      (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
     )
   }
 

@@ -11,7 +11,7 @@ import SectionHeader from '../Components/SectionHeader';
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import listProjectorStyles from '../Styles/ListProjector';
 import { Colors, Fonts } from '../Themes/';
-import { DRIVING_LESSON_TYPES } from '../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 
 
 /** Screen */
@@ -29,7 +29,7 @@ class StudentDashboard extends Component {
     const  { drivingLessons } = this.props;
 
     return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
-      (DRIVING_LESSON_TYPES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
+      (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
     )
   }
 

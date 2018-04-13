@@ -9,13 +9,13 @@ import SectionHeader from '../Components/SectionHeader';
 import ButtonText from '../Components/ButtonText';
 import RadioButton from '../Components/RadioButton';
 
-import { DRIVING_LESSON_TYPES } from '../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
 RADIO_BUTTONS_GROUP = [
-  { status: DRIVING_LESSON_TYPES.ALL, label: 'Wszystkie' },
-  { status: DRIVING_LESSON_TYPES.ACTIVE, label: 'Odbyte/Nadchodzące' },
-  { status: DRIVING_LESSON_TYPES.CANCELED, label: 'Odwołane' }
+  { status: DRIVING_LESSON_STATUSES.ALL, label: 'Wszystkie' },
+  { status: DRIVING_LESSON_STATUSES.ACTIVE, label: 'Odbyte/Nadchodzące' },
+  { status: DRIVING_LESSON_STATUSES.CANCELED, label: 'Odwołane' }
 ]
 
 /** Screen */
@@ -31,8 +31,8 @@ export default class DrivingLessonsFilter extends Component {
   }
 
   renderDrivingLessonStatusSelection = () =>
-    RADIO_BUTTONS_GROUP.map((option) =>
-      <View style={styles.radioButtonRow}>
+    RADIO_BUTTONS_GROUP.map((option, index) =>
+      <View key={index} style={styles.radioButtonRow}>
         <Text style={styles.radioButtonLabel}>{option.label}</Text>
         <RadioButton value={this.state.type}
                      boundValue={option.status}

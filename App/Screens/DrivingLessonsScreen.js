@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
+import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
@@ -12,10 +13,11 @@ import Layout from '../Components/Layout';
 import FilterButton from '../Components/FilterButton';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
+import ButtonPrimary from '../Components/ButtonPrimary';
 import ModalTemplate from '../Components/ModalTemplate';
 
 import { FETCHING_STATUS } from '../Lib/utils';
-import { DRIVING_LESSON_TYPES } from '../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 
 import { Fonts, Colors } from '../Themes/';
 
@@ -25,7 +27,7 @@ class DrivingLessonsScreen extends Component {
     super(props);
 
     this.state = {
-      type: DRIVING_LESSON_TYPES.ALL,
+      type: DRIVING_LESSON_STATUSES.ALL,
       fromDate: null,
       toDate: null
     }
@@ -45,7 +47,7 @@ class DrivingLessonsScreen extends Component {
     !!!toDate || moment(toDate).endOf('day').isAfter(drivingLesson.start_time)
 
   typeFilter = (drivingLesson, type) =>
-    type === DRIVING_LESSON_TYPES.ALL || drivingLesson.status === type
+    type === DRIVING_LESSON_STATUSES.ALL || drivingLesson.status === type
 
   onApplyFilters = (type, fromDate, toDate) =>
     this.setState({type, fromDate, toDate}, this.props.closeModal)

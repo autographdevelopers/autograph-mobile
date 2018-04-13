@@ -3,6 +3,7 @@ import { View, StyleSheet, ActivityIndicator, Text, FlatList } from 'react-nativ
 import { ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
+import moment from 'moment/moment';
 
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
@@ -29,12 +30,16 @@ class DrivingLessonsList extends Component {
       () => this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
     )
 
-  userCanCancelLesson = () => {
+  userCanCancelLessons = () => {
     const { user, drivingSchool } = this.props;
 
-    console.tron.log(drivingSchool);
     return (isStudent(user) || canModifySchedules(drivingSchool))
   }
+
+  sort = (drivingLessons) =>
+    drivingLessons.sort((lesson1, lesson2) =>
+      moment(lesson1.start_time).isBefore(lesson2.start_time)
+    )
 
   renderDrivingLessons = () => {
     const { drivingLessons, userContext, scrollEnabled } = this.props;
@@ -45,10 +50,10 @@ class DrivingLessonsList extends Component {
       return (
         <FlatList
           scrollEnabled={scrollEnabled}
-          data={drivingLessons}
+          data={this.sort(drivingLessons)}
           renderItem={({item, index}) => (
             <DrivingLessonsListItem drivingLesson={item}
-                                    userCanCancelLesson={this.userCanCancelLesson()}
+                                    userCanCancelLesson={this.userCanCancelLessons()}
                                     userContext={userContext}
                                     onCancelPress={(id) => this.openCancelDrivingLessonModal(id)} />
           )}
