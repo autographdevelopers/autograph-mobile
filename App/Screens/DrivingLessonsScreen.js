@@ -7,19 +7,18 @@ import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
+import { FETCHING_STATUS } from '../Lib/utils';
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
+import { Fonts, Colors } from '../Themes/';
 
+import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import FullScreenInformation from '../Components/FullScreenInformation';
 import Layout from '../Components/Layout';
 import FilterButton from '../Components/FilterButton';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
-import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import ButtonPrimary from '../Components/ButtonPrimary';
 import ModalTemplate from '../Components/ModalTemplate';
-
-import { FETCHING_STATUS } from '../Lib/utils';
-import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
-
-import { Fonts, Colors } from '../Themes/';
+import SpinnerView from '../Components/SpinnerView';
 
 /** Screen */
 class DrivingLessonsScreen extends Component {
@@ -52,8 +51,7 @@ class DrivingLessonsScreen extends Component {
   onApplyFilters = (type, fromDate, toDate) =>
     this.setState({type, fromDate, toDate}, this.props.closeModal)
 
-  filteredDrivingLessons = () => {
-    const drivingLessons = this.props.drivingLessons;
+  filteredDrivingLessons = (drivingLessons) => {
     const { type, fromDate, toDate } = this.state;
 
     return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
@@ -64,14 +62,18 @@ class DrivingLessonsScreen extends Component {
   }
 
   render() {
+    const { drivingLessons } = this.props;
+
     return(
       <View style={{flex: 1}}>
-        <DrivingLessonsList
-          drivingLessons={this.filteredDrivingLessons()}
-          userContext={'employee'}
-          fetchingStatus={this.props.drivingLessons.status}
-          scrollEnabled={true}
-        />
+        { drivingLessons.status === FETCHING_STATUS.FETCHING ? <SpinnerView /> :
+          <DrivingLessonsList
+            drivingLessons={this.filteredDrivingLessons(drivingLessons)}
+            userContext={'employee'}
+            fetchingStatus={drivingLessons.status}
+            scrollEnabled={true}
+          />
+        }
 
         <FilterButton
           onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)} />

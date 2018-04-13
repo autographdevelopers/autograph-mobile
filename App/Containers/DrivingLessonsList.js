@@ -42,26 +42,27 @@ class DrivingLessonsList extends Component {
     )
 
   renderDrivingLessons = () => {
-    const { drivingLessons, userContext, scrollEnabled } = this.props;
+    const { drivingLessons, userContext, scrollEnabled, fetchingStatus } = this.props;
 
-    if (drivingLessons.length === 0) {
-      return <Text style={styles.emptyDrivingLessons}>Brak nadchodzących jazd</Text>
-    } else {
-      return (
-        <FlatList
-          scrollEnabled={scrollEnabled}
-          data={this.sort(drivingLessons)}
-          renderItem={({item, index}) => (
-            <DrivingLessonsListItem drivingLesson={item}
-                                    userCanCancelLesson={this.userCanCancelLessons()}
-                                    userContext={userContext}
-                                    onCancelPress={(id) => this.openCancelDrivingLessonModal(id)} />
-          )}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(element, _) => `drivingLesson-${element.id}`}
-        />
-      )
-    }
+    if (fetchingStatus === FETCHING_STATUS.READY || fetchingStatus === FETCHING_STATUS.SUCCESS)
+      if (drivingLessons.length === 0) {
+        return <Text style={styles.emptyDrivingLessons}>Brak jazd</Text>
+      } else {
+        return (
+          <FlatList
+            scrollEnabled={scrollEnabled}
+            data={this.sort(drivingLessons)}
+            renderItem={({item, index}) => (
+              <DrivingLessonsListItem drivingLesson={item}
+                                      userCanCancelLesson={this.userCanCancelLessons()}
+                                      userContext={userContext}
+                                      onCancelPress={(id) => this.openCancelDrivingLessonModal(id)} />
+            )}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(element, _) => `drivingLesson-${element.id}`}
+          />
+        )
+      }
   }
 
   findDrivingLesson = (id) =>

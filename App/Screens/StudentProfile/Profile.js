@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment/moment';
@@ -21,14 +21,11 @@ import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
 import SectionHeader from '../../Components/SectionHeader';
+import SpinnerView from '../../Components/SpinnerView';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      currentDrivingLessonId: null
-    };
   }
 
   componentWillMount = () => {
@@ -36,90 +33,89 @@ class Profile extends Component {
     this.props.fetchDrivingLessons({ student_id: this.props.studentId })
   }
 
-  componentWillUnmount = () => {
+  componentWillUnmount = () =>
     this.props.setCurrentStudent(null);
-  };
 
-  openDrivingLessonCancelModal = (id) => {
-    this.setState({currentDrivingLessonId: id},
-      () => this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
-    )
-  }
-
-  upcomingDrivingLessons = () => {
-    const  { drivingLessons } = this.props;
-
-    return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
+  upcomingDrivingLessons = (drivingLessons) =>
+    drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
       (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
     )
-  }
+
+  isFetching = (drivingLessonsStatus, drivingCourseStatus) =>
+    drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING
 
   render() {
     const { drivingCourse, drivingLessons, drivingSchool } = this.props
-    const { currentDrivingLessonId } = this.state
 
     return (
-      <Layout>
-        <View style={styles.headerWithBtn}>
-          <SectionHeader
-            title={'Postępy'}
-            customTextStyles={styles.headerText}
-            customUnderlineStyles={styles.underline} />
+      <View style={{flex: 1}}>
+        {this.isFetching(drivingLessons.status, drivingCourse.status) ? <SpinnerView/> :
+          <ScrollView style={styles.container}>
+            <View style={styles.headerWithBtn}>
+              <SectionHeader
+                title={'Postępy'}
+                customTextStyles={styles.headerText}
+                customUnderlineStyles={styles.underline}/>
 
-          {
-            canManageStudents(drivingSchool) &&
-            <ButtonText
-              onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
-              customTextStyle={{ fontSize: Fonts.size.small }}
-              icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
-              Edytuj
-            </ButtonText>
-          }
-        </View>
+              {
+                canManageStudents(drivingSchool) &&
+                <ButtonText
+                  onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
+                  customTextStyle={{fontSize: Fonts.size.small}}
+                  icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+                  Edytuj
+                </ButtonText>
+              }
+            </View>
 
-        <View style={styles.drivingCourseProgressWrapper}>
-          <DrivingCourseProgress
-            drivingCourse={drivingCourse}
-            drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
-        </View>
+            <View style={styles.drivingCourseProgressWrapper}>
+              <DrivingCourseProgress
+                drivingCourse={drivingCourse}
+                drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
+            </View>
 
-        <ModalTemplate
-          modalID={MODALS_IDS.CHANGE_AVAILABLE_HOURS}
-          status={drivingCourse.status}
-          closeModalCallback={this.props.resetDrivingCourseFetchingStatus}>
-          <ChangeAvailableHours
-            availableHours={drivingCourse.data.available_hours}
-            onPress={this.props.updateDrivingCourse}
-          />
-        </ModalTemplate>
+            <ModalTemplate
+              modalID={MODALS_IDS.CHANGE_AVAILABLE_HOURS}
+              status={drivingCourse.status}
+              closeModalCallback={this.props.resetDrivingCourseFetchingStatus}>
+              <ChangeAvailableHours
+                availableHours={drivingCourse.data.available_hours}
+                onPress={this.props.updateDrivingCourse}
+              />
+            </ModalTemplate>
 
-        <View style={styles.headerWithBtn}>
-          <SectionHeader
-            title={'Nadchodzące jazdy'}
-            customTextStyles={styles.headerText}
-            customUnderlineStyles={styles.underline} />
+            <View style={styles.headerWithBtn}>
+              <SectionHeader
+                title={'Nadchodzące jazdy'}
+                customTextStyles={styles.headerText}
+                customUnderlineStyles={styles.underline}/>
 
-          <ButtonText
-            onPress={() => this.props.navigation.navigate('drivingLessons', { studentId: this.props.studentId })}
-            customTextStyle={{ fontSize: Fonts.size.small }}>
-            Pokaż wszystkie
-          </ButtonText>
-        </View>
+              <ButtonText
+                onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: this.props.studentId})}
+                customTextStyle={{fontSize: Fonts.size.small}}>
+                Pokaż wszystkie
+              </ButtonText>
+            </View>
 
-        <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
-          <DrivingLessonsList
-            drivingLessons={this.upcomingDrivingLessons()}
-            userContext={'employee'}
-            fetchingStatus={drivingLessons.status}
-            scrollEnabled={false}
-          />
-        </View>
-      </Layout>
+            <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
+              <DrivingLessonsList
+                drivingLessons={this.upcomingDrivingLessons(drivingLessons)}
+                userContext={'employee'}
+                fetchingStatus={drivingLessons.status}
+                scrollEnabled={false}
+              />
+            </View>
+          </ScrollView>
+        }
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+  },
   headerWithBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -15,15 +15,15 @@ export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) =
     drivingLessonsData.filter(drivingLesson =>
       drivingLesson.status === 'active' && moment().isAfter(drivingLesson.start_time)
     ).reduce((slotsCount, drivingLesson) => {
-        return slotsCount + drivingLesson.slots.length
-      }, 0) * 0.5
+      return slotsCount + drivingLesson.slots.length
+    }, 0) * 0.5
 
   const calculateBookedHours = () =>
     drivingLessonsData.filter(drivingLesson =>
       drivingLesson.status === 'active' && moment().isBefore(drivingLesson.start_time)
     ).reduce((slotsCount, drivingLesson) => {
-        return slotsCount + drivingLesson.slots.length
-      }, 0) * 0.5
+      return slotsCount + drivingLesson.slots.length
+    }, 0) * 0.5
 
   const { status, data } = drivingCourse;
   const availableHours = data.available_hours;
@@ -31,10 +31,10 @@ export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) =
   const bookedHours = calculateBookedHours();
 
   const divisor = availableHours + usedHours + bookedHours;
-  let propgress;
+  let progress;
 
   if(divisor === 0)
-    propgress = 0.0
+    progress = 0.0
   else
     progress = parseInt((usedHours / divisor) * 100)
 
@@ -100,12 +100,6 @@ export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) =
           </View>
         </View>
       </View>
-      }
-
-      { status === FETCHING_STATUS.FETCHING &&
-      <ActivityIndicator color={Colors.primaryWarm}
-                         size={'large'}
-                         style={{alignSelf: 'center'}} />
       }
     </View>
   )
