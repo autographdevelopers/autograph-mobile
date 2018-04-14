@@ -21,13 +21,13 @@ export default SelectedSlot = ({onPressCancel, slot, remainingSeconds, isFirst, 
         </View>
 
         {allowUnlock &&
-        <View style={styles.btnWrapper}>
-          {isLast && !isFirst && <View style={[styles.arrow, styles.arrowTop]}/>}
-          <TouchableOpacity style={styles.btn} onPress={onPressCancel}>
-            <Text style={styles.btnLabel}>ANULUJ</Text>
-          </TouchableOpacity>
-          {isFirst && !isLast && <View style={[styles.arrow, styles.arrowBottom]}/>}
-        </View>
+          <View style={styles.btnWrapper}>
+            {isLast && !isFirst && <View style={[styles.arrow, styles.arrowTop]}/>}
+            <TouchableOpacity style={styles.btn} onPress={onPressCancel}>
+              <Text style={styles.btnLabel}>ANULUJ</Text>
+            </TouchableOpacity>
+            {isFirst && !isLast && <View style={[styles.arrow, styles.arrowBottom]}/>}
+          </View>
         }
       </View>
     </SlotLayout>

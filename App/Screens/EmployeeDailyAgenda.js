@@ -106,11 +106,9 @@ class EmployeeDailyAgenda extends Component {
                                 slots={slot.slots}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
       if(currentUser.id === slot.locking_user_id) {
-        const onCancelPress = this.isOnEdgeOfSelection(slot) ?
-          () => this.socket.unlockSlot(slot):
-          false;
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
         const isLast = slot.id === (_.last(selectedSlots) || {}).id;
+        const onCancelPress = (isFirst || isLast) && this.socket.unlockSlot.bind(this, slot);
 
         agendaItem = <SelectedSlotComponent slot={slot} isFirst={isFirst} isLast={isLast} onPressCancel={onCancelPress}/>
       } else {
@@ -121,16 +119,6 @@ class EmployeeDailyAgenda extends Component {
     }
 
     return agendaItem;
-  };
-
-  isOnEdgeOfSelection = slot => {
-    const { selectedSlots } = this.props;
-    const firstSlotInSelection = _.first(selectedSlots);
-    const lastSlotInSelection = _.last(selectedSlots);
-
-    const edgeSlotsIds = [firstSlotInSelection, lastSlotInSelection].map(slot => slot.id);
-
-    return edgeSlotsIds.includes(slot.id);
   };
 
   releaseSlot = slot => () => {
