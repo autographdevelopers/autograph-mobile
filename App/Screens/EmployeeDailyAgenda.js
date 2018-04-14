@@ -141,14 +141,21 @@ class EmployeeDailyAgenda extends Component {
 
   lockSlot = slot => () => {
 
-    let isSlotAValidSelection = false;
 
-    const { selectedSlots } = this.props;
+    const { selectedSlots, scheduleSettings: { maximum_slots_count_per_driving_lesson } } = this.props;
+    console.log('this.props.selectedSlots');
+    console.log(this.props.selectedSlots);
+    if ( selectedSlots.length === maximum_slots_count_per_driving_lesson ) {
+      this.props.displayToastMsg(I18n.t('max_lesson_time_exceeded'));
+      return;
+    }
+
     const firstOfSelected = _.first(selectedSlots);
     const lastOfSelected = _.last(selectedSlots);
+    let isAdjacent = false;
 
     if(selectedSlots.length === 0) {
-      isSlotAValidSelection = true;
+      isAdjacent = true;
     } else {
       const adjacentToBeginningOfSelectionBlock  = moment(slot.start_time)
         .add(30, 'minutes')
@@ -159,14 +166,15 @@ class EmployeeDailyAgenda extends Component {
         .diff(lastOfSelected.start_time) === 0;
 
       if (adjacentToBeginningOfSelectionBlock || adjacentToEndOfSelectionBlock)
-        isSlotAValidSelection = true;
+        isAdjacent = true;
     }
 
-    if (isSlotAValidSelection) {
-      this.socket.lockSlot(slot);
-    } else {
+    if (!isAdjacent) {
       this.props.displayToastMsg(I18n.t('slots_not_adjacent'));
+      return;
     }
+
+    this.socket.lockSlot(slot);
   };
 
   handleBookLessonBtnPress = () => {
@@ -251,7 +259,8 @@ const mapStateToProps = state => ({
   selectedSlots: getSelectedSlots(state),
   lessonInterval: getLessonInterval(state),
   drivingLessonStatus: state.drivingLessons.status,
-  cacheHistory: state.employeeDailyAgenda.cacheHistory
+  cacheHistory: state.employeeDailyAgenda.cacheHistory,
+  scheduleSettings: state.scheduleSettings
 });
 
 const mapDispatchToProps = dispatch => ({

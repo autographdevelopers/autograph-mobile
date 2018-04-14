@@ -17,7 +17,7 @@ const navigationConfigs = {
   mode: 'modal',
   headerMode: 'none',
   cardStyle: styles.card,
-  initialRouteName: 'schoolMain'
+  initialRouteName: 'schoolMain',
 };
 
 export default StackNavigator(routeConfigs, navigationConfigs);

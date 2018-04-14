@@ -14,13 +14,21 @@ import { slotActionCreators } from '../Redux/SlotsRedux';
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { timeHelpers } from '../Lib/timeHandlers';
+import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
 
 class EmployeesSummaryAgenda extends Component {
   componentWillMount() {
-    const { selectedDay, currentSchool } = this.props;
+    const {
+      selectedDay,
+      currentSchool,
+      scheduleSettingsRequest,
+      slotsIndexRequest
+    } = this.props;
     const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
 
-    this.props.slotsIndexRequest(dateRangeParams, SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY);
+
+    scheduleSettingsRequest();
+    slotsIndexRequest(dateRangeParams, SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY);
   }
 
   onDaySelected = date => {
@@ -85,6 +93,7 @@ const mapDispatchToProps = dispatch => ({
   slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
   setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
   initDailyAgenda: (stateToMerge) => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge)),
+  scheduleSettingsRequest: () => dispatch(scheduleSettingsActionCreators.showRequest())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeesSummaryAgenda);
