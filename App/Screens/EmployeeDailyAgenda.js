@@ -1,8 +1,8 @@
 /** == Built-in modules ================================ */
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment-timezone';
+import { View } from 'react-native';
 import _ from 'lodash';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
@@ -11,8 +11,10 @@ import BookLessonWidget from '../Components/BookLessonWidget';
 import AvailableSlot from '../Components/Slots/AvailableSlot';
 import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
+import SelectedSlotComponent from '../Components/Slots/SelectedSlot';
 import BreakSlot from '../Components/Slots/BreakSlot';
 import BlockButton from '../Components/BlockButton';
+import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
@@ -103,19 +105,17 @@ class EmployeeDailyAgenda extends Component {
                                 student={slot.student}
                                 slots={slot.slots}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
+      if(currentUser.id === slot.locking_user_id) {
         const onCancelPress = this.isOnEdgeOfSelection(slot) ?
           () => this.socket.unlockSlot(slot):
           false;
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
         const isLast = slot.id === (_.last(selectedSlots) || {}).id;
 
-        agendaItem = <LockedSlot slot={slot}
-                           handleTimeout={this.releaseSlot(slot)}
-                           onPressCancel={onCancelPress}
-                           lockedByCurrentUser={currentUser.id === slot.locking_user_id}
-                           isFirst={isFirst}
-                           isLast={isLast}
-                      />
+        agendaItem = <SelectedSlotComponent slot={slot} isFirst={isFirst} isLast={isLast} onPressCancel={onCancelPress}/>
+      } else {
+        agendaItem = <LockedSlot slot={slot} handleTimeout={this.releaseSlot(slot)} />
+      }
     } else if ( slot.driving_lesson_id === null ) {
       agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
     }
@@ -218,7 +218,9 @@ class EmployeeDailyAgenda extends Component {
       scheduleSettings: { minimum_slots_count_per_driving_lesson }
     } = this.props;
 
-    const tooFewSlots = selectedSlots.length < minimum_slots_count_per_driving_lesson;
+    const slotsSelected = selectedSlots.length > 0;
+    const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
+    const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
 
     console.log('employeeDailyAgendaItems');
     console.log(employeeDailyAgendaItems);
@@ -231,12 +233,21 @@ class EmployeeDailyAgenda extends Component {
           items={employeeDailyAgendaItems}
           renderItem={this.renderAgendaItem}
         />
-        { lessonInterval &&
-          <BlockButton customWrapperStyles={{minWidth: '70%'}} customContainerStyles={tooFewSlots ? {backgroundColor: Colors.salmon} : {}}
-            disabled={tooFewSlots}
-                       onPress={this.handleBookLessonBtnPress}>
-            {tooFewSlots ? `Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję` : `Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
+        { tooFewSlotsSelected &&
+          <BlockButton customContainerStyles={{backgroundColor: Colors.salmon}} disabled={true}>
+            {`Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję`}
           </BlockButton>
+        }
+        { enoughSlotsSelected &&
+          <BlockButton onPress={this.handleBookLessonBtnPress}>
+            {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
+          </BlockButton>
+        }
+        { slotsSelected &&
+          <BookLessonTimeoutCounter
+            submaskColor={enoughSlotsSelected ? Colors.primaryWarm : Colors.salmon}
+            release_at={selectedSlots[0].release_at}
+            handleTimeout={this.unLockAllSlots}/>
         }
 
         <ModalTemplate
@@ -245,6 +256,7 @@ class EmployeeDailyAgenda extends Component {
         >
           <BookLessonWidget/>
         </ModalTemplate>
+
       </View>
     );
   }

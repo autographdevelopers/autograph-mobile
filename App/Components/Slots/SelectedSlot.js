@@ -18,8 +18,6 @@ export default SelectedSlot = ({onPressCancel, slot, remainingSeconds, isFirst, 
             <Text style={styles.header}><Text style={styles.selected}>WYBRANO </Text><Text>{`${from} - ${to}`}</Text></Text>
             <View style={styles.bullet}/>
           </View>
-          <Text style={styles.textSubtitle}>Pozostało
-            <Text style={styles.textSubtitleStrong}> {remainingSeconds} sek.</Text> do zwolnienia slotu</Text>
         </View>
 
         {allowUnlock &&
