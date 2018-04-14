@@ -35,12 +35,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.type.base,
     color: Colors.primaryWarm,
     fontWeight: '400',
-    backgroundColor: 'transparent',
     textAlign: 'center',
-    marginRight: 5,
-    marginLeft: 5,
-    borderLeftWidth: 1,
-    borderLeftColor: Colors.primaryWarm,
+    marginHorizontal: 5
   },
   wrapper: {
     position: 'absolute',
