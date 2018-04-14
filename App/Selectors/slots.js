@@ -85,40 +85,49 @@ export const lessonsForSlots = createSelector(
 export const getEmployeeDailyAgenda = createSelector(
   [getSlotsNotBelongingToLesson, lessonsForSlots],
   (slots, lessons) => {
-    console.log('slots')
-    console.log(slots)
-    console.log('lessons')
-    console.log(lessons)
-
-
+    console.log('************************************')
+    console.log('************************************')
+    console.log('************************************')
+    console.log('************************************')
+    console.log('slots');
+    console.log(slots);
+    console.log('lessons');
+    console.log(lessons);
 
     const lessonsAndSlots = [...slots, ...lessons]
       .sort((left, right) => moment(left.start_time).diff(moment(right.start_time)));
 
+    console.log('lessonsAndSlots');
+    console.log(lessonsAndSlots);
+
     const withPossibleBreaks = lessonsAndSlots.reduce((acc, current, index, array) => {
-      if(!(_.last(array) === current) && !(_.first(array) === current) ) {
-        console.log('in');
-        let differenceInMinutes = moment(array[index+1].start_time).diff(current.end_time, 'minutes');
-        console.log('differenceInMinutes');
-        console.log(differenceInMinutes);
-
-        if(differenceInMinutes > 0) {
-          acc.push([current, { isBreakSlot: true, start_time: current.end_time}]);
-
-          return acc;
-        }
+      if(_.last(array) === current) {
+        acc.push(current);
+        return acc;
       }
-      acc.push(current);
 
+      let differenceInMinutes = moment(array[index+1].start_time).diff(current.end_time, 'minutes');
+      console.log('=========================');
+      console.log('next');
+      console.log(array[index+1]);
+      console.log('current');
+      console.log(current);
+      console.log('differenceInMinutes');
+      console.log(differenceInMinutes);
+
+      if(differenceInMinutes > 0) {
+        acc.push([current, { isBreakSlot: true, start_time: current.end_time }]);
+        return acc;
+      }
+
+      acc.push(current);
       return acc;
     }, []);
 
-    console.log('withPossibleBreaks');
-    console.log(withPossibleBreaks);
+    const all = _.flattenDeep(withPossibleBreaks);
 
-    const all =  _.chain(withPossibleBreaks)
-                  .flattenDeep()
-                  .value();
+    console.log('all');
+    console.log(all);
 
     return  { [moment.utc(all[0].start_time).format('YYYY-MM-DD')]: all }
   }
