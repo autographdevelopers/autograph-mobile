@@ -34,7 +34,7 @@ import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
-
+import { WastedSlot } from '../Components/Slots/WastedSlot';
 
 class EmployeeDailyAgenda extends Component {
   constructor(props) {
@@ -93,7 +93,9 @@ class EmployeeDailyAgenda extends Component {
     let agendaItem;
     const { selectedSlots, currentUser } = this.props;
 
-    if (slot.isBreakSlot) {
+    if (slot.isWasted) {
+      agendaItem = <WastedSlot slot={slot}/>
+    } else if (slot.isBreakSlot) {
       agendaItem = <BreakSlot slot={slot}/>
     } else if ( slot.employee && slot.student && slot.slots ) {
       agendaItem = <DrivingLessonCell employee={slot.employee}
