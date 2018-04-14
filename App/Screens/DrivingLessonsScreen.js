@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
-import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
@@ -12,11 +11,8 @@ import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
-import FullScreenInformation from '../Components/FullScreenInformation';
-import Layout from '../Components/Layout';
 import FilterButton from '../Components/FilterButton';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
-import ButtonPrimary from '../Components/ButtonPrimary';
 import ModalTemplate from '../Components/ModalTemplate';
 import SpinnerView from '../Components/SpinnerView';
 

@@ -12,7 +12,8 @@ import RadioButton from '../Components/RadioButton';
 import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
-RADIO_BUTTONS_GROUP = [
+const DATE_FORMAT = 'YYYY-MM-DD';
+const RADIO_BUTTONS_GROUP = [
   { status: DRIVING_LESSON_STATUSES.ALL, label: 'Wszystkie' },
   { status: DRIVING_LESSON_STATUSES.ACTIVE, label: 'Odbyte/Nadchodzące' },
   { status: DRIVING_LESSON_STATUSES.CANCELED, label: 'Odwołane' }
@@ -43,13 +44,11 @@ export default class DrivingLessonsFilter extends Component {
   render() {
     const { type, fromDate, toDate } = this.state;
 
-    const FORMAT = 'YYYY-MM-DD';
-
     const fromDatePickerConfiguration = {
       ref: ref => this.datepicker = ref,
       maxDate: toDate,
-      format: FORMAT,
-      placeholder: FORMAT,
+      format: DATE_FORMAT,
+      placeholder: DATE_FORMAT,
       onDateChange: (date) => this.setState({fromDate: date}),
       date: fromDate,
     };
@@ -57,17 +56,17 @@ export default class DrivingLessonsFilter extends Component {
     const toDatePickerConfiguration = {
       ref: ref => this.datepicker = ref,
       minDate: fromDate,
-      format: FORMAT,
-      placeholder: FORMAT,
+      format: DATE_FORMAT,
+      placeholder: DATE_FORMAT,
       onDateChange: (date) => this.setState({toDate: date}),
       date: toDate,
     };
 
     return(
-      <View style={{alignItems: 'center', marginHorizontal: 15, marginBottom: 20}}>
+      <View style={styles.container}>
         <View>
           <SectionHeader customTextStyles={{fontSize: Fonts.size.medium}}
-                         customUnderlineStyles={{width: 20, borderWidth: 1, marginTop: 3}}
+                         customUnderlineStyles={styles.customUnderlineStyles}
                          title={'Filtry'}/>
 
           <View style={styles.section}>
@@ -95,7 +94,7 @@ export default class DrivingLessonsFilter extends Component {
 
         <ButtonText
           onPress={() => this.props.onPress(this.state.type, this.state.fromDate, this.state.toDate)}
-          style={{marginTop: 15, alignSelf: 'center'}}>
+          style={styles.submitButton}>
           <Text>Zastosuj</Text>
         </ButtonText>
       </View>
@@ -104,6 +103,11 @@ export default class DrivingLessonsFilter extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    marginHorizontal: 15,
+    marginBottom: 20
+  },
   section: {
     marginVertical: 10,
     flexDirection: 'row',
@@ -122,5 +126,14 @@ const styles = StyleSheet.create({
   },
   radioButtonLabel: {
     marginRight: 10
+  },
+  submitButton: {
+    marginTop: 15,
+    alignSelf: 'center'
+  },
+  customUnderlineStyles: {
+    width: 20,
+    borderWidth: 1,
+    marginTop: 3
   }
 });
