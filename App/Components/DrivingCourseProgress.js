@@ -5,30 +5,32 @@ import { PieChart } from 'react-native-svg-charts';
 import { Text as SvgText, G, Circle, TSpan } from 'react-native-svg';
 import moment from 'moment/moment';
 
+import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers'
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 const PIE_CHART_WIDTH = 120;
 
 export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) => {
-  const calculateUsedHours = () =>
-    drivingLessonsData.filter(drivingLesson =>
-      drivingLesson.status === 'active' && moment().isAfter(drivingLesson.start_time)
-    ).reduce((slotsCount, drivingLesson) => {
+  const calculateHours = (drivingLessons) =>
+    drivingLessons.reduce((slotsCount, drivingLesson) => {
       return slotsCount + drivingLesson.slots.length
     }, 0) * 0.5
 
-  const calculateBookedHours = () =>
+  const heldDrivingLessons = () =>
     drivingLessonsData.filter(drivingLesson =>
-      drivingLesson.status === 'active' && moment().isBefore(drivingLesson.start_time)
-    ).reduce((slotsCount, drivingLesson) => {
-      return slotsCount + drivingLesson.slots.length
-    }, 0) * 0.5
+      drivingLesson.status === DRIVING_LESSON_STATUSES.ACTIVE && moment().isAfter(drivingLesson.start_time)
+    )
+
+  const bookedDrivingLessons = () =>
+    drivingLessonsData.filter(drivingLesson =>
+      drivingLesson.status === DRIVING_LESSON_STATUSES.ACTIVE && moment().isBefore(drivingLesson.start_time)
+    )
 
   const { status, data } = drivingCourse;
   const availableHours = data.available_hours;
-  const usedHours = calculateUsedHours();
-  const bookedHours = calculateBookedHours();
+  const usedHours = calculateHours(heldDrivingLessons());
+  const bookedHours = calculateHours(bookedDrivingLessons());
 
   const divisor = availableHours + usedHours + bookedHours;
   let progress;
