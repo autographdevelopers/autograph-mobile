@@ -12,6 +12,10 @@ const getCurrentUser = state => state.user;
 const employeesSummaryAgendaDay =
   state => state.employeesSummaryAgenda.daySelected;
 
+const compareStartTimes = (left, right) => {
+  return moment(left.start_time).diff(moment(right.start_time));
+};
+
 export const getEmployeesSummaryAgenda = createSelector(
   [getSlots, employeesSummaryAgendaDay],
   (slots, selectedDay) =>
@@ -89,9 +93,7 @@ export const lessonsForSlots = createSelector(
 export const getEmployeeDailyAgenda = createSelector(
   [getSlotsNotBelongingToLesson, lessonsForSlots],
   (slots, lessons) => {
-    const lessonsAndSlots = [...slots, ...lessons]
-      .sort((left, right) => moment(left.start_time)
-        .diff(moment(right.start_time)));
+    const lessonsAndSlots = [...slots, ...lessons].sort(compareStartTimes);
 
     const withPossibleBreaks = lessonsAndSlots.reduce(
       (acc, current, index, array) => {
@@ -130,7 +132,7 @@ export const getSelectedSlots = createSelector(
   (slots, currentUser) => slots.filter(slot => {
     return moment(slot.release_at).isAfter() && currentUser.id ===
       slot.locking_user_id && slot.driving_lesson_id === null;
-  }),
+  }).sort(compareStartTimes),
 );
 
 export const getLessonInterval = createSelector(

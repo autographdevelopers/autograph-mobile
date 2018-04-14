@@ -141,8 +141,6 @@ class EmployeeDailyAgenda extends Component {
   };
 
   lockSlot = slot => () => {
-
-
     const { selectedSlots, scheduleSettings: { maximum_slots_count_per_driving_lesson } } = this.props;
     console.log('this.props.selectedSlots');
     console.log(this.props.selectedSlots);
