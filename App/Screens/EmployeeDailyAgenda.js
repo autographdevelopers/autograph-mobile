@@ -28,6 +28,7 @@ import {
 } from '../Selectors/slots';
 import I18n from '../I18n';
 import { timeHelpers } from '../Lib/timeHandlers';
+import { Colors, Fonts } from '../Themes/';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
@@ -214,8 +215,12 @@ class EmployeeDailyAgenda extends Component {
       employeeDailyAgendaItems,
       selectedDay,
       lessonInterval,
-      drivingLessonStatus
+      drivingLessonStatus,
+      selectedSlots,
+      scheduleSettings: { minimum_slots_count_per_driving_lesson }
     } = this.props;
+
+    const tooFewSlots = selectedSlots.length < minimum_slots_count_per_driving_lesson;
 
     console.log('employeeDailyAgendaItems');
     console.log(employeeDailyAgendaItems);
@@ -229,9 +234,10 @@ class EmployeeDailyAgenda extends Component {
           renderItem={this.renderAgendaItem}
         />
         { lessonInterval &&
-          <BlockButton customWrapperStyles={{minWidth: '70%'}}
+          <BlockButton customWrapperStyles={{minWidth: '70%'}} customContainerStyles={tooFewSlots ? {backgroundColor: Colors.salmon} : {}}
+            disabled={tooFewSlots}
                        onPress={this.handleBookLessonBtnPress}>
-            {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
+            {tooFewSlots ? `Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję` : `Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
           </BlockButton>
         }
 

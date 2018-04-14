@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { Colors, Fonts } from '../Themes/';
 
-export default BlockButton = ({customContainerStyles={}, customTextStyles={}, children, onPress}) => {
+export default BlockButton = ({customContainerStyles={}, customTextStyles={}, children, onPress, disabled=false}) => {
   return (
-    <TouchableOpacity style={[styles.container, customContainerStyles]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, customContainerStyles]} onPress={onPress} disabled={disabled}>
       <Text style={[styles.text, customTextStyles]}>
         {children}
       </Text>
