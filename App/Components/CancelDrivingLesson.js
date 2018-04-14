@@ -8,6 +8,9 @@ import DefaultAvatar from './DefaultAvatar';
 const AVATAR_SIZE = 22
 
 export default CancelDrivingLessons = ({ onPress, drivingLesson }) => {
+  if (!drivingLesson) // TODO: change modals behaviour
+    return (<View />)
+
   return (
     <View>
       <Text style={styles.text}>

@@ -56,7 +56,7 @@ class DrivingLessonsList extends Component {
               <DrivingLessonsListItem drivingLesson={item}
                                       userCanCancelLesson={this.userCanCancelLessons()}
                                       userContext={userContext}
-                                      onCancelPress={(id) => this.openCancelDrivingLessonModal(id)} />
+                                      onCancelPress={this.openCancelDrivingLessonModal} />
             )}
             showsVerticalScrollIndicator={false}
             keyExtractor={(element, _) => `drivingLesson-${element.id}`}

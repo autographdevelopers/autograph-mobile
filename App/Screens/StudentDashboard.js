@@ -15,6 +15,7 @@ import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
 import SpinnerView from '../Components/SpinnerView';
+import { MODALS_IDS } from '../Redux/ModalRedux'
 
 /** Screen */
 class StudentDashboard extends Component {
