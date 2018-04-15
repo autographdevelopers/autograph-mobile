@@ -95,7 +95,7 @@ class EmployeeDailyAgenda extends Component {
     _.each(selectedSlots, this.socket.unlockSlot);
   };
 
-  unLockSlot = slot => {
+  unLockSlot = slot => () => {
     this.releaseSlots(slot);
     this.socket.unlockSlot(slot);
   };
@@ -116,7 +116,7 @@ class EmployeeDailyAgenda extends Component {
       if (currentUser.id === slot.locking_user_id) {
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
         const isLast = slot.id === (_.last(selectedSlots) || {}).id;
-        const onCancelPress = (isFirst || isLast) && this.unLockSlot.bind(this, slot);
+        const onCancelPress = (isFirst || isLast) && this.unLockSlot(slot);
 
         agendaItem = <SelectedSlotComponent slot={slot} isFirst={isFirst} isLast={isLast} onPressCancel={onCancelPress}/>
       } else {

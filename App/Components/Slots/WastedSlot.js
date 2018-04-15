@@ -6,8 +6,21 @@ import React, { Component } from 'react';
 export const WastedSlot = ({ slot }) => {
   return (
     <SlotLayout borderLeftColor={Colors.salmon} slot={slot}>
-      <Text>..:Zmarnowany Slot:..</Text>
+      <View style={styles.container}>
+        <Text style={styles.text}>ZMARNOWANY SLOT</Text>
+      </View>
     </SlotLayout>
   );
-}
+};
+
+const styles = {
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: Colors.strongGrey
+  }
+};
 
