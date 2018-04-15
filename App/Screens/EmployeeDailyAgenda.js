@@ -21,6 +21,7 @@ import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { toastActionCreators } from '../Redux/ToastRedux';
+import { WastedSlot } from '../Components/Slots/WastedSlot';
 import { bookLessonActionCreators } from '../Redux/BookLesson';
 /** == Utilities ====================================== */
 import {
@@ -37,7 +38,6 @@ import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
-import { WastedSlot } from '../Components/Slots/WastedSlot';
 
 class EmployeeDailyAgenda extends Component {
   constructor(props) {
@@ -89,7 +89,10 @@ class EmployeeDailyAgenda extends Component {
   };
 
   unLockAllSlots = () => {
-    _.each(this.props.selectedSlots, this.socket.unlockSlot);
+    _.each(this.props.selectedSlots, slot => {
+      this.releaseSlot(slot)();
+      this.socket.unlockSlot(slot);
+    });
   };
 
   renderAgendaItem = (slot, dsas) => {
@@ -105,7 +108,7 @@ class EmployeeDailyAgenda extends Component {
                                 student={slot.student}
                                 slots={slot.slots}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
-      if(currentUser.id === slot.locking_user_id) {
+      if (currentUser.id === slot.locking_user_id) {
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
         const isLast = slot.id === (_.last(selectedSlots) || {}).id;
         const onCancelPress = (isFirst || isLast) && this.socket.unlockSlot.bind(this, slot);
@@ -129,9 +132,11 @@ class EmployeeDailyAgenda extends Component {
   };
 
   lockSlot = slot => () => {
-    const { selectedSlots, scheduleSettings: { maximum_slots_count_per_driving_lesson } } = this.props;
-    console.log('this.props.selectedSlots');
-    console.log(this.props.selectedSlots);
+    const {
+      selectedSlots,
+      scheduleSettings: { maximum_slots_count_per_driving_lesson }
+    } = this.props;
+
     if ( selectedSlots.length === maximum_slots_count_per_driving_lesson ) {
       this.props.displayToastMsg(I18n.t('max_lesson_time_exceeded'));
       return;

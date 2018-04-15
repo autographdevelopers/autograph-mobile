@@ -37,6 +37,7 @@ export class EmployeeSlotsSocket {
       if(message && message.type !== 'ping') {
         switch(message.type) {
           case SERVER_FEEDBACK.SLOT_CHANGED:
+            console.log(message);
             onSlotChanged(message.slot)
         }
       }

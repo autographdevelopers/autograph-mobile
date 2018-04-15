@@ -16,6 +16,8 @@ export default class BookLessonTimeoutCounter extends Component {
 
     this.intervalId = setInterval( () => {
       const remainingSeconds = this.state.remainingSeconds - 1;
+      console.log('remainingSeconds');
+      console.log(remainingSeconds);
 
       if(remainingSeconds >= 0) {
         this.setState({remainingSeconds});
