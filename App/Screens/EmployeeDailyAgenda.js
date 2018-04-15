@@ -142,6 +142,7 @@ class EmployeeDailyAgenda extends Component {
   lockSlot = slot => () => {
     const {
       selectedSlots,
+      currentUser,
       scheduleSettings: { maximum_slots_count_per_driving_lesson }
     } = this.props;
 
@@ -173,6 +174,11 @@ class EmployeeDailyAgenda extends Component {
       this.props.displayToastMsg(I18n.t('slots_not_adjacent'));
       return;
     }
+    const release_at = moment().add(11, 'seconds').format();
+    const lockedSlot = _.cloneDeep(slot);
+    lockedSlot.release_at = release_at;
+    lockedSlot.locking_user_id = currentUser.id;
+    this.props.saveSlots(lockedSlot);
 
     this.socket.lockSlot(slot);
   };
