@@ -89,10 +89,12 @@ class EmployeeDailyAgenda extends Component {
   };
 
   unLockAllSlots = () => {
-    _.each(this.props.selectedSlots, slot => {
-      this.releaseSlot(slot)();
-      this.socket.unlockSlot(slot);
-    });
+    _.each(this.props.selectedSlots, this.unLockSlot);
+  };
+
+  unLockSlot = slot => {
+    this.releaseSlot(slot);
+    this.socket.unlockSlot(slot);
   };
 
   renderAgendaItem = (slot, dsas) => {
@@ -111,7 +113,7 @@ class EmployeeDailyAgenda extends Component {
       if (currentUser.id === slot.locking_user_id) {
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
         const isLast = slot.id === (_.last(selectedSlots) || {}).id;
-        const onCancelPress = (isFirst || isLast) && this.socket.unlockSlot.bind(this, slot);
+        const onCancelPress = (isFirst || isLast) && this.unLockSlot.bind(this, slot);
 
         agendaItem = <SelectedSlotComponent slot={slot} isFirst={isFirst} isLast={isLast} onPressCancel={onCancelPress}/>
       } else {
@@ -124,7 +126,7 @@ class EmployeeDailyAgenda extends Component {
     return agendaItem;
   };
 
-  releaseSlot = slot => () => {
+  releaseSlot = slot => {
     const releasedSlot = _.cloneDeep(slot);
     releasedSlot.release_at = null;
 

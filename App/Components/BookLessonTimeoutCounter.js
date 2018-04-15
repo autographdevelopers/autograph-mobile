@@ -19,7 +19,7 @@ export default class BookLessonTimeoutCounter extends Component {
       console.log('remainingSeconds');
       console.log(remainingSeconds);
 
-      if(remainingSeconds >= 0) {
+      if(remainingSeconds > 0) {
         this.setState({remainingSeconds});
       } else {
         props.handleTimeout();
