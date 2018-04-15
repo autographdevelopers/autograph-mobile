@@ -126,6 +126,12 @@ export const API = {
     index: (params, employee_id=':employee_id', driving_school_id=':driving_school_id') =>
       api.get(`driving_schools/${driving_school_id}/employees/${employee_id}/slots?${queryString.stringify(params)}`)
   },
+  activities: {
+    index: (params, driving_school_id=':driving_school_id') =>
+      api.get(`driving_schools/${driving_school_id}/activities?${queryString.stringify(params)}`),
+    myActivities: (params, driving_school_id=':driving_school_id') =>
+      api.get(`driving_schools/${driving_school_id}/activities/my_activities?${queryString.stringify(params)}`),
+  }
 };
 
 // TODO update header when school name changed
