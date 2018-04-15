@@ -60,7 +60,7 @@ class EmployeeDailyAgenda extends Component {
   }
 
   componentWillUnmount() {
-    this.unLockAllSlots();
+    this.unlockSelectedSlots();
   }
 
   _buildParams = date => {
@@ -73,7 +73,7 @@ class EmployeeDailyAgenda extends Component {
   };
 
   onDaySelected = date => {
-    this.unLockAllSlots();
+    this.unlockSelectedSlots();
     const { dateString } = date;
     const { slotsIndexRequest, setDay, cacheHistory, currentSchool: { time_zone } } = this.props;
     setDay(dateString);
@@ -88,12 +88,15 @@ class EmployeeDailyAgenda extends Component {
     }
   };
 
-  unLockAllSlots = () => {
-    _.each(this.props.selectedSlots, this.unLockSlot);
+  unlockSelectedSlots = () => {
+    const { selectedSlots } = this.props;
+    this.releaseSlots(selectedSlots);
+
+    _.each(selectedSlots, this.socket.unlockSlot);
   };
 
   unLockSlot = slot => {
-    this.releaseSlot(slot);
+    this.releaseSlots(slot);
     this.socket.unlockSlot(slot);
   };
 
@@ -117,7 +120,7 @@ class EmployeeDailyAgenda extends Component {
 
         agendaItem = <SelectedSlotComponent slot={slot} isFirst={isFirst} isLast={isLast} onPressCancel={onCancelPress}/>
       } else {
-        agendaItem = <LockedSlot slot={slot} handleTimeout={this.releaseSlot(slot)} />
+        agendaItem = <LockedSlot slot={slot} handleTimeout={this.releaseSlots.bind(this, slot)} />
       }
     } else if ( slot.driving_lesson_id === null ) {
       agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
@@ -126,9 +129,12 @@ class EmployeeDailyAgenda extends Component {
     return agendaItem;
   };
 
-  releaseSlot = slot => {
-    const releasedSlot = _.cloneDeep(slot);
-    releasedSlot.release_at = null;
+  releaseSlots = slots => {
+    const releasedSlot = _.flattenDeep([slots]).map(slot => {
+      const releasedSlot = _.cloneDeep(slot);
+      releasedSlot.release_at = null;
+      return releasedSlot;
+    });
 
     this.props.saveSlots(releasedSlot);
   };
@@ -217,9 +223,6 @@ class EmployeeDailyAgenda extends Component {
     const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
     const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
 
-    console.log('employeeDailyAgendaItems');
-    console.log(employeeDailyAgendaItems);
-
     return (
       <View style={{flex: 1}}>
         <AgendaWrapper
@@ -242,7 +245,7 @@ class EmployeeDailyAgenda extends Component {
           <BookLessonTimeoutCounter
             submaskColor={enoughSlotsSelected ? Colors.primaryWarm : Colors.salmon}
             release_at={selectedSlots[0].release_at}
-            handleTimeout={this.unLockAllSlots}/>
+            handleTimeout={this.unlockSelectedSlots}/>
         }
 
         <ModalTemplate
