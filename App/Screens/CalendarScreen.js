@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {  Agenda, LocaleConfig } from 'react-native-calendars';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { calendarActionCreators } from '../Redux/CalendarRedux';
-import { bookLessonActionCreators } from '../Redux/BookLesson';
+import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
 import { modalActionCreators } from '../Redux/ModalRedux';
 import moment from 'moment';
 import _ from 'lodash';

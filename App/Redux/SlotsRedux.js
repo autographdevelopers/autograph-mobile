@@ -9,7 +9,8 @@ const INFINITY = 999;
 const { Types, Creators } = createActions({
   indexRequest: ['params', 'callback'],
   save: ['data'],
-  changeStatus: ['status']
+  changeStatus: ['status'],
+  releaseLesson: ['id']
 }, { prefix: 'SLOTS_' });
 
 export const slotActionTypes = Types;
@@ -50,6 +51,17 @@ export const saveHandler = (state, { data }) => {
   return newState;
 };
 
+export const releaseLessonHandler = (state, { id }) => {
+  const newState = _.cloneDeep(state);
+  newState.data = _.mapValues(newState.data, slot => {
+    if(slot.driving_lesson_id === id) {
+      slot.driving_lesson_id = null;
+    }
+    return slot;
+  })
+  return newState;
+};
+
 export const changeStatusHandler = (state, {status}) => {
   const newState = _.cloneDeep(state);
   newState.status = status;
@@ -61,5 +73,6 @@ export const changeStatusHandler = (state, {status}) => {
 
 export const slotReducer = createReducer(INITIAL_STATE, {
   [slotActionTypes.SAVE]: saveHandler,
-  [slotActionTypes.CHANGE_STATUS]: changeStatusHandler
+  [slotActionTypes.CHANGE_STATUS]: changeStatusHandler,
+  [slotActionTypes.RELEASE_LESSON]: releaseLessonHandler
 });

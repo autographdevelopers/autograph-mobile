@@ -22,6 +22,7 @@ import { FETCHING_STATUS } from '../../Lib/utils';
 
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { contextActionCreators } from '../../Redux/ContextRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
@@ -48,7 +49,7 @@ class EmployeesIndex extends Component {
   };
 
   goToUserProfile = (user, index) => () => {
-    this.props.screenProps.setCurrentEmployee(user.id);
+    this.props.setCurrentEmployee(user.id);
     this.props.navigation.navigate('employeeProfile', { user, index });
   };
 
@@ -185,6 +186,7 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
+  setCurrentEmployee: (id) => dispatch(contextActionCreators.setCurrentEmployee(id)),
   employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest()),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),

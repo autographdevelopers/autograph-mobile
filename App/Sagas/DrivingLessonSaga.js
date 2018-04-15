@@ -2,6 +2,8 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
+import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
 
 export function* index(api, action) {
   yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
@@ -17,28 +19,29 @@ export function* index(api, action) {
 }
 
 export function* cancel(api, action) {
-  yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
+  yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.drivingLesson.cancel, action.id);
 
   if (response.ok) {
+    yield put(slotActionCreators.releaseLesson(action.id));
     yield put(drivingLessonActionCreators.destroySingle(action.id));
-    yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+    yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+    yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }
 
 export function* create(api, action) {
-  yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
+  yield put(bookLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 
   const response = yield call(api.drivingLesson.create, action.params);
 
   if (response.ok) {
     yield put(drivingLessonActionCreators.save(response.data));
     yield put(slotActionCreators.save(response.data.slots));
-    yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+    yield put(bookLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
-    yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.ERROR));
+    yield put(bookLessonActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
 }

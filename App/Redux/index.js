@@ -22,9 +22,15 @@ import { calendarReducer } from './CalendarRedux';
 import { slotReducer } from './SlotsRedux';
 import { drivingCourseReducer } from './DrivingCourseRedux';
 import { drivingLessonReducer } from './DrivingLessonRedux';
-import { bookLessonReducer } from './BookLesson';
+import { bookLessonReducer } from './Modals/BookLesson';
 import { employeeDailyAgendaReducer } from './AgendaRedux';
 import { employeesSummaryAgendaReducer } from './AgendaRedux';
+import { cancelDrivingLessonModalReducer } from './Modals/CancelDrivingLesson';
+
+const lessonModalsReducers = combineReducers({
+  book: bookLessonReducer,
+  cancel: cancelDrivingLessonModalReducer,
+});
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
@@ -51,7 +57,8 @@ export const reducers = combineReducers({
   drivingLessons: drivingLessonReducer,
   bookLesson: bookLessonReducer,
   employeeDailyAgenda: employeeDailyAgendaReducer,
-  employeesSummaryAgenda: employeesSummaryAgendaReducer
+  employeesSummaryAgenda: employeesSummaryAgendaReducer,
+  lessonModal: lessonModalsReducers
 });
 
 export default () => {

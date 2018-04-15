@@ -6,8 +6,6 @@ import { View } from 'react-native';
 import _ from 'lodash';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
-import ModalTemplate from '../Components/ModalTemplate';
-import BookLessonWidget from '../Components/BookLessonWidget';
 import AvailableSlot from '../Components/Slots/AvailableSlot';
 import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
@@ -22,7 +20,8 @@ import { modalActionCreators } from '../Redux/ModalRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { toastActionCreators } from '../Redux/ToastRedux';
 import { WastedSlot } from '../Components/Slots/WastedSlot';
-import { bookLessonActionCreators } from '../Redux/BookLesson';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
+import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
 /** == Utilities ====================================== */
 import {
   getEmployeeDailyAgenda,
@@ -109,9 +108,11 @@ class EmployeeDailyAgenda extends Component {
     } else if (slot.isBreakSlot) {
       agendaItem = <BreakSlot slot={slot}/>
     } else if ( slot.employee && slot.student && slot.slots ) {
-      agendaItem = <DrivingLessonCell employee={slot.employee}
-                                student={slot.student}
-                                slots={slot.slots}/>
+      agendaItem = <DrivingLessonCell
+        onPress={this.prepareCancelLessonModal(slot)}
+        employee={slot.employee}
+        student={slot.student}
+        slots={slot.slots}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
       if (currentUser.id === slot.locking_user_id) {
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
@@ -183,6 +184,11 @@ class EmployeeDailyAgenda extends Component {
     this.socket.lockSlot(slot);
   };
 
+  prepareCancelLessonModal = lesson => () => {
+    this.props.initCancelLessonModal(lesson);
+    this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
+  };
+
   handleBookLessonBtnPress = () => {
     const {
       selectedSlots,
@@ -201,6 +207,7 @@ class EmployeeDailyAgenda extends Component {
       fromHour: lessonInterval.from,
       toHour: lessonInterval.to,
       date: selectedDay,
+      status: FETCHING_STATUS.READY,
       slot_ids: selectedSlots.map(slot => slot.id)
     };
 
@@ -220,7 +227,6 @@ class EmployeeDailyAgenda extends Component {
       employeeDailyAgendaItems,
       selectedDay,
       lessonInterval,
-      drivingLessonStatus,
       selectedSlots,
       scheduleSettings: { minimum_slots_count_per_driving_lesson }
     } = this.props;
@@ -253,14 +259,6 @@ class EmployeeDailyAgenda extends Component {
             release_at={selectedSlots[0].release_at}
             handleTimeout={this.unlockSelectedSlots}/>
         }
-
-        <ModalTemplate
-          modalID={MODALS_IDS.CREATE_DRIVING_LESSON}
-          status={drivingLessonStatus}
-        >
-          <BookLessonWidget/>
-        </ModalTemplate>
-
       </View>
     );
   }
@@ -290,7 +288,8 @@ const mapDispatchToProps = dispatch => ({
   displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg)),
   openModal: id => dispatch(modalActionCreators.open(id)),
   setBookLessonParams: params => dispatch(bookLessonActionCreators.setParams(params)),
-  resetDrivingLessonsStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY))
+  resetDrivingLessonsStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
+  initCancelLessonModal: lesson => dispatch(cancelDrivingLessonModalActionCreators.init(lesson))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeeDailyAgenda);
