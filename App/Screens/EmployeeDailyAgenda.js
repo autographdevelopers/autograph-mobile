@@ -123,7 +123,7 @@ class EmployeeDailyAgenda extends Component {
         agendaItem = <LockedSlot slot={slot} handleTimeout={this.releaseSlots.bind(this, slot)} />
       }
     } else if ( slot.driving_lesson_id === null ) {
-      agendaItem = <AvailableSlot slot={slot} onPress={this.lockSlot}/>;
+      agendaItem = <AvailableSlot slot={slot} onPressIn={this.lockSlot(slot)}/>;
     }
 
     return agendaItem;
