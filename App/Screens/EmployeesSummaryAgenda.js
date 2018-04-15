@@ -58,7 +58,7 @@ class EmployeesSummaryAgenda extends Component {
                                                   this.props.initDailyAgenda({
                                                     ...this.props.employeesSummaryAgendaState,
                                                     employeeId: id});
-                                                  this.props.navigation.navigate('employeeDailyAgenda', { employeeId: id })
+                                                  this.props.navigation.navigate('employeeDailyAgenda', { employee })
                                                 }}/>
       </View>
     )

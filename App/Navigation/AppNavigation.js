@@ -155,7 +155,13 @@ const routeConfigs = {
   employeeDailyAgenda: {
     screen: EmployeeDailyAgenda,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Daily Agenda'}/>
+      header: props => {
+        const { state: { index, routes } } = props.navigation;
+        const route = routes[index];
+        const { employee } = route.params;
+
+        return <NavHeader navigation={props.navigation} title={`${employee.name} ${employee.surname}`}/>
+      }
     }
   },
   ...SEARCH_SCREENS,
