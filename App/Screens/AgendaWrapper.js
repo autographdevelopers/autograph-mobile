@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import {  Agenda, LocaleConfig } from 'react-native-calendars';
+import { timeHelpers } from '../Lib/timeHandlers';
+import { connect } from 'react-redux';
 
 LocaleConfig.locales['pl'] = {
   monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzięń'],
   monthNamesShort: ['Sty.','Lut.','Mar','Kwi.','Maj.','Cze.','Lip.','Sie.','Wrz.','Paź.','Lis.','Gru.'],
-  dayNames: ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
-  dayNamesShort: ['Pn.','Wt.','Śr.','Czw.','Pt.','Sob.','Nd.']
+  dayNames: ['Niedziela', 'Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
+  dayNamesShort: ['Nd.', 'Pon.','Wt.','Śr.','Czw.','Pt.','Sob.']
 };
 
 LocaleConfig.defaultLocale = 'pl';
 
-export default class AgendaWrapper extends Component {
+class AgendaWrapper extends Component {
 
   agendaItemChanged = (r1, r2) => r1 != r2;
 
@@ -19,12 +21,23 @@ export default class AgendaWrapper extends Component {
       selected,
       renderItem,
       onDayPress,
-      items
+      items,
+      currentSchool,
+      currentUser: { type },
+      scheduleSettings: { booking_advance_period_in_weeks }
     } = this.props;
+
+    const today = timeHelpers.getTimzeZoneDate(currentSchool.time_zone);
+    const todayFormatted = today.format('YYYY-MM-DD');
+    const maxBookingDateInFuture = today.add(booking_advance_period_in_weeks, 'weeks');
+    const maxBookingDateInFutureFormatted = maxBookingDateInFuture.format('YYYY-MM-DD');
 
     return (
       <Agenda
+        minDate={type === 'Student' ? todayFormatted : undefined}
+        maxDate={type === 'Student' ? maxBookingDateInFutureFormatted : undefined}
         selected={selected}
+        firstDay={1}
         items={items}
         rowHasChanged={this.agendaItemChanged}
         renderItem={renderItem}
@@ -46,3 +59,11 @@ const styles = {
     }
   }
 };
+
+const mapStateToProps = state => ({
+  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  currentUser: state.user,
+  scheduleSettings: state.scheduleSettings
+});
+
+export default connect(mapStateToProps)(AgendaWrapper)

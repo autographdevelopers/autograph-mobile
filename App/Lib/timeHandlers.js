@@ -13,6 +13,10 @@ export const timeHelpers = {
     };
   },
 
+  getTimzeZoneDate: (timeZone, date) => {
+    return moment(date).tz(timeZone)
+  },
+
   isCacheStale: (date, cacheHistory, timeZone) => {
     let isStale = true;
 

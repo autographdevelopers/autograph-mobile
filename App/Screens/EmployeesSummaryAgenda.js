@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment-timezone';
 /** == Custom modules ================================ */
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
 import AgendaWrapper from './AgendaWrapper';
+import withRequiredData from '../Containers/withRequiredData';
 /** == Action Creators ================================ */
 import { employeesSummaryAgendaActionCreators } from '../Redux/AgendaRedux';
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
@@ -14,23 +14,8 @@ import { slotActionCreators } from '../Redux/SlotsRedux';
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { timeHelpers } from '../Lib/timeHandlers';
-import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
 
 class EmployeesSummaryAgenda extends Component {
-  componentWillMount() {
-    const {
-      selectedDay,
-      currentSchool,
-      scheduleSettingsRequest,
-      slotsIndexRequest
-    } = this.props;
-    const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
-
-
-    scheduleSettingsRequest();
-    slotsIndexRequest(dateRangeParams, SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY);
-  }
-
   onDaySelected = date => {
     const { dateString } = date;
     const { currentSchool: { time_zone }, slotsIndexRequest, cacheHistory } = this.props;
@@ -50,6 +35,8 @@ class EmployeesSummaryAgenda extends Component {
     const id = employeeSlots[0].employee_id;
     const employee = this.props.employees[id] || {};
 
+    console.log(this.props);
+
     return (
       <View style={{paddingVertical: 5, paddingHorizontal: 15}}>
         <EmployeeAvailabilitySummaryCell slots={employeeSlots}
@@ -63,8 +50,6 @@ class EmployeesSummaryAgenda extends Component {
       </View>
     )
   };
-
-
 
   render() {
     const { employeesSummaryAgendaItems, selectedDay } = this.props;
@@ -81,6 +66,11 @@ class EmployeesSummaryAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
+  employeesStatus: state.employees.status,
+  studentsStatus: state.students.status,
+  scheduleSettingsStatus: state.scheduleSettings.status,
+  slotsStatus: state.slots.status,
+
   employees: state.employees.active,
   selectedDay: state.employeesSummaryAgenda.daySelected,
   employeesSummaryAgendaState: state.employeesSummaryAgenda,
@@ -93,7 +83,11 @@ const mapDispatchToProps = dispatch => ({
   slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
   setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
   initDailyAgenda: (stateToMerge) => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge)),
-  scheduleSettingsRequest: () => dispatch(scheduleSettingsActionCreators.showRequest())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeesSummaryAgenda);
+const withAsyncLoading = withRequiredData(
+  EmployeesSummaryAgenda,
+  ['employeesStatus', 'slotsStatus', 'scheduleSettingsStatus']
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);
