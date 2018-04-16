@@ -33,7 +33,7 @@ import StudentSearchablelist from '../Components/StudentsSearchableList';
 
 import PersonalSettings from '../Screens/PersonalSettings';
 
-import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgenda';
+import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgendaFetcher';
 
 const primaryFlowNavigationOptions = ({navigation}) => {
   // TODO: refactor this shit

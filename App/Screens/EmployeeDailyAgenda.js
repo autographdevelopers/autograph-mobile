@@ -31,6 +31,7 @@ import {
 import I18n from '../I18n';
 import { timeHelpers } from '../Lib/timeHandlers';
 import { Colors, Fonts } from '../Themes/';
+import withRequiredData from '../Containers/withRequiredData';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
@@ -49,13 +50,6 @@ class EmployeeDailyAgenda extends Component {
       props.saveSlots,
       props.displayToastMsg.bind(this, I18n.t('lost_connection_with_server'))
     )
-  }
-
-  componentWillMount() {
-    const { selectedDay, slotsIndexRequest } = this.props;
-    const params = this._buildParams(selectedDay);
-
-    slotsIndexRequest(params, SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY);
   }
 
   componentWillUnmount() {
@@ -265,6 +259,7 @@ class EmployeeDailyAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
+  slotsStatus: state.slots.status,
   employeeDailyAgendaItems: getEmployeeDailyAgenda(state),
   employees: state.employees.active,
   selectedDay: state.employeeDailyAgenda.daySelected,
@@ -292,4 +287,9 @@ const mapDispatchToProps = dispatch => ({
   initCancelLessonModal: lesson => dispatch(cancelDrivingLessonModalActionCreators.init(lesson))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeeDailyAgenda);
+const withAsyncLoading = withRequiredData(
+  EmployeeDailyAgenda,
+  ['slotsStatus']
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);
