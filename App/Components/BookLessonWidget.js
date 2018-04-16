@@ -107,14 +107,24 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => ({
-  employee: state.employees.active[state.bookLesson.employee_id],
-  student: state.students.active[state.bookLesson.student_id],
-  slot_ids: state.bookLesson.slot_ids,
-  fromHour: state.bookLesson.fromHour,
-  toHour: state.bookLesson.toHour,
-  date: state.bookLesson.date,
-});
+const mapStateToProps = state => {
+  let student;
+
+  if (state.user.type === 'Student') {
+    student = state.user;
+  } else if (state.user.type === 'Employee') {
+    student = state.students.active[state.bookLesson.student_id];
+  }
+
+  return {
+    employee: state.employees.active[state.bookLesson.employee_id],
+    student,
+    slot_ids: state.bookLesson.slot_ids,
+    fromHour: state.bookLesson.fromHour,
+    toHour: state.bookLesson.toHour,
+    date: state.bookLesson.date,
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   createLessonRequest: params => () => dispatch(drivingLessonActionCreators.createRequest(params))

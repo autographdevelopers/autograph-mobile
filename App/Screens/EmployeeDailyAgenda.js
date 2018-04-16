@@ -190,10 +190,10 @@ class EmployeeDailyAgenda extends Component {
       selectedSlots,
       drivingSchoolID,
       lessonInterval,
+      currentUser,
       selectedDay,
       employeeId,
       setBookLessonParams,
-      resetDrivingLessonsStatus,
       navigation: { navigate }
     } = this.props;
 
@@ -204,12 +204,16 @@ class EmployeeDailyAgenda extends Component {
       toHour: lessonInterval.to,
       date: selectedDay,
       status: FETCHING_STATUS.READY,
+      student_id: currentUser.id,
       slot_ids: selectedSlots.map(slot => slot.id)
     };
 
-    resetDrivingLessonsStatus();
     setBookLessonParams(bookLessonParams);
-    navigate('searchStudent', { onResultPress: this.onStudentsSelected })
+    if(currentUser.type === 'Employee') {
+      navigate('searchStudent', { onResultPress: this.onStudentsSelected })
+    } else if (currentUser.type === 'Student') {
+      this.props.openModal(MODALS_IDS.CREATE_DRIVING_LESSON);
+    }
   };
 
   onStudentsSelected = id => {
@@ -296,7 +300,6 @@ const mapDispatchToProps = dispatch => ({
   displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg)),
   openModal: id => dispatch(modalActionCreators.open(id)),
   setBookLessonParams: params => dispatch(bookLessonActionCreators.setParams(params)),
-  resetDrivingLessonsStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
   initCancelLessonModal: lesson => dispatch(cancelDrivingLessonModalActionCreators.init(lesson))
 });
 

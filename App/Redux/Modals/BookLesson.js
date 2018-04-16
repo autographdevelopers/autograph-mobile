@@ -31,7 +31,7 @@ export const INITIAL_STATE = {
 /* ------------- Handlers ------------- */
 
 export const setParamsHandler = (state, { params }) => {
-  return { ...state, ...params }
+  return { ...state, ...params, status: FETCHING_STATUS.READY }
 };
 
 export const changeStatusHandler = (state, { status }) => {
