@@ -5,7 +5,7 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
 /** Custom modules */
-import FullScreenInformation from '../../Components/FullScreenInformation';
+import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
@@ -128,9 +128,8 @@ class EmployeesIndex extends Component {
 
     if(!canManageEmployees(drivingSchool)) {
       return (
-        <FullScreenInformation>
-          {I18n.t('lacksPrivileges.canManageEmployee')}
-        </FullScreenInformation>
+        <InfoBox title={I18n.t('lacksPrivileges.canManageEmployee')}
+                 description={I18n.t('lacksPrivileges.generic')} />
       )
     } else {
       return (

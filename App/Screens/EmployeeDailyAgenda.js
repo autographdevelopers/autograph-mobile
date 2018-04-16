@@ -13,6 +13,7 @@ import SelectedSlotComponent from '../Components/Slots/SelectedSlot';
 import BreakSlot from '../Components/Slots/BreakSlot';
 import BlockButton from '../Components/BlockButton';
 import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
+import withRequiredData from '../Containers/withRequiredData';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
@@ -31,7 +32,6 @@ import {
 import I18n from '../I18n';
 import { timeHelpers } from '../Lib/timeHandlers';
 import { Colors, Fonts } from '../Themes/';
-import withRequiredData from '../Containers/withRequiredData';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/ModalRedux';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
@@ -101,12 +101,12 @@ class EmployeeDailyAgenda extends Component {
       agendaItem = <WastedSlot slot={slot}/>
     } else if (slot.isBreakSlot) {
       agendaItem = <BreakSlot slot={slot}/>
-    } else if ( slot.employee && slot.student && slot.slots ) {
+    } else if ( slot.isLesson ) {
       agendaItem = <DrivingLessonCell
         onPress={this.prepareCancelLessonModal(slot)}
-        employee={slot.employee}
-        student={slot.student}
-        slots={slot.slots}/>
+        employee={slot.employee || {} }
+        student={slot.student || {} }
+        slot={slot}/>
     } else if ( moment(slot.release_at).isAfter(moment()) ) {
       if (currentUser.id === slot.locking_user_id) {
         const isFirst = selectedSlots[0] && slot.id === selectedSlots[0].id;
@@ -169,6 +169,7 @@ class EmployeeDailyAgenda extends Component {
       this.props.displayToastMsg(I18n.t('slots_not_adjacent'));
       return;
     }
+
     const release_at = moment().add(11, 'seconds').format();
     const lockedSlot = _.cloneDeep(slot);
     lockedSlot.release_at = release_at;
@@ -222,6 +223,7 @@ class EmployeeDailyAgenda extends Component {
       selectedDay,
       lessonInterval,
       selectedSlots,
+      currentUser,
       scheduleSettings: { minimum_slots_count_per_driving_lesson }
     } = this.props;
 
@@ -229,9 +231,19 @@ class EmployeeDailyAgenda extends Component {
     const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
     const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
 
+    const emptyDayLabels = ['title', 'description'].map(
+      key => I18n.t(`employee_daily_agenda_day_empty.${currentUser.type.toLowerCase()}_perspective.${key}`));
+
     return (
       <View style={{flex: 1}}>
         <AgendaWrapper
+          renderEmptyData={
+            () =>
+              <InfoBox
+                title={emptyDayLabels[0]}
+                description={emptyDayLabels[1]}
+              />
+          }
           selected={selectedDay}
           onDayPress={this.onDaySelected}
           items={employeeDailyAgendaItems}

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 /** == Custom modules ================================ */
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
 import AgendaWrapper from './AgendaWrapper';
+import InfoBox from '../Components/InfoBox';
 import withRequiredData from '../Containers/withRequiredData';
 /** == Action Creators ================================ */
 import { employeesSummaryAgendaActionCreators } from '../Redux/AgendaRedux';
@@ -14,6 +15,7 @@ import { slotActionCreators } from '../Redux/SlotsRedux';
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { timeHelpers } from '../Lib/timeHandlers';
+import I18n from '../I18n';
 
 class EmployeesSummaryAgenda extends Component {
   onDaySelected = date => {
@@ -52,10 +54,24 @@ class EmployeesSummaryAgenda extends Component {
   };
 
   render() {
-    const { employeesSummaryAgendaItems, selectedDay } = this.props;
+    const {
+      employeesSummaryAgendaItems,
+      selectedDay,
+      currentUser
+    } = this.props;
+
+    const emptyDayLabels = ['title', 'description'].map(
+      key => I18n.t(`employee_summary_agenda_day_empty.${currentUser.type.toLowerCase()}_perspective.${key}`));
 
     return (
       <AgendaWrapper
+        renderEmptyData={
+          () =>
+          <InfoBox
+            title={emptyDayLabels[0]}
+            description={emptyDayLabels[1]}
+          />
+        }
         selected={selectedDay}
         onDayPress={this.onDaySelected}
         items={employeesSummaryAgendaItems}
@@ -77,6 +93,7 @@ const mapStateToProps = state => ({
   employeesSummaryAgendaItems: getEmployeesSummaryAgenda(state),
   cacheHistory: state.employeesSummaryAgenda.cacheHistory,
   currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  currentUser: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

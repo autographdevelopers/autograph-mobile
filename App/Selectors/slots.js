@@ -6,11 +6,9 @@ const getCurrentDrivingSchool = state => state.context.currentDrivingSchoolID;
 const getSlots = state => Object.values(state.slots.data);
 const getLessons = state => state.drivingLessons.hashMap;
 const getSelectedEmployee = state => state.employeeDailyAgenda.employeeId;
-const getEmployeeDailyAgendaDay =
-  state => state.employeeDailyAgenda.daySelected;
+const getEmployeeDailyAgendaDay = state => state.employeeDailyAgenda.daySelected;
 const getCurrentUser = state => state.user;
-const employeesSummaryAgendaDay =
-  state => state.employeesSummaryAgenda.daySelected;
+const employeesSummaryAgendaDay = state => state.employeesSummaryAgenda.daySelected;
 
 const compareStartTimes = (left, right) => {
   return moment(left.start_time).diff(moment(right.start_time));
@@ -46,10 +44,25 @@ export const getEmployeeSlots = createSelector(
 );
 
 export const getEmployeeSlotsForADay = createSelector(
-  [getEmployeeSlots, getEmployeeDailyAgendaDay],
-  (slots, day) => {
-    return slots.filter(slot => moment(slot.start_time).isSame(day, 'day'));
-  },
+  [getEmployeeSlots, getEmployeeDailyAgendaDay, getCurrentUser],
+  (slots, day, currentUser) => {
+
+    const filteringCondition = userType => {
+      switch(userType) {
+        case 'Employee':
+          return slot => {
+            return moment(slot.start_time).isSame(day, 'day');
+          };
+        case 'Student':
+          return slot => {
+            return moment(slot.start_time).isSame(day, 'day')
+              && moment(slot.start_time).isAfter()
+          }
+      }
+    };
+
+    return slots.filter(filteringCondition(currentUser.type));
+  }
 );
 
 export const getSlotsNotBelongingToLesson = createSelector(
@@ -62,7 +75,7 @@ export const getSlotsNotBelongingToLesson = createSelector(
   },
 );
 
-export const getSlotsHavingToLesson = createSelector(
+export const getSlotsHavingLesson = createSelector(
   [getEmployeeSlotsForADay],
   slots => {
     return slots.filter(slot => slot.driving_lesson_id !== null);
@@ -70,8 +83,11 @@ export const getSlotsHavingToLesson = createSelector(
 );
 
 export const lessonsForSlots = createSelector(
-  [getSlotsHavingToLesson, getLessons],
+  [getSlotsHavingLesson, getLessons],
   (slots, lessons) => {
+    console.log('getLessons');
+    console.log(lessons);
+
     return _.chain(slots)
             .groupBy(slot => slot.driving_lesson_id)
             .values()
@@ -81,10 +97,11 @@ export const lessonsForSlots = createSelector(
                 .sort((left, right) => moment(left.start_time)
                   .diff(moment(right.start_time)));
               const lastSlotStartTime = _.last(sorted).start_time;
+              const start_time = _.first(sorted).start_time;
               const end_time = moment.utc(lastSlotStartTime)
                                      .add(30, 'minutes')
                                      .format();
-              return { ...lessons[lessonId], end_time };
+              return { ...lessons[lessonId], end_time, start_time, isLesson: true };
             })
             .value();
   },
@@ -93,9 +110,18 @@ export const lessonsForSlots = createSelector(
 export const getEmployeeDailyAgenda = createSelector(
   [getSlotsNotBelongingToLesson, lessonsForSlots],
   (slots, lessons) => {
+
+    console.log('************************');
+    console.log('lessons');
+    console.log(_.cloneDeep(lessons));
+    console.log('slots');
+    console.log(_.cloneDeep(slots));
+    console.log('************************');
+
+
     const lessonsAndSlots = [...slots, ...lessons].sort(compareStartTimes);
 
-    const withPossibleBreaks = lessonsAndSlots.reduce(
+    const withPossibleBreaksAndWastes = lessonsAndSlots.reduce(
       (acc, current, index, array) => {
         let differenceInMinutes;
 
@@ -106,7 +132,7 @@ export const getEmployeeDailyAgenda = createSelector(
             .diff(current.end_time, 'minutes');
         }
 
-        if (!moment(current.start_time).isAfter() && !current.slots) {
+        if (!moment(current.start_time).isAfter() && !current.slots && !current.isLesson) {
           if ( _.last(acc) && _.last(acc).isWasted ) {
             _.last(acc).end_time = current.end_time;
           } else {
@@ -123,7 +149,7 @@ export const getEmployeeDailyAgenda = createSelector(
         return acc;
       }, []);
 
-    return _.groupBy(withPossibleBreaks, slot => moment.utc(slot.start_time).format('YYYY-MM-DD'));
+    return _.groupBy(withPossibleBreaksAndWastes, slot => moment.utc(slot.start_time).format('YYYY-MM-DD'));
   },
 );
 

@@ -7,12 +7,12 @@ import moment from 'moment/moment';
 import { slotHelper } from '../../Lib/SlotHelpers';
 import _ from 'lodash';
 
-export default DriveSlot = ({employee, student, slots, onPress={onPress}}) => {
-  const from = moment(_.first(slots).start_time).format('HH:mm');
-  const to = moment(_.last(slots).start_time).add(30, 'minutes').format('HH:mm');
+export default DriveSlot = ({employee, student, slot, onPress={onPress}}) => {
+  const from = moment(slot.start_time).format('HH:mm');
+  const to = moment(slot.end_time).format('HH:mm');
 
   return (
-    <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slots[0]} >
+    <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slot} >
       <TouchableOpacity style={styles.body} onPress={onPress}>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

@@ -5,7 +5,7 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
 /** Custom modules */
-import FullScreenInformation from '../../Components/FullScreenInformation';
+import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
@@ -127,9 +127,8 @@ class StudentsIndex extends Component {
 
     if(!canManageStudents(drivingSchool)) {
       return (
-        <FullScreenInformation>
-          {I18n.t('lacksPrivileges.canManageStudent')}
-        </FullScreenInformation>
+        <InfoBox title={I18n.t('lacksPrivileges.canManageStudent')}
+                 description={I18n.t('lacksPrivileges.generic')} />
       )
     } else {
       return (

@@ -44,6 +44,7 @@ class AgendaWrapper extends Component {
         onDayPress={onDayPress}
         renderEmptyDate={(date)=><Text>EmptyDate</Text>}
         theme={styles.customAgendaThemeConfig}
+        {...this.props}
       />
     )
   }

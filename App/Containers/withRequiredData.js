@@ -12,8 +12,6 @@ export default function withRequiredData(WrappedComponent, statusesKeys) {
 
     render() {
       const statuses = statusesKeys.map(status => this.props[status]);
-      console.log(statuses);
-      console.log(this.props);
 
       if(statuses.includes(FETCHING_STATUS.FETCHING))
         return <SpinnerView/>;
