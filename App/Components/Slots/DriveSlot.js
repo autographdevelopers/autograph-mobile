@@ -13,12 +13,19 @@ export default DriveSlot = ({employee, perspective, student, slot, onPress={onPr
 
   return (
     <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slot} >
-      <TouchableOpacity style={styles.body} onPress={onPress} disabled={perspective==='Student'}>
+      <TouchableOpacity style={styles.body} onPress={onPress} disabled={perspective==='Student' || !moment(slot.start_time).isAfter()}>
 
+        { perspective === 'Employee' && student.name && student.surname &&
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <DefaultAvatar name={'W'} customSize={30}/>
+            <Text>{`${student.name} ${student.surname}`}</Text>
+          </View>
+        }
+        { perspective === 'Student' &&
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <DefaultAvatar name={'W'} customSize={30}/>
-          <Text>{`${student.name} ${student.surname}`}</Text>
+          <Text>Umówiona lekcja</Text>
         </View>
+        }
 
         <View style={styles.pill}>
           <Text style={styles.intervalText}>{`${from} - ${to}`}</Text>
