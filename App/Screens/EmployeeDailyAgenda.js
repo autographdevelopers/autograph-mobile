@@ -103,6 +103,7 @@ class EmployeeDailyAgenda extends Component {
       agendaItem = <BreakSlot slot={slot}/>
     } else if ( slot.isLesson ) {
       agendaItem = <DrivingLessonCell
+        perspective={currentUser.type}
         onPress={this.prepareCancelLessonModal(slot)}
         employee={slot.employee || {} }
         student={slot.student || {} }

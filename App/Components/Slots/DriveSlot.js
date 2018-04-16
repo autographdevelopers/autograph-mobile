@@ -7,13 +7,13 @@ import moment from 'moment/moment';
 import { slotHelper } from '../../Lib/SlotHelpers';
 import _ from 'lodash';
 
-export default DriveSlot = ({employee, student, slot, onPress={onPress}}) => {
+export default DriveSlot = ({employee, perspective, student, slot, onPress={onPress}}) => {
   const from = moment(slot.start_time).format('HH:mm');
   const to = moment(slot.end_time).format('HH:mm');
 
   return (
     <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slot} >
-      <TouchableOpacity style={styles.body} onPress={onPress}>
+      <TouchableOpacity style={styles.body} onPress={onPress} disabled={perspective==='Student'}>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <DefaultAvatar name={'W'} customSize={30}/>
