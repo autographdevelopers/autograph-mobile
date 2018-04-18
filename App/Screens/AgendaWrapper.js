@@ -44,6 +44,7 @@ class AgendaWrapper extends Component {
         onDayPress={onDayPress}
         renderEmptyDate={(date)=><Text>EmptyDate</Text>}
         theme={styles.customAgendaThemeConfig}
+        style={{height: 100}}
         {...this.props}
       />
     )
@@ -58,7 +59,7 @@ const styles = {
         width: 0,
       }
     }
-  }
+  },
 };
 
 const mapStateToProps = state => ({

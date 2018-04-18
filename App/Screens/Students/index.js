@@ -9,16 +9,13 @@ import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import Layout from '../../Components/Layout';
 import ButtonText from '../../Components/ButtonText';
 import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
-
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
-
 import { studentsActionCreators } from '../../Redux/StudentsRedux';
 import { contextActionCreators } from '../../Redux/ContextRedux';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
@@ -93,10 +90,7 @@ class StudentsIndex extends Component {
   renderPlaceholder = () => {
     if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
       return (
-        <Text style={styles.listPlaceholder}>
-          Nie masz jeszcze zadnych kursantów, zapros ich do wspolpracy juz
-          teraz!
-        </Text>
+        <InfoBox description={'Nie masz jeszcze zadnych kursantów, zapros ich do wspolpracy juz teraz!'}/>
       )
     } else {
       return null;
@@ -132,7 +126,7 @@ class StudentsIndex extends Component {
       )
     } else {
       return (
-        <Layout scroll={false} customStyles={{paddingTop: 0}}>
+        <View style={{flex: 1}}>
           <SegmentsControl componentProps={{
             values: list.map(item => item.segmentName),
             selectedIndex: segmentIndex,
@@ -165,7 +159,7 @@ class StudentsIndex extends Component {
               onPress={() => this.props.destroyInvitation({type: 'Student', user_id: this.state.studentId})}
             />
           </ModalTemplate>
-        </Layout>
+        </View>
       );
     }
   }
@@ -192,4 +186,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentsIndex)
+export default connect(mapStateToProps, mapDispatchToProps)(StudentsIndex);

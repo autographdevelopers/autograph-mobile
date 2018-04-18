@@ -85,8 +85,6 @@ export const getSlotsHavingLesson = createSelector(
 export const lessonsForSlots = createSelector(
   [getSlotsHavingLesson, getLessons],
   (slots, lessons) => {
-    console.log('getLessons');
-    console.log(lessons);
 
     return _.chain(slots)
             .groupBy(slot => slot.driving_lesson_id)

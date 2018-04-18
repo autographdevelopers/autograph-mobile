@@ -10,7 +10,7 @@ import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedu
 import FORM_IDS from './Constants';
 
 import { connect } from 'react-redux';
-import LoadingHOC from '../../Containers/LoadingHOC';
+import LoadingHOC from '../../HOC/LoadingHOC';
 
 const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 

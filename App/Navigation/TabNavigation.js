@@ -6,6 +6,7 @@ import SettingsScreen from '../Screens/SettingsScreen';
 import DrivingSchoolInformation from '../Screens/DrivingSchoolInformation';
 import { TabNavigator } from 'react-navigation';
 import { Colors, Fonts } from '../Themes';
+import withFluidLayout from '../HOC/withFluidLayout';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconE from 'react-native-vector-icons/Entypo';
 import IconF from 'react-native-vector-icons/FontAwesome';
@@ -24,21 +25,21 @@ const employeeRoutesConfigs = {
     }
   },
   employees: {
-    screen: EmployeesScreen,
+    screen: withFluidLayout(EmployeesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('employees'),
       tabBarIcon: ({ tintColor }) => (<IconE size={25} name={'user'} color={tintColor}/> ),
     }
   },
   students: {
-    screen: StudentsScreen,
+    screen: withFluidLayout(StudentsScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('students'),
       tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'graduation-cap'} color={tintColor}/> ),
     }
   },
   activities: {
-    screen: ActivitiesScreen,
+    screen: withFluidLayout(ActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
@@ -55,28 +56,28 @@ const ownerRoutesConfigs = {
     }
   },
   employees: {
-    screen: EmployeesScreen,
+    screen: withFluidLayout(EmployeesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('employees'),
       tabBarIcon: ({ tintColor }) => (<IconE size={25} name={'user'} color={tintColor}/> ),
     }
   },
   students: {
-    screen: StudentsScreen,
+    screen: withFluidLayout(StudentsScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('students'),
       tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'graduation-cap'} color={tintColor}/> ),
     }
   },
   activities: {
-    screen: ActivitiesScreen,
+    screen: withFluidLayout(ActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
     }
   },
   settings: {
-    screen: SettingsScreen,
+    screen: withFluidLayout(SettingsScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('settings'),
       tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'cog'} color={tintColor}/> ),
@@ -94,21 +95,21 @@ const studentRoutesConfigs = {
     }
   },
   employees: {
-    screen: EmployeesScreen,
+    screen: withFluidLayout(EmployeesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('enroll'),
       tabBarIcon: ({ tintColor }) => (<IconFeather size={25} name={'edit'} color={tintColor}/> ),
     }
   },
   activities: {
-    screen: ActivitiesScreen,
+    screen: withFluidLayout(ActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
     }
   },
   drivingSchoolInformation: {
-    screen: DrivingSchoolInformation,
+    screen: withFluidLayout(DrivingSchoolInformation),
     navigationOptions: {
       tabBarLabel: I18n.t('driving_school_information'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'information-outline'} color={tintColor}/> ),

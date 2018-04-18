@@ -10,7 +10,6 @@ import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
-import Layout from '../../Components/Layout';
 import ButtonText from '../../Components/ButtonText';
 import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
@@ -133,7 +132,7 @@ class EmployeesIndex extends Component {
       )
     } else {
       return (
-        <Layout scroll={false} customStyles={{paddingTop: 0}}>
+        <View style={{flex: 1}}>
           <SegmentsControl componentProps={{
             values: list.map(item => item.segmentName),
             selectedIndex: segmentIndex,
@@ -166,7 +165,7 @@ class EmployeesIndex extends Component {
               onPress={() => this.props.destroyInvitation({type: 'Employee', user_id: this.state.employeeId})}
             />
           </ModalTemplate>
-        </Layout>
+        </View>
       );
     }
   }

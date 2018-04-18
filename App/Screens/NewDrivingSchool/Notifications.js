@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import FORM_IDS from './Constants';
 import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
 import { notificationSettingsActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
-import LoadingHOC from '../../Containers/LoadingHOC';
+import LoadingHOC from '../../HOC/LoadingHOC';
 
 const FORM_ID = FORM_IDS.USER_NOTIFICATIONS;
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 
-export default InfoBox = ({title, description}) => {
+export default InfoBox = ({title, description, customContainerStyle={}}) => {
   return(
-    <View style={styles.helperContainer}>
+    <View style={[styles.helperContainer, customContainerStyle]}>
       { title &&
       <Text style={[styles.helperText, { fontWeight: 'bold', marginBottom: 5 }]}>
         {title}

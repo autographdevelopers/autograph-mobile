@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+import withFluidLayout from '../HOC/withFluidLayout';
 
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';

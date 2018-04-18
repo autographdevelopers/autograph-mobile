@@ -1,35 +1,57 @@
 import SlotLayout from './SlotLayout';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 import DefaultAvatar from '../DefaultAvatar';
 import moment from 'moment/moment';
+import Pill from '../IntervalPill';
+
 import { slotHelper } from '../../Lib/SlotHelpers';
 import _ from 'lodash';
 
-export default DriveSlot = ({employee, perspective, student, slot, onPress={onPress}}) => {
+export default DriveSlot = ({employee, currentUser, student, slot, onPress={onPress}}) => {
   const from = moment(slot.start_time).format('HH:mm');
   const to = moment(slot.end_time).format('HH:mm');
 
+  const notCurrentStudentsLesson =
+    currentUser.type === 'Student'
+    && student
+    && student.id !== currentUser.id;
+
+  const currentStudentsLesson =
+    currentUser.type === 'Student'
+    && student
+    && student.id === currentUser.id;
+
+  // const canEmployeeCancelLesson =
+  //   currentUser.type === 'Employee'
+  //   && moment(slot.start_time).isBefore();
+
+
   return (
     <SlotLayout borderLeftColor={Colors.primaryWarm} slot={slot} >
-      <TouchableOpacity style={styles.body} onPress={onPress} disabled={perspective==='Student' || !moment(slot.start_time).isAfter()}>
+      <TouchableOpacity style={styles.body} onPress={onPress}
+                        disabled={notCurrentStudentsLesson || moment(slot.start_time).isBefore()}>
+        { moment(slot.start_time).isBefore() && <View style={styles.inPast}/> }
 
-        { perspective === 'Employee' && student.name && student.surname &&
+        { currentUser.type === 'Employee' && student.name && student.surname &&
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <DefaultAvatar name={'W'} customSize={30}/>
             <Text>{`${student.name} ${student.surname}`}</Text>
           </View>
         }
-        { perspective === 'Student' &&
+        { notCurrentStudentsLesson &&
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text>Umówiona lekcja</Text>
         </View>
         }
-
-        <View style={styles.pill}>
-          <Text style={styles.intervalText}>{`${from} - ${to}`}</Text>
+        { currentStudentsLesson &&
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text>Moja lekcja!</Text>
         </View>
+        }
+
+        <Pill>{`${from} - ${to}`}</Pill>
       </TouchableOpacity>
     </SlotLayout>
   );
@@ -50,20 +72,13 @@ const styles = {
     color: Colors.primaryWarm,
     textAlign: 'center',
   },
-  pill: {
-    height: 25,
-    width: 80,
-    backgroundColor: Colors.lightGrey,
-    borderRadius: 10,
+  inPast: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    // alignSelf: 'flex-end',
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-  },
-  intervalText: {
-    color: Colors.black,
-    fontSize: Fonts.size.extraSmall,
-    fontFamily: Fonts.type.light,
+    // backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: Colors.lightGrey,
+    opacity: .5,
+    zIndex: 100,
   }
 };

@@ -27,7 +27,7 @@ const SmallPill = ({interval}) => (
 const PIE_CHART_SIZE = 40;
 
 export default EmployeeAvailabilitySummaryCell = ({employee, slots, onCalendarPress}) => {
-  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
+  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null && moment(slot.start_time).isAfter());
   const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
   const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
   const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);

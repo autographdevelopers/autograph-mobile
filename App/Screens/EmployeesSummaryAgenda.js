@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
 import AgendaWrapper from './AgendaWrapper';
 import InfoBox from '../Components/InfoBox';
-import withRequiredData from '../Containers/withRequiredData';
+import withRequiredData from '../HOC/withRequiredData';
 /** == Action Creators ================================ */
 import { employeesSummaryAgendaActionCreators } from '../Redux/AgendaRedux';
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
@@ -70,6 +70,7 @@ class EmployeesSummaryAgenda extends Component {
           <InfoBox
             title={emptyDayLabels[0]}
             description={emptyDayLabels[1]}
+            customContainerStyle={{marginHorizontal: 15}}
           />
         }
         selected={selectedDay}

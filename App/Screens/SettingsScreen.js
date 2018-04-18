@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import Layout from '../Components/Layout'
 import IconF from 'react-native-vector-icons/FontAwesome';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,7 +28,7 @@ export default class SettingsScreen extends Component {
     const ICON_SIZE = 25;
 
     return (
-      <Layout>
+      <View style={{flex: 1}}>
         <ListItem
           leftIcon={<IconF size={ICON_SIZE} name={'cog'} color={Colors.strongGrey} style={styles.icon} />}
           title={'Information'}
@@ -77,7 +76,7 @@ export default class SettingsScreen extends Component {
             {/*// navigation.navigate('editScheduleSettings', navParams)*/}
           {/*}}*/}
         {/*/>*/}
-      </Layout>
+      </View>
     )
   }
 }

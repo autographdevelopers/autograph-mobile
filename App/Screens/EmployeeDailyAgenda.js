@@ -13,10 +13,11 @@ import SelectedSlotComponent from '../Components/Slots/SelectedSlot';
 import BreakSlot from '../Components/Slots/BreakSlot';
 import BlockButton from '../Components/BlockButton';
 import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
-import withRequiredData from '../Containers/withRequiredData';
+import InfoBox from '../Components/InfoBox';
+import withRequiredData from '../HOC/withRequiredData';
+import withFluidLayout from '../HOC/withFluidLayout';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { toastActionCreators } from '../Redux/ToastRedux';
@@ -38,6 +39,45 @@ import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
+
+const BookLessonActionPane = props => {
+  const {
+    minimum_slots_count_per_driving_lesson,
+    selectedSlots,
+    lessonInterval,
+    handleBookLessonBtnPress,
+    unlockSelectedSlots
+  } = props;
+
+
+  const slotsSelected = selectedSlots.length > 0;
+  const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
+  const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
+
+  if(!slotsSelected) return null;
+
+  return (
+    <View>
+      { tooFewSlotsSelected &&
+        <BlockButton customContainerStyles={{backgroundColor: Colors.salmon}} disabled={true}>
+          {`Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję`}
+        </BlockButton>
+      }
+      { enoughSlotsSelected &&
+        <BlockButton onPress={handleBookLessonBtnPress}>
+          {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
+        </BlockButton>
+      }
+      { slotsSelected &&
+        <BookLessonTimeoutCounter
+          submaskColor={enoughSlotsSelected ? Colors.primaryWarm : Colors.salmon}
+          release_at={selectedSlots[0].release_at}
+          handleTimeout={unlockSelectedSlots}/>
+      }
+    </View>
+  )
+}
+
 
 class EmployeeDailyAgenda extends Component {
   constructor(props) {
@@ -80,6 +120,10 @@ class EmployeeDailyAgenda extends Component {
       );
     }
   };
+  //
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
 
   unlockSelectedSlots = () => {
     const { selectedSlots } = this.props;
@@ -103,7 +147,7 @@ class EmployeeDailyAgenda extends Component {
       agendaItem = <BreakSlot slot={slot}/>
     } else if ( slot.isLesson ) {
       agendaItem = <DrivingLessonCell
-        perspective={currentUser.type}
+        currentUser={currentUser}
         onPress={this.prepareCancelLessonModal(slot)}
         employee={slot.employee || {} }
         student={slot.student || {} }
@@ -232,9 +276,6 @@ class EmployeeDailyAgenda extends Component {
       scheduleSettings: { minimum_slots_count_per_driving_lesson }
     } = this.props;
 
-    const slotsSelected = selectedSlots.length > 0;
-    const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
-    const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
 
     const emptyDayLabels = ['title', 'description'].map(
       key => I18n.t(`employee_daily_agenda_day_empty.${currentUser.type.toLowerCase()}_perspective.${key}`));
@@ -247,6 +288,7 @@ class EmployeeDailyAgenda extends Component {
               <InfoBox
                 title={emptyDayLabels[0]}
                 description={emptyDayLabels[1]}
+                customContainerStyle={{marginHorizontal: 15}}
               />
           }
           selected={selectedDay}
@@ -254,22 +296,13 @@ class EmployeeDailyAgenda extends Component {
           items={employeeDailyAgendaItems}
           renderItem={this.renderAgendaItem}
         />
-        { tooFewSlotsSelected &&
-          <BlockButton customContainerStyles={{backgroundColor: Colors.salmon}} disabled={true}>
-            {`Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję`}
-          </BlockButton>
-        }
-        { enoughSlotsSelected &&
-          <BlockButton onPress={this.handleBookLessonBtnPress}>
-            {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
-          </BlockButton>
-        }
-        { slotsSelected &&
-          <BookLessonTimeoutCounter
-            submaskColor={enoughSlotsSelected ? Colors.primaryWarm : Colors.salmon}
-            release_at={selectedSlots[0].release_at}
-            handleTimeout={this.unlockSelectedSlots}/>
-        }
+        <BookLessonActionPane
+          minimum_slots_count_per_driving_lesson={minimum_slots_count_per_driving_lesson}
+          selectedSlots={selectedSlots}
+          lessonInterval={lessonInterval}
+          handleBookLessonBtnPress={this.handleBookLessonBtnPress}
+          unlockSelectedSlots={this.unlockSelectedSlots}
+        />
       </View>
     );
   }
