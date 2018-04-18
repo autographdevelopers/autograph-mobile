@@ -82,5 +82,6 @@
       "title": "Brak informacji o dyspozycyjności instruktorów dla wybranego dnia.",
       "description": "Wygląda na to, że nikt nie jeździ tego dnia, wybierz na kalendarzu inny dzień."
     }
-  }
+  },
+  "invalid_gap_around_selection": "Nie możesz zostawiać przerw, które nie są wielkrotnosciami minimalnej długości lekcji."
 }

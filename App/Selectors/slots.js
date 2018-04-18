@@ -105,32 +105,24 @@ export const lessonsForSlots = createSelector(
   },
 );
 
-export const getEmployeeDailyAgenda = createSelector(
+export const getAgendaItemsArray = createSelector(
   [getSlotsNotBelongingToLesson, lessonsForSlots],
   (slots, lessons) => {
-
-    console.log('************************');
-    console.log('lessons');
-    console.log(_.cloneDeep(lessons));
-    console.log('slots');
-    console.log(_.cloneDeep(slots));
-    console.log('************************');
-
-
     const lessonsAndSlots = [...slots, ...lessons].sort(compareStartTimes);
 
-    const withPossibleBreaksAndWastes = lessonsAndSlots.reduce(
+    return lessonsAndSlots.reduce(
       (acc, current, index, array) => {
         let differenceInMinutes;
 
-        if (_.last(array) === current) {
+        if ( _.last(array) === current ) {
           differenceInMinutes = 0;
         } else {
           differenceInMinutes = moment(array[index + 1].start_time)
             .diff(current.end_time, 'minutes');
         }
 
-        if (!moment(current.start_time).isAfter() && !current.slots && !current.isLesson) {
+        if ( !moment(current.start_time).isAfter() && !current.slots &&
+          !current.isLesson ) {
           if ( _.last(acc) && _.last(acc).isWasted ) {
             _.last(acc).end_time = current.end_time;
           } else {
@@ -145,16 +137,22 @@ export const getEmployeeDailyAgenda = createSelector(
           acc.push({ isBreakSlot: true, start_time: current.end_time });
 
         return acc;
-      }, []);
+      }, []
+    )
+  }
+)
 
-    return _.groupBy(withPossibleBreaksAndWastes, slot => moment.utc(slot.start_time).format('YYYY-MM-DD'));
+export const getEmployeeDailyAgenda = createSelector(
+  [getAgendaItemsArray],
+  items => {
+    return _.groupBy(items, slot => moment.utc(slot.start_time).format('YYYY-MM-DD'));
   },
 );
 
 export const getSelectedSlots = createSelector(
-  [getEmployeeSlotsForADay, getCurrentUser],
+  [getAgendaItemsArray, getCurrentUser],
   (slots, currentUser) => slots.filter(slot => {
-    return moment(slot.release_at).isAfter() && currentUser.id ===
+    return slot.release_at && moment(slot.release_at).isAfter() && currentUser.id ===
       slot.locking_user_id && slot.driving_lesson_id === null;
   }).sort(compareStartTimes),
 );

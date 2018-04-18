@@ -183,14 +183,19 @@ class EmployeeDailyAgenda extends Component {
     const {
       selectedSlots,
       currentUser,
-      scheduleSettings: { maximum_slots_count_per_driving_lesson }
+      scheduleSettings: {
+        maximum_slots_count_per_driving_lesson,
+      }
     } = this.props;
 
+    // max lesson time validation
     if ( selectedSlots.length === maximum_slots_count_per_driving_lesson ) {
       this.props.displayToastMsg(I18n.t('max_lesson_time_exceeded'));
       return;
     }
 
+
+    // adjacency validation
     const firstOfSelected = _.first(selectedSlots);
     const lastOfSelected = _.last(selectedSlots);
     let isAdjacent = false;
@@ -215,6 +220,9 @@ class EmployeeDailyAgenda extends Component {
       return;
     }
 
+
+    // If valid selection - lock slot
+
     const release_at = moment().add(11, 'seconds').format();
     const lockedSlot = _.cloneDeep(slot);
     lockedSlot.release_at = release_at;
@@ -229,7 +237,62 @@ class EmployeeDailyAgenda extends Component {
     this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
   };
 
+  leftInvalidSpace = () => {
+    const {
+      selectedSlots,
+      scheduleSettings: {
+        minimum_slots_count_per_driving_lesson
+      },
+      employeeDailyAgendaItems
+    } = this.props;
+
+    const agendaItems = _.values(employeeDailyAgendaItems)[0];
+
+    const firstOfSelected = _.first(selectedSlots);
+    const lastOfSelected = _.last(selectedSlots);
+
+    const startOfSelectionIndex = agendaItems.findIndex(
+      s => _.isEqual(s, firstOfSelected));
+    const endOfSelectionIndex = agendaItems.findIndex(
+      s => _.isEqual(s, lastOfSelected));
+
+    let backwardIterator = startOfSelectionIndex;
+    let forwardIterator = endOfSelectionIndex;
+
+    const availableSlot = slot => slot.driving_lesson_id === null &&
+      moment(slot.start_time).isAfter();
+
+    const forwardEndCondition = index => ( index === agendaItems.length )
+      ||
+      ( !availableSlot(agendaItems[index]) && index > endOfSelectionIndex );
+
+    const backwardEndCondition = index => ( index === -1 )
+      ||
+      ( !availableSlot(agendaItems[index]) && index < startOfSelectionIndex );
+
+    do {
+      if ( !forwardEndCondition(forwardIterator) )
+        forwardIterator++;
+      if ( !backwardEndCondition(backwardIterator) )
+        backwardIterator--;
+    } while (!forwardEndCondition(forwardIterator) ||
+    !backwardEndCondition(backwardIterator));
+
+    const invalidGapBeforeSelection = ( ( Math.abs(startOfSelectionIndex -
+      backwardIterator) - 1 ) % minimum_slots_count_per_driving_lesson ) !== 0;
+    const invalidGapAfterSelection = ( ( Math.abs(forwardIterator -
+      endOfSelectionIndex) - 1 ) % minimum_slots_count_per_driving_lesson ) !==
+      0;
+
+    return invalidGapBeforeSelection || invalidGapAfterSelection;
+  };
+
   handleBookLessonBtnPress = () => {
+    if (this.leftInvalidSpace()) {
+      this.props.displayToastMsg(I18n.t('invalid_gap_around_selection'));
+      return;
+    }
+
     const {
       selectedSlots,
       drivingSchoolID,
@@ -253,6 +316,7 @@ class EmployeeDailyAgenda extends Component {
     };
 
     setBookLessonParams(bookLessonParams);
+
     if(currentUser.type === 'Employee') {
       navigate('searchStudent', { onResultPress: this.onStudentsSelected })
     } else if (currentUser.type === 'Student') {
