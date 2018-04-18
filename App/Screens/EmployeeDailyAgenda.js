@@ -15,7 +15,6 @@ import BlockButton from '../Components/BlockButton';
 import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
 import InfoBox from '../Components/InfoBox';
 import withRequiredData from '../HOC/withRequiredData';
-import withFluidLayout from '../HOC/withFluidLayout';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
 import { modalActionCreators } from '../Redux/ModalRedux';
@@ -120,10 +119,6 @@ class EmployeeDailyAgenda extends Component {
       );
     }
   };
-  //
-  // shouldComponentUpdate() {
-  //   return false;
-  // }
 
   unlockSelectedSlots = () => {
     const { selectedSlots } = this.props;
@@ -194,7 +189,6 @@ class EmployeeDailyAgenda extends Component {
       return;
     }
 
-
     // adjacency validation
     const firstOfSelected = _.first(selectedSlots);
     const lastOfSelected = _.last(selectedSlots);
@@ -219,7 +213,6 @@ class EmployeeDailyAgenda extends Component {
       this.props.displayToastMsg(I18n.t('slots_not_adjacent'));
       return;
     }
-
 
     // If valid selection - lock slot
 
@@ -279,10 +272,11 @@ class EmployeeDailyAgenda extends Component {
     !backwardEndCondition(backwardIterator));
 
     const invalidGapBeforeSelection = ( ( Math.abs(startOfSelectionIndex -
-      backwardIterator) - 1 ) % minimum_slots_count_per_driving_lesson ) !== 0;
+      backwardIterator) - 1 ) % minimum_slots_count_per_driving_lesson )
+      !== 0;
     const invalidGapAfterSelection = ( ( Math.abs(forwardIterator -
-      endOfSelectionIndex) - 1 ) % minimum_slots_count_per_driving_lesson ) !==
-      0;
+      endOfSelectionIndex) - 1 ) % minimum_slots_count_per_driving_lesson )
+      !== 0;
 
     return invalidGapBeforeSelection || invalidGapAfterSelection;
   };

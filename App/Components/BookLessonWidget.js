@@ -22,6 +22,8 @@ const BookLessonWidget = props => {
     slot_ids
   };
 
+  const leessonDuration = (slot_ids.length)/2;
+
   return (
     <View>
       <View style={styles.header}>
@@ -32,6 +34,8 @@ const BookLessonWidget = props => {
         <Text style={styles.dateTimeInfoText}>{date}</Text>
         <View style={styles.dotSeparator}/>
         <Text style={styles.dateTimeInfoText}>{`${fromHour} - ${toHour}`}</Text>
+        <View style={styles.dotSeparator}/>
+        <Text style={styles.dateTimeInfoText}>{leessonDuration === 1 ? '1 godzina' : `${leessonDuration} godziny`}</Text>
       </View>
 
       <View style={styles.partiesRow}>
