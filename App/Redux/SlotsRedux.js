@@ -7,13 +7,19 @@ import _ from 'lodash';
 const INFINITY = 999;
 
 const { Types, Creators } = createActions({
-  indexRequest: ['daySelected', 'employeeId'],
+  indexRequest: ['params', 'callback'],
   save: ['data'],
-  changeStatus: ['status']
+  changeStatus: ['status'],
+  releaseLesson: ['id']
 }, { prefix: 'SLOTS_' });
 
 export const slotActionTypes = Types;
 export const slotActionCreators = Creators;
+
+export const SLOTS_FETCHED_CALLBACKS = {
+  SUMMARY_AGENDA_PUSH_CACHE_HISTORY: 'SUMMARY_AGENDA_PUSH_CACHE_HISTORY',
+  DAILY_AGENDA_PUSH_CACHE_HISTORY: 'DAILY_AGENDA_PUSH_CACHE_HISTORY',
+};
 
 /* ------------- Initial State ------------- */
 
@@ -37,20 +43,22 @@ export const INITIAL_STATE = {
 
 export const saveHandler = (state, { data }) => {
   const newState = _.cloneDeep(state);
-
   const slots = _.flattenDepth([data], INFINITY);
 
-  /**
-   * Because I want a single handler for saving array of slots and single slot
-   * I use this mechanism to make sure that I end up with an array of slots
-   * even when there will be only one element so that I can process
-   * single slot and collection in the same way.
-   */
+  _.each(slots, slot => newState.data[slot.id] = slot);
+  newState.allIds = Object.keys(newState.data);
 
-  _.forEach(slots, slot => newState.data[slot.id] = slot);
+  return newState;
+};
 
-  newState.allIds = Object.values(newState.data).map(item => item.id);
-
+export const releaseLessonHandler = (state, { id }) => {
+  const newState = _.cloneDeep(state);
+  newState.data = _.mapValues(newState.data, slot => {
+    if(slot.driving_lesson_id === id) {
+      slot.driving_lesson_id = null;
+    }
+    return slot;
+  })
   return newState;
 };
 
@@ -65,5 +73,6 @@ export const changeStatusHandler = (state, {status}) => {
 
 export const slotReducer = createReducer(INITIAL_STATE, {
   [slotActionTypes.SAVE]: saveHandler,
-  [slotActionTypes.CHANGE_STATUS]: changeStatusHandler
+  [slotActionTypes.CHANGE_STATUS]: changeStatusHandler,
+  [slotActionTypes.RELEASE_LESSON]: releaseLessonHandler
 });

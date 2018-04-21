@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
 import { Colors } from '../../Themes/index';
-import LoadingHOC from '../../Containers/LoadingHOC';
+import LoadingHOC from '../../HOC/LoadingHOC';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';

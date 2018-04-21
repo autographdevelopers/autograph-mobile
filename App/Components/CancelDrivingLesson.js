@@ -4,10 +4,12 @@ import I18n from '../I18n/index'
 import { Fonts, Colors } from '../Themes/'
 import ButtonText from './ButtonText'
 import DefaultAvatar from './DefaultAvatar';
+import { connect } from 'react-redux';
+import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 
-const AVATAR_SIZE = 22
+const AVATAR_SIZE = 22;
 
-export default CancelDrivingLessons = ({ onPress, drivingLesson }) => {
+const CancelDrivingLessons = ({ cancelRequest, drivingLesson }) => {
   return (
     <View>
       <Text style={styles.text}>
@@ -22,7 +24,7 @@ export default CancelDrivingLessons = ({ onPress, drivingLesson }) => {
         {drivingLesson.start_time}
       </Text>
       <ButtonText
-        onPress={onPress}
+        onPress={cancelRequest(drivingLesson.id)}
         customTextStyle={{color: Colors.salmon}}
         customStyle={styles.buttonText}>
         Odwołaj
@@ -66,4 +68,14 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.extraSmall,
     color: Colors.strongGrey
   }
-})
+});
+
+const mapDispatchToProps = dispatch => ({
+  cancelRequest: id => () => dispatch(drivingLessonActionCreators.cancelRequest(id))
+});
+
+const mapStateToProps = state => ({
+  drivingLesson: state.lessonModal.cancel.drivingLesson
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CancelDrivingLessons)

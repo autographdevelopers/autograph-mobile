@@ -4,8 +4,6 @@ import momentTimezone from 'moment-timezone';
 export const slotHelper = {
   TIME_FORMAT: 'HH:mm',
   validateFrames: function(frames) {
-    console.log('frames')
-    console.log(frames)
     if (frames.first() <= frames.last()) {
       return undefined;
     } else if (frames.length > 0){
