@@ -15,3 +15,6 @@ export const canManageEmployees = drivingSchool =>
 
 export const canManageStudents = drivingSchool =>
   drivingSchool && drivingSchool.privileges && (drivingSchool.privileges.is_owner || drivingSchool.privileges.can_manage_students)
+
+export const canModifySchedules = drivingSchool =>
+  drivingSchool && drivingSchool.privileges && (drivingSchool.privileges.is_owner || drivingSchool.privileges.can_modify_schedules)

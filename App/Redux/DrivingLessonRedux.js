@@ -32,7 +32,8 @@ export const changeStatusHandler = (state, { status }) => ({ ...state, status })
 export const destroySingleHandler = (state, { lessonId }) => {
   const newState = _.cloneDeep(state);
   delete newState.hashMap[lessonId];
-  newState.allIDs = newState.allIDs.filter(id => lessonId !== id );
+  // must be !=
+  newState.allIDs = newState.allIDs.filter(id => lessonId != id );
 
   return newState;
 };
@@ -41,7 +42,7 @@ export const saveHandler = (state, { data }) => {
   const newState = _.cloneDeep(state);
   const lessons = _.flattenDepth([data], INFINITY);
   _.each(lessons, lesson => newState.hashMap[lesson.id] = lesson);
-  newState.allIds = Object.keys(newState.hashMap);
+  newState.allIDs = Object.keys(newState.hashMap);
 
   return newState;
 };

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import I18n from '../I18n/index'
 import { Fonts, Colors } from '../Themes/'
 import ButtonText from './ButtonText'
 import DefaultAvatar from './DefaultAvatar';
@@ -31,7 +30,7 @@ const CancelDrivingLessons = ({ cancelRequest, drivingLesson }) => {
       </ButtonText>
     </View>
   )
-}
+};
 
 const renderUser = (user) => {
   return <View style={styles.userFeed}>
@@ -43,7 +42,7 @@ const renderUser = (user) => {
       {`${user.name} ${user.surname}`}
     </Text>
   </View>
-}
+};
 
 const styles = StyleSheet.create({
   text: {

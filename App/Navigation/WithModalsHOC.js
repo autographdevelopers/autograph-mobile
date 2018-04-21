@@ -42,7 +42,7 @@ export const withModals = (TabNav) => {
 
   TabFlowWithModals.router = TabNav.router;
 
-  const mapStateToProps = state => ( {
+  const mapStateToProps = state => ({
     drivingLessonCancelStatus: state.lessonModal.cancel.status,
     drivingLessonBookStatus: state.lessonModal.book.status,
   });
