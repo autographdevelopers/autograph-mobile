@@ -15,6 +15,7 @@ export const AFTER_SAVE_CALLBACKS = {
 
 export const drivingLessonHelpers = {
   getEndTime: lesson => {
+    if (lesson.slots.length === 0) return '';
     const sorted = lesson.slots
                          .sort((left, right) =>
                            moment(left.start_time).diff(moment(right.start_time)));
