@@ -150,7 +150,10 @@ class MySchoolsScreen extends Component {
       drivingSchools: { status }
     } = this.props;
 
-    const mySchools = [...activeDrivingSchools, ...awaitingActivationDrivingSchools];
+    const mySchools = [
+      ...activeDrivingSchools,
+      ...awaitingActivationDrivingSchools
+    ];
 
     const sections = [
       {title: SECTION_TITLES.mySchools,

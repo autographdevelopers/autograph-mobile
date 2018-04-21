@@ -42,7 +42,7 @@ export const saveHandler = (state, { data }) => {
   const newState = _.cloneDeep(state);
   const lessons = _.flattenDepth([data], INFINITY);
   _.each(lessons, lesson => newState.hashMap[lesson.id] = lesson);
-  newState.allIDs = Object.keys(newState.hashMap);
+  newState.allIDs = lessons.map(lesson => lesson.id);
 
   return newState;
 };
