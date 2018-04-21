@@ -52,22 +52,24 @@ class Profile extends Component {
     return (
       <Layout>
         <View style={styles.headerWithBtn}>
-
-          <SectionHeader title={'Postępy'} customTextStyles={styles.headerText} customUnderlineStyles={styles.underline}/>
+          <SectionHeader
+            title={'Postępy'}
+            customTextStyles={styles.headerText}
+            customUnderlineStyles={styles.underline} />
 
           {
             canManageStudents(drivingSchool) &&
-              <ButtonText
-                onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
-                customTextStyle={{ fontSize: Fonts.size.small }}
-                icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
-                Edytuj
-              </ButtonText>
+            <ButtonText
+              onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
+              customTextStyle={{ fontSize: Fonts.size.small }}
+              icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+              Edytuj
+            </ButtonText>
           }
         </View>
 
-        <View style={[listProjectorStyles.containerStyle]}>
-          <DrivingCourseProgress drivingCourse={drivingCourse}/>
+        <View style={styles.drivingCourseProgressWrapper}>
+          <DrivingCourseProgress drivingCourse={drivingCourse} />
         </View>
 
         <ModalTemplate
@@ -81,8 +83,10 @@ class Profile extends Component {
         </ModalTemplate>
 
         <View style={styles.headerWithBtn}>
-
-          <SectionHeader title={'Nadchodzące jazdy'} customTextStyles={styles.headerText} customUnderlineStyles={styles.underline}/>
+          <SectionHeader
+            title={'Nadchodzące jazdy'}
+            customTextStyles={styles.headerText}
+            customUnderlineStyles={styles.underline} />
 
           <ButtonText
             onPress={() => {}}
@@ -91,7 +95,7 @@ class Profile extends Component {
           </ButtonText>
         </View>
 
-        <View style={[listProjectorStyles.containerStyle]}>
+        <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
           <DrivingLessonsList
             onCancelPress={this.openDrivingLessonCancelModal}
             drivingLessons={drivingLessons}
@@ -119,7 +123,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center',
-    marginBottom: 5
   },
   headerText: {
     fontSize: Fonts.size.medium,
@@ -131,6 +134,13 @@ const styles = StyleSheet.create({
     width: 30,
     borderColor: Colors.primaryWarm,
     borderWidth: 1,
+  },
+  drivingCourseProgressWrapper: {
+    marginVertical: 15
+  },
+  drivingLessonsListWrapper: {
+    marginTop: 10,
+    marginBottom: 15
   }
 })
 

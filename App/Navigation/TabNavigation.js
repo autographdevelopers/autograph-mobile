@@ -1,5 +1,6 @@
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
 import EmployeesSummaryAgendaScreen from '../Screens/SummaryAgendaFetcher';
+import StudentDashboard from '../Screens/StudentDashboard'
 import EmployeesScreen from '../Screens/Employees/index';
 import StudentsScreen from '../Screens/Students/index';
 import SettingsScreen from '../Screens/SettingsScreen';
