@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+import withFluidLayout from '../HOC/withFluidLayout';
 
 import styles from './Styles/NavigationStyles';
 import NavHeader from '../Components/NavHeader';
@@ -31,8 +32,11 @@ import StudentFlow from './StudentFlow';
 import OwnerFlow from './OwnerFlow';
 
 import EmployeeSearchableList from '../Components/EmployeesSearchableList';
+import StudentSearchablelist from '../Components/StudentsSearchableList';
 
 import PersonalSettings from '../Screens/PersonalSettings';
+
+import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgendaFetcher';
 
 const primaryFlowNavigationOptions = ({navigation}) => {
   // TODO: refactor this shit
@@ -134,7 +138,24 @@ const DRIVING_LESSONS = {
       header: props => <NavHeader navigation={props.navigation} title={'Lista jazd'}/>
     }
   }
-}
+};
+
+const SEARCH_SCREENS = {
+  searchEmployee: {
+    screen: EmployeeSearchableList,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation}
+                                  title={'Wybierz pracownika'}/>
+    }
+  },
+  searchStudent: {
+    screen: StudentSearchablelist,
+    navigationOptions: {
+      header: props => <NavHeader navigation={props.navigation}
+                                  title={'Wybierz kursanta'}/>
+    }
+  }
+};
 
 /** ==NAVIGATION SETUP================== */
 const routeConfigs = {
@@ -143,13 +164,19 @@ const routeConfigs = {
     navigationOptions: {
       header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
     }},
-  searchEmployee: {
-    screen: EmployeeSearchableList,
+  employeeDailyAgenda: {
+    screen: EmployeeDailyAgenda,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation}
-                                  title={'Wybierz pracownika'}/>
+      header: props => {
+        const { state: { index, routes } } = props.navigation;
+        const route = routes[index];
+        const { employee } = route.params;
+
+        return <NavHeader navigation={props.navigation} title={`${employee.name} ${employee.surname}`}/>
+      }
     }
   },
+  ...SEARCH_SCREENS,
   ...NOT_AUTHENTICATED_USER_SCREENS,
   ...USERS_FLOWS_SCREENS,
   ...INVITE_USER_SCREENS,

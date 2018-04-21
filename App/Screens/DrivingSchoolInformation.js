@@ -5,8 +5,6 @@ import { Avatar } from 'react-native-elements'
 import { Colors, Fonts } from '../Themes/index';
 import MapView, { Marker } from 'react-native-maps';
 
-import Layout from '../Components/Layout';
-
 class DrivingSchoolInformation extends Component {
   renderHeader = drivinShoolName => {
     return (
@@ -114,12 +112,12 @@ class DrivingSchoolInformation extends Component {
     const { drivingSchool } = this.props
 
     return (
-      <Layout>
+      <View style={{flex: 1}}>
         {this.renderHeader(drivingSchool.name)}
         {this.renderAdditionalInformation(drivingSchool.additional_information)}
         {this.renderContactInformation(drivingSchool)}
         {this.renderLocalization(drivingSchool)}
-      </Layout>
+      </View>
     )
   }
 }

@@ -5,12 +5,11 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
 /** Custom modules */
-import FullScreenInformation from '../../Components/FullScreenInformation';
+import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
-import Layout from '../../Components/Layout';
 import ButtonText from '../../Components/ButtonText';
 import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
@@ -22,6 +21,7 @@ import { FETCHING_STATUS } from '../../Lib/utils';
 
 import { employeesActionCreators } from '../../Redux/EmployeesRedux';
 import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { contextActionCreators } from '../../Redux/ContextRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
@@ -48,7 +48,7 @@ class EmployeesIndex extends Component {
   };
 
   goToUserProfile = (user, index) => () => {
-    this.props.screenProps.setCurrentEmployee(user.id);
+    this.props.setCurrentEmployee(user.id);
     this.props.navigation.navigate('employeeProfile', { user, index });
   };
 
@@ -127,13 +127,12 @@ class EmployeesIndex extends Component {
 
     if(!canManageEmployees(drivingSchool)) {
       return (
-        <FullScreenInformation>
-          {I18n.t('lacksPrivileges.canManageEmployee')}
-        </FullScreenInformation>
+        <InfoBox title={I18n.t('lacksPrivileges.canManageEmployee')}
+                 description={I18n.t('lacksPrivileges.generic')} />
       )
     } else {
       return (
-        <Layout scroll={false} customStyles={{paddingTop: 0}}>
+        <View style={{flex: 1}}>
           <SegmentsControl componentProps={{
             values: list.map(item => item.segmentName),
             selectedIndex: segmentIndex,
@@ -166,7 +165,7 @@ class EmployeesIndex extends Component {
               onPress={() => this.props.destroyInvitation({type: 'Employee', user_id: this.state.employeeId})}
             />
           </ModalTemplate>
-        </Layout>
+        </View>
       );
     }
   }
@@ -185,6 +184,7 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
+  setCurrentEmployee: (id) => dispatch(contextActionCreators.setCurrentEmployee(id)),
   employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest()),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),

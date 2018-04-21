@@ -16,7 +16,6 @@ import { Colors, Fonts } from '../../Themes/';
 
 import ModalTemplate from '../../Components/ModalTemplate';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
-import Layout from '../../Components/Layout';
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
@@ -31,7 +30,7 @@ class Profile extends Component {
   componentWillMount = () => {
     this.props.fetchDrivingCourse();
     this.props.fetchDrivingLessons({ student_id: this.props.studentId })
-  }
+  };
 
   componentWillUnmount = () =>
     this.props.setCurrentStudent(null);
@@ -39,13 +38,13 @@ class Profile extends Component {
   upcomingDrivingLessons = (drivingLessons) =>
     drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
       (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
-    )
+    );
 
   isFetching = (drivingLessonsStatus, drivingCourseStatus) =>
     drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING
 
   render() {
-    const { drivingCourse, drivingLessons, drivingSchool } = this.props
+    const { drivingCourse, drivingLessons, drivingSchool } = this.props;
 
     return (
       <View style={{flex: 1}}>
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   }
-})
+});
 
 const mapStateToProps = state => ({
   drivingCourse: state.drivingCourse,

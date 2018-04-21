@@ -26,24 +26,30 @@ const SmallPill = ({interval}) => (
 
 const PIE_CHART_SIZE = 40;
 
-export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
-  const pieChartData = slots.map(slot => {
-    const isLesson = slot.driving_lesson_id !== null;
-
-    return {
-      value: isLesson,
-      svg: {
-        fill: isLesson ? Colors.primaryWarm : Colors.yellowDark,
-        key: `slot-${slot.id}`
-      }
-    }
-  });
-
-  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null);
+export default EmployeeAvailabilitySummaryCell = ({employee, slots, onCalendarPress}) => {
+  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null && moment(slot.start_time).isAfter());
   const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
   const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
   const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);
-  const lessonsCount = _.groupBy(lessonSlots, slot => slot.driving_lesson_id ).length;
+
+  const lessonsCount = _.chain(lessonSlots).groupBy('driving_lesson_id').keys().value().length;
+
+  const pieChartData =  [
+    {
+      key: 1,
+      svg: {
+        fill: Colors.primaryWarm
+      },
+      value: slots.length - freeSlots.length
+    },
+    {
+      key: 2,
+      svg: {
+        fill: Colors.yellowDark
+      },
+      value: freeSlots.length
+    }
+  ];
 
   return (
     <View style={styles.container}>
@@ -65,19 +71,21 @@ export default EmployeeAvailabilitySummaryCell = ({employee, slots}) => {
         <View style={styles.key}>
           <Text style={styles.takenSlots}>{`Umówionych jazd (${lessonsCount})`}</Text>
 
-          { availableIntervals.length !== 0 && <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text> }
-
-          <View style={styles.intervalCollection}>
-            { availableIntervals.slice(0, 3).map(interval => <SmallPill interval={interval} />) }
-            { availableIntervals.length > 3 && <MoreIndicator/> }
+          { availableIntervals.length !== 0 &&
+          <View>
+            <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text>
+            <View style={styles.intervalCollection}>
+              { availableIntervals.slice(0, 3).map((interval, index) => <SmallPill key={index} interval={interval} />) }
+              { availableIntervals.length > 3 && <MoreIndicator/> }
+            </View>
           </View>
-
+          }
         </View>
       </View>
 
       <View style={styles.footer}>
         <Text style={styles.footerTxt}>Sprawdź całą dyspozycyjność lub umów jazdę</Text>
-        <ButtonText customTextStyle={{ fontSize: Fonts.size.extraSmall }}>Sprawdź grafik</ButtonText>
+        <ButtonText customTextStyle={{ fontSize: Fonts.size.extraSmall }} onPress={onCalendarPress}>Sprawdź grafik</ButtonText>
       </View>
 
     </View>
@@ -98,8 +106,6 @@ const styles = {
     shadowOffset: { height: 0, width: 0 },
     shadowRadius: 8,
     borderRadius: 8,
-
-    marginVertical: 15 // only for testing lists TODO: remove
   },
   takenSlots: {
     color: Colors.primaryWarm,
@@ -117,10 +123,13 @@ const styles = {
   },
   chartRow: {
     flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 5
   },
   key: {
-    marginLeft: 15, flex:1
+    marginLeft: 15,
+    flex:1,
+    justifyContent: 'center'
   },
   footerTxt: {
     fontSize: Fonts.size.extraSmall,
@@ -139,7 +148,6 @@ const styles = {
     width: 40,
     height: 3,
     borderRadius: 8,
-    marginLeft: 5,
     backgroundColor: Colors.primaryWarm
   },
   intervalContainer: {

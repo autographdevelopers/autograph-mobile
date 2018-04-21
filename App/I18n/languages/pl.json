@@ -57,5 +57,31 @@
   "invitation_sent_to": "Zaproszenie wysłane na",
   "lack_of_privileges": "Nie posiada przywilejów",
   "withdraw_invitation": "Wycofaj",
-  "driving_school_information": "Informacje o szkole"
+  "driving_school_information": "Informacje o szkole",
+  "lost_connection_with_server": "Utracono połączenie z serwerem.",
+  "slots_not_adjacent": "Możesz zaznaczać tylko sloty przystające do siebie.",
+  "max_lesson_time_exceeded": "Przekroczono maksymalną długość lekcji.",
+  "time_to_complete_booking": "Czas pozotały do dokończenia zapisu",
+  "seconds": "sekund",
+  "employee_daily_agenda_day_empty": {
+    "employee_perspective": {
+      "title": "Brak informacji o dyspozycyjności instruktora dla wybranego dnia.",
+      "description": "Ty lub inni uprawnieni pracownicy możecie edytować grafik dowonlnego pracownika i ustawić mu dyspozycyjność. Spowoduje to utworzenie slotów, które pozwolą na tworzenie zapisów na lekcje."
+    },
+    "student_perspective": {
+      "title": "Brak informacji o dyspozycyjności instruktora dla wybranego dnia.",
+      "description": "Sprawdź inne dni lub wybierz innego instruktora aby znaleźć najlepszą opcje na dokonanie zapisu na lekcję."
+    }
+  },
+  "employee_summary_agenda_day_empty": {
+    "employee_perspective": {
+      "title": "Brak informacji o dyspozycyjności instruktorów dla wybranego dnia.",
+      "description": "Upewnij się, że Twoi pracownicy mają stworzony grafik, aby to zrobić - przejdź do zakładki pracownicy, wybierz osobę z listy poczym kliknij \"Ustaw Dyspozycyjnosc\"."
+    },
+    "student_perspective": {
+      "title": "Brak informacji o dyspozycyjności instruktorów dla wybranego dnia.",
+      "description": "Wygląda na to, że nikt nie jeździ tego dnia, wybierz na kalendarzu inny dzień."
+    }
+  },
+  "invalid_gap_around_selection": "Nie możesz zostawiać przerw, które nie są wielkrotnosciami minimalnej długości lekcji."
 }

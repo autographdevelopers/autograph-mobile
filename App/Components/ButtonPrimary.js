@@ -47,7 +47,7 @@ export default ButtonPrimary = ({ onPress,
     wrapper: {
       height: 44,
       alignSelf: 'center',
-      width: '50%',
+      minWidth: '50%',
       backgroundColor: 'transparent',
       justifyContent: 'center',
     },

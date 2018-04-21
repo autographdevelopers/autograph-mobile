@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ActivityIndicator, Text, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
 
@@ -12,37 +10,37 @@ import { canModifySchedules, isStudent } from '../Lib/AuthorizationHelpers';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 
-import DefaultAvatar from '../Components/DefaultAvatar';
-import ButtonText from '../Components/ButtonText';
-import ModalTemplate from '../Components/ModalTemplate';
-import CancelDrivingLesson from '../Components/CancelDrivingLesson';
 import DrivingLessonsListItem from '../Components/DrivingLessonsListItem';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
 
 class DrivingLessonsList extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { cancelableDrivingLessonId: null }
   }
 
-  openCancelDrivingLessonModal = (id) =>
-    this.setState({ cancelableDrivingLessonId: id },
-      () => this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
-    )
+  openCancelDrivingLessonModal = lesson => () => {
+    this.props.initCancelLessonModal(lesson);
+    this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
+  };
 
   userCanCancelLessons = () => {
     const { user, drivingSchool } = this.props;
 
     return (isStudent(user) || canModifySchedules(drivingSchool))
-  }
+  };
 
   sort = (drivingLessons) =>
     drivingLessons.sort((lesson1, lesson2) =>
       moment(lesson1.start_time).isBefore(lesson2.start_time)
-    )
+    );
 
   renderDrivingLessons = () => {
-    const { drivingLessons, userContext, scrollEnabled, fetchingStatus } = this.props;
+    const {
+      drivingLessons,
+      userContext,
+      scrollEnabled,
+      fetchingStatus
+    } = this.props;
 
     if (fetchingStatus === FETCHING_STATUS.READY || fetchingStatus === FETCHING_STATUS.SUCCESS)
       if (drivingLessons.length === 0) {
@@ -52,39 +50,25 @@ class DrivingLessonsList extends Component {
           <FlatList
             scrollEnabled={scrollEnabled}
             data={this.sort(drivingLessons)}
-            renderItem={({item, index}) => (
+            renderItem={({ item }) => (
               <DrivingLessonsListItem drivingLesson={item}
                                       userCanCancelLesson={this.userCanCancelLessons()}
                                       userContext={userContext}
-                                      onCancelPress={this.openCancelDrivingLessonModal} />
+                                      onCancelPress={this.openCancelDrivingLessonModal(item)} />
             )}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(element, _) => `drivingLesson-${element.id}`}
+            keyExtractor={element => `drivingLesson-${element.id}`}
           />
         )
       }
-  }
-
-  findDrivingLesson = (id) =>
-    this.props.drivingLessons.find(drivingLesson => (drivingLesson.id === id))
+  };
 
   render() {
-    const { drivingLessons, fetchingStatus, scrollEnabled } = this.props;
-    const { cancelableDrivingLessonId } = this.state;
+    const { scrollEnabled } = this.props;
 
     return (
       <View style={scrollEnabled && { flex: 1 }}>
         {this.renderDrivingLessons()}
-
-        <ModalTemplate
-          modalID={MODALS_IDS.CANCEL_DRIVING_LESSON}
-          status={fetchingStatus}
-          closeModalCallback={this.props.resetDrivingLessonFetchingStatus}>
-          <CancelDrivingLesson
-            onPress={() => this.props.cancelDrivingLesson(cancelableDrivingLessonId)}
-            drivingLesson={this.findDrivingLesson(cancelableDrivingLessonId)}
-          />
-        </ModalTemplate>
       </View>
     )
   }
@@ -111,9 +95,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  cancelDrivingLesson: (id) => dispatch(drivingLessonActionCreators.cancelRequest(id)),
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
+  initCancelLessonModal: lesson => dispatch(cancelDrivingLessonModalActionCreators.init(lesson))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrivingLessonsList)
