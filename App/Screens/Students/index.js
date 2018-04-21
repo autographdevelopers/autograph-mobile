@@ -90,7 +90,9 @@ class StudentsIndex extends Component {
   renderPlaceholder = () => {
     if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
       return (
-        <InfoBox description={'Nie masz jeszcze zadnych kursantów, zapros ich do wspolpracy juz teraz!'}/>
+        <InfoBox description={'Nie masz jeszcze zadnych kursantów, zapros ich do wspolpracy juz teraz!'}
+                 customContainerStyle={{marginHorizontal: 15}}
+        />
       )
     } else {
       return null;

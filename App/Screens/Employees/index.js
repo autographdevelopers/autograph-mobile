@@ -94,9 +94,9 @@ class EmployeesIndex extends Component {
   renderPlaceholder = () => {
     if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
       return (
-        <Text style={styles.listPlaceholder}>
-          Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!
-        </Text>
+        <InfoBox description={'Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!'}
+                 customContainerStyle={{marginHorizontal: 15}}
+        />
       )
     } else {
       return null;
@@ -128,7 +128,9 @@ class EmployeesIndex extends Component {
     if(!canManageEmployees(drivingSchool)) {
       return (
         <InfoBox title={I18n.t('lacksPrivileges.canManageEmployee')}
-                 description={I18n.t('lacksPrivileges.generic')} />
+                 description={I18n.t('lacksPrivileges.generic')}
+                 customContainerStyle={{marginHorizontal: 15}}
+        />
       )
     } else {
       return (
