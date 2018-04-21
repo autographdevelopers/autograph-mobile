@@ -143,17 +143,17 @@ export default class EmployeeProfileHeader extends Component  {
 
             <Text style={styles.primaryInfo}>{`${user.name} ${user.surname}`}</Text>
 
-            <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`tel. ${user.phone_number}`}</Animated.Text>
+            <Animated.Text style={[styles.secondaryInfo, { marginTop: 3 }, textAnimationStyles]}>{`tel. ${user.phone_number}`}</Animated.Text>
 
-            <Animated.Text style={[styles.secondaryInfo, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
+            <Animated.Text style={[styles.secondaryInfo, { marginTop: 3 }, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
 
             <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' }))}
-              customTextStyle={textAnimationStyles}>
+              customTextStyle={[textAnimationStyles, { marginTop: 3 }]}>
               Zarzadzaj pracownikiem
             </ButtonText>
 
             <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' }))}
-                        customTextStyle={textAnimationStyles}>
+                        customTextStyle={[textAnimationStyles, { marginTop: 3 }]}>
               Ustaw dyspozycyjnosc
             </ButtonText>
           </View>

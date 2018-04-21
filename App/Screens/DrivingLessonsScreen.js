@@ -7,7 +7,10 @@ import moment from 'moment/moment';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
+import {
+  AFTER_SAVE_CALLBACKS,
+  DRIVING_LESSON_STATUSES,
+} from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
@@ -28,7 +31,7 @@ class DrivingLessonsScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchDrivingLessons({
       student_id: this.props.navigation.state.params.studentId,
       employee_id: this.props.navigation.state.params.employeeId,
@@ -94,7 +97,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params)),
+  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   closeModal: () => dispatch(modalActionCreators.close())
 });

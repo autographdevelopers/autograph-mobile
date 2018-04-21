@@ -1,14 +1,14 @@
 import { createReducer, createActions } from 'reduxsauce';
 import { FETCHING_STATUS } from '../Lib/utils';
 import _ from 'lodash';
-
+import { AFTER_SAVE_CALLBACKS } from '../Lib/DrivingLessonHelpers';
 /* ------------- Types and Action Creators ------------- */
 const INFINITY = 999;
 
 const { Types, Creators } = createActions({
-  save: ['data'],
+  save: ['data', 'after_save_callback_type'],
   changeStatus: ['status'],
-  indexRequest: ['params'],
+  indexRequest: ['params', 'after_save_callback_type'],
   cancelRequest: ['id'],
   createRequest: ['params'],
   destroySingle: ['lessonId']
@@ -38,11 +38,19 @@ export const destroySingleHandler = (state, { lessonId }) => {
   return newState;
 };
 
-export const saveHandler = (state, { data }) => {
+export const saveHandler = (state, { data, after_save_callback_type }) => {
   const newState = _.cloneDeep(state);
   const lessons = _.flattenDepth([data], INFINITY);
   _.each(lessons, lesson => newState.hashMap[lesson.id] = lesson);
-  newState.allIDs = lessons.map(lesson => lesson.id);
+
+  switch(after_save_callback_type) {
+    case AFTER_SAVE_CALLBACKS.APPEND_ID:
+      _.each(lessons, lesson => newState.allIDs.push(lesson.id));
+      break;
+    case AFTER_SAVE_CALLBACKS.OVERRIDE_ID:
+      newState.allIDs = lessons.map(lesson => lesson.id);
+      break;
+  }
 
   return newState;
 };
