@@ -1,6 +1,6 @@
 /** Built in modules */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { destroy } from 'redux-form';
 import { connect } from 'react-redux';
@@ -37,13 +37,13 @@ const routeConfigs = {
 
 const navigationConfigs = {
   initialRouteName: 'step0',
-  cardStyle: navStyles.card
+  cardStyle: navStyles.card,
+  headerMode: 'none',
 };
 
 const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class NewDrivingSchoolWizardForm extends Component {
-  // static navigationOptions = { header: null };
 
   constructor(props) {
     super(props);
@@ -107,6 +107,9 @@ class NewDrivingSchoolWizardForm extends Component {
   };
 
   render() {
+
+    console.log('nav changed')
+    console.log(this.props.navigation);
 
     return (
       <View style={{ flex: 1 }}>

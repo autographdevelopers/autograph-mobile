@@ -216,7 +216,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  headerMode: 'float',
+  headerMode: 'screen',
   mode: 'card',
   initialRouteName: 'loginLaunch',
   cardStyle: styles.card,
