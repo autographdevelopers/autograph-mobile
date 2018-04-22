@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
@@ -14,7 +16,6 @@ import {
 import { Fonts, Colors } from '../Themes/';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
-import FilterButton from '../Components/FilterButton';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import ModalTemplate from '../Components/ModalTemplate';
 import SpinnerView from '../Components/SpinnerView';
@@ -74,8 +75,11 @@ class DrivingLessonsScreen extends Component {
           />
         }
 
-        <FilterButton
-          onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)} />
+        <ActionButton onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)}
+                      renderIcon={()=><Icon name="filter" size={20} color={Colors.primaryWarm} />}
+                      buttonColor={Colors.lightGrey}
+        >
+        </ActionButton>
 
         <ModalTemplate
           customContainerStyle={{width: null}}
