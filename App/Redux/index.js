@@ -34,7 +34,6 @@ const lessonModalsReducers = combineReducers({
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
-  nav: require('./NavigationRedux').reducer,
   session: sessionReducer,
   user: userReducer,
   form: formReducer,
