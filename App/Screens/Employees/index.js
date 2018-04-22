@@ -4,6 +4,7 @@ import { FlatList, View, RefreshControl, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
+import ActionButton from 'react-native-action-button';
 /** Custom modules */
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
@@ -158,7 +159,7 @@ class EmployeesIndex extends Component {
               }
               />
           </List>
-          <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+          <ActionButton buttonColor={Colors.primaryWarm} onPress={()=>navigation.navigate('inviteEmployee')} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
             status={this.props.invitationDestroyStatus}

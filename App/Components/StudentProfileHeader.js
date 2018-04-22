@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 /** Custom dependencies */
+import NavHeader from '../Components/NavHeader';
 import { Fonts, Colors } from '../Themes/';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
@@ -142,6 +143,7 @@ export default class StudentProfileHeader extends Component  {
     return (
 
       <View>
+        <NavHeader navigation={navigation} title={title} />
         <View style={styles.container}>
           <View style={styles.leftCol}>
             <DefaultAvatar name={user.name}
@@ -176,6 +178,7 @@ const styles = {
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGrey,
+    backgroundColor: 'white'
   },
   leftCol: {
     paddingRight: 15

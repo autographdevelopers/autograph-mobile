@@ -26,7 +26,7 @@ const navigationConfigs = {
     const labels = ['Informacje', 'Uprawnienia'];
 
     return {
-      header: <View>
+      header: <View style={{backgroundColor: 'white'}}>
                 <NavHeader navigation={props.navigation} title={labels[index]}/>
                 <StepsIndicators labels={labels} activeIndex={index}/>
               </View>
