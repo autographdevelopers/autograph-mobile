@@ -9,7 +9,7 @@ import UniversalCell from '../Components/UniversalCell';
 import IconF from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
 import { sessionActionCreators } from '../Redux/SessionRedux';
-
+import { NavigationActions } from 'react-navigation';
 class PersonalSettings extends Component {
 
   renderSectionHeader = ({section}) => <SectionHeader title={section.title}/>
@@ -20,6 +20,16 @@ class PersonalSettings extends Component {
       subtitle={item.value}
     />
   )
+
+  logout = () => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      key: null,
+      actions: [ NavigationActions.navigate({ routeName: 'loginLaunch' }) ],
+    });
+    this.props.navigation.dispatch(resetAction);
+    this.props.logout();
+  };
 
 
   render() {
@@ -63,7 +73,7 @@ class PersonalSettings extends Component {
           renderItem={this.renderListItem}
         />
         <View style={styles.btnContainer}>
-          <ButtonText icon={<IconF name={'sign-out'} size={13} color={Colors.primaryWarm}/>} onPress={this.props.logout}>
+          <ButtonText icon={<IconF name={'sign-out'} size={13} color={Colors.primaryWarm}/>} onPress={this.logout}>
             Wyloguj
           </ButtonText>
         </View>
