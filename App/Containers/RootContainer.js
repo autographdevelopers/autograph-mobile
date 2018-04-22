@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class RootContainer extends Component {
+export default class RootContainer extends Component {
   componentDidMount() {
     // if redux persist is not active fire startup action
     if ( !ReduxPersist.active ) {
@@ -26,52 +26,11 @@ class RootContainer extends Component {
   }
 
   render() {
-    const {
-      setCurrentDrivingSchool,
-      setCurrentEmployee,
-      setCurrentStudent,
-      currentDrivingSchool,
-      currentEmployee,
-      currentStudent,
-      openModal,
-      closeModal,
-    } = this.props;
-
     return (
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' translucent={true}/>
-        <AppWithNavigation generalProps={{
-          setCurrentDrivingSchool,
-          setCurrentEmployee,
-          setCurrentStudent,
-          currentDrivingSchool,
-          currentEmployee,
-          currentStudent,
-          I18n,
-          openModal,
-          closeModal
-        }}/>
+        <AppWithNavigation />
       </View>
     );
   }
 }
-
-const mapStateToProps = state => ( {
-  currentDrivingSchool: state.context.currentDrivingSchoolID,
-  currentEmployee: state.context.currentEmployeeID,
-  currentStudent: state.context.currentStudentID,
-} );
-
-const mapDispatchToProps = dispatch => ({
-  startup: () => dispatch(StartupActions.startup()),
-  setCurrentDrivingSchool: id => dispatch(
-    contextActionCreators.setCurrentDrivingSchool(id)),
-  setCurrentEmployee: id => dispatch(
-    contextActionCreators.setCurrentEmployee(id)),
-  setCurrentStudent: id => dispatch(
-    contextActionCreators.setCurrentStudent(id)),
-    openModal: id => dispatch(modalActionCreators.open(id)),
-    closeModal: () => dispatch(modalActionCreators.close()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

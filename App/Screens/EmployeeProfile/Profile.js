@@ -16,7 +16,6 @@ import moment from 'moment-timezone';
 import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
 
 class Profile extends Component {
-
   componentWillMount = () =>
     this.props.fetchDrivingLessons({
       employee_id: this.props.employeeId,

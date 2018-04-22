@@ -105,7 +105,7 @@ class MySchoolsScreen extends Component {
 
   renderListItem = ({item}) => {
     if (item.sectionPlaceholder) {
-      return <InfoBox description={item.sectionPlaceholder} />
+      return <InfoBox description={item.sectionPlaceholder}   />
     } else {
       return <DrivingSchoolCell drivingSchool={item}
                                 acceptInvitationRequest={this.props.acceptInvitationRequest}

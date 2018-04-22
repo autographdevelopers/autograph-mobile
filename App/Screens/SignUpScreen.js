@@ -52,11 +52,6 @@ const submit = navigation => values => {
 };
 
 class SignUpScreen extends Component {
-  static navigationOptions = {
-    header: props => <NavHeader navigation={props.navigation}
-                                title={'Załóż konto'}/>,
-  };
-
   constructor(props) {
     super(props);
   }

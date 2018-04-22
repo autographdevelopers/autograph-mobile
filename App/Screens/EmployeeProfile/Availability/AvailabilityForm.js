@@ -83,7 +83,7 @@ class AvailabilityForm extends Component {
   };
 
   renderWeekdaysBullets = () => {
-    const { t } = this.props.screenProps.I18n;
+    const { t } = this.props.I18n;
 
     return WEEKDAYS.map((item, index) => {
       const label = t(`weekdays.short.${WEEKDAYS[index]}`);
@@ -109,7 +109,7 @@ class AvailabilityForm extends Component {
 
   render() {
     const { formStatus } = this.props;
-    const { t } = this.props.screenProps.I18n,
+    const { t } = this.props.I18n,
       saveText = t('save').capitalize();
 
     return (

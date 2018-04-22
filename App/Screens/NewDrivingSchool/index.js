@@ -15,55 +15,23 @@ import ConfirmRegistration from './ConfirmRegistration';
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
-import StepsIndicators from '../../Components/StepsIndicators';
 import FORM_IDS from './Constants';
-import NavHeader from '../../Components/NavHeader';
-
-const STEPS_LABELS = ['Informacje', 'Powiadomienia', 'Kalendarz', 'Ustawienia', 'Posumowanie'];
 
 const routeConfigs = {
   step0: {
-    screen: InformationStep,
-    navigationOptions: {
-      header: props => {
-        return (<View><NavHeader navigation={props.navigation} title={'Informacje'}/><StepsIndicators
-          labels={STEPS_LABELS} activeIndex={0}/></View>)
-      }
-    }
+    screen: InformationStep
   },
   step1: {
-    screen: NotificationsStep,
-    navigationOptions: {
-      header: props => {
-        return (<View><NavHeader navigation={props.navigation} title={'Powiadomienia'}/><StepsIndicators
-          labels={STEPS_LABELS} activeIndex={1}/></View>)
-      }
-    }
+    screen: NotificationsStep
   },
   step2: {
-    screen: CalendarStep,
-    navigationOptions: {
-      header: props => <View><NavHeader navigation={props.navigation} title={'Kalendarz'}/><StepsIndicators
-        labels={STEPS_LABELS} activeIndex={2}/></View>
-    }
+    screen: CalendarStep
   },
   step3: {
-    screen: ScheduleSettings,
-    navigationOptions: {
-      header: props => {
-        return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
-          labels={STEPS_LABELS} activeIndex={3}/></View>)
-      }
-    }
+    screen: ScheduleSettings
   },
   step4: {
-    screen: ConfirmRegistration,
-    navigationOptions: {
-      header: props => {
-        return (<View><NavHeader navigation={props.navigation} title={'Ustawienia'}/><StepsIndicators
-          labels={STEPS_LABELS} activeIndex={4}/></View>)
-      }
-    }
+    screen: ConfirmRegistration
   }
 };
 
@@ -75,7 +43,7 @@ const navigationConfigs = {
 const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class NewDrivingSchoolWizardForm extends Component {
-  static navigationOptions = { header: null };
+  // static navigationOptions = { header: null };
 
   constructor(props) {
     super(props);
@@ -142,9 +110,17 @@ class NewDrivingSchoolWizardForm extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation} screenProps={{ bindScreenRef: this.bindScreenRef, navKey: this.props.navigation.state.key }}/>
+        <StepFormNavigator navigation={this.props.navigation}
+                           screenProps={{ bindScreenRef: this.bindScreenRef,
+                             navKey: this.props.navigation.state.key }}
+        />
 
-        {this.currentForm() && <ButtonPrimary onPress={this.nextStep} submitting={this.isSubmitting()}>Dalej</ButtonPrimary>}
+        {this.currentForm() &&
+          <ButtonPrimary onPress={this.nextStep}
+                         submitting={this.isSubmitting()}>
+            Dalej
+          </ButtonPrimary>
+        }
       </View>
     )
   }

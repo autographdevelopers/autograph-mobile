@@ -166,6 +166,7 @@ export default class EmployeeProfileHeader extends Component  {
 const styles = {
   container: {
     flexDirection: 'row',
+    backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 15,
     borderBottomWidth: 1,

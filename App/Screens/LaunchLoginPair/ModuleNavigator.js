@@ -1,14 +1,15 @@
 import { StackNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import navStyles from '../../Navigation/Styles/NavigationStyles';
 import LoginScreen from './LoginScreen';
 import LaunchScreen from './LaunchScreen';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-import { Text, ScrollView, Image, View, Animated } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Animated } from 'react-native';
 import FancyBackground from '../../Components/FancyBackground';
 import { Fonts, Metrics, Colors } from '../../Themes/';
 import { StyleSheet } from 'react-native';
 import Layout from '../../Components/Layout';
+import I18n from '../../I18n/';
 
 const routeConfigs = {
   login: {
@@ -21,16 +22,22 @@ const routeConfigs = {
 
 const navigationConfigs = {
   initialRouteName: 'launch',
-  cardStyle: navStyles.card,
+  cardStyle: {
+    backgroundColor: 'transparent', // TODO check why needed
+    shadowColor: 'transparent'
+  },
+  transitionConfig: () => ({
+    containerStyle: {}
+  }),
+  navigationOptions: {
+    header: null
+  }
 };
 
 const ModuleNavigator = StackNavigator(routeConfigs, navigationConfigs);
 
 class LaunchLoginPair extends Component {
   variableOpacity = new Animated.Value(1);
-  static navigationOptions = {
-    header: null
-  };
 
   toggleSlogan = () => {
     Animated.timing(
@@ -49,10 +56,15 @@ class LaunchLoginPair extends Component {
       <FancyBackground>
         <Layout customStyles={{ backgroundColor: 'transparent' }}>
           <View style={styles.container}>
+            {navigation.state.index === 1 &&
+            <TouchableOpacity onPress={() => navigation.goBack(null)} style={styles.backContainer}>
+              <FontAwesomeIcon name={'angle-left'} size={40} color={Colors.snow}/>
+            </TouchableOpacity>
+            }
             <View style={styles.brandSection}>
-              <Text style={styles.brandName}>{screenProps.I18n.t('brand_name')}</Text>
+              <Text style={styles.brandName}>{I18n.t('brand_name')}</Text>
               <Animated.Text style={[styles.slogan, {opacity: this.variableOpacity}]}>
-                {screenProps.I18n.t('brand_description')}
+                {I18n.t('brand_description')}
               </Animated.Text>
             </View>
             <View style={{flex: 1}}>
@@ -73,6 +85,11 @@ export default LaunchLoginPair;
 const styles = StyleSheet.create({
   section: {
     flex: 1,
+  },
+  backContainer: {
+    position: 'absolute',
+    left: 15,
+    marginTop: 20,
   },
   brandSection: {
     justifyContent: 'flex-end',
