@@ -204,8 +204,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   listContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 15
   },
   loading: {
     ...StyleSheet.absoluteFillObject,

@@ -109,7 +109,7 @@ const PROFILE_SCREENS = {
     }
   },
   mySchoolsScreen: {
-    screen: MySchoolsScreen,
+    screen: withFluidLayout(MySchoolsScreen),
     navigationOptions: {
       headerTitle: 'Profil',
       title: 'Profil'
@@ -142,14 +142,14 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
     screen: LaunchLoginPair,
   },
   signUp: {
-    screen: SignUpScreen,
+    screen: withFluidLayout(SignUpScreen),
     navigationOptions: {
       headerTitle: 'Załóż konto',
       title: 'Załóż konto',
     }
   },
   resetPassword: {
-    screen: ResetPasswordScreen,
+    screen: withFluidLayout(ResetPasswordScreen),
     navigationOptions: {
       headerTitle: I18n.t('recover_password'),
       title: I18n.t('recover_password'),

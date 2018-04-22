@@ -50,6 +50,7 @@ class LaunchLoginPair extends Component {
   };
 
   render() {
+
     const { navigation, screenProps } = this.props;
 
     return (
@@ -88,8 +89,8 @@ const styles = StyleSheet.create({
   },
   backContainer: {
     position: 'absolute',
-    left: 15,
     marginTop: 20,
+    paddingRight: 80
   },
   brandSection: {
     justifyContent: 'flex-end',
