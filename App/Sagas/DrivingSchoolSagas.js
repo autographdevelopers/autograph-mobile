@@ -9,7 +9,6 @@ import { change } from 'redux-form';
 
 import FORM_IDS from '../Screens/NewDrivingSchool/Constants';
 
-
 /** redux-form-sagas actions */
 import {
   createDrivingSchool,
@@ -73,7 +72,7 @@ export function* confirmRegistration(api, action) {
     api.drivingSchools.confirm_registration,
     action.payload.driving_school_id
   );
-  
+
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(confirmDrivingSchoolRegistration.success());

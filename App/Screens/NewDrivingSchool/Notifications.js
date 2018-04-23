@@ -9,6 +9,7 @@ import FORM_IDS from './Constants';
 import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
 import { notificationSettingsActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
 import LoadingHOC from '../../HOC/LoadingHOC';
+import { getSchoolIdOfCurrentContext } from '../../Lib/DrivingSchoolHelpers';
 
 const FORM_ID = FORM_IDS.USER_NOTIFICATIONS;
 
@@ -84,7 +85,7 @@ NotificationsStep = reduxForm({
 NotificationsStep = LoadingHOC(NotificationsStep);
 
 const mapStateToProps = (state, otherProps)=> {
-  const { drivingSchoolId } = otherProps.screenProps;
+  const drivingSchoolId = getSchoolIdOfCurrentContext(otherProps);
 
   return {
     shouldRequestData: true,
@@ -95,10 +96,7 @@ const mapStateToProps = (state, otherProps)=> {
 };
 
 const mapDispatchToProps = (dispatch, otherProps )=> {
-  console.log('otherProps');
-  console.log(otherProps);
-  const { drivingSchoolId } = otherProps.screenProps;
-  console.log('after');
+  const drivingSchoolId = getSchoolIdOfCurrentContext(otherProps);
 
   return {
     requestData: () => dispatch(

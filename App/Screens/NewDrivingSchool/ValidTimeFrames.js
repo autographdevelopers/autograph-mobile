@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Fonts, Colors, Metrics } from '../../Themes/';
 import I18n from '../../I18n/index';
 import {slotHelper} from '../../Lib/SlotHelpers';
+import { getSchoolIdOfCurrentContext } from '../../Lib/DrivingSchoolHelpers';
 
 const PARAM_NAME = 'valid_time_frames';
 
@@ -121,7 +122,7 @@ class ScheduleBoundaries extends Component {
           </View>
         </FormSection>
 
-        {navigation.state.params && navigation.state.params.singleton &&
+        {navigation.state.params && navigation.state.params.id &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
         }
       </View>
@@ -147,18 +148,19 @@ ScheduleBoundaries = reduxForm({
 ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 
 const mapStateToProps = (state, otherProps)=> {
-  const { drivingSchoolId } = otherProps.screenProps;
-
   return {
     shouldRequestData: true,
     drivingSchool: state.context.currentDrivingSchoolID,
-    initialValues: {[PARAM_NAME]: state.scheduleSettings[PARAM_NAME], driving_school_id: drivingSchoolId },
+    initialValues: {
+      [PARAM_NAME]: state.scheduleSettings[PARAM_NAME],
+      driving_school_id: getSchoolIdOfCurrentContext(otherProps)
+    },
     status: state.scheduleSettings.status
   }
 };
 
 const mapDispatchToProps = (dispatch, otherProps) => {
-  const { drivingSchoolId } = otherProps.screenProps;
+  const drivingSchoolId = getSchoolIdOfCurrentContext(otherProps);
 
   return {
     requestData: () =>

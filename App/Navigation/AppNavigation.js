@@ -73,21 +73,21 @@ const primaryFlowNavigationOptions = ({navigation}) => {
 /** == SCREENS GROUPS  ================== */
 const SETTINGS_SCREENS = {
   editSchoolInfo: {
-    screen: DrivingSchoolInfo,
+    screen: withFluidLayout(DrivingSchoolInfo),
     navigationOptions: {
       headerTitle: 'Informacje',
       title: 'Info'
     }
   },
   editValidTimeFrames: {
-    screen: ValidTimeFrames,
+    screen: withFluidLayout(ValidTimeFrames),
     navigationOptions: {
       headerTitle: 'Godziny jazd',
       title: 'Godziny jazd'
     }
   },
   editScheduleSettings: {
-    screen: ScheduleSettings,
+    screen: withFluidLayout(ScheduleSettings),
     navigationOptions: {
       headerTitle: 'Ustawienia kalendarza',
       title: 'Ustawienia kalendarza'

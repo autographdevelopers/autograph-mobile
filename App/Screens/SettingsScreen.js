@@ -91,4 +91,8 @@ const styles = {
   }
 };
 
-export default connect(state => ({id: state.context.currentDrivingSchoolID}))(SettingsScreen)
+const mapStateToProps = state => ({
+  id: state.context.currentDrivingSchoolID
+});
+
+export default connect(mapStateToProps)(SettingsScreen)
