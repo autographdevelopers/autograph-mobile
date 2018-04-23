@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 
 import CellSwitch from '../../Components/CellWithSwitch';
-import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { connect } from 'react-redux';
 import FORM_IDS from './Constants';
@@ -31,7 +30,7 @@ class NotificationsStep extends Component {
     const { change, error } = this.props;
 
     return (
-      <Layout>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <Field
           name="push_notifications_enabled"
@@ -57,7 +56,7 @@ class NotificationsStep extends Component {
           onChangeHandler={value => change('monthly_emails_reports_enabled',
             value)}
         />
-      </Layout>
+      </View>
     );
   }
 }

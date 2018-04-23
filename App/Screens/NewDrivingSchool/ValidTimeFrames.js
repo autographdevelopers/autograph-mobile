@@ -8,7 +8,6 @@ import {
 } from '../../Redux/ScheduleSettingsRedux';
 
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
-import Layout from '../../Components/Layout';
 import FORM_IDS from './Constants';
 import LoadingHOC from '../../HOC/LoadingHOC';
 import WeekdayTimeFrames from '../../Components/WeekdayTimeFrames';
@@ -81,7 +80,7 @@ class ScheduleBoundaries extends Component {
     const currentDayLabel= I18n.t(`weekdays.normal.${WEEKDAYS[currentDay]}`);
 
     return (
-      <Layout customStyles={{paddingTop: 0}}>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <View style={[styles.currentWeekdayRow, styles.row]}>
           <TouchableOpacity onPress={this.prevDay}>
@@ -125,7 +124,7 @@ class ScheduleBoundaries extends Component {
         {navigation.state.params && navigation.state.params.singleton &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
         }
-      </Layout>
+      </View>
     )
   }
 }

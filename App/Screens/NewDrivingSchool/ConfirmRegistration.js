@@ -3,7 +3,6 @@ import { Text, ScrollView, Alert, View } from 'react-native';
 import { reduxForm } from 'redux-form';
 import FORM_IDS from './Constants';
 import { NavigationActions } from 'react-navigation';
-import Layout from '../../Components/Layout';
 import { confirmDrivingSchoolRegistration } from '../../Redux/DrivingSchoolRedux';
 
 class ConfirmRegistration extends Component {
@@ -21,9 +20,9 @@ class ConfirmRegistration extends Component {
 
   render() {
     return (
-      <Layout>
+      <View>
         <Text style={{textAlign: 'center'}}>CONFIRM REGISTRATION</Text>
-      </Layout>
+      </View>
     )
   }
 }

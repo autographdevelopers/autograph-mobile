@@ -19,6 +19,7 @@ import FORM_IDS from './Constants';
 import { createDrivingSchool } from '../../Redux/DrivingSchoolRedux';
 import { updateDrivingSchool } from '../../Redux/DrivingSchoolRedux';
 import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import Fonts from '../../Themes/Fonts';
 
 const renderPhoneNumber = (member, index, fields) => {
   const validateFirstInstancePresent = index === 0 ? required : optional;
@@ -59,7 +60,9 @@ const renderPhoneNumbersCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderPhoneNumber)}
-      <ButtonText onPress={() => (fields.push())} position={'flex-end'}>Add phone number +</ButtonText>
+      <ButtonText onPress={() => (fields.push())}
+                  customTextStyle={{fontSize: Fonts.size.small}}
+                  position={'flex-end'}>Dodaj numer tel +</ButtonText>
     </View>
   );
 };
@@ -68,7 +71,9 @@ const renderEmailsCollection = ({ fields, meta: { error } }) => {
   return (
     <View>
       {fields.map(renderEmail)}
-      <ButtonText onPress={() => (fields.push())} position={'flex-end'}>Add Email +</ButtonText>
+      <ButtonText onPress={() => (fields.push())}
+                  customTextStyle={{fontSize: Fonts.size.small}}
+                  position={'flex-end'}>Dodaj Email +</ButtonText>
     </View>
   );
 };
@@ -125,7 +130,7 @@ class InformationStep extends Component {
     const { change, error, navigation, submitting } = this.props;
 
     return (
-      <Layout>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <KeyboardAwareScrollView>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
@@ -140,7 +145,7 @@ class InformationStep extends Component {
         </KeyboardAwareScrollView>
         {navigation.state.params && navigation.state.params.singleton &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
-      </Layout>
+      </View>
     )
   }
 }

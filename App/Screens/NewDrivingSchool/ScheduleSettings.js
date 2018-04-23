@@ -3,7 +3,6 @@ import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
 import CellSwitch from '../../Components/CellWithSwitch';
-import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
 import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedux';
@@ -39,7 +38,7 @@ class ScheduleSettings extends Component {
     const { change, error, navigation, submitting } = this.props;
 
     return (
-      <Layout>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <Field name={'last_minute_booking_enabled'} component={CellSwitch}
                label={'Zapisy na ostatnia chwile'}
@@ -56,7 +55,7 @@ class ScheduleSettings extends Component {
         {navigation.state.params && navigation.state.params.singleton &&
         <ButtonPrimary submitting={submitting}
                        onPress={this.submitForm}>Zapisz</ButtonPrimary>}
-      </Layout>
+      </View>
     );
   }
 }

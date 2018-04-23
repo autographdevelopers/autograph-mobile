@@ -1,6 +1,6 @@
 /** Built in modules */
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { destroy } from 'redux-form';
 import { connect } from 'react-redux';
@@ -15,7 +15,19 @@ import ConfirmRegistration from './ConfirmRegistration';
 /** Other */
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
+import StepsIndicators from '../../Components/StepsIndicators';
 import FORM_IDS from './Constants';
+import { Fonts, Colors } from '../../Themes/';
+import Layout from '../../Components/Layout';
+import NavHeader from '../../Components/NavHeader';
+
+const STEPS_LABELS = [
+  'Informacje',
+  'Powiadomienia',
+  'Kalendarz',
+  'Ustawienia',
+  'Posumowanie'
+];
 
 const routeConfigs = {
   step0: {
@@ -39,6 +51,14 @@ const navigationConfigs = {
   initialRouteName: 'step0',
   cardStyle: navStyles.card,
   headerMode: 'none',
+  navigationOptions: {
+    header: null
+  },
+  transitionConfig: () => ({
+    containerStyle: {
+      backgroundColor: 'transparent'
+    }
+  }),
 };
 
 const StepFormNavigator = StackNavigator(routeConfigs, navigationConfigs);
@@ -107,23 +127,32 @@ class NewDrivingSchoolWizardForm extends Component {
   };
 
   render() {
-
-    console.log('nav changed')
-    console.log(this.props.navigation);
+    const {
+      navigation: { state: { index } },
+      navigation
+    } = this.props;
 
     return (
-      <View style={{ flex: 1 }}>
-        <StepFormNavigator navigation={this.props.navigation}
-                           screenProps={{ bindScreenRef: this.bindScreenRef,
-                             navKey: this.props.navigation.state.key }}
+      <View style={{flex:1  }}>
+        <NavHeader navigation={navigation} title={`${index+1}. ${STEPS_LABELS[index]}`}/>
+        <StepsIndicators
+          stepsNo={STEPS_LABELS.length}
+          activeIndex={index}
+          customContainerStyles={{width: '55%', marginVertical: 15}}
         />
+        <Layout>
+          <StepFormNavigator navigation={navigation}
+                             screenProps={{ bindScreenRef: this.bindScreenRef,
+                               navKey: this.props.navigation.state.key }}
+          />
 
-        {this.currentForm() &&
-          <ButtonPrimary onPress={this.nextStep}
-                         submitting={this.isSubmitting()}>
-            Dalej
-          </ButtonPrimary>
-        }
+          { this.currentForm() &&
+            <ButtonPrimary onPress={this.nextStep}
+                           submitting={this.isSubmitting()}>
+              Dalej
+            </ButtonPrimary>
+          }
+        </Layout>
       </View>
     )
   }
@@ -131,7 +160,11 @@ class NewDrivingSchoolWizardForm extends Component {
 
 NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
-const mapStateToProps = state => ({ form: state.form, drivingSchool: state.context.currentDrivingSchoolID });
+const mapStateToProps = state => ({
+  form: state.form,
+  drivingSchool: state.context.currentDrivingSchoolID
+});
+
 const mapDispatchToProps = dispatch => ({
   destroyForms: formID => {
     dispatch(destroy(formID))
