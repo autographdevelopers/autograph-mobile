@@ -49,19 +49,19 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToNewDrivingSchoolForm = () => {
-    //TODO fix bug when trying to navigate to new school page from existing pne(main school flw tabs  )
-    this.props.setCurrentSchoolContext(null);
+    // //TODO fix bug when trying to navigate to new school page from existing pne(main school flw tabs  )
+    // this.props.setCurrentSchoolContext(null);
+    //
+    // const resetAction = NavigationActions.navigate({
+    //   index: 0,
+    //   key: null,
+    //   actions: [
+    //     // NavigationActions.navigate({ routeName: `mySchoolsScreen`}),
+    //     NavigationActions.navigate({ routeName: `newDrivingSchool`})
+    //   ],
+    // });
 
-    const resetAction = NavigationActions.reset({
-      index: 1,
-      key: null,
-      actions: [
-        NavigationActions.navigate({ routeName: `mySchoolsScreen`}),
-        NavigationActions.navigate({ routeName: `newDrivingSchool`})
-      ],
-    });
-
-    this.props.navigation.dispatch(resetAction);
+    this.props.navigation.navigate('newDrivingSchool');
   };
 
   navigateToSchoolContext = school => {

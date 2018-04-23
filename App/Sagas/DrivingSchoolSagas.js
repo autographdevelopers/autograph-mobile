@@ -5,6 +5,10 @@ import { contextActionCreators } from '../Redux/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { SubmissionError } from 'redux-form';
 import { schoolActivationActionCreators } from '../Redux/SchoolActivationRedux';
+import { change } from 'redux-form';
+
+import FORM_IDS from '../Screens/NewDrivingSchool/Constants';
+
 
 /** redux-form-sagas actions */
 import {
@@ -16,8 +20,8 @@ import {
 export function* create(api, action) {
   const response = yield call(api.drivingSchools.create, { driving_school: action.payload });
   if (response.ok) {
+    yield put(change(FORM_IDS.BASIC_INFO, 'id', response.data.id));
     yield put(drivingSchoolActionCreators.saveSingle(response.data));
-    yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(createDrivingSchool.success());
   } else {
     const errors = gatherErrorsFromResponse(response, api);
@@ -27,10 +31,9 @@ export function* create(api, action) {
 }
 
 export function* update(api, action) {
-  const response = yield call(api.drivingSchools.update, { driving_school: action.payload });
+  const response = yield call(api.drivingSchools.update, { driving_school: action.payload }, action.payload.id);
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data));
-    yield put(contextActionCreators.setCurrentDrivingSchool(response.data.id));
     yield put(updateDrivingSchool.success());
   } else {
     const errors = gatherErrorsFromResponse(response, api);
@@ -66,7 +69,11 @@ export function* show(api, action) {
 }
 
 export function* confirmRegistration(api, action) {
-  const response = yield call(api.drivingSchools.confirm_registration);
+  const response = yield call(
+    api.drivingSchools.confirm_registration,
+    action.payload.driving_school_id
+  );
+  
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data));
     yield put(confirmDrivingSchoolRegistration.success());

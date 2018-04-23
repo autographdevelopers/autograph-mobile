@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { destroy } from 'redux-form';
+import { destroy, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 
 /** Form steps */
@@ -129,7 +129,8 @@ class NewDrivingSchoolWizardForm extends Component {
   render() {
     const {
       navigation: { state: { index } },
-      navigation
+      navigation,
+      drivingSchoolId
     } = this.props;
 
     return (
@@ -143,6 +144,7 @@ class NewDrivingSchoolWizardForm extends Component {
         <Layout>
           <StepFormNavigator navigation={navigation}
                              screenProps={{ bindScreenRef: this.bindScreenRef,
+                               drivingSchoolId,
                                navKey: this.props.navigation.state.key }}
           />
 
@@ -160,7 +162,10 @@ class NewDrivingSchoolWizardForm extends Component {
 
 NewDrivingSchoolWizardForm.router = StepFormNavigator.router;
 
+const selector = formValueSelector(FORM_IDS.BASIC_INFO);
+
 const mapStateToProps = state => ({
+  drivingSchoolId: selector(state, 'id'),
   form: state.form,
   drivingSchool: state.context.currentDrivingSchoolID
 });

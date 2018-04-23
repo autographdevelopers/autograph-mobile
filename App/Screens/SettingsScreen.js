@@ -6,8 +6,9 @@ import IconM from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconE from 'react-native-vector-icons/Entypo';
 import { Colors } from '../Themes';
+import { connect } from 'react-redux';
 
-export default class SettingsScreen extends Component {
+class SettingsScreen extends Component {
   static navigationOptions = { header: null };
 
   saveSuccessCallback = () => {
@@ -23,8 +24,11 @@ export default class SettingsScreen extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
-    const navParams = { handleSubmitSuccess: this.saveSuccessCallback, singleton: true };
+    const { navigation, id } = this.props;
+    const navParams = {
+      handleSubmitSuccess: this.saveSuccessCallback,
+      id
+    };
     const ICON_SIZE = 25;
 
     return (
@@ -86,3 +90,5 @@ const styles = {
     marginRight: 15, alignSelf: 'center'
   }
 };
+
+export default connect(state => ({id: state.context.currentDrivingSchoolID}))(SettingsScreen)

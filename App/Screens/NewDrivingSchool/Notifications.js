@@ -83,14 +83,28 @@ NotificationsStep = reduxForm({
 
 NotificationsStep = LoadingHOC(NotificationsStep);
 
-const mapStateToProps = state => ( {
-  drivingSchool: state.context.currentDrivingSchoolID,
-  status: state.notificationsSettingsSet.status,
-  initialValues: state.notificationsSettingsSet.settings,
-} );
+const mapStateToProps = (state, otherProps)=> {
+  const { drivingSchoolId } = otherProps.screenProps;
 
-const mapDispatchToProps = dispatch => ( {
-  requestData: () => dispatch(notificationSettingsActionCreators.showRequest()),
-} );
+  return {
+    shouldRequestData: true,
+    drivingSchool: state.context.currentDrivingSchoolID,
+    status: state.notificationsSettingsSet.status,
+    initialValues: {...state.notificationsSettingsSet.settings, driving_school_id: drivingSchoolId},
+  }
+};
+
+const mapDispatchToProps = (dispatch, otherProps )=> {
+  console.log('otherProps');
+  console.log(otherProps);
+  const { drivingSchoolId } = otherProps.screenProps;
+  console.log('after');
+
+  return {
+    requestData: () => dispatch(
+      notificationSettingsActionCreators.showRequest(drivingSchoolId)
+    ),
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationsStep);

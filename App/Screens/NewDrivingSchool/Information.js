@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { FieldArray, Field, reduxForm } from 'redux-form';
+import { FieldArray, Field, reduxForm, formValueSelector } from 'redux-form';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux';
 import { required, email, optional, address, digitsOnly } from '../../Lib/validators';
@@ -12,7 +12,6 @@ import ButtonPrimary from '../../Components/ButtonPrimary';
 import PlacesAutocomplete from '../../Components/PlacesAutocomplete';
 import InputField from '../../Components/InputField';
 import ButtonText from '../../Components/ButtonText';
-import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import FORM_IDS from './Constants';
 
@@ -114,8 +113,8 @@ class InformationStep extends Component {
   };
 
   submitForm = () => {
-    const { drivingSchool, handleSubmit } = this.props;
-    const action = drivingSchool ? updateDrivingSchool : createDrivingSchool;
+    const { drivingSchoolId, handleSubmit } = this.props;
+    const action = drivingSchoolId ? updateDrivingSchool : createDrivingSchool;
 
     handleSubmit(action)();
   };
@@ -133,6 +132,8 @@ class InformationStep extends Component {
       <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <KeyboardAwareScrollView>
+          <Field name={'id'}
+                 component={() => <View style={{ height: 0, width: 0 }}/>}/>
           <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
           <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
                  validate={[required, address]} openListView={this.openListView} closeListView={this.closeListView}
@@ -143,7 +144,7 @@ class InformationStep extends Component {
           <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}
                  options={{ multiline: true }}/>
         </KeyboardAwareScrollView>
-        {navigation.state.params && navigation.state.params.singleton &&
+        {navigation.state.params && navigation.state.params.id &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </View>
     )
@@ -174,14 +175,20 @@ InformationStep = reduxForm({
 
 InformationStep = LoadingHOC(InformationStep);
 
-const mapStateToProps = state => ({
-  drivingSchool: state.context.currentDrivingSchoolID,
-  initialValues: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  status: state.drivingSchools.status
-});
+const selector = formValueSelector(FORM_IDS.BASIC_INFO)
+const mapStateToProps = (state, props) => {
+  const id = props.navigation.state.params && props.navigation.state.params.id;
 
+  return {
+    drivingSchoolId: selector(state, 'id'),
+    shouldRequestData: typeof id === 'number',
+    initialValues: state.drivingSchools.hashMap[id],
+    status: state.drivingSchools.status,
 
-const mapDispatchToProps = dispatch => ({
+  };
+};
+
+const mapDispatchToProps = (dispatch, otherProps) => ({
   requestData: () => dispatch(drivingSchoolActionCreators.showRequest())
 });
 

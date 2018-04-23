@@ -81,19 +81,26 @@ ScheduleSettings = reduxForm({
 
 ScheduleSettings = LoadingHOC(ScheduleSettings);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, otherProps) => {
   const { currentDrivingSchoolID } = state.context;
+  const { drivingSchoolId } = otherProps.screenProps;
   const {valid_time_frames, ...otherSettings} = state.scheduleSettings;
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: otherSettings,
+    initialValues: {...otherSettings, driving_school_id: drivingSchoolId },
+    shouldRequestData: true,
     status: state.scheduleSettings.status,
   };
 };
 
-const mapDispatchToProps = dispatch => ( {
-  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest()),
-} );
+const mapDispatchToProps = (dispatch, otherProps) => {
+  const { drivingSchoolId } = otherProps.screenProps;
+
+  return {
+    requestData: () =>
+      dispatch(scheduleSettingsActionCreators.showRequest(drivingSchoolId))
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleSettings);

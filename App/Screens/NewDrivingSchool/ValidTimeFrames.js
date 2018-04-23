@@ -146,17 +146,25 @@ ScheduleBoundaries = reduxForm({
 
 ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, otherProps)=> {
+  const { drivingSchoolId } = otherProps.screenProps;
+
   return {
+    shouldRequestData: true,
     drivingSchool: state.context.currentDrivingSchoolID,
-    initialValues: {[PARAM_NAME]: state.scheduleSettings[PARAM_NAME]},
+    initialValues: {[PARAM_NAME]: state.scheduleSettings[PARAM_NAME], driving_school_id: drivingSchoolId },
     status: state.scheduleSettings.status
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest())
-});
+const mapDispatchToProps = (dispatch, otherProps) => {
+  const { drivingSchoolId } = otherProps.screenProps;
+
+  return {
+    requestData: () =>
+      dispatch(scheduleSettingsActionCreators.showRequest(drivingSchoolId))
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 
