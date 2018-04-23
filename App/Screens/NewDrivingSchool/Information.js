@@ -140,8 +140,8 @@ class InformationStep extends Component {
                  listViewDisplayed={this.state.listViewDisplayed}/>
           <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
           <FieldArray name={"emails"} component={renderEmailsCollection}/>
-          <Field name={'website'} component={InputField} label={'Witryna Internetowa'}/>
-          <Field name={'additional_info'} component={InputField} label={'Dodadkowe informacje'}
+          <Field name={'website_link'} component={InputField} label={'Witryna Internetowa'}/>
+          <Field name={'additional_information'} component={InputField} label={'Dodadkowe informacje'}
                  options={{ multiline: true }}/>
         </KeyboardAwareScrollView>
         {navigation.state.params && navigation.state.params.id &&
