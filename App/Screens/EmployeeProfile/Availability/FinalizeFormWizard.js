@@ -118,7 +118,7 @@ class FinalizeFormWizard extends Component {
 
     return (
       <View style={{width: '100%'}}>
-        { showBindingFromStep && <StepsIndicators labels={STEPS}
+        { showBindingFromStep && <StepsIndicators stepsNo={STEPS.length}
                                                   activeIndex={this.state.step}
                                                   onPress={this.navToStep}
                                                   customContainerStyles={styles.stepIndicatorCustom}/>
@@ -134,11 +134,6 @@ class FinalizeFormWizard extends Component {
 }
 
 const mapStateToProps = state => {
-  // new_template_binding_from == nil => current_schedule
-  // new_template_binding_from == future => new_schedule
-  // zero future -> current_template and binding_form: nil
-  // zero current -> empty current_schedule
-
   const showBindingFromStepForCurrentSchedule =
     state.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.schedule.new_template_binding_from == null;
 
@@ -170,7 +165,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(FinalizeFormWizard);
 const styles = StyleSheet.create({
   stepIndicatorCustom: {
     marginTop: 0,
-    marginBottom: 10
+    marginBottom: 10,
+    width: '50%'
   },
   buttonPane: {
     marginVertical: 15,
