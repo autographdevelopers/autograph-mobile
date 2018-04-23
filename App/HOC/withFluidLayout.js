@@ -17,6 +17,7 @@ export default function withFluidLayout(WrappedComponent, customContainerStyle={
 const styles = {
   container: {
     paddingHorizontal: 15,
+    paddingTop: 15,
     flex: 1,
     backgroundColor: 'white'
   }

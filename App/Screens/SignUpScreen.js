@@ -70,7 +70,7 @@ class SignUpScreen extends Component {
     const { handleSubmit, change, submitting, navigation } = this.props;
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={layoutStyles}>
+      <KeyboardAwareScrollView>
         <Field name={'type'} data={typeData}
                setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} label={'Kim jestes?'}

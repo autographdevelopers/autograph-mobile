@@ -52,7 +52,7 @@ class ResetPasswordScreen extends Component {
     const { handleSubmit } = this.props
 
     return (
-      <View style={{paddingTop: 15, justifyContent: 'space-between', flex: 1}}>
+      <View style={{justifyContent: 'space-between', flex: 1}}>
         <Text style={styles.instructionText}>
           {I18n.t('reset_password_instruction')}
         </Text>
