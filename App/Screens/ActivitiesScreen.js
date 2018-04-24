@@ -17,16 +17,11 @@ class ActivitiesScreen extends Component {
   }
 
   componentWillMount() {
-    console.log('componentWillMount')
-
     this.props.fetchActivities({ page: this.state.page });
   }
 
   loadMore = () => {
-    console.log('loadMore')
-
-    if(this.props.endReached)
-      return
+    if (this.props.endReached) return;
 
     this.setState({ page: (this.state.page + 1) },
       () => this.props.fetchActivities({ page: this.state.page })
