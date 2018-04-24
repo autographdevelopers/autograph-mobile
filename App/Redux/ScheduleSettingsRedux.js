@@ -1,6 +1,7 @@
 import { createFormAction } from 'redux-form-saga';
-import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
+import { FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
+import _ from 'lodash';
 
 export const INITIAL_STATE = {
   status: FETCHING_STATUS.READY,
@@ -14,7 +15,11 @@ export const INITIAL_STATE = {
     sunday: [],
   },
   last_minute_booking_enabled: false,
-  last_minute_booking_enabled: false
+  last_minute_booking_enabled: false,
+  minimum_slots_count_per_driving_lesson: null,
+  maximum_slots_count_per_driving_lesson: null,
+  can_student_book_driving_lesson: false,
+  booking_advance_period_in_weeks: null
 };
 
 /** Action Types/Creators */
@@ -30,10 +35,10 @@ export const scheduleSettingsActionCreators = Creators;
 export const scheduleSettingsTypes = Types;
 /** Handlers */
 export const save = (state, { data }) => {
-  return {
-    ...state,
-    ...data
-  };
+  const newState = data;
+  newState.status = state.status;
+
+  return newState;
 };
 
 export const updateStatus = (state, { status }) => ({ ...state, status });

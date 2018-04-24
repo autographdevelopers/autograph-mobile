@@ -18,7 +18,6 @@ import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
 
 import ModalTemplate from '../../Components/ModalTemplate';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
-import Layout from '../../Components/Layout';
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
@@ -36,7 +35,7 @@ class Profile extends Component {
     this.props.fetchDrivingCourse();
     this.props.fetchDrivingLessons({ student_id: studentId })
     this.props.fetchActivities({related_user_id: studentId})
-  }
+  };
 
   componentWillUnmount = () =>
     this.props.setCurrentStudent(null);
@@ -44,7 +43,7 @@ class Profile extends Component {
   upcomingDrivingLessons = (drivingLessons) =>
     drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
       (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
-    )
+    );
 
   isFetching = (drivingLessonsStatus, drivingCourseStatus, activitiesStatus) =>
     drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING ||
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   }
-})
+});
 
 const mapStateToProps = state => ({
   drivingCourse: state.drivingCourse,

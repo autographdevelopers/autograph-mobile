@@ -120,11 +120,13 @@ export const API = {
     index: (params, id =':driving_school_id') =>
       api.get(`driving_schools/${id}/driving_lessons?${queryString.stringify(params)}`),
     cancel: (drivingLessonId, id =':driving_school_id') =>
-      api.put(`driving_schools/${id}/driving_lessons/${drivingLessonId}/cancel`)
+      api.put(`driving_schools/${id}/driving_lessons/${drivingLessonId}/cancel`),
+    create: (params, schoolId=':driving_school_id') =>
+      api.post(`driving_schools/${schoolId}/driving_lessons`, params)
   },
   slots: {
-    index: (params, employee_id=':employee_id', driving_school_id=':driving_school_id') =>
-      api.get(`driving_schools/${driving_school_id}/employees/${employee_id}/slots?${queryString.stringify(params)}`)
+    index: (params, driving_school_id=':driving_school_id') =>
+      api.get(`driving_schools/${driving_school_id}/slots?${queryString.stringify(params)}`)
   },
   activities: {
     index: (params, driving_school_id=':driving_school_id') =>

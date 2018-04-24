@@ -23,7 +23,7 @@ export default DrivingLessonsListItem = ({
     else if (drivingLesson.status === DRIVING_LESSON_STATUSES.ACTIVE &&
       userCanCancelLesson && moment().isBefore(drivingLesson.start_time))
       return <ButtonText
-        onPress={() => onCancelPress(drivingLesson.id)}
+        onPress={onCancelPress}
         customTextStyle={{color: Colors.salmon, fontSize: Fonts.size.small}}
         customStyle={{alignSelf: 'center', marginRight: 5}}>
         Odwołaj

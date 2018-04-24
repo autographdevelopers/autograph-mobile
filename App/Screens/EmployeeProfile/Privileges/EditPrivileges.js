@@ -16,7 +16,7 @@ import {
   employeePrivilegesActionCreators,
   update,
 } from '../../../Redux/EmployeePrivileges';
-import LoadingHOC from '../../../Containers/LoadingHOC';
+import LoadingHOC from '../../../HOC/LoadingHOC';
 
 class EditPrivileges extends Component {
 

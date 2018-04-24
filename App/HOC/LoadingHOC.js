@@ -48,6 +48,7 @@ export default LoadingHOC = (WrappedComponent) => {
     };
 
     render() {
+      console.log(`HOC status ${this.state.status}`)
       const body = this.renderBody();
       return body;
     }

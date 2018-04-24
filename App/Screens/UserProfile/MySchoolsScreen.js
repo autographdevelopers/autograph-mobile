@@ -25,6 +25,7 @@ import ButtonText from '../../Components/ButtonText';
 import SchoolActivationInput from './SchoolActivationInput';
 import ModalTemplate from '../../Components/ModalTemplate';
 import SectionHeader from '../../Components/SectionHeader';
+import InfoBox from '../../Components/InfoBox';
 import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import {
   isDrivingSchoolRelationActive,
@@ -104,11 +105,7 @@ class MySchoolsScreen extends Component {
 
   renderListItem = ({item}) => {
     if (item.sectionPlaceholder) {
-      return <View style={styles.helperContainer}>
-        <Text style={styles.helperText}>
-          {item.sectionPlaceholder}
-        </Text>
-      </View>
+      return <InfoBox description={item.sectionPlaceholder} />
     } else {
       return <DrivingSchoolCell drivingSchool={item}
                                 acceptInvitationRequest={this.props.acceptInvitationRequest}
@@ -206,16 +203,6 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingHorizontal: 15,
     paddingVertical: 15
-  },
-  helperContainer: {
-    backgroundColor: Colors.lightGrey,
-    marginVertical: 15,
-    paddingVertical: 15,
-    borderRadius: 5,
-  },
-  helperText: {
-    color: Colors.strongGrey,
-    alignSelf: 'center',
   },
   loading: {
     ...StyleSheet.absoluteFillObject,

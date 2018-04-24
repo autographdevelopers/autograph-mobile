@@ -10,7 +10,7 @@ import {
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import Layout from '../../Components/Layout';
 import FORM_IDS from './Constants';
-import LoadingHOC from '../../Containers/LoadingHOC';
+import LoadingHOC from '../../HOC/LoadingHOC';
 import WeekdayTimeFrames from '../../Components/WeekdayTimeFrames';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Fonts, Colors, Metrics } from '../../Themes/';

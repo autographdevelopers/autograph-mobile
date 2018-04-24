@@ -3,11 +3,10 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Fonts, Colors } from '../../Themes/';
 import React, { Component } from 'react';
 
-export default FreeSlot = ({hour='12:00'}) => {
-
+export default AvailableSlot = ({ hour='12:00', slot, onPressIn }) => {
   return (
-    <SlotLayout borderLeftColor={Colors.strongGrey} hour={hour}>
-      <TouchableOpacity style={styles.body}>
+    <SlotLayout borderLeftColor={Colors.strongGrey} slot={slot}>
+      <TouchableOpacity style={styles.body} onPress={onPressIn}>
         <Text style={styles.text}>UMÓW JAZDĘ</Text>
       </TouchableOpacity>
     </SlotLayout>
