@@ -28,9 +28,18 @@ const submit = navigation => values => {
       const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
       const goToLogin = NavigationActions.reset({
         index: 1,
+        key: null,
         actions: [
-          NavigationActions.navigate({ routeName: 'launchScreen' }),
-          NavigationActions.navigate({ routeName: 'login' }),
+          NavigationActions.navigate({
+            routeName: 'loginLaunch',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'launch' })
+          }),
+          NavigationActions.navigate({
+            routeName: 'loginLaunch',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'login' })
+          }),
         ],
       });
       const buttons = [
