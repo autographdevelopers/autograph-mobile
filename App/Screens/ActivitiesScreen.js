@@ -10,16 +10,31 @@ import ActivitiesList from '../Components/ActivitiesList';
 class ActivitiesScreen extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      page: 1
+    }
   }
 
   componentWillMount() {
-    this.props.fetchActivities({});
+    console.log('componentWillMount')
+
+    this.props.fetchActivities({ page: this.state.page });
+  }
+
+  loadMore = () => {
+    console.log('loadMore')
+
+    if(this.props.endReached)
+      return
+
+    this.setState({ page: (this.state.page + 1) },
+      () => this.props.fetchActivities({ page: this.state.page })
+    )
   }
 
   render() {
     const { activitiesData, activitiesFetchingStatus } = this.props;
-
-    console.tron.log(activitiesData)
 
     return (
       <View style={{flex: 1}}>
@@ -27,6 +42,9 @@ class ActivitiesScreen extends Component {
           activities={activitiesData}
           fetchingStatus={activitiesFetchingStatus}
           scrollEnabled={true}
+          onEndReached={this.loadMore}
+          customListStyle={[listProjectorStyles.containerStyle, styles.customListStyle]}
+          customListWrapperStyle={styles.customListWrapperStyle}
         />
       </View>
     )
@@ -34,11 +52,17 @@ class ActivitiesScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-
+  customListStyle: {
+    margin: 15
+  },
+  customListWrapperStyle: {
+    flex: 1
+  }
 });
 
 const mapStateToProps = state => ({
   activitiesData: state.activities.myActivitiesIds.map(id => state.activities.data[id]),
+  endReached: state.activities.myActivitiesEndReached,
   activitiesFetchingStatus: state.activities.status
 });
 

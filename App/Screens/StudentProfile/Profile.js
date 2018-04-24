@@ -7,12 +7,14 @@ import moment from 'moment/moment';
 import { contextActionCreators } from '../../Redux/ContextRedux';
 import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
 import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
+import { activityActionCreators } from '../../Redux/ActivityRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import { DRIVING_LESSON_STATUSES } from '../../Lib/DrivingLessonHelpers';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Colors, Fonts } from '../../Themes/';
+import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
 
 import ModalTemplate from '../../Components/ModalTemplate';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
@@ -29,8 +31,11 @@ class Profile extends Component {
   }
 
   componentWillMount = () => {
+    const { studentId } = this.props;
+
     this.props.fetchDrivingCourse();
-    this.props.fetchDrivingLessons({ student_id: this.props.studentId })
+    this.props.fetchDrivingLessons({ student_id: studentId })
+    this.props.fetchActivities({related_user_id: studentId})
   }
 
   componentWillUnmount = () =>
@@ -41,15 +46,16 @@ class Profile extends Component {
       (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
     )
 
-  isFetching = (drivingLessonsStatus, drivingCourseStatus) =>
-    drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING
+  isFetching = (drivingLessonsStatus, drivingCourseStatus, activitiesStatus) =>
+    drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING ||
+      activitiesStatus === FETCHING_STATUS.FETCHING
 
   render() {
-    const { drivingCourse, drivingLessons, drivingSchool } = this.props
+    const { drivingCourse, drivingLessons, drivingSchool, activities } = this.props
 
     return (
       <View style={{flex: 1}}>
-        {this.isFetching(drivingLessons.status, drivingCourse.status) ? <SpinnerView/> :
+        {this.isFetching(drivingLessons.status, drivingCourse.status, activities.status) ? <SpinnerView/> :
           <ScrollView style={styles.container}>
             <View style={styles.headerWithBtn}>
               <SectionHeader
@@ -105,6 +111,27 @@ class Profile extends Component {
                 scrollEnabled={false}
               />
             </View>
+
+            { canManageStudents(this.props.drivingSchool) &&
+            <View>
+              <View style={styles.headerWithBtn}>
+                <SectionHeader title={'Aktywności pracownikiem'}
+                               customTextStyles={styles.headerText}
+                               customUnderlineStyles={styles.underline}/>
+                <ButtonText
+                  customTextStyle={{ fontSize: Fonts.size.small }}
+                  icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+                  Pokaż wszystkie
+                </ButtonText>
+              </View>
+              <View style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
+                <ActivitiesList
+                  activities={activities.userActivitiesFeedIds.map(id => activities.data[id])}
+                  fetchingStatus={activities.status}
+                  scrollEnabled={false} />
+              </View>
+            </View>
+            }
           </ScrollView>
         }
       </View>
@@ -146,7 +173,8 @@ const mapStateToProps = state => ({
   drivingCourse: state.drivingCourse,
   drivingLessons: state.drivingLessons,
   studentId: state.context.currentStudentID,
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID]
+  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  activities: state.activities
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -156,7 +184,9 @@ const mapDispatchToProps = dispatch => ({
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
   resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
-  updateDrivingCourse: (data) => dispatch(drivingCourseActionCreators.updateRequest(data))
+  updateDrivingCourse: (data) => dispatch(drivingCourseActionCreators.updateRequest(data)),
+  fetchActivities: (params) =>
+    dispatch(activityActionCreators.indexRequest(params, ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

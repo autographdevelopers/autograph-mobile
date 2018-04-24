@@ -2,13 +2,14 @@ import { createReducer, createActions } from 'reduxsauce';
 import { deepClone, arrayToHash } from '../Lib/utils';
 import { FETCHING_STATUS } from '../Lib/utils';
 import { ACTIVITY_DISPLAY_TYPE } from '../Lib/ActivitiesHelper';
+import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
   saveCollection: ['activities', 'activityDisplayType'],
   changeStatus: ['status'],
-  indexRequest: ['params'],
+  indexRequest: ['params', 'activityDisplayType'],
   myActivitiesRequest: ['params'],
 }, { prefix: 'ACTIVITY_' });
 
@@ -22,22 +23,36 @@ export const INITIAL_STATE = {
   userActivitiesFeedIds: [],
   myActivitiesIds: [],
   activitiesListIds: [],
+  userActivitiesFeedEndReached: false,
+  myActivitiesEndReached: false,
+  activitiesListEndReached: false,
   status: FETCHING_STATUS.READY
 };
 
 /* ------------- Handlers ------------- */
 
 export const saveCollectionHandler = (state, { activities, activityDisplayType }) => {
+  const activities_length = activities.length
+  const newState = _.cloneDeep(state)
+  _.each(activities, activity =>
+    newState.data[activity.id] = activity
+  )
   switch(activityDisplayType) {
     case ACTIVITY_DISPLAY_TYPE.ACTIVITIES_LIST:
-      return { ...state, data: arrayToHash(activities), activitiesListIds: activities.map(s => s.id) }
+      newState.activitiesListIds = activities.map(s => s.id);
+      newState.activitiesListEndReached = !activities_length;
+      break;
     case ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED:
-      return { ...state, data: arrayToHash(activities), userActivitiesFeedIds: activities.map(s => s.id) }
+      newState.userActivitiesFeedIds = activities.map(s => s.id);
+      newState.userActivitiesFeedEndReached = !activities_length;
+      break;
     case ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES:
-      return { ...state, data: arrayToHash(activities), myActivitiesIds: activities.map(s => s.id) }
-    default:
-      return state
+      newState.myActivitiesIds = _.uniq(_.concat(newState.myActivitiesIds, activities.map(s => s.id)));
+      newState.myActivitiesEndReached = !activities_length;
+      break;
   }
+
+  return newState
 }
 
 export const changeStatusHandler = (state, { status }) => ({ ...state, status });

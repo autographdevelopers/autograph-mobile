@@ -18,3 +18,18 @@ export const ACTIVITY_DISPLAY_TYPE = {
   MY_ACTIVITIES: 'MY_ACTIVITIES',
   ACTIVITIES_LIST: 'ACTIVITIES_LIST',
 }
+
+export const ACTIVITY_IMAGE = {
+  student_invitation_sent: require('../Images/activities/invitation_sent.png'),
+  student_invitation_withdrawn: require('../Images/activities/invitation_withdrawn.png'),
+  student_invitation_accepted: require('../Images/activities/invitation_accepted.png'),
+  student_invitation_rejected: require('../Images/activities/invitation_rejected.png'),
+  employee_invitation_sent: require('../Images/activities/invitation_sent.png'),
+  employee_invitation_withdrawn: require('../Images/activities/invitation_withdrawn.png'),
+  employee_invitation_accepted: require('../Images/activities/invitation_accepted.png'),
+  employee_invitation_rejected: require('../Images/activities/invitation_rejected.png'),
+  driving_course_changed: require('../Images/activities/driving_course_changed.png'),
+  schedule_changed: require('../Images/activities/schedule_changed.png'),
+  driving_lesson_canceled: require('../Images/activities/driving_lesson_canceled.png'),
+  driving_lesson_scheduled: require('../Images/activities/driving_lesson_scheduled.png')
+}

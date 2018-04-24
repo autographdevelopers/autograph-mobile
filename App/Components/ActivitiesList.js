@@ -6,37 +6,40 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import { Fonts, Colors } from '../Themes/index';
 import ActivityListItem from './ActivitiesListItem';
 
-export default ActivitiesList = ({ scrollEnabled, activities, fetchingStatus }) => {
-
-  const sortedActivities = () =>
-    activities.sort((activity1, activity2) =>
-      moment(activity1.created_at).isBefore(activity2.created_at)
-    )
-
+export default ActivitiesList = ({
+                                   scrollEnabled,
+                                   activities,
+                                   fetchingStatus,
+                                   customListStyle = {},
+                                   customListWrapperStyle = {},
+                                   onEndReached = () => {} }) => {
   const renderActivities = () => {
     if (fetchingStatus === FETCHING_STATUS.READY || fetchingStatus === FETCHING_STATUS.SUCCESS) {
       return (
         <FlatList
           scrollEnabled={scrollEnabled}
-          data={sortedActivities()}
+          contentContainerStyle={customListStyle}
+          data={activities}
           renderItem={({item, index}) => (
             <ActivityListItem activity={item}
                               onPress={() => {}}/>
           )}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(element, _) => `activity-${element.id}`}
+          keyExtractor={(element) => `activity-${element.id}`}
           ListEmptyComponent={
             <Text style={styles.emptyActivities}>
               Brak aktywności
             </Text>
           }
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0}
         />
       )
     }
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={customListWrapperStyle}>
       {renderActivities()}
     </View>
   )
