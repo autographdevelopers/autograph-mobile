@@ -18,6 +18,7 @@ import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionTypes } from '../Redux/DrivingLessonRedux';
 import { slotActionTypes } from '../Redux/SlotsRedux';
 import { calendarActionTypes } from '../Redux/CalendarRedux';
+import { activityActionTypes } from '../Redux/ActivityRedux';
 import { toastActionTypes } from '../Redux/ToastRedux';
 
 /* ------------- Sagas ------------- */
@@ -81,6 +82,11 @@ import {
   create as createDrivingLessonSaga
 } from './DrivingLessonSaga';
 
+import {
+  index as indexActivitySaga,
+  myActivities as myActivitiesActivitySaga,
+} from './ActivitySaga';
+
 import { index as indexSlotsSaga } from './SlotsSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
@@ -142,5 +148,8 @@ export default function* root() {
     takeLatest(drivingLessonActionTypes.CREATE_REQUEST, createDrivingLessonSaga, api),
 
     takeLatest(slotActionTypes.INDEX_REQUEST, indexSlotsSaga, api),
+
+    takeLatest(activityActionTypes.INDEX_REQUEST, indexActivitySaga, api),
+    takeLatest(activityActionTypes.MY_ACTIVITIES_REQUEST, myActivitiesActivitySaga, api),
   ])
 }

@@ -22,6 +22,7 @@ import { calendarReducer } from './CalendarRedux';
 import { slotReducer } from './SlotsRedux';
 import { drivingCourseReducer } from './DrivingCourseRedux';
 import { drivingLessonReducer } from './DrivingLessonRedux';
+import { activityReducer } from './ActivityRedux';
 import { bookLessonReducer } from './Modals/BookLesson';
 import { employeeDailyAgendaReducer } from './AgendaRedux';
 import { employeesSummaryAgendaReducer } from './AgendaRedux';
@@ -54,6 +55,7 @@ export const appReducer = combineReducers({
   slots: slotReducer,
   drivingCourse: drivingCourseReducer,
   drivingLessons: drivingLessonReducer,
+  activities: activityReducer,
   bookLesson: bookLessonReducer,
   employeeDailyAgenda: employeeDailyAgendaReducer,
   employeesSummaryAgenda: employeesSummaryAgendaReducer,
