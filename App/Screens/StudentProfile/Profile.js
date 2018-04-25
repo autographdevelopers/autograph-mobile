@@ -11,7 +11,10 @@ import { activityActionCreators } from '../../Redux/ActivityRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import { DRIVING_LESSON_STATUSES } from '../../Lib/DrivingLessonHelpers';
+import {
+  AFTER_SAVE_CALLBACKS,
+  DRIVING_LESSON_STATUSES,
+} from '../../Lib/DrivingLessonHelpers';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Colors, Fonts } from '../../Themes/';
 import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
@@ -179,7 +182,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   fetchDrivingCourse: () => dispatch(drivingCourseActionCreators.showRequest()),
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params)),
+  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
   resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),

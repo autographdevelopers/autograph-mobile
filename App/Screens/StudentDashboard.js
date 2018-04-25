@@ -7,7 +7,10 @@ import moment from 'moment/moment';
 import { drivingCourseActionCreators } from '../Redux/DrivingCourseRedux';
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { Colors, Fonts } from '../Themes/';
-import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
+import {
+  AFTER_SAVE_CALLBACKS,
+  DRIVING_LESSON_STATUSES,
+} from '../Lib/DrivingLessonHelpers';
 import { FETCHING_STATUS } from '../Lib/utils';
 import listProjectorStyles from '../Styles/ListProjector';
 
@@ -122,7 +125,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchDrivingCourse: (studentId) => dispatch(drivingCourseActionCreators.showRequest(studentId)),
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params))
+  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentDashboard)

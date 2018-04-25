@@ -16,6 +16,7 @@ import { Colors, Fonts } from '../../../Themes/index';
 import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
 import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../../../Lib/utils';
+import I18n from '../../../I18n';
 
 const WEEKDAYS = [
   'monday',
@@ -83,10 +84,9 @@ class AvailabilityForm extends Component {
   };
 
   renderWeekdaysBullets = () => {
-    const { t } = this.props.screenProps.I18n;
 
     return WEEKDAYS.map((item, index) => {
-      const label = t(`weekdays.short.${WEEKDAYS[index]}`);
+      const label = I18n.t(`weekdays.short.${WEEKDAYS[index]}`);
 
       return <WeekdayBullet active={index === this.state.currentDayIndex}
                      label={label}
@@ -108,9 +108,8 @@ class AvailabilityForm extends Component {
   };
 
   render() {
-    const { formStatus } = this.props;
-    const { t } = this.props.screenProps.I18n,
-      saveText = t('save').capitalize();
+    const { formStatus } = this.props,
+      saveText = I18n.t('save').capitalize();
 
     return (
       <View style={{ flex: 1 }}>

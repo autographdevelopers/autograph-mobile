@@ -48,6 +48,7 @@ class DrivingLessonsList extends Component {
       } else {
         return (
           <FlatList
+            contentContainerStyle={{paddingBottom: 100}}
             scrollEnabled={scrollEnabled}
             data={this.sort(drivingLessons)}
             renderItem={({ item }) => (

@@ -34,8 +34,7 @@ const lessonModalsReducers = combineReducers({
 });
 
 /* ------------- Assemble The Reducers ------------- */
-export const reducers = combineReducers({
-  nav: require('./NavigationRedux').reducer,
+export const appReducer = combineReducers({
   session: sessionReducer,
   user: userReducer,
   form: formReducer,
@@ -63,8 +62,16 @@ export const reducers = combineReducers({
   lessonModal: lessonModalsReducers
 });
 
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    state = undefined;
+  }
+
+  return appReducer(state, action)
+};
+
 export default () => {
-  let { store, sagasManager, sagaMiddleware } = configureStore(reducers,
+  let { store, sagasManager, sagaMiddleware } = configureStore(rootReducer,
     rootSaga);
 
   sagaMiddleware.run(formActionSaga); // To integrate redux-from and redux-saga

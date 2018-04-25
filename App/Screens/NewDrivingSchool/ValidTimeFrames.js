@@ -8,7 +8,6 @@ import {
 } from '../../Redux/ScheduleSettingsRedux';
 
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
-import Layout from '../../Components/Layout';
 import FORM_IDS from './Constants';
 import LoadingHOC from '../../HOC/LoadingHOC';
 import WeekdayTimeFrames from '../../Components/WeekdayTimeFrames';
@@ -16,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Fonts, Colors, Metrics } from '../../Themes/';
 import I18n from '../../I18n/index';
 import {slotHelper} from '../../Lib/SlotHelpers';
+import { getSchoolIdOfCurrentContext } from '../../Lib/DrivingSchoolHelpers';
 
 const PARAM_NAME = 'valid_time_frames';
 
@@ -81,7 +81,7 @@ class ScheduleBoundaries extends Component {
     const currentDayLabel= I18n.t(`weekdays.normal.${WEEKDAYS[currentDay]}`);
 
     return (
-      <Layout customStyles={{paddingTop: 0}}>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <View style={[styles.currentWeekdayRow, styles.row]}>
           <TouchableOpacity onPress={this.prevDay}>
@@ -122,10 +122,10 @@ class ScheduleBoundaries extends Component {
           </View>
         </FormSection>
 
-        {navigation.state.params && navigation.state.params.singleton &&
+        {navigation.state.params && navigation.state.params.id &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
         }
-      </Layout>
+      </View>
     )
   }
 }
@@ -147,17 +147,26 @@ ScheduleBoundaries = reduxForm({
 
 ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, otherProps)=> {
   return {
+    shouldRequestData: true,
     drivingSchool: state.context.currentDrivingSchoolID,
-    initialValues: {[PARAM_NAME]: state.scheduleSettings[PARAM_NAME]},
+    initialValues: {
+      [PARAM_NAME]: state.scheduleSettings[PARAM_NAME],
+      driving_school_id: getSchoolIdOfCurrentContext(otherProps)
+    },
     status: state.scheduleSettings.status
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest())
-});
+const mapDispatchToProps = (dispatch, otherProps) => {
+  const drivingSchoolId = getSchoolIdOfCurrentContext(otherProps);
+
+  return {
+    requestData: () =>
+      dispatch(scheduleSettingsActionCreators.showRequest(drivingSchoolId))
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 

@@ -28,7 +28,7 @@ export const updateScheduleSettings = createFormAction('UPDATE_SCHEDULE_SETTINGS
 const { Types, Creators } = createActions({
   save: ['data'],
   changeStatus: ['status'],
-  showRequest: null, /* SAGA */
+  showRequest: ['drivingSchoolId'], /* SAGA */
 }, { prefix: 'SCHEDULE_SETTINGS_' });
 
 export const scheduleSettingsActionCreators = Creators;

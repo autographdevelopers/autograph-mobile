@@ -2,6 +2,7 @@ const type = {
   base: 'Roboto',
   regular: 'Roboto-Regular',
   medium: 'Roboto-Medium',
+  italic: 'Roboto-Italic',
   light: 'Roboto-Light',
   thin: 'Roboto-Thin',
 };

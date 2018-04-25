@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
+import _ from 'lodash';
 
-export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={}, onPress=(index) => ()=>{} }) => {
-  const BULLET_RADIUS = 25;
+export default StepsIndicators = ({ stepsNo, activeIndex, customContainerStyles={}, onPress=(index) => ()=>{} }) => {
+  const BULLET_RADIUS = 15;
 
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignSelf: 'center',
-      marginVertical: 25
     },
     box: {
       flex: 1,
@@ -29,13 +29,12 @@ export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={
       width: BULLET_RADIUS,
       height: BULLET_RADIUS,
       borderRadius: 50,
-      borderWidth: 2,
-      borderColor: Colors.strongGrey,
+      backgroundColor: Colors.subtleGray,
       justifyContent: 'center',
       alignItems: 'center'
     },
     bulletActive: {
-      borderColor: Colors.primaryWarm
+      backgroundColor: Colors.primaryWarm,
     },
     number: {
       backgroundColor: 'transparent',
@@ -56,7 +55,7 @@ export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={
     },
     line: {
       height: 1,
-      backgroundColor: Colors.strongGrey
+      backgroundColor: Colors.subtleGray
     },
     lineHidden: {
       height: 0
@@ -75,26 +74,18 @@ export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={
   const RightLine = ({ index }) => (
     <View style={styles.lineContainer}>
       <View
-        style={[styles.line, index < activeIndex && styles.lineActive, index === (labels.length - 1) && styles.lineHidden]}/>
+        style={[styles.line, index < activeIndex && styles.lineActive, index === (stepsNo - 1) && styles.lineHidden]}/>
     </View>
   );
 
   const Bullet = ({ index }) => (
-    <View style={[styles.bullet, index <= activeIndex && styles.bulletActive]}>
-      <Text style={[styles.number, index <= activeIndex && styles.numberActive]}>{index + 1}</Text>
-    </View>
+    <View style={[styles.bullet, index <= activeIndex && styles.bulletActive]}/>
   );
 
   const BoxTop = ({ children }) => (
     <View style={styles.upperContainer}>
       {children}
     </View>
-  );
-
-  const BoxBottom = ({ label, index }) => (
-    <Text style={[styles.bottomContainer, index <= activeIndex && styles.labelActive]}>
-      {label}
-    </Text>
   );
 
   const Box = ({children}) => (
@@ -104,7 +95,7 @@ export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={
   );
 
   const renderIndicators = () => (
-    labels.map((label, index) => (
+    _.times(stepsNo, index => (
       <Box key={`box-${index}`}>
         <BoxTop style={styles.upperContainer}>
           <LeftLine index={index}/>
@@ -113,7 +104,6 @@ export default StepsIndicators = ({ labels, activeIndex, customContainerStyles={
           </TouchableOpacity>
           <RightLine index={index}/>
         </BoxTop>
-        <BoxBottom label={label} index={index}/>
       </Box>
     ))
   );

@@ -9,6 +9,7 @@ import { View, Alert } from 'react-native';
 import ButtonPrimary from '../../../Components/ButtonPrimary';
 import DataScreen from './PersonalDataStep';
 import PrivilegesScreen from './PrivilegesStep';
+import StepsIndicators from '../../../Components/StepsIndicators';
 
 const routeConfigs = {
   step0: {
@@ -26,9 +27,11 @@ const navigationConfigs = {
     const labels = ['Informacje', 'Uprawnienia'];
 
     return {
-      header: <View>
+      header: <View style={{backgroundColor: 'white'}}>
                 <NavHeader navigation={props.navigation} title={labels[index]}/>
-                <StepsIndicators labels={labels} activeIndex={index}/>
+                <StepsIndicators stepsNo={labels.length}
+                                 activeIndex={index}
+                                 customContainerStyles={{marginVertical: 15, width: '50%'}} />
               </View>
     }
   },

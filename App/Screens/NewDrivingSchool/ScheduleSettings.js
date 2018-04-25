@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import { NavigationActions } from 'react-navigation';
 import CellSwitch from '../../Components/CellWithSwitch';
-import Layout from '../../Components/Layout';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
 import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedux';
@@ -11,6 +9,7 @@ import FORM_IDS from './Constants';
 
 import { connect } from 'react-redux';
 import LoadingHOC from '../../HOC/LoadingHOC';
+import { getSchoolIdOfCurrentContext } from '../../Lib/DrivingSchoolHelpers';
 
 const FORM_ID = FORM_IDS.SCHEDULE_SETTINGS;
 
@@ -39,7 +38,7 @@ class ScheduleSettings extends Component {
     const { change, error, navigation, submitting } = this.props;
 
     return (
-      <Layout>
+      <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <Field name={'last_minute_booking_enabled'} component={CellSwitch}
                label={'Zapisy na ostatnia chwile'}
@@ -53,10 +52,10 @@ class ScheduleSettings extends Component {
                onChangeHandler={value => change('holidays_enrollment_enabled',
                  value)}
         />
-        {navigation.state.params && navigation.state.params.singleton &&
+        {navigation.state.params && navigation.state.params.id &&
         <ButtonPrimary submitting={submitting}
                        onPress={this.submitForm}>Zapisz</ButtonPrimary>}
-      </Layout>
+      </View>
     );
   }
 }
@@ -82,19 +81,26 @@ ScheduleSettings = reduxForm({
 
 ScheduleSettings = LoadingHOC(ScheduleSettings);
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, otherProps) => {
+
   const { currentDrivingSchoolID } = state.context;
-  const {valid_time_frames, ...otherSettings} = state.scheduleSettings;
+  const { valid_time_frames, ...otherSettings} = state.scheduleSettings;
 
   return {
     drivingSchool: currentDrivingSchoolID,
-    initialValues: otherSettings,
+    initialValues: {...otherSettings, driving_school_id: getSchoolIdOfCurrentContext(otherProps) },
+    shouldRequestData: true,
     status: state.scheduleSettings.status,
   };
 };
 
-const mapDispatchToProps = dispatch => ( {
-  requestData: () => dispatch(scheduleSettingsActionCreators.showRequest()),
-} );
+const mapDispatchToProps = (dispatch, otherProps) => {
+  const drivingSchoolId = getSchoolIdOfCurrentContext(otherProps);
+
+  return {
+    requestData: () =>
+      dispatch(scheduleSettingsActionCreators.showRequest(drivingSchoolId))
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleSettings);

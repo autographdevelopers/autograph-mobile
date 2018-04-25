@@ -6,7 +6,12 @@ import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* update(api, action) {
-  const response = yield call(api.notificationSettings.update, { employee_notifications_settings: action.payload });
+  const response = yield call(
+    api.notificationSettings.update,
+    { employee_notifications_settings: action.payload },
+    action.payload.driving_school_id
+  );
+
   if (response.ok) {
     yield put(updateNotificationSettings.success());
   } else {
@@ -18,7 +23,7 @@ export function* update(api, action) {
 
 export function* show(api, action) {
   yield put(notificationSettingsActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-  const response = yield call(api.notificationSettings.show);
+  const response = yield call(api.notificationSettings.show, action.drivingSchoolId);
   if (response.ok) {
     yield put(notificationSettingsActionCreators.save(response.data));
     yield put(notificationSettingsActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));

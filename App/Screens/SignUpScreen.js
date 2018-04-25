@@ -28,9 +28,18 @@ const submit = navigation => values => {
       const message = 'Your registration completed successfully. Please confirm your email in order to login to application.';
       const goToLogin = NavigationActions.reset({
         index: 1,
+        key: null,
         actions: [
-          NavigationActions.navigate({ routeName: 'launchScreen' }),
-          NavigationActions.navigate({ routeName: 'login' }),
+          NavigationActions.navigate({
+            routeName: 'loginLaunch',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'launch' })
+          }),
+          NavigationActions.navigate({
+            routeName: 'loginLaunch',
+            params: {},
+            action: NavigationActions.navigate({ routeName: 'login' })
+          }),
         ],
       });
       const buttons = [
@@ -52,11 +61,6 @@ const submit = navigation => values => {
 };
 
 class SignUpScreen extends Component {
-  static navigationOptions = {
-    header: props => <NavHeader navigation={props.navigation}
-                                title={'Załóż konto'}/>,
-  };
-
   constructor(props) {
     super(props);
   }
@@ -75,7 +79,7 @@ class SignUpScreen extends Component {
     const { handleSubmit, change, submitting, navigation } = this.props;
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={layoutStyles}>
+      <KeyboardAwareScrollView>
         <Field name={'type'} data={typeData}
                setValue={val => () => this.props.change('type', val)}
                component={RadioButtonsCollection} label={'Kim jestes?'}

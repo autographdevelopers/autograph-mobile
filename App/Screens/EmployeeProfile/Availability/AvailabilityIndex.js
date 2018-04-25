@@ -149,7 +149,9 @@ class AvailabilityIndex extends Component {
           modalMsg={'Zmiana daty wprowadzenia nowego grafiku skutkować będzie lorem ipsum dolor sit melt..'}
         >
           <View style={{marginBottom: 30}}>
-            <CustomDatePicker datePickerConfiguration={datePickerConfiguration} />
+            <View style={{ alignItems: 'center' }}>
+              <CustomDatePicker datePickerConfiguration={datePickerConfiguration} />
+            </View>
           </View>
 
           <ButtonPrimary onPress={updateScheduleRequest({new_template_binding_from: new_template_binding_from__FORM})}>

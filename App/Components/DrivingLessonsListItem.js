@@ -8,8 +8,8 @@ import ButtonText from '../Components/ButtonText';
 import DefaultAvatar from '../Components/DefaultAvatar';
 
 import { Fonts, Colors } from '../Themes/index';
-import { FETCHING_STATUS } from '../Lib/utils';
 import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
+import { drivingLessonHelpers } from '../Lib/DrivingLessonHelpers';
 
 export default DrivingLessonsListItem = ({
                                            drivingLesson,
@@ -17,35 +17,34 @@ export default DrivingLessonsListItem = ({
                                            userContext,
                                            onCancelPress }) => {
 
-  const rightIcon = () => {
-    if (drivingLesson.status === DRIVING_LESSON_STATUSES.CANCELED)
-      return <Text style={styles.canceledText}>Odwołana</Text>
-    else if (drivingLesson.status === DRIVING_LESSON_STATUSES.ACTIVE &&
-      userCanCancelLesson && moment().isBefore(drivingLesson.start_time))
+  console.log(drivingLesson);
+
+  const rightIcon = lesson => {
+    if (lesson.status === DRIVING_LESSON_STATUSES.CANCELED)
+      return <Text style={styles.canceledText}>Odwołana</Text>;
+    else if (lesson.status === DRIVING_LESSON_STATUSES.ACTIVE &&
+      userCanCancelLesson && moment().isBefore(lesson.start_time))
       return <ButtonText
         onPress={onCancelPress}
         customTextStyle={{color: Colors.salmon, fontSize: Fonts.size.small}}
         customStyle={{alignSelf: 'center', marginRight: 5}}>
         Odwołaj
       </ButtonText>
-  }
+  };
 
-  const subtitle = () =>
-    drivingLesson.start_time
-
-  const leftIcon = () =>
-    <DefaultAvatar name={drivingLesson[userContext].name} index={drivingLesson.id}/>
+  const leftIcon = lesson =>
+    <DefaultAvatar name={lesson[userContext].name} index={lesson.id}/>
 
   return (
     <ListItem
       key={drivingLesson.id}
       title={`${drivingLesson[userContext].name} ${drivingLesson[userContext].surname}`}
-      subtitle={subtitle()}
-      leftIcon={leftIcon()}
+      subtitle={`${moment(drivingLesson.start_time).format('YYYY/MM/DD, HH:mm')} - ${drivingLessonHelpers.getEndTime(drivingLesson)}`}
+      leftIcon={leftIcon(drivingLesson)}
       containerStyle={{borderBottomWidth: 0}}
       subtitleStyle={styles.subtitle}
-      rightIcon={rightIcon()}
-      hideChevron={!rightIcon()}
+      rightIcon={rightIcon(drivingLesson)}
+      hideChevron={!rightIcon(drivingLesson)}
     />
   )
 }

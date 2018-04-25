@@ -8,13 +8,9 @@ import { Fonts, Colors } from '../Themes/index';
 import { connect } from 'react-redux';
 import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
 import { STATUS } from '../Redux/ResetPasswordRedux'
-
+import I18n from '../I18n';
 
 class ResetPasswordScreen extends Component {
-  static navigationOptions = {
-    header: (props) => <NavHeader navigation={props.navigation} title={props.screenProps.I18n.t('recover_password')} />
-  };
-
   constructor(props) {
     super(props)
 
@@ -28,7 +24,7 @@ class ResetPasswordScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { status } = nextProps.resetPassword
-    const { t } = this.props.screenProps.I18n;
+    const { t } = this.props.I18n;
     if (status === STATUS.SUCCESS) {
       const title = t('success') + '!';
       const message = t('password_reset_request_feedback');
@@ -53,10 +49,10 @@ class ResetPasswordScreen extends Component {
   render () {
     const { email } = this.state
     const { error } = this.props.resetPassword
-    const { handleSubmit, screenProps: {I18n} } = this.props
+    const { handleSubmit } = this.props
 
     return (
-      <Layout>
+      <View style={{justifyContent: 'space-between', flex: 1}}>
         <Text style={styles.instructionText}>
           {I18n.t('reset_password_instruction')}
         </Text>
@@ -68,7 +64,7 @@ class ResetPasswordScreen extends Component {
         <View style={styles.buttonWrapper}>
           <PrimaryButton onPress={ handleSubmit(email) }>{I18n.t('recover_password')}</PrimaryButton>
         </View>
-      </Layout>
+      </View>
     )
   }
 }
@@ -98,6 +94,6 @@ const styles = StyleSheet.create({
     fontSize: Fonts.regular
   },
   buttonWrapper: {
-    marginTop: 15
+    marginVertical: 15
   }
 });

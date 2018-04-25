@@ -22,12 +22,7 @@ export default ButtonPrimary = ({ onPress,
       paddingVertical: 5,
       paddingHorizontal: 5,
       borderRadius: 50,
-      flex: 1,
-      shadowColor: Colors.black,
-      shadowOpacity: 0.25,
-      shadowRadius: 10,
-      elevation: 1,
-      shadowOffset: { width: 0, height: 2 },
+      flex: 1
     },
     button: {
       flex: 1,

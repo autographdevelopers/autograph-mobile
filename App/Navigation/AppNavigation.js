@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
+import {TouchableOpacity} from 'react-native';
 import withFluidLayout from '../HOC/withFluidLayout';
 
+import NavigationHeaderBackground from '../Components/NavigationHeaderBackground';
+
 import styles from './Styles/NavigationStyles';
-import NavHeader from '../Components/NavHeader';
 import DefaultAvatar from '../Components/DefaultAvatar';
 import { Fonts, Colors } from '../Themes/';
 import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
@@ -13,7 +15,6 @@ import ResetPasswordScreen from '../Screens/ResetPasswordScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 
 import NewDrivingSchoolWizardForm from '../Screens/NewDrivingSchool/index';
-
 import InviteEmployeeWizardForm from '../Screens/Employees/Invite/InviteEmployeeWizardFormNavigatorScreen';
 import InviteStudentForm from '../Screens/Students/InviteForm';
 
@@ -37,9 +38,9 @@ import StudentSearchablelist from '../Components/StudentsSearchableList';
 import PersonalSettings from '../Screens/PersonalSettings';
 
 import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgendaFetcher';
+import I18n from '../I18n';
 
 const primaryFlowNavigationOptions = ({navigation}) => {
-  // TODO: refactor this shit
   const { routes, index, params } = navigation.state;
   let title;
   let rightIcon;
@@ -47,41 +48,49 @@ const primaryFlowNavigationOptions = ({navigation}) => {
 
   if (routes[index].routeName === 'schoolMain') {
     title = params.drivingSchool.name;
-    rightIcon = <DefaultAvatar name={params.user.name} customSize={25}/>;
     onRightIconPress = () => navigation.navigate('mySchoolsScreen');
+    rightIcon =
+      <TouchableOpacity onPress={onRightIconPress}>
+        <DefaultAvatar name={params.user.name} customSize={25}/>
+      </TouchableOpacity>
   } else if (routes[index].routeName === 'mySchoolsScreen') {
-    title = 'Profile';
-    rightIcon = <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>;
+    title = 'Profil';
     onRightIconPress = () => navigation.goBack(null);
+    rightIcon =
+      <TouchableOpacity onPress={onRightIconPress}>
+        <EvilIconsIcon name={'close'} size={30} color={Colors.snow}/>
+      </TouchableOpacity>
   }
 
   return {
-    header: <NavHeader navigation={navigation}
-                       title={title}
-                       rightIcon={rightIcon}
-                       onRightIconPress={onRightIconPress}
-                       back={false}/>
+    title,
+    headerTitle: title,
+    headerRight: rightIcon,
+    headerLeft: null,
   }
 };
 
 /** == SCREENS GROUPS  ================== */
 const SETTINGS_SCREENS = {
   editSchoolInfo: {
-    screen: DrivingSchoolInfo,
+    screen: withFluidLayout(DrivingSchoolInfo),
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Informacje'}/>
+      headerTitle: 'Informacje',
+      title: 'Info'
     }
   },
   editValidTimeFrames: {
-    screen: ValidTimeFrames,
+    screen: withFluidLayout(ValidTimeFrames),
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Godziny jazd'}/>
+      headerTitle: 'Godziny jazd',
+      title: 'Godziny jazd'
     }
   },
   editScheduleSettings: {
-    screen: ScheduleSettings,
+    screen: withFluidLayout(ScheduleSettings),
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia kalendarza'}/>
+      headerTitle: 'Ustawienia kalendarza',
+      title: 'Ustawienia kalendarza'
     }
   },
 };
@@ -89,16 +98,21 @@ const SETTINGS_SCREENS = {
 const PROFILE_SCREENS = {
   employeeProfile: {
     screen: EmployeeProfile,
-    navigationOptions: { header: null }
+    navigationOptions: {
+      header: null
+    }
   },
   studentProfile: {
     screen: StudentProfile,
-    navigationOptions: { header: null }
+    navigationOptions: {
+      header: null
+    }
   },
   mySchoolsScreen: {
-    screen: MySchoolsScreen,
+    screen: withFluidLayout(MySchoolsScreen),
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Profil'} back={false}/>
+      headerTitle: 'Profil',
+      title: 'Profil'
     }
   }
 };
@@ -125,17 +139,30 @@ const USERS_FLOWS_SCREENS = {
 
 const NOT_AUTHENTICATED_USER_SCREENS = {
   loginLaunch: {
-    screen: LaunchLoginPair
+    screen: LaunchLoginPair,
   },
-  signUp: { screen: SignUpScreen },
-  resetPassword: { screen: ResetPasswordScreen },
+  signUp: {
+    screen: withFluidLayout(SignUpScreen),
+    navigationOptions: {
+      headerTitle: 'Załóż konto',
+      title: 'Załóż konto',
+    }
+  },
+  resetPassword: {
+    screen: withFluidLayout(ResetPasswordScreen),
+    navigationOptions: {
+      headerTitle: I18n.t('recover_password'),
+      title: I18n.t('recover_password'),
+    }
+  },
 };
 
 const DRIVING_LESSONS = {
   drivingLessons: {
     screen: DrivingLessonsScreen,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Lista jazd'}/>
+      title: 'Lista jazd',
+      headerTitle: 'Lista jazd',
     }
   }
 };
@@ -144,37 +171,40 @@ const SEARCH_SCREENS = {
   searchEmployee: {
     screen: EmployeeSearchableList,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation}
-                                  title={'Wybierz pracownika'}/>
+      title: 'Wybierz pracownika',
+      headerTitle: 'Wybierz pracownika'
     }
   },
   searchStudent: {
     screen: StudentSearchablelist,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation}
-                                  title={'Wybierz kursanta'}/>
+      title: 'Wybierz kursanta',
+      headerTitle: 'Wybierz kursanta'
     }
   }
 };
 
 /** ==NAVIGATION SETUP================== */
 const routeConfigs = {
-  newDrivingSchool: { screen: NewDrivingSchoolWizardForm },
-  personalSettings: { screen: PersonalSettings,
+  newDrivingSchool: {
+    screen: NewDrivingSchoolWizardForm,
     navigationOptions: {
-      header: props => <NavHeader navigation={props.navigation} title={'Ustawienia i Informacje'}/>
+      headerTitle: 'Zarejestruj szkołę',
+      title: 'Zarejestruj szkołę'
+    }
+  },
+  personalSettings: {
+    screen: PersonalSettings,
+    navigationOptions: {
+      title: 'Ustawienia i Informacje',
+      headerTitle: 'Ustawienia i Informacje'
     }},
   employeeDailyAgenda: {
     screen: EmployeeDailyAgenda,
-    navigationOptions: {
-      header: props => {
-        const { state: { index, routes } } = props.navigation;
-        const route = routes[index];
-        const { employee } = route.params;
-
-        return <NavHeader navigation={props.navigation} title={`${employee.name} ${employee.surname}`}/>
-      }
-    }
+    navigationOptions: ({navigation: { state: { params: { employee }}}}) => ({
+      title: `${employee.name} ${employee.surname}`,
+      headerTitle: `${employee.name} ${employee.surname}`
+    })
   },
   ...SEARCH_SCREENS,
   ...NOT_AUTHENTICATED_USER_SCREENS,
@@ -186,9 +216,28 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
-  headerMode: 'float',
+  headerMode: 'screen',
+  mode: 'card',
   initialRouteName: 'loginLaunch',
-  cardStyle: styles.card
+  cardStyle: styles.card,
+  transitionConfig: () => ({
+    containerStyle: {
+      backgroundColor: 'transparent'
+    }
+  }),
+  navigationOptions: {
+    headerTruncatedBackTitle: 'Wstecz',
+    headerTintColor: 'white',
+    headerBackground: <NavigationHeaderBackground/>,
+    headerMode: 'screen',
+    headerTitleStyle: {
+      fontFamily: Fonts.type.base,
+      fontWeight: '400'
+    },
+    headerStyle: {
+      borderBottomWidth: 0
+    }
+  }
 };
 
 export default StackNavigator(routeConfigs, navigationConfigs);

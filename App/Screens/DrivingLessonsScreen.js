@@ -3,15 +3,19 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
+import {
+  AFTER_SAVE_CALLBACKS,
+  DRIVING_LESSON_STATUSES,
+} from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
-import FilterButton from '../Components/FilterButton';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import ModalTemplate from '../Components/ModalTemplate';
 import SpinnerView from '../Components/SpinnerView';
@@ -28,7 +32,7 @@ class DrivingLessonsScreen extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchDrivingLessons({
       student_id: this.props.navigation.state.params.studentId,
       employee_id: this.props.navigation.state.params.employeeId,
@@ -71,8 +75,11 @@ class DrivingLessonsScreen extends Component {
           />
         }
 
-        <FilterButton
-          onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)} />
+        <ActionButton onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)}
+                      renderIcon={()=><Icon name="filter" size={20} color={Colors.primaryWarm} />}
+                      buttonColor={Colors.lightGrey}
+        >
+        </ActionButton>
 
         <ModalTemplate
           customContainerStyle={{width: null}}
@@ -94,7 +101,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params)),
+  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
   openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
   closeModal: () => dispatch(modalActionCreators.close())
 });
