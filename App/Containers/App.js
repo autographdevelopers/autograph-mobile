@@ -1,5 +1,5 @@
 import '../Config'
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import DebugConfig from '../Config/DebugConfig'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
@@ -51,5 +51,6 @@ const styles = StyleSheet.create({
   applicationView: {
     flex: 1,
     backgroundColor: Colors.snow,
+    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
   },
 });

@@ -5,7 +5,7 @@ import EmployeesScreen from '../Screens/Employees/index';
 import StudentsScreen from '../Screens/Students/index';
 import SettingsScreen from '../Screens/SettingsScreen';
 import DrivingSchoolInformation from '../Screens/DrivingSchoolInformation';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, TabBarBottom } from 'react-navigation';
 import { Colors, Fonts } from '../Themes';
 import withFluidLayout from '../HOC/withFluidLayout';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -120,13 +120,15 @@ const studentRoutesConfigs = {
 
 const navigationConfig = {
   animationEnabled: true,
-  // lazy: true,
   tabBarOptions: {
     activeTintColor: Colors.primaryWarm,
     labelStyle: {
       fontFamily: Fonts.type.regular,
     }
-  }
+  },
+  tabBarComponent: TabBarBottom,
+  tabBarPosition: 'bottom',
+  swipeEnabled: false,
 };
 
 export const OwnerTabNavigator = TabNavigator(ownerRoutesConfigs, navigationConfig);

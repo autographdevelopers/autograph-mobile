@@ -41,7 +41,7 @@ const requestHook = request => {
 };
 
 const api = apisauce.create({
-  baseURL:'http://localhost:3000/api/v1/',
+  baseURL:'http://10.0.2.2:3000/api/v1/',//'http://10.0.2.2:3000/api/v1/
   // here are some default headers
   headers: {
     'Cache-Control': 'no-cache'

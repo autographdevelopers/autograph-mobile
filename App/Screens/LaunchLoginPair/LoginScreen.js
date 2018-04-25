@@ -16,13 +16,8 @@ class LoginScreen extends Component {
   static navigationOptions = {
     headerTintColor: Colors.snow,
     headerStyle: {
-      // position: 'absolute',
       backgroundColor: 'transparent',
       paddingTop: 0,
-      // zIndex: 9999999999,
-      // top: 0,
-      // left: 0,
-      // right: 0,
     },
   };
 
@@ -38,7 +33,8 @@ class LoginScreen extends Component {
     const { change, error, navigation: { navigate }, submitting } = this.props;
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={[styles.section]}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={[styles.section]} enableOnAndroid={true}>
         <View style={styles.inputsSection}>
           <FormErrorMessage>{error}</FormErrorMessage>
           <Field name={'email'}

@@ -9,7 +9,7 @@ import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers'
 import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
 
-const PIE_CHART_WIDTH = 120;
+const PIE_CHART_WIDTH = 120.0;
 
 export default DrivingCourseProgress = ({ drivingCourse, drivingLessonsData }) => {
   const calculateHours = (drivingLessons) =>

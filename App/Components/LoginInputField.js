@@ -14,9 +14,10 @@ export default LoginInputField = ({ label, icon, input, handleTextChange, placeh
         </View>
         <TextInput style={styles.input}
                    value={input.value}
+                   underlineColorAndroid={'white'}
                    onChangeText={handleTextChange}
                    autoCapitalize={'none'}
-                   autoFocus={true}
+                   autoFocus={false}
                    placeholder={placeholder}
                    secureTextEntry={secure}>
         </TextInput>

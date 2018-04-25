@@ -23,6 +23,7 @@ export default InputField = ({ input, meta, label, asterix = false, placeholder,
     <InputFieldLayout meta={meta} required={asterix} label={label}>
       <TextInput value={input.value}
                  style={styles.input}
+                 underlineColorAndroid={'white'}
                  onBlur={val => input.onBlur(val)}
                  placeholder={placeholder}
                  onChangeText={input.onChange}

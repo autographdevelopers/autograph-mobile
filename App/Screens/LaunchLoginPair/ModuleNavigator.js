@@ -69,8 +69,8 @@ class LaunchLoginPair extends Component {
               </Animated.Text>
             </View>
             <View style={{flex: 1}}>
-            <ModuleNavigator
-              navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan, ...screenProps}} />
+              <ModuleNavigator
+                navigation={navigation} screenProps={{toggleSlogan: this.toggleSlogan, ...screenProps}} />
             </View>
           </View>
         </Layout>
