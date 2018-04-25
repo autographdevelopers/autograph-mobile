@@ -6,7 +6,11 @@ import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* update(api, action) {
-  const response = yield call(api.scheduleSettings.update, { schedule_settings: action.payload });
+  const response = yield call(
+    api.scheduleSettings.update,
+    { schedule_settings: action.payload },
+    action.payload.driving_school_id
+  );
   if (response.ok) {
     yield put(updateScheduleSettings.success());
   } else {
@@ -18,7 +22,7 @@ export function* update(api, action) {
 
 export function* show(api, action) {
   yield put(scheduleSettingsActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-  const response = yield call(api.scheduleSettings.show);
+  const response = yield call(api.scheduleSettings.show, action.drivingSchoolId);
   if (response.ok) {
     yield put(scheduleSettingsActionCreators.save(response.data));
     yield put(scheduleSettingsActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));

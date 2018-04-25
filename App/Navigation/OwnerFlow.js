@@ -5,13 +5,14 @@ import { OwnerTabNavigator } from './TabNavigation';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import styles from './Styles/NavigationStyles';
 import { withModals } from './WithModalsHOC';
+import withFluidLayout from '../HOC/withFluidLayout';
 
 const routeConfigs = {
   schoolMain: {
     screen: OwnerTabNavigator
   },
   mySchoolsScreen: {
-    screen: MySchoolsScreen
+    screen: withFluidLayout(MySchoolsScreen)
   },
 };
 

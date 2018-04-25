@@ -31,7 +31,7 @@ export default AccountHeader = ({navigation, title, user}) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    margin: 15,
+    marginVertical: 15,
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row'

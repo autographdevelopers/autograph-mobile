@@ -51,10 +51,10 @@ const styles = {
     borderBottomColor: Colors.primaryWarm
   },
   box: {
-    borderRadius: 0,
-    backgroundColor: 'transparent',
+    borderRadius: 2,
+    backgroundColor: Colors.subtleGray,
     marginRight: 5,
-    marginBottom: 0,
+    marginBottom: 2,
     paddingHorizontal: 4,
     paddingVertical: 4,
   },

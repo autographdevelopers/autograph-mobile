@@ -4,6 +4,7 @@ import { FlatList, View, RefreshControl, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
+import ActionButton from 'react-native-action-button';
 /** Custom modules */
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
@@ -94,9 +95,9 @@ class EmployeesIndex extends Component {
   renderPlaceholder = () => {
     if ( this.props.status !== FETCHING_STATUS.FETCHING ) {
       return (
-        <Text style={styles.listPlaceholder}>
-          Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!
-        </Text>
+        <InfoBox description={'Nie masz jeszcze zadnych pracownikow, zapros ich do pracy juz teraz!'}
+                 customContainerStyle={{marginHorizontal: 15}}
+        />
       )
     } else {
       return null;
@@ -128,7 +129,9 @@ class EmployeesIndex extends Component {
     if(!canManageEmployees(drivingSchool)) {
       return (
         <InfoBox title={I18n.t('lacksPrivileges.canManageEmployee')}
-                 description={I18n.t('lacksPrivileges.generic')} />
+                 description={I18n.t('lacksPrivileges.generic')}
+                 customContainerStyle={{marginHorizontal: 15}}
+        />
       )
     } else {
       return (
@@ -156,7 +159,7 @@ class EmployeesIndex extends Component {
               }
               />
           </List>
-          <ButtonPrimary float={true} onPress={()=>navigation.navigate('inviteEmployee')}>Dodaj pracownika</ButtonPrimary>
+          <ActionButton buttonColor={Colors.primaryWarm} onPress={()=>navigation.navigate('inviteEmployee')} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
             status={this.props.invitationDestroyStatus}

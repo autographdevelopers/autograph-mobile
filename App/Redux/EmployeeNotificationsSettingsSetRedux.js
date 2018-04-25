@@ -7,7 +7,7 @@ export const updateNotificationSettings = createFormAction('UPDATE_NOTIFICATION_
 const { Types, Creators } = createActions({
   save: ['settings'],
   changeStatus: ['status'],
-  showRequest: null /* SAGA */
+  showRequest: ['drivingSchoolId'] /* SAGA */
 }, { prefix: 'NOTIFICATION_SETTINGS_' });
 
 export const notificationSettingsActionTypes = Types;

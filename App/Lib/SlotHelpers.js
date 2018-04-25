@@ -10,9 +10,9 @@ export const slotHelper = {
       return 'Godzina otwarcia musi byc przed godzina zamkniecia.'
     }
   },
-  summarizeDay: function(daySlots){
-    // const sortedSlots = daySlots.sort((prev, next) => prev > next);
-    const groupedSlots = this.groupAdjacentSlots(daySlots);
+  summarizeDay: function(daySlots) {
+    const sortedSlots = daySlots.sort();
+    const groupedSlots = this.groupAdjacentSlots(sortedSlots);
     const intervals = this.mapToHumanReadableIntervals(groupedSlots);
 
     return intervals;

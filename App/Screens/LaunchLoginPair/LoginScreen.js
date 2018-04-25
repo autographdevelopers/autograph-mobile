@@ -10,6 +10,7 @@ import LoginInputField from '../../Components/LoginInputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Fonts, Colors } from '../../Themes/index';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
+import I18n from '../../I18n/';
 
 class LoginScreen extends Component {
   static navigationOptions = {
@@ -34,7 +35,7 @@ class LoginScreen extends Component {
   }
 
   render() {
-    const { change, error, navigation: { navigate }, submitting, screenProps } = this.props;
+    const { change, error, navigation: { navigate }, submitting } = this.props;
 
     return (
       <KeyboardAwareScrollView contentContainerStyle={[styles.section]}>
@@ -44,7 +45,7 @@ class LoginScreen extends Component {
                  component={LoginInputField}
                  handleTextChange={val => change('email', val)}
                  placeholder={'Type in your email address.'}
-                 label={screenProps.I18n.t('email')}
+                 label={I18n.t('email')}
                  icon={'md-mail'}
                  secure={false}
           />
@@ -52,19 +53,19 @@ class LoginScreen extends Component {
                  component={LoginInputField}
                  handleTextChange={val => change('password', val)}
                  placeholder={'Type in your email address.'}
-                 label={screenProps.I18n.t('password')}
+                 label={I18n.t('password')}
                  icon={'md-lock'}
                  secure={true}
           />
         </View>
         <View style={styles.actionsSection}>
           <ButtonOutline onPress={this.submitForm} submitting={submitting}>
-            {screenProps.I18n.t('login')}
+            {I18n.t('login')}
           </ButtonOutline>
           <View style={styles.resetPasswordContainer}>
             <Icon name={'lock-reset'} size={20} color={Colors.snow}/>
             <TouchableOpacity onPress={() => navigate('resetPassword')}>
-              <Text style={styles.resetPassword}>{screenProps.I18n.t('reset_password')}</Text>
+              <Text style={styles.resetPassword}>{I18n.t('reset_password')}</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -178,6 +178,7 @@ const styles = {
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGrey,
+    backgroundColor: 'white'
   },
   leftCol: {
     paddingRight: 15

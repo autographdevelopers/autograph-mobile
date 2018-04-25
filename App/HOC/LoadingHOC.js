@@ -14,7 +14,8 @@ export default LoadingHOC = (WrappedComponent) => {
     }
 
     componentWillMount() {
-      if (this.props.drivingSchool) {
+      console.log(this.props);
+      if (this.props.shouldRequestData) {
         this.props.requestData();
       } else {
         this.setState({

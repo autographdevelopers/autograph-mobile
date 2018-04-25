@@ -88,15 +88,15 @@ const ownerRoutesConfigs = {
 
 
 const studentRoutesConfigs = {
-  calendar: {
-    screen: EmployeesSummaryAgendaScreen,
+  dashboard: {
+    screen: StudentDashboard,
     navigationOptions: {
       tabBarLabel: I18n.t('myCourse'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'view-dashboard'} color={tintColor}/> ),
     }
   },
   employees: {
-    screen: withFluidLayout(EmployeesScreen),
+    screen: EmployeesSummaryAgendaScreen,
     navigationOptions: {
       tabBarLabel: I18n.t('enroll'),
       tabBarIcon: ({ tintColor }) => (<IconFeather size={25} name={'edit'} color={tintColor}/> ),
@@ -116,7 +116,7 @@ const studentRoutesConfigs = {
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'information-outline'} color={tintColor}/> ),
     }
   }
-}
+};
 
 const navigationConfig = {
   animationEnabled: true,

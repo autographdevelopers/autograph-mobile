@@ -4,6 +4,7 @@ import { Fonts, Metrics, Colors } from '../../Themes/';
 import { StyleSheet } from 'react-native';
 import ButtonOutline from '../../Components/ButtonOutline';
 import ButtonWhiteFill from '../../Components/ButtonWhiteFill';
+import I18n from '../../I18n/';
 
 export default LaunchScreen = ({navigation, screenProps}) => {
 
@@ -11,21 +12,21 @@ export default LaunchScreen = ({navigation, screenProps}) => {
     <View style={[styles.section, styles.actions]}>
       <View style={styles.actionWrapper}>
         <Text style={styles.label}>
-          {screenProps.I18n.t('not_have_account')}
+          {I18n.t('not_have_account')}
         </Text>
         <ButtonWhiteFill onPress={() => {
           navigation.navigate('signUp');
         }}>
-          {screenProps.I18n.t('register')}
+          {I18n.t('register')}
         </ButtonWhiteFill>
       </View>
       <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
-        <Text style={styles.label}>{screenProps.I18n.t('have_account')}</Text>
+        <Text style={styles.label}>{I18n.t('have_account')}</Text>
         <ButtonOutline onPress={() => {
           navigation.navigate('login');
           screenProps.toggleSlogan();
         }}>
-          {screenProps.I18n.t('login')}
+          {I18n.t('login')}
         </ButtonOutline>
       </View>
     </View>

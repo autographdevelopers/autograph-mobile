@@ -89,6 +89,7 @@ const mapStateToProps = state => {
     drivingSchool: currentDrivingSchoolID,
     initialValues: { ...data, currentEmployeeID }, //currentEmployeeID optional, will be hooked api in request hook
     status: status,
+    shouldRequestData: true
   };
 };
 

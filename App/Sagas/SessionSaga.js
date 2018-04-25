@@ -22,16 +22,6 @@ export function* create(api, action) {
 }
 
 export function* destroy(api, action) {
-  const response = yield call(api.session.destroy);
-
-  if (response.ok) {
-    yield put(userActionCreators.clearUser());
-    yield put(sessionActionCreators.resetState());
-    const resetAction = NavigationActions.reset({
-      key: null,
-      index: 0,
-      actions: [ NavigationActions.navigate({ routeName: 'loginLaunch' }) ]
-    });
-    yield put(resetAction);
-  }
+  yield call(api.session.destroy);
+  yield put({type: 'USER_LOGOUT'});
 }

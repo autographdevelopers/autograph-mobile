@@ -4,6 +4,7 @@ import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 import { slotActionCreators } from '../Redux/SlotsRedux';
 import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
 import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
+import { AFTER_SAVE_CALLBACKS } from '../Lib/DrivingLessonHelpers';
 
 export function* index(api, action) {
   yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
@@ -11,7 +12,7 @@ export function* index(api, action) {
   const response = yield call(api.drivingLesson.index, action.params);
 
   if (response.ok) {
-    yield put(drivingLessonActionCreators.save(response.data));
+    yield put(drivingLessonActionCreators.save(response.data, action.after_save_callback_type));
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY));
   } else {
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.ERROR));
@@ -38,7 +39,7 @@ export function* create(api, action) {
   const response = yield call(api.drivingLesson.create, action.params);
 
   if (response.ok) {
-    yield put(drivingLessonActionCreators.save(response.data));
+    yield put(drivingLessonActionCreators.save(response.data, AFTER_SAVE_CALLBACKS.APPEND_ID));
     yield put(slotActionCreators.save(response.data.slots));
     yield put(bookLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
