@@ -4,8 +4,6 @@ import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */
 
-const INFINITY = 999;
-
 const { Types, Creators } = createActions({
   indexRequest: ['params', 'callback'],
   save: ['data'],
@@ -43,7 +41,7 @@ export const INITIAL_STATE = {
 
 export const saveHandler = (state, { data }) => {
   const newState = _.cloneDeep(state);
-  const slots = _.flattenDepth([data], INFINITY);
+  const slots = _.flattenDeep([data]);
 
   _.each(slots, slot => newState.data[slot.id] = slot);
   newState.allIds = Object.keys(newState.data);
@@ -56,6 +54,7 @@ export const releaseLessonHandler = (state, { id }) => {
   newState.data = _.mapValues(newState.data, slot => {
     if(slot.driving_lesson_id === id) {
       slot.driving_lesson_id = null;
+      slot.release_at = null;
     }
     return slot;
   })

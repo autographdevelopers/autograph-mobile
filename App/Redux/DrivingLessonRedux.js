@@ -3,7 +3,6 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import _ from 'lodash';
 import { AFTER_SAVE_CALLBACKS } from '../Lib/DrivingLessonHelpers';
 /* ------------- Types and Action Creators ------------- */
-const INFINITY = 999;
 
 const { Types, Creators } = createActions({
   save: ['data', 'after_save_callback_type'],
@@ -40,7 +39,7 @@ export const destroySingleHandler = (state, { lessonId }) => {
 
 export const saveHandler = (state, { data, after_save_callback_type }) => {
   const newState = _.cloneDeep(state);
-  const lessons = _.flattenDepth([data], INFINITY);
+  const lessons = _.flattenDeep([data]);
   _.each(lessons, lesson => newState.hashMap[lesson.id] = lesson);
 
   switch(after_save_callback_type) {

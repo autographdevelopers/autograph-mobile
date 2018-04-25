@@ -11,11 +11,12 @@ const SERVER_ACTIONS = {
 const SLOTS_CHANNEL_NAME = `SlotsChannel`;
 
 const SERVER_FEEDBACK = {
-  SLOT_CHANGED: 'SLOT_CHANGED'
+  SLOT_CHANGED: 'SLOT_CHANGED',
+  DRIVING_LESSON_CHANGED: 'DRIVING_LESSON_CHANGED'
 };
 
 export class EmployeeSlotsSocket {
-  constructor(credentials, employeeId, schoolId, onSlotChanged, onTransmissionError) {
+  constructor(credentials, employeeId, schoolId, onSlotChanged, onLessonChanged, onTransmissionError) {
     const { uid, clientId, accessToken } = credentials;
     const endpoint = `ws://localhost:3000/api/v1/cable?uid=${uid}&client=${clientId}&token=${accessToken}`;
 
@@ -34,11 +35,16 @@ export class EmployeeSlotsSocket {
 
       const { message } = receievedData;
 
+      console.log(message);
+
       if(message && message.type !== 'ping') {
         switch(message.type) {
           case SERVER_FEEDBACK.SLOT_CHANGED:
-            console.log(message);
-            onSlotChanged(message.slot)
+            onSlotChanged(message.slot);
+            break;
+          case SERVER_FEEDBACK.DRIVING_LESSON_CHANGED:
+            onLessonChanged(message.driving_lesson);
+            break;
         }
       }
     }

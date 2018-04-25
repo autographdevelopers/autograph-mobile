@@ -23,6 +23,7 @@ import { toastActionCreators } from '../Redux/ToastRedux';
 import { WastedSlot } from '../Components/Slots/WastedSlot';
 import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
 import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
+import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
 /** == Utilities ====================================== */
 import {
   getEmployeeDailyAgenda,
@@ -87,9 +88,39 @@ class EmployeeDailyAgenda extends Component {
       props.employeeId,
       props.schoolId,
       props.saveSlots,
+      this.handleLessonChanged,
       props.displayToastMsg.bind(this, I18n.t('lost_connection_with_server'))
     )
   }
+
+  handleLessonChanged = lesson => {
+    // console.log('lesson');
+    // console.log(lesson);
+
+    switch(lesson.status) {
+      case 'canceled':
+        // console.log('canceled');
+
+        const slotsToRelease = this.props.allSlots
+                                   .filter(slot => slot.driving_lesson_id === lesson.id)
+                                   .map(slot => {
+                                     slot.release_at = null;
+
+                                     return slot;
+                                   });
+        console.log('slotsToRelease');
+        console.log(slotsToRelease);
+        if(slotsToRelease.length > 0)
+          this.props.saveSlots(slotsToRelease);
+
+        break;
+      case 'active':
+        // console.log('canceled');
+        this.props.saveLesson(lesson);
+        this.props.saveSlots(lesson.slots);
+        break;
+    }
+  };
 
   componentWillUnmount() {
     this.unlockSelectedSlots();
@@ -368,6 +399,7 @@ class EmployeeDailyAgenda extends Component {
 
 const mapStateToProps = state => ({
   slotsStatus: state.slots.status,
+  allSlots: _.values(state.slots.data),
   employeeDailyAgendaItems: getEmployeeDailyAgenda(state),
   employees: state.employees.active,
   selectedDay: state.employeeDailyAgenda.daySelected,
@@ -388,6 +420,7 @@ const mapDispatchToProps = dispatch => ({
   slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
   setDay: day => dispatch(employeeDailyAgendaActionCreators.setDay(day)),
   saveSlots: slots => dispatch(slotActionCreators.save(slots)),
+  saveLesson: lesson => dispatch(drivingLessonActionCreators.save(lesson)),
   displayToastMsg: msg => dispatch(toastActionCreators.displayToastMessage(msg)),
   openModal: id => dispatch(modalActionCreators.open(id)),
   setBookLessonParams: params => dispatch(bookLessonActionCreators.setParams(params)),
