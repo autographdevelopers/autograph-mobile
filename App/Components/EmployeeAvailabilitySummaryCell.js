@@ -7,8 +7,7 @@ import ButtonText from '../Components/ButtonText';
 import { slotHelper } from '../Lib/SlotHelpers';
 import _ from 'lodash';
 import moment from 'moment/moment';
-
-// TODO: There is quite a lot of logic here, extract it to some container and let component only render ready data.
+import SectionHeader from './SectionHeader';
 
 const MoreIndicator = () => (
   <View style={styles.dotsWrapper}>
@@ -18,7 +17,7 @@ const MoreIndicator = () => (
   </View>
 );
 
-const SmallPill = ({interval}) => (
+const SmallPill = ({ interval }) => (
   <View style={styles.intervalContainer}>
     <Text style={styles.intervalText}>{interval}</Text>
   </View>
@@ -26,77 +25,89 @@ const SmallPill = ({interval}) => (
 
 const PIE_CHART_SIZE = 40;
 
-export default EmployeeAvailabilitySummaryCell = ({employee, slots, onCalendarPress}) => {
-  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null && moment(slot.start_time).isAfter());
-  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
+export default EmployeeAvailabilitySummaryCell = ({ employee, slots, onCalendarPress }) => {
+  const freeSlots = slots.filter(slot => slot.driving_lesson_id === null &&
+    moment(slot.start_time).isAfter());
+  const freeSlotIds = freeSlots.map(slot => slotHelper.hourToId(
+    moment(slot.start_time).format(slotHelper.TIME_FORMAT)));
   const availableIntervals = slotHelper.summarizeDay(freeSlotIds);
   const lessonSlots = slots.filter(slot => slot.driving_lesson_id !== null);
 
-  const lessonsCount = _.chain(lessonSlots).groupBy('driving_lesson_id').keys().value().length;
+  const lessonsCount = _.chain(lessonSlots)
+                        .groupBy('driving_lesson_id')
+                        .keys()
+                        .value().length;
 
-  const pieChartData =  [
+  const pieChartData = [
     {
       key: 1,
       svg: {
-        fill: Colors.primaryWarm
+        fill: Colors.primaryWarm,
       },
-      value: slots.length - freeSlots.length
+      value: slots.length - freeSlots.length,
     },
     {
       key: 2,
       svg: {
-        fill: Colors.yellowDark
+        fill: Colors.yellowDark,
       },
-      value: freeSlots.length
-    }
+      value: freeSlots.length,
+    },
   ];
 
   return (
     <View style={styles.container}>
-
-      <View style={styles.row}>
-        <View>
-          <Text style={styles.header}>{`${employee.name} ${employee.surname}`}</Text>
-          <View style={styles.underline}/>
-        </View>
-        <DefaultAvatar name={employee.name[0]} customContainerStyle={{marginRight: 0}} customSize={30}/>
+      <View style={styles.headerContainer}>
+        <SectionHeader
+          title={`${employee.name} ${employee.surname}`}
+          customUnderlineStyles={{width: 40}}
+        />
+        <ButtonText customTextStyle={{ fontSize: Fonts.size.small }}
+                    onPress={onCalendarPress}
+                    customStyle={{alignSelf: 'flex-start'}}
+        >
+          Sprawdź grafik
+        </ButtonText>
       </View>
 
       <View style={styles.chartRow}>
         <PieChart style={{ height: PIE_CHART_SIZE, width: PIE_CHART_SIZE }}
                   data={pieChartData}
-                  innerRadius={0}
-                  padAngle={0}
-                  />
+                  outerRadius={'80%'}
+                  innerRadius={'100%'}
+                  padAngle={0.15}
+        />
         <View style={styles.key}>
-          <Text style={styles.takenSlots}>{`Umówionych jazd (${lessonsCount})`}</Text>
+          <View style={[styles.legend, styles.takenSlotsContainer]}>
+            <Text
+              style={styles.legendText}>{`Umówionych jazd (${lessonsCount})`}</Text>
+          </View>
 
-          { availableIntervals.length !== 0 &&
           <View>
-            <Text style={styles.freeSlots}>Wolne terminy w godzinach:</Text>
-            <View style={styles.intervalCollection}>
-              { availableIntervals.slice(0, 3).map((interval, index) => <SmallPill key={index} interval={interval} />) }
-              { availableIntervals.length > 3 && <MoreIndicator/> }
+            <View style={[styles.legend, styles.freeSlotsContainer]}>
+              <Text style={styles.legendText}>Wolne terminy w
+                godzinach:</Text>
             </View>
           </View>
-          }
         </View>
       </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerTxt}>Sprawdź całą dyspozycyjność lub umów jazdę</Text>
-        <ButtonText customTextStyle={{ fontSize: Fonts.size.extraSmall }} onPress={onCalendarPress}>Sprawdź grafik</ButtonText>
+      {availableIntervals.length !== 0 &&
+      <View style={styles.intervalCollection}>
+        {availableIntervals.slice(0, 3)
+                           .map((interval, index) => <SmallPill key={index}
+                                                                interval={interval}/>)}
+        {availableIntervals.length > 3 && <MoreIndicator/>}
       </View>
-
+      }
     </View>
   );
-}
+};
 const DOT_SIZE = 2;
 
 const styles = {
   container: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
 
     backgroundColor: Colors.snow,
     borderBottomWidth: 0,
@@ -107,55 +118,30 @@ const styles = {
     shadowRadius: 8,
     borderRadius: 8,
   },
-  takenSlots: {
-    color: Colors.primaryWarm,
+  legendText: {
+    color: Colors.strongGrey,
     fontSize: Fonts.size.small,
-  },
-  freeSlots: {
-    color: Colors.yellowDark,
-    fontSize: Fonts.size.small,
-    marginBottom: 5
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
   },
   chartRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 5
+    alignItems: 'center',
+    marginBottom: 10,
   },
   key: {
-    marginLeft: 15,
-    flex:1,
-    justifyContent: 'center'
-  },
-  footerTxt: {
-    fontSize: Fonts.size.extraSmall,
-    color: Colors.strongGrey,
-    marginRight: 10
+    marginLeft: 10,
+    flex: 1,
+    justifyContent: 'center',
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  header: {
-    fontSize: Fonts.size.medium,
-    color: Colors.black
-  },
-  underline: {
-    width: 40,
-    height: 3,
-    borderRadius: 8,
-    backgroundColor: Colors.primaryWarm
+    marginBottom: 10,
   },
   intervalContainer: {
     paddingVertical: 2,
     paddingHorizontal: 2,
     backgroundColor: Colors.lightGrey,
     borderRadius: 4,
-    marginBottom: 5,
     marginRight: 5,
   },
   intervalText: {
@@ -166,14 +152,13 @@ const styles = {
   intervalCollection: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dot: {
     width: DOT_SIZE,
     height: DOT_SIZE,
     backgroundColor: Colors.strongGrey,
-    borderRadius: DOT_SIZE/2
+    borderRadius: DOT_SIZE / 2,
   },
   dotsWrapper: {
     flexDirection: 'row',
@@ -181,6 +166,23 @@ const styles = {
     height: Fonts.size.extraSmall,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginHorizontal: 5
+    marginHorizontal: 5,
+  },
+  freeSlotsContainer: {
+    borderLeftColor: Colors.yellowDark,
+  },
+  takenSlotsContainer: {
+    borderLeftColor: Colors.primaryWarm,
+    marginBottom: 2,
+  },
+  legend: {
+    borderLeftWidth: 4,
+    paddingLeft: 10,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10
   }
 };

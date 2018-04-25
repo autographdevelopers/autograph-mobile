@@ -37,6 +37,9 @@ class EmployeesSummaryAgenda extends Component {
     const id = employeeSlots[0].employee_id;
     const employee = this.props.employees[id] || {};
 
+    console.log('employeeSlots');
+    console.log(employeeSlots);
+
     return (
       <View style={{paddingVertical: 5, paddingHorizontal: 15}}>
         <EmployeeAvailabilitySummaryCell slots={employeeSlots}

@@ -7,8 +7,8 @@ import {
 /** Custom dependencies */
 import { Colors, Fonts } from '../Themes';
 
-export default SectionHeader = ({title, customTextStyles={}, customUnderlineStyles={}}) => (
-  <View style={styles.container}>
+export default SectionHeader = ({title, customTextStyles={}, customUnderlineStyles={}, customContainerStyle={}}) => (
+  <View style={[styles.container, customContainerStyle]}>
     <Text style={[styles.listHeader, customTextStyles]}>
       {title}
     </Text>
@@ -21,14 +21,15 @@ const styles = {
     backgroundColor: Colors.snow
   },
   listHeader: {
-    fontSize: 20,
+    fontSize: Fonts.size.medium,
+    fontFamily: Fonts.type.base,
     color: Colors.softBlack,
   },
   underline: {
-    marginTop: 8,
-    width: 45,
     borderColor: Colors.primaryWarm,
-    borderWidth: 2,
     borderRadius: 10,
+    width: 20,
+    borderWidth: 1,
+    marginTop: 1
   }
 };
