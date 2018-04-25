@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { ListItem, Avatar } from 'react-native-elements'
-import SvgUri from 'react-native-svg-uri';
 
 import { ACTIVITY_IMAGE } from '../Lib/ActivitiesHelper';
 import { Fonts } from '../Themes/';

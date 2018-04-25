@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
-import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
-import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
-import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
 import { activityActionCreators } from '../../Redux/ActivityRedux';
 
 import { FETCHING_STATUS } from '../../Lib/utils';
@@ -18,7 +15,6 @@ import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
 
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
-import Layout from '../../Components/Layout';
 import SectionHeader from '../../Components/SectionHeader';
 import ButtonText from '../../Components/ButtonText';
 import ActivitiesList from '../../Components/ActivitiesList';
@@ -31,7 +27,7 @@ import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
 class Profile extends Component {
   componentWillMount = () => {
     const { employeeId } = this.props;
-    
+
     this.props.fetchActivities({related_user_id: employeeId})
     this.props.fetchDrivingLessons({
       employee_id: this.props.employeeId,
@@ -74,7 +70,8 @@ class Profile extends Component {
               <ButtonText
                 customTextStyle={{ fontSize: Fonts.size.small }}
                 onPress={this.goToCalendar}
-                icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}}>
+                icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm} />}
+              >
                 Zobacz Kalendarz
               </ButtonText>
               }
