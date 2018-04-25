@@ -28,7 +28,9 @@ export default ActivitiesListItem = ({ activity }) => {
 
   return (
     <ListItem
+      contentContainerStyle={{marginLeft: 0}}
       key={activity.id}
+      wrapperStyle={{marginLeft: 0}}
       title={
         <Text>
           {formatMessage(activity.message)}

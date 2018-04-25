@@ -48,7 +48,7 @@ class ActivitiesScreen extends Component {
 
 const styles = StyleSheet.create({
   customListStyle: {
-    margin: 15
+    // margin: 15
   },
   customListWrapperStyle: {
     flex: 1
