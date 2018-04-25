@@ -216,7 +216,7 @@ class EmployeeDailyAgenda extends Component {
 
     // If valid selection - lock slot
 
-    const release_at = moment().add(11, 'seconds').format();
+    const release_at = moment().add(120, 'seconds').format();
     const lockedSlot = _.cloneDeep(slot);
     lockedSlot.release_at = release_at;
     lockedSlot.locking_user_id = currentUser.id;
