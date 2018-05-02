@@ -1,6 +1,6 @@
 import { createFormAction } from 'redux-form-saga';
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone, FETCHING_STATUS } from '../Lib/utils'
+import { deepClone, FETCHING_STATUS } from '../../Lib/utils'
 
 export const invite = createFormAction('INVITE');
 

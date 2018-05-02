@@ -1,10 +1,10 @@
 import { call, put } from 'redux-saga/effects';
-import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../Redux/Entities/DrivingSchoolRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { contextActionCreators } from '../Redux/ContextRedux';
+import { contextActionCreators } from '../Redux/Support/ContextRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { SubmissionError } from 'redux-form';
-import { schoolActivationActionCreators } from '../Redux/SchoolActivationRedux';
+import { schoolActivationActionCreators } from '../Redux/Views/Modals/SchoolActivationRedux';
 import { change } from 'redux-form';
 
 import FORM_IDS from '../Screens/NewDrivingSchool/Constants';
@@ -14,7 +14,7 @@ import {
   createDrivingSchool,
   updateDrivingSchool,
   confirmDrivingSchoolRegistration
-} from '../Redux/DrivingSchoolRedux';
+} from '../Redux/Entities/DrivingSchoolRedux';
 
 export function* create(api, action) {
   const response = yield call(api.drivingSchools.create, { driving_school: action.payload });

@@ -15,7 +15,7 @@ import CellSwitch from '../../../Components/CellWithSwitch';
 import {
   employeePrivilegesActionCreators,
   update,
-} from '../../../Redux/EmployeePrivileges';
+} from '../../../Redux/Entities/EmployeePrivileges';
 import LoadingHOC from '../../../HOC/LoadingHOC';
 
 class EditPrivileges extends Component {
@@ -82,8 +82,8 @@ EditPrivileges = reduxForm({
 EditPrivileges = LoadingHOC(EditPrivileges);
 
 const mapStateToProps = state => {
-  const { currentDrivingSchoolID, currentEmployeeID } = state.context;
-  const { data, status } = state.employeePrivileges;
+  const { currentDrivingSchoolID, currentEmployeeID } = state.support.context;
+  const { data, status } = state.entities.employeePrivileges;
 
   return {
     drivingSchool: currentDrivingSchoolID,

@@ -3,12 +3,12 @@ import { timeHelpers } from '../Lib/timeHandlers';
 import {
   slotActionCreators,
   SLOTS_FETCHED_CALLBACKS,
-} from '../Redux/SlotsRedux';
-import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
+} from '../Redux/Entities/SlotsRedux';
+import { scheduleSettingsActionCreators } from '../Redux/Entities/ScheduleSettingsRedux';
 import { connect } from 'react-redux';
 import EmployeesSummaryAgenda from './EmployeesSummaryAgenda';
-import { employeesActionCreators } from '../Redux/EmployeesRedux';
-import { studentsActionCreators } from '../Redux/StudentsRedux';
+import { employeesActionCreators } from '../Redux/Entities/EmployeesRedux';
+import { studentsActionCreators } from '../Redux/Entities/StudentsRedux';
 
 class SummaryAgendaFetcher extends Component {
   componentWillMount() {
@@ -38,8 +38,8 @@ class SummaryAgendaFetcher extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedDay: state.employeesSummaryAgenda.daySelected,
-  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  selectedDay: state.views.employeesSummaryAgenda.daySelected,
+  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
 });
 
 const mapDispatchToProps = dispatch => ({

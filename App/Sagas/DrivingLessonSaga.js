@@ -1,9 +1,9 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
-import { slotActionCreators } from '../Redux/SlotsRedux';
-import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
-import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
+import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
+import { bookLessonActionCreators } from '../Redux/Views/Modals/BookLesson';
 import { AFTER_SAVE_CALLBACKS } from '../Lib/DrivingLessonHelpers';
 
 export function* index(api, action) {

@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import I18n from '../../I18n';
 import ActionButton from 'react-native-action-button';
 /** Custom modules */
+import SpinnerView from '../../Components/SpinnerView';
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
-import ButtonPrimary from '../../Components/ButtonPrimary';
 import EmployeeRolesSubtitle from '../../Components/EmployeeRolesSubtitle';
 import ButtonText from '../../Components/ButtonText';
 import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
@@ -20,10 +20,10 @@ import DestroyInvitationConfirmation from '../../Components/DestroyInvitationCon
 import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
-import { employeesActionCreators } from '../../Redux/EmployeesRedux';
-import { invitationActionCreators } from '../../Redux/InvitationsRedux';
-import { contextActionCreators } from '../../Redux/ContextRedux';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
+import { employeesActionCreators } from '../../Redux/Entities/EmployeesRedux';
+import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
@@ -53,8 +53,9 @@ class EmployeesIndex extends Component {
     this.props.navigation.navigate('employeeProfile', { user, index });
   };
 
-  openConfirmationModal = (employeeId) =>
+  openConfirmationModal = employeeId => {
     this.setState({ employeeId }, this.props.openDestroyInvitationModal)
+  };
 
   renderActiveEmployee = ({item, index  }) => (
     <ListItem
@@ -105,6 +106,8 @@ class EmployeesIndex extends Component {
   };
 
   render() {
+    if(this.props.status === FETCHING_STATUS.FETCHING) return <SpinnerView/>;
+
     const {
       status,
       pendingEmployees,
@@ -175,11 +178,11 @@ class EmployeesIndex extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  pendingEmployees: state.employees.pendingIds.map(id => state.employees.pending[id]),
-  activeEmployees: state.employees.activeIds.map(id => state.employees.active[id]),
-  status: state.employees.status,
-  invitationDestroyStatus: state.invitations.status
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  pendingEmployees: state.entities.employees.pendingIds.map(id => state.entities.employees.pending[id]),
+  activeEmployees: state.entities.employees.activeIds.map(id => state.entities.employees.active[id]),
+  status: state.entities.employees.status,
+  invitationDestroyStatus: state.views.invitations.status
 });
 
 const styles = {

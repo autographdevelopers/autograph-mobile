@@ -1,6 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone } from '../Lib/utils';
-import { FETCHING_STATUS } from '../Lib/utils';
+import { deepClone } from '../../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 
 /* ------------- Types and Action Creators ------------- */
 

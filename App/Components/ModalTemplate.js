@@ -7,7 +7,7 @@ import IconM from 'react-native-vector-icons/MaterialIcons';
 /** Custom dependencies */
 import { Fonts, Colors } from '../Themes/';
 import { connect } from 'react-redux';
-import { modalActionCreators } from '../Redux/ModalRedux';
+import { modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 import ButtonPrimary from './ButtonPrimary';
 
@@ -139,7 +139,7 @@ const ModalTemplate = props => {
 };
 
 const mapStateToProps = state => ({
-  openedModalId: state.modals.openedModalId
+  openedModalId: state.views.modals.meta.openedModalId
 });
 
 const mapDispatchToProps = dispatch => ({

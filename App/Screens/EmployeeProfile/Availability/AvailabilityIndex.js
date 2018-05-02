@@ -11,12 +11,12 @@ import ButtonPrimary from '../../../Components/ButtonPrimary';
 import BindingFromBox from '../../../Components/BindingFromBox';
 import ModalTemplate from '../../../Components/ModalTemplate';
 import { Colors, Fonts } from '../../../Themes/index';
-import { modalActionCreators, MODALS_IDS } from '../../../Redux/ModalRedux';
-import { scheduleActionCreators } from '../../../Redux/ScheduleRedux';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
+import { modalActionCreators, MODALS_IDS } from '../../../Redux/Views/Modals/ModalRedux';
+import { scheduleActionCreators } from '../../../Redux/Entities/ScheduleRedux';
+import { scheduleFormActionCreators } from '../../../Redux/Views/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../../Redux/Views/ScheduleFormRedux';
 import { FETCHING_STATUS, isTemplateEmpty } from '../../../Lib/utils';
-import { scheduleSettingsActionCreators } from '../../../Redux/ScheduleSettingsRedux';
+import { scheduleSettingsActionCreators } from '../../../Redux/Entities/ScheduleSettingsRedux';
 
 class AvailabilityIndex extends Component {
   componentWillMount = () => {
@@ -191,26 +191,26 @@ const mapStateToProps = state => {
     sunday: []
   };
 
-  if (state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE) {
+  if (state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE) {
     removeParams = {
       new_template_binding_from: null,
       new_template: emptyTemplate
     }
-  } else if (state.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE) {
+  } else if (state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE) {
     removeParams = {
       current_template: emptyTemplate
     }
   }
 
   return {
-    current_template: state.schedule.current_template,
-    new_template: state.schedule.new_template,
+    current_template: state.entities.schedule.current_template,
+    new_template: state.entities.schedule.new_template,
     removeScheduleRequestParams: removeParams,
-    scheduleStatus: state.schedule.status,
-    scheduleSettingsStatus: state.scheduleSettings.status,
-    formStatus: state.scheduleForm.status,
-    new_template_binding_from: state.schedule.new_template_binding_from,
-    new_template_binding_from__FORM: state.scheduleForm.new_template_binding_from
+    scheduleStatus: state.entities.schedule.status,
+    scheduleSettingsStatus: state.entities.scheduleSettings.status,
+    formStatus: state.views.scheduleForm.status,
+    new_template_binding_from: state.entities.schedule.new_template_binding_from,
+    new_template_binding_from__FORM: state.views.scheduleForm.new_template_binding_from
   }
 };
 

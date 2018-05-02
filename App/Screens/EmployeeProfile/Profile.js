@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
-import { activityActionCreators } from '../../Redux/ActivityRedux';
+import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
 
 import { FETCHING_STATUS } from '../../Lib/utils';
 import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
 
-import { contextActionCreators } from '../../Redux/ContextRedux';
-import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { drivingLessonActionCreators } from '../../Redux/Entities/DrivingLessonRedux';
 
 import { canManageEmployees, canManageStudents } from '../../Lib/AuthorizationHelpers';
 import listProjectorStyles from '../../Styles/ListProjector';
@@ -19,7 +19,7 @@ import SectionHeader from '../../Components/SectionHeader';
 import ButtonText from '../../Components/ButtonText';
 import ActivitiesList from '../../Components/ActivitiesList';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { employeeDailyAgendaActionCreators } from '../../Redux/AgendaRedux';
+import { employeeDailyAgendaActionCreators } from '../../Redux/Views/AgendaRedux';
 import moment from 'moment-timezone';
 import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
 
@@ -137,11 +137,11 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-  employeeId: state.context.currentEmployeeID,
-  employee: state.employees.active[state.context.currentEmployeeID],
-  drivingLessons: state.drivingLessons,
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  activities: state.activities
+  employeeId: state.support.context.currentEmployeeID,
+  employee: state.entities.employees.active[state.support.context.currentEmployeeID],
+  drivingLessons: state.entities.drivingLessons,
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  activities: state.entities.activities
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -9,7 +9,6 @@ import ActionButton from 'react-native-action-button';
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
-import ButtonPrimary from '../../Components/ButtonPrimary';
 import ButtonText from '../../Components/ButtonText';
 import InvitationInformationTitle from '../../Components/InvitationInformationTitle';
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
@@ -17,10 +16,10 @@ import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import { studentsActionCreators } from '../../Redux/StudentsRedux';
-import { contextActionCreators } from '../../Redux/ContextRedux';
-import { invitationActionCreators } from '../../Redux/InvitationsRedux';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
+import { studentsActionCreators } from '../../Redux/Entities/StudentsRedux';
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
+import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
@@ -169,11 +168,11 @@ class StudentsIndex extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  activeStudents: state.students.activeIds.map( id => state.students.active[id]),
-  pendingStudents: state.students.pendingIds.map( id => state.students.pending[id]),
-  status: state.students.status,
-  invitationDestroyStatus: state.invitations.status
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  activeStudents: state.entities.students.activeIds.map( id => state.entities.students.active[id]),
+  pendingStudents: state.entities.students.pendingIds.map( id => state.entities.students.pending[id]),
+  status: state.entities.students.status,
+  invitationDestroyStatus: state.views.invitations.status
 });
 
 const styles = {

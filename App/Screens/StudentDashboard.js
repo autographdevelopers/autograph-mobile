@@ -4,8 +4,8 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
 /** Custom modules */
-import { drivingCourseActionCreators } from '../Redux/DrivingCourseRedux';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import { drivingCourseActionCreators } from '../Redux/Entities/DrivingCourseRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 import { Colors, Fonts } from '../Themes/';
 import {
   AFTER_SAVE_CALLBACKS,
@@ -18,7 +18,7 @@ import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
 import SpinnerView from '../Components/SpinnerView';
-import { MODALS_IDS } from '../Redux/ModalRedux'
+import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux'
 
 /** Screen */
 class StudentDashboard extends Component {
@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-  drivingCourse: state.drivingCourse,
-  user: state.user,
-  drivingLessons: state.drivingLessons
+  drivingCourse: state.entities.drivingCourse,
+  user: state.access.currentUser,
+  drivingLessons: state.entities.drivingLessons
 });
 
 const mapDispatchToProps = dispatch => ({

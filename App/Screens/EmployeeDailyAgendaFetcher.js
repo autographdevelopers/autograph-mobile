@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   slotActionCreators,
   SLOTS_FETCHED_CALLBACKS,
-} from '../Redux/SlotsRedux';
+} from '../Redux/Entities/SlotsRedux';
 import { connect } from 'react-redux';
 import { timeHelpers } from '../Lib/timeHandlers';
 import EmployeeDailyAgenda from './EmployeeDailyAgenda';
@@ -25,9 +25,9 @@ class EmployeeDailyAgendaFetcher extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedDay: state.employeeDailyAgenda.daySelected,
-  employeeId: state.employeeDailyAgenda.employeeId,
-  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID]
+  selectedDay: state.views.employeeDailyAgenda.daySelected,
+  employeeId: state.views.employeeDailyAgenda.employeeId,
+  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID]
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,6 +1,6 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
-import { drivingCourseActionCreators } from '../Redux/DrivingCourseRedux';
+import { drivingCourseActionCreators } from '../Redux/Entities/DrivingCourseRedux';
 
 export function* show(api, action) {
   yield put(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.FETCHING));

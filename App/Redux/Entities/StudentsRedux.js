@@ -1,4 +1,4 @@
-import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
+import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
 
 export const INITIAL_STATE = {

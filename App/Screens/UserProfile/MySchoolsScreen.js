@@ -12,11 +12,11 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../../Themes/index';
 /** Custom modules */
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
-import { contextActionCreators } from '../../Redux/ContextRedux';
-import { modalActionCreators, MODALS_IDS } from '../../Redux/ModalRedux';
-import { schoolActivationActionCreators } from '../../Redux/SchoolActivationRedux';
-import { invitationActionCreators } from '../../Redux/InvitationsRedux';
+import { drivingSchoolActionCreators } from '../../Redux/Entities/DrivingSchoolRedux';
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { modalActionCreators, MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
+import { schoolActivationActionCreators } from '../../Redux/Views/Modals/SchoolActivationRedux';
+import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
 
 import AccountHeader from '../../Components/AccountHeader';
 import SpinnerView from '../../Components/SpinnerView';
@@ -214,18 +214,26 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ drivingSchools, invitations, user, schoolActivation }) => ({
-  activeDrivingSchools: Object.values(drivingSchools.hashMap).
-    filter(isDrivingSchoolRelationActive),
-  invitingDrivingSchools: Object.values(drivingSchools.hashMap).
-    filter(isDrivingSchoolRelationPending),
-  awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap).
-    filter(isDrivingSchoolAwaitingActivation),
-  drivingSchools,
-  invitations,
-  user,
-  schoolActivationStatus: schoolActivation.status
-});
+const mapStateToProps = state => {
+  const { drivingSchools } = state.entities;
+  const { invitations } = state.views;
+  const { currentUser } = state.access;
+  const { modals: { schoolActivation } } = state.views;
+
+  return {
+    activeDrivingSchools: Object.values(drivingSchools.hashMap)
+                                .filter(isDrivingSchoolRelationActive),
+    invitingDrivingSchools: Object.values(drivingSchools.hashMap)
+                                  .filter(isDrivingSchoolRelationPending),
+    awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap)
+                                            .filter(
+                                              isDrivingSchoolAwaitingActivation),
+    drivingSchools,
+    invitations,
+    user: currentUser,
+    schoolActivationStatus: schoolActivation.status
+  }
+};
 
 const mapDispatchToProps = dispatch => ( {
   fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.indexRequest()),

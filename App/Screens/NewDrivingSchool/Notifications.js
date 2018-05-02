@@ -6,8 +6,8 @@ import CellSwitch from '../../Components/CellWithSwitch';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import { connect } from 'react-redux';
 import FORM_IDS from './Constants';
-import { updateNotificationSettings } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
-import { notificationSettingsActionCreators } from '../../Redux/EmployeeNotificationsSettingsSetRedux';
+import { updateNotificationSettings } from '../../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
+import { notificationSettingsActionCreators } from '../../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
 import LoadingHOC from '../../HOC/LoadingHOC';
 import { getSchoolIdOfCurrentContext } from '../../Lib/DrivingSchoolHelpers';
 
@@ -89,9 +89,9 @@ const mapStateToProps = (state, otherProps)=> {
 
   return {
     shouldRequestData: true,
-    drivingSchool: state.context.currentDrivingSchoolID,
-    status: state.notificationsSettingsSet.status,
-    initialValues: {...state.notificationsSettingsSet.settings, driving_school_id: drivingSchoolId},
+    drivingSchool: state.support.context.currentDrivingSchoolID,
+    status: state.entities.notificationsSettingsSet.status,
+    initialValues: {...state.entities.notificationsSettingsSet.settings, driving_school_id: drivingSchoolId},
   }
 };
 

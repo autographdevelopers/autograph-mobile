@@ -7,11 +7,11 @@ import { Fonts, Colors } from '../Themes/index';
 import { FETCHING_STATUS } from '../Lib/utils';
 import { canModifySchedules, isStudent } from '../Lib/AuthorizationHelpers';
 
-import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import { MODALS_IDS, modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 
 import DrivingLessonsListItem from '../Components/DrivingLessonsListItem';
-import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
 
 class DrivingLessonsList extends Component {
   constructor(props) {
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  user: state.user,
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  user: state.access.currentUser,
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
 });
 
 const mapDispatchToProps = dispatch => ({

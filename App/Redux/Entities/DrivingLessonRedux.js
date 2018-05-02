@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { FETCHING_STATUS } from '../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 import _ from 'lodash';
-import { AFTER_SAVE_CALLBACKS } from '../Lib/DrivingLessonHelpers';
+import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({

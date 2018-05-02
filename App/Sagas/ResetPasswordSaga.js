@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects'
-import { resetPasswordCreators } from '../Redux/ResetPasswordRedux'
-import { resetPasswordFormAction } from '../Redux/ResetPasswordRedux'
+import { resetPasswordCreators } from '../Redux/Views/ResetPasswordRedux'
+import { resetPasswordFormAction } from '../Redux/Views/ResetPasswordRedux'
 
 export function* resetPassword (api, action) {
   const { email } = action.payload;

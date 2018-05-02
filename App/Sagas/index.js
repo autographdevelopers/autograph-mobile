@@ -2,24 +2,23 @@ import { takeLatest, takeEvery, all } from 'redux-saga/effects';
 import { API as api } from '../Services/Api';
 
 /* ------------- Types ------------- */
-import { sessionActionTypes } from '../Redux/SessionRedux';
-import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
-import { drivingSchoolActionTypes } from '../Redux/DrivingSchoolRedux';
-import { scheduleSettingsTypes } from '../Redux/ScheduleSettingsRedux';
-import { notificationSettingsActionTypes } from '../Redux/EmployeeNotificationsSettingsSetRedux';
-import { employeesActionTypes } from '../Redux/EmployeesRedux';
-import { studentsActionTypes } from '../Redux/StudentsRedux';
-import { employeePrivilegesActionTypes } from '../Redux/EmployeePrivileges';
-import { invitationActionTypes } from '../Redux/InvitationsRedux';
-import { scheduleActionTypes } from '../Redux/ScheduleRedux';
-import { scheduleFormActionTypes } from '../Redux/ScheduleFormRedux';
-import { schoolActivationActionTypes } from '../Redux/SchoolActivationRedux';
-import { drivingCourseActionTypes } from '../Redux/DrivingCourseRedux';
-import { drivingLessonActionTypes } from '../Redux/DrivingLessonRedux';
-import { slotActionTypes } from '../Redux/SlotsRedux';
-import { calendarActionTypes } from '../Redux/CalendarRedux';
-import { activityActionTypes } from '../Redux/ActivityRedux';
-import { toastActionTypes } from '../Redux/ToastRedux';
+import { sessionActionTypes } from '../Redux/Access/SessionRedux';
+import { resetPasswordTypes } from '../Redux/Views/ResetPasswordRedux';
+import { drivingSchoolActionTypes } from '../Redux/Entities/DrivingSchoolRedux';
+import { scheduleSettingsTypes } from '../Redux/Entities/ScheduleSettingsRedux';
+import { notificationSettingsActionTypes } from '../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
+import { employeesActionTypes } from '../Redux/Entities/EmployeesRedux';
+import { studentsActionTypes } from '../Redux/Entities/StudentsRedux';
+import { employeePrivilegesActionTypes } from '../Redux/Entities/EmployeePrivileges';
+import { invitationActionTypes } from '../Redux/Views/InvitationsRedux';
+import { scheduleActionTypes } from '../Redux/Entities/ScheduleRedux';
+import { scheduleFormActionTypes } from '../Redux/Views/ScheduleFormRedux';
+import { schoolActivationActionTypes } from '../Redux/Views/Modals/SchoolActivationRedux';
+import { drivingCourseActionTypes } from '../Redux/Entities/DrivingCourseRedux';
+import { drivingLessonActionTypes } from '../Redux/Entities/DrivingLessonRedux';
+import { slotActionTypes } from '../Redux/Entities/SlotsRedux';
+import { activityActionTypes } from '../Redux/Entities/ActivityRedux';
+import { toastActionTypes } from '../Redux/Support/ToastRedux';
 
 /* ------------- Sagas ------------- */
 
@@ -90,17 +89,17 @@ import {
 import { index as indexSlotsSaga } from './SlotsSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
-import { invite } from '../Redux/InvitationsRedux';
+import { invite } from '../Redux/Views/InvitationsRedux';
 import {
   createDrivingSchool,
   updateDrivingSchool,
   confirmDrivingSchoolRegistration
-} from '../Redux/DrivingSchoolRedux';
+} from '../Redux/Entities/DrivingSchoolRedux';
 
-import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettingsSetRedux';
-import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
-import { login } from '../Redux/SessionRedux';
-import { update as updateEmployeePrivileges } from '../Redux/EmployeePrivileges';
+import { updateNotificationSettings } from '../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
+import { updateScheduleSettings } from '../Redux/Entities/ScheduleSettingsRedux';
+import { login } from '../Redux/Access/SessionRedux';
+import { update as updateEmployeePrivileges } from '../Redux/Entities/EmployeePrivileges';
 
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {

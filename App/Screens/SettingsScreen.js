@@ -92,7 +92,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  id: state.context.currentDrivingSchoolID
+  id: state.support.context.currentDrivingSchoolID
 });
 
 export default connect(mapStateToProps)(SettingsScreen)

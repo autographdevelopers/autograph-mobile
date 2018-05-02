@@ -1,18 +1,13 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
-import { slotActionCreators } from '../Redux/SlotsRedux';
-import { calendarActionCreators } from '../Redux/CalendarRedux';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
-import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
-import { employeesSummaryAgendaActionCreators } from '../Redux/AgendaRedux';
-import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
+import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
+import { employeesSummaryAgendaActionCreators } from '../Redux/Views/AgendaRedux';
+import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
 
 export function* index(api, action) {
-  const { daySelected, params } = action;
-
-  if (daySelected)
-    yield put(calendarActionCreators.setDay(daySelected));
-
+  const { params } = action;
 
   yield put(slotActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
 

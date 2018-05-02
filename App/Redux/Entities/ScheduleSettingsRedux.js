@@ -1,5 +1,5 @@
 import { createFormAction } from 'redux-form-saga';
-import { FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
+import { FETCHING_STATUS, mergeArraysUniq } from '../../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
 import _ from 'lodash';
 

@@ -1,5 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone, FETCHING_STATUS } from '../Lib/utils';
+import { deepClone, FETCHING_STATUS } from '../../Lib/utils';
 
 const { Types, Creators } = createActions({
   showRequest: null,

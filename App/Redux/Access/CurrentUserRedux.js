@@ -32,7 +32,7 @@ export const clearUserHandler = state => INITIAL_STATE;
 
 /* ------------- Gather all handlers to create single reducer ------------- */
 
-export const userReducer = createReducer(INITIAL_STATE, {
+export const currentUserReducer = createReducer(INITIAL_STATE, {
   [Types.SET_USER]: setUserHandler,
   [Types.CLEAR_USER]: clearUserHandler
 });

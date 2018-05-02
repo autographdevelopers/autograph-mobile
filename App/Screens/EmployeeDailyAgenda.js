@@ -16,14 +16,14 @@ import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
 import InfoBox from '../Components/InfoBox';
 import withRequiredData from '../HOC/withRequiredData';
 /** == Action Creators ================================ */
-import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
-import { modalActionCreators } from '../Redux/ModalRedux';
-import { slotActionCreators } from '../Redux/SlotsRedux';
-import { toastActionCreators } from '../Redux/ToastRedux';
+import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
+import { modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
+import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
+import { toastActionCreators } from '../Redux/Support/ToastRedux';
 import { WastedSlot } from '../Components/Slots/WastedSlot';
-import { cancelDrivingLessonModalActionCreators } from '../Redux/Modals/CancelDrivingLesson';
-import { bookLessonActionCreators } from '../Redux/Modals/BookLesson';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
+import { bookLessonActionCreators } from '../Redux/Views/Modals/BookLesson';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 /** == Utilities ====================================== */
 import {
   getEmployeeDailyAgenda,
@@ -34,8 +34,8 @@ import I18n from '../I18n';
 import { timeHelpers } from '../Lib/timeHandlers';
 import { Colors, Fonts } from '../Themes/';
 /** == Constants ====================================== */
-import { MODALS_IDS } from '../Redux/ModalRedux';
-import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
+import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
@@ -398,22 +398,22 @@ class EmployeeDailyAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
-  slotsStatus: state.slots.status,
-  allSlots: _.values(state.slots.data),
+  slotsStatus: state.entities.slots.status,
+  allSlots: _.values(state.entities.slots.data),
   employeeDailyAgendaItems: getEmployeeDailyAgenda(state),
-  employees: state.employees.active,
-  selectedDay: state.employeeDailyAgenda.daySelected,
-  fetchedDataBoundaries: state.employeeDailyAgenda.fetchedDataBoundaries,
-  employeeId: state.employeeDailyAgenda.employeeId,
-  currentUser: state.user,
-  session: state.session,
-  schoolId: state.context.currentDrivingSchoolID,
-  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
+  employees: state.entities.employees.active,
+  selectedDay: state.views.employeeDailyAgenda.daySelected,
+  fetchedDataBoundaries: state.views.employeeDailyAgenda.fetchedDataBoundaries,
+  employeeId: state.views.employeeDailyAgenda.employeeId,
+  currentUser: state.access.currentUser,
+  session: state.access.session,
+  schoolId: state.support.context.currentDrivingSchoolID,
+  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
   selectedSlots: getSelectedSlots(state),
   lessonInterval: getLessonInterval(state),
-  drivingLessonStatus: state.drivingLessons.status,
-  cacheHistory: state.employeeDailyAgenda.cacheHistory,
-  scheduleSettings: state.scheduleSettings
+  drivingLessonStatus: state.entities.drivingLessons.status,
+  cacheHistory: state.views.employeeDailyAgenda.cacheHistory,
+  scheduleSettings: state.entities.scheduleSettings
 });
 
 const mapDispatchToProps = dispatch => ({

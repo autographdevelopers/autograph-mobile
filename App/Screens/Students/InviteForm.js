@@ -10,7 +10,7 @@ import NavHeader from '../../Components/NavHeader';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import Layout from '../../Components/Layout'
 /** Utilities */
-import { invite } from '../../Redux/InvitationsRedux';
+import { invite } from '../../Redux/Views/InvitationsRedux';
 import { email, required } from '../../Lib/validators';
 
 class InviteStudent extends Component {

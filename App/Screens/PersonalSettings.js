@@ -8,7 +8,7 @@ import { ListItem } from 'react-native-elements';
 import UniversalCell from '../Components/UniversalCell';
 import IconF from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-import { sessionActionCreators } from '../Redux/SessionRedux';
+import { sessionActionCreators } from '../Redux/Access/SessionRedux';
 import { NavigationActions } from 'react-navigation';
 class PersonalSettings extends Component {
 

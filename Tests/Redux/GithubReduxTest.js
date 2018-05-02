@@ -5,7 +5,7 @@
 //   const state = reducer(INITIAL_STATE, Actions.userRequest(username))
 //
 //   expect(state.fetching).toBe(true)
-//   expect(state.username).toBe(username)
+//   expect(state.access.currentUsername).toBe(username)
 //   expect(state.avatar).toBeNull()
 // })
 //

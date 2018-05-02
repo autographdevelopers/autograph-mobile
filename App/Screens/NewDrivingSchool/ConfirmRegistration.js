@@ -3,7 +3,7 @@ import { Text, ScrollView, Alert, View } from 'react-native';
 import { reduxForm } from 'redux-form';
 import FORM_IDS from './Constants';
 import { NavigationActions } from 'react-navigation';
-import { confirmDrivingSchoolRegistration } from '../../Redux/DrivingSchoolRedux';
+import { confirmDrivingSchoolRegistration } from '../../Redux/Entities/DrivingSchoolRedux';
 import { connect } from 'react-redux';
 
 class ConfirmRegistration extends Component {

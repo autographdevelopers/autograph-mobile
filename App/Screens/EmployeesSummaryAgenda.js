@@ -8,12 +8,12 @@ import AgendaWrapper from './AgendaWrapper';
 import InfoBox from '../Components/InfoBox';
 import withRequiredData from '../HOC/withRequiredData';
 /** == Action Creators ================================ */
-import { employeesSummaryAgendaActionCreators } from '../Redux/AgendaRedux';
-import { employeeDailyAgendaActionCreators } from '../Redux/AgendaRedux';
-import { slotActionCreators } from '../Redux/SlotsRedux';
+import { employeesSummaryAgendaActionCreators } from '../Redux/Views/AgendaRedux';
+import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
+import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
 /** == Utilities  ================================ */
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
-import { SLOTS_FETCHED_CALLBACKS } from '../Redux/SlotsRedux';
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 import { timeHelpers } from '../Lib/timeHandlers';
 import I18n from '../I18n';
 
@@ -84,18 +84,18 @@ class EmployeesSummaryAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
-  employeesStatus: state.employees.status,
-  studentsStatus: state.students.status,
-  scheduleSettingsStatus: state.scheduleSettings.status,
-  slotsStatus: state.slots.status,
+  employeesStatus: state.entities.employees.status,
+  studentsStatus: state.entities.students.status,
+  scheduleSettingsStatus: state.entities.scheduleSettings.status,
+  slotsStatus: state.entities.slots.status,
 
-  employees: state.employees.active,
-  selectedDay: state.employeesSummaryAgenda.daySelected,
-  employeesSummaryAgendaState: state.employeesSummaryAgenda,
+  employees: state.entities.employees.active,
+  selectedDay: state.views.employeesSummaryAgenda.daySelected,
+  employeesSummaryAgendaState: state.views.employeesSummaryAgenda,
   employeesSummaryAgendaItems: getEmployeesSummaryAgenda(state),
-  cacheHistory: state.employeesSummaryAgenda.cacheHistory,
-  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  currentUser: state.user
+  cacheHistory: state.views.employeesSummaryAgenda.cacheHistory,
+  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  currentUser: state.access.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({

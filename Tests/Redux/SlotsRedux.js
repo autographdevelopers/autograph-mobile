@@ -2,7 +2,7 @@ import {
   slotActionCreators,
   slotReducer,
   INITIAL_STATE
-} from '../../App/Redux/SlotsRedux';
+} from '../../App/Redux/Entities/SlotsRedux';
 
 const testSlots1 = [
   {

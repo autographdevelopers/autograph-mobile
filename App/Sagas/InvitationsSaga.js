@@ -1,11 +1,11 @@
 import { call, put } from 'redux-saga/effects';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { SubmissionError } from 'redux-form';
-import { invite } from '../Redux/InvitationsRedux';
-import { employeesActionCreators } from '../Redux/EmployeesRedux';
-import { studentsActionCreators } from '../Redux/StudentsRedux';
-import { invitationActionCreators } from '../Redux/InvitationsRedux';
-import { drivingSchoolActionCreators } from '../Redux/DrivingSchoolRedux';
+import { invite } from '../Redux/Views/InvitationsRedux';
+import { employeesActionCreators } from '../Redux/Entities/EmployeesRedux';
+import { studentsActionCreators } from '../Redux/Entities/StudentsRedux';
+import { invitationActionCreators } from '../Redux/Views/InvitationsRedux';
+import { drivingSchoolActionCreators } from '../Redux/Entities/DrivingSchoolRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* create(api, action) {

@@ -1,6 +1,6 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
-import { employeesActionCreators } from '../Redux/EmployeesRedux';
+import { employeesActionCreators } from '../Redux/Entities/EmployeesRedux';
 
 export function* index(api, action) {
   yield put(employeesActionCreators.changeStatus(FETCHING_STATUS.FETCHING));

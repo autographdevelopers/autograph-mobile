@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { login } from '../../Redux/SessionRedux';
+import { login } from '../../Redux/Access/SessionRedux';
 import { Field, reduxForm } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

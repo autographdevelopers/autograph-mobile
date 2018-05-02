@@ -1,10 +1,10 @@
 import { call, put } from 'redux-saga/effects';
-import { userActionCreators } from '../Redux/UserRedux';
+import { userActionCreators } from '../Redux/Access/CurrentUserRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
-import { login } from '../Redux/SessionRedux';
+import { login } from '../Redux/Access/SessionRedux';
 import { SubmissionError } from 'redux-form';
 import { NavigationActions } from 'react-navigation';
-import { sessionActionCreators } from '../Redux/SessionRedux';
+import { sessionActionCreators } from '../Redux/Access/SessionRedux';
 
 export function* create(api, action) {
   const { email, password } = action.payload;

@@ -1,5 +1,5 @@
 import { store } from '../Containers/App';
-import { sessionActionCreators } from '../Redux/SessionRedux';
+import { sessionActionCreators } from '../Redux/Access/SessionRedux';
 const queryString = require('qs');
 
 import apisauce, {
@@ -25,8 +25,8 @@ const responseHook = response => {
 };
 
 const requestHook = request => {
-  const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().session;
-  const { currentDrivingSchoolID, currentEmployeeID, currentStudentID } = store.getState().context;
+  const { accessToken, tokenType, clientId, expirationDate, uid } = store.getState().access.session;
+  const { currentDrivingSchoolID, currentEmployeeID, currentStudentID } = store.getState().support.context;
   request.headers['access-token'] = accessToken;
   request.headers['token-type'] = tokenType;
   request.headers['client'] = clientId;

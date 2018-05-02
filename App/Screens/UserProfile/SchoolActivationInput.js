@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import { Colors, Fonts } from '../../Themes';
-import { schoolActivationActionCreators } from '../../Redux/SchoolActivationRedux';
+import { schoolActivationActionCreators } from '../../Redux/Views/Modals/SchoolActivationRedux';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 
@@ -59,7 +59,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  schoolActivation: state.schoolActivation
+  schoolActivation: state.views.modals.schoolActivation
 });
 
 const mapDispatchToProps = dispatch => ({

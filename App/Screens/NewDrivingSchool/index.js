@@ -167,7 +167,7 @@ const selector = formValueSelector(FORM_IDS.BASIC_INFO);
 const mapStateToProps = state => ({
   drivingSchoolId: selector(state, 'id'),
   form: state.form,
-  drivingSchool: state.context.currentDrivingSchoolID
+  drivingSchool: state.support.context.currentDrivingSchoolID
 });
 
 const mapDispatchToProps = dispatch => ({

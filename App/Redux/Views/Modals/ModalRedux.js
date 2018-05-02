@@ -41,7 +41,7 @@ export const openModalHandler = (state, { id }) => ( {
 
 /* ------------- Gather all handlers to create single reducer ------------- */
 
-export const modalsReducer = createReducer(INITIAL_STATE, {
+export const metaModalsReducer = createReducer(INITIAL_STATE, {
   [Types.OPEN]: openModalHandler,
   [Types.CLOSE]: closeModalHandler,
 });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 import { Colors, Fonts } from '../Themes/';
 import ButtonText from './ButtonText';
 
@@ -113,20 +113,21 @@ const styles = {
 
 const mapStateToProps = state => {
   let student;
+  const { bookLesson } = state.views.modals;
 
-  if (state.user.type === 'Student') {
-    student = state.user;
-  } else if (state.user.type === 'Employee') {
-    student = state.students.active[state.bookLesson.student_id];
+  if (state.access.currentUser.type === 'Student') {
+    student = state.access.currentUser;
+  } else if (state.access.currentUser.type === 'Employee') {
+    student = state.entities.students.active[bookLesson.student_id];
   }
 
   return {
-    employee: state.employees.active[state.bookLesson.employee_id],
+    employee: state.entities.employees.active[bookLesson.employee_id],
     student,
-    slot_ids: state.bookLesson.slot_ids,
-    fromHour: state.bookLesson.fromHour,
-    toHour: state.bookLesson.toHour,
-    date: state.bookLesson.date,
+    slot_ids: bookLesson.slot_ids,
+    fromHour: bookLesson.fromHour,
+    toHour: bookLesson.toHour,
+    date: bookLesson.date,
   }
 };
 

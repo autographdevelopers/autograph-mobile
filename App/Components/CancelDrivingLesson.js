@@ -4,7 +4,7 @@ import { Fonts, Colors } from '../Themes/'
 import ButtonText from './ButtonText'
 import DefaultAvatar from './DefaultAvatar';
 import { connect } from 'react-redux';
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 
 const AVATAR_SIZE = 22;
 
@@ -74,7 +74,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  drivingLesson: state.lessonModal.cancel.drivingLesson
+  drivingLesson: state.views.modals.cancelLesson.drivingLesson
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CancelDrivingLessons)

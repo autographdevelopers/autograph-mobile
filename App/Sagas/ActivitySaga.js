@@ -1,7 +1,7 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { ACTIVITY_DISPLAY_TYPE } from '../Lib/ActivitiesHelper';
 import { call, put } from 'redux-saga/effects';
-import { activityActionCreators } from '../Redux/ActivityRedux';
+import { activityActionCreators } from '../Redux/Entities/ActivityRedux';
 
 export function* index(api, action) {
   yield put(activityActionCreators.changeStatus(FETCHING_STATUS.FETCHING));

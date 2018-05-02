@@ -6,8 +6,8 @@ import moment from 'moment/moment';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
-import { drivingLessonActionCreators } from '../Redux/DrivingLessonRedux';
-import { MODALS_IDS, modalActionCreators } from '../Redux/ModalRedux';
+import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
+import { MODALS_IDS, modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 import {
   AFTER_SAVE_CALLBACKS,
@@ -97,7 +97,7 @@ class DrivingLessonsScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingLessons: state.drivingLessons
+  drivingLessons: state.entities.drivingLessons
 });
 
 const mapDispatchToProps = dispatch => ({

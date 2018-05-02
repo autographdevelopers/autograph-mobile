@@ -1,4 +1,4 @@
-import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../Lib/utils';
+import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
 
 export const INITIAL_STATE = {
@@ -7,6 +7,7 @@ export const INITIAL_STATE = {
   active: {},
   activeIds: [],
   status: FETCHING_STATUS.READY,
+  refreshing: false,
   errorMsg: null
 };
 
@@ -25,6 +26,10 @@ export const employeesActionCreators = Creators;
 export const employeesActionTypes = Types;
 
 /** Handlers */
+// export const toggleRefreshingState = state => {
+//
+// };
+
 export const saveSingleHandler = (state, { data }) => {
   const dataKey = data.status;
   const idsKey = `${dataKey}Ids`;

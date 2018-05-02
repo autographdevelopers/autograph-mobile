@@ -1,5 +1,5 @@
 import { createActions, createReducer } from 'reduxsauce';
-import { FETCHING_STATUS } from '../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 import { createFormAction } from 'redux-form-saga';
 
 export const updateNotificationSettings = createFormAction('UPDATE_NOTIFICATION_SETTINGS');

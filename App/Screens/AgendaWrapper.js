@@ -63,9 +63,9 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  currentSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  currentUser: state.user,
-  scheduleSettings: state.scheduleSettings
+  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  currentUser: state.access.currentUser,
+  scheduleSettings: state.entities.scheduleSettings
 });
 
 export default connect(mapStateToProps)(AgendaWrapper)

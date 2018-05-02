@@ -15,8 +15,8 @@ import ButtonPrimary from '../../../Components/ButtonPrimary';
 import StepsIndicators  from '../../../Components/StepsIndicators';
 import CustomDatePicker from '../../../Components/CustomDatePicker';
 import RadioButton from '../../../Components/RadioButton';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import { TEMPLATE_TYPES } from '../../../Redux/ScheduleFormRedux';
+import { scheduleFormActionCreators } from '../../../Redux/Views/ScheduleFormRedux';
+import { TEMPLATE_TYPES } from '../../../Redux/Views/ScheduleFormRedux';
 import { Colors, Fonts } from '../../../Themes/index';
 
 const STEPS = ['Ustawienia', 'Podsumowanie'];
@@ -135,20 +135,20 @@ class FinalizeFormWizard extends Component {
 
 const mapStateToProps = state => {
   const showBindingFromStepForCurrentSchedule =
-    state.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.schedule.new_template_binding_from == null;
+    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.schedule.new_template_binding_from == null;
 
   const showBindingFromStepForNewSchedule =
-    state.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE;
+    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE;
 
   const showBindingFromStep = showBindingFromStepForCurrentSchedule || showBindingFromStepForNewSchedule;
 
 
   return {
-    openedModalName: state.modals.openedModalId,
-    template: state.scheduleForm.template,
-    new_template_binding_from: state.scheduleForm.new_template_binding_from,
-    schedule_type: state.scheduleForm.schedule_type,
-    status: state.scheduleForm.status,
+    openedModalName: state.views.modals.meta.openedModalId,
+    template: state.views.scheduleForm.template,
+    new_template_binding_from: state.views.scheduleForm.new_template_binding_from,
+    schedule_type: state.views.scheduleForm.schedule_type,
+    status: state.views.scheduleForm.status,
     showBindingFromStep: showBindingFromStep
   }
 };

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { Field, reduxForm, FormSection } from 'redux-form';
-import { invite } from '../../../Redux/InvitationsRedux';
+import { invite } from '../../../Redux/Views/InvitationsRedux';
 /** Custom components */
 import CellSwitch from '../../../Components/CellWithSwitch';
 import Layout from '../../../Components/Layout';

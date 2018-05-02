@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
-import { employeePrivilegesActionCreators } from '../Redux/EmployeePrivileges';
-import { update as updateForm } from '../Redux/EmployeePrivileges';
+import { employeePrivilegesActionCreators } from '../Redux/Entities/EmployeePrivileges';
+import { update as updateForm } from '../Redux/Entities/EmployeePrivileges';
 import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 

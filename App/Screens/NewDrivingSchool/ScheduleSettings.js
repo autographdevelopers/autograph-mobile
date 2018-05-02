@@ -3,8 +3,8 @@ import { View, Alert } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import CellSwitch from '../../Components/CellWithSwitch';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
-import { updateScheduleSettings } from '../../Redux/ScheduleSettingsRedux';
-import { scheduleSettingsActionCreators } from '../../Redux/ScheduleSettingsRedux';
+import { updateScheduleSettings } from '../../Redux/Entities/ScheduleSettingsRedux';
+import { scheduleSettingsActionCreators } from '../../Redux/Entities/ScheduleSettingsRedux';
 import FORM_IDS from './Constants';
 
 import { connect } from 'react-redux';
@@ -83,14 +83,14 @@ ScheduleSettings = LoadingHOC(ScheduleSettings);
 
 const mapStateToProps = (state, otherProps) => {
 
-  const { currentDrivingSchoolID } = state.context;
-  const { valid_time_frames, ...otherSettings} = state.scheduleSettings;
+  const { currentDrivingSchoolID } = state.support.context;
+  const { valid_time_frames, ...otherSettings} = state.entities.scheduleSettings;
 
   return {
     drivingSchool: currentDrivingSchoolID,
     initialValues: {...otherSettings, driving_school_id: getSchoolIdOfCurrentContext(otherProps) },
     shouldRequestData: true,
-    status: state.scheduleSettings.status,
+    status: state.entities.scheduleSettings.status,
   };
 };
 

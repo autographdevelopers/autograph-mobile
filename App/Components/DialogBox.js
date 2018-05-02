@@ -13,7 +13,7 @@ import ButtonPrimary from './ButtonPrimary';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { FETCHING_STATUS } from '../Lib/utils';
-import { modalActionCreators } from '../Redux/ModalRedux';
+import { modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconE from 'react-native-vector-icons/Entypo';
 
@@ -184,7 +184,7 @@ class DialogBox extends Component {
   }
 };
 
-const mapStateToProps = state => ({ openedModalName: state.modals.openedModalId });
+const mapStateToProps = state => ({ openedModalName: state.views.modals.meta.openedModalId });
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(modalActionCreators.close()),

@@ -1,5 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { FETCHING_STATUS } from '../../Lib/utils';
+import { FETCHING_STATUS } from '../../../Lib/utils';
 import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */

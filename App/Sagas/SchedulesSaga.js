@@ -1,7 +1,7 @@
 import { FETCHING_STATUS } from '../Lib/utils';
 import { call, put } from 'redux-saga/effects';
-import { scheduleFormActionCreators } from '../Redux/ScheduleFormRedux';
-import { scheduleActionCreators } from '../Redux/ScheduleRedux';
+import { scheduleFormActionCreators } from '../Redux/Views/ScheduleFormRedux';
+import { scheduleActionCreators } from '../Redux/Entities/ScheduleRedux';
 
 export function* show(api, action) {
   yield put(scheduleActionCreators.changeStatus(FETCHING_STATUS.FETCHING));

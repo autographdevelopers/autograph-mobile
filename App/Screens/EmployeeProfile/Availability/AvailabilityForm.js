@@ -13,8 +13,8 @@ import ModalTemplate from '../../../Components/ModalTemplate';
 import FinalizeFormWizard from './FinalizeFormWizard';
 import Slot from '../../../Components/Slot';
 import { Colors, Fonts } from '../../../Themes/index';
-import { scheduleFormActionCreators } from '../../../Redux/ScheduleFormRedux';
-import { MODALS_IDS, modalActionCreators } from '../../../Redux/ModalRedux';
+import { scheduleFormActionCreators } from '../../../Redux/Views/ScheduleFormRedux';
+import { MODALS_IDS, modalActionCreators } from '../../../Redux/Views/Modals/ModalRedux';
 import { FETCHING_STATUS } from '../../../Lib/utils';
 import I18n from '../../../I18n';
 
@@ -153,9 +153,9 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  schedule: state.scheduleForm.template,
-  formStatus: state.scheduleForm.status,
-  validTimeFrames: state.scheduleSettings.valid_time_frames
+  schedule: state.views.scheduleForm.template,
+  formStatus: state.views.scheduleForm.status,
+  validTimeFrames: state.entities.scheduleSettings.valid_time_frames
 });
 
 const mapDispatchToProps = dispatch => ({

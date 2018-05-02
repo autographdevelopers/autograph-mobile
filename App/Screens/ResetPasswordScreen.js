@@ -6,8 +6,8 @@ import PrimaryButton from '../Components/ButtonPrimary';
 import Layout from '../Components/Layout';
 import { Fonts, Colors } from '../Themes/index';
 import { connect } from 'react-redux';
-import { resetPasswordTypes } from '../Redux/ResetPasswordRedux';
-import { STATUS } from '../Redux/ResetPasswordRedux'
+import { resetPasswordTypes } from '../Redux/Views/ResetPasswordRedux';
+import { STATUS } from '../Redux/Views/ResetPasswordRedux'
 import I18n from '../I18n';
 
 class ResetPasswordScreen extends Component {
@@ -81,7 +81,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => {
-  return { resetPassword: state.resetPassword }
+  return { resetPassword: state.views.resetPassword }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen)

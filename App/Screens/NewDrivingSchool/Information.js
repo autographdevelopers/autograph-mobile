@@ -15,9 +15,9 @@ import ButtonText from '../../Components/ButtonText';
 import FormErrorMessage from '../../Components/GenerealFormErrorMessage';
 import FORM_IDS from './Constants';
 
-import { createDrivingSchool } from '../../Redux/DrivingSchoolRedux';
-import { updateDrivingSchool } from '../../Redux/DrivingSchoolRedux';
-import { drivingSchoolActionCreators } from '../../Redux/DrivingSchoolRedux';
+import { createDrivingSchool } from '../../Redux/Entities/DrivingSchoolRedux';
+import { updateDrivingSchool } from '../../Redux/Entities/DrivingSchoolRedux';
+import { drivingSchoolActionCreators } from '../../Redux/Entities/DrivingSchoolRedux';
 import Fonts from '../../Themes/Fonts';
 
 const renderPhoneNumber = (member, index, fields) => {
@@ -182,8 +182,8 @@ const mapStateToProps = (state, props) => {
   return {
     drivingSchoolId: selector(state, 'id'),
     shouldRequestData: typeof id === 'number',
-    initialValues: state.drivingSchools.hashMap[id],
-    status: state.drivingSchools.status,
+    initialValues: state.entities.drivingSchools.hashMap[id],
+    status: state.entities.drivingSchools.status,
 
   };
 };

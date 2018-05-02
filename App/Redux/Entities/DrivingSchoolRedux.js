@@ -1,7 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { deepClone, arrayToHash, mergeArraysUniq } from '../Lib/utils';
+import { deepClone, arrayToHash, mergeArraysUniq } from '../../Lib/utils';
 import { createFormAction } from 'redux-form-saga';
-import { FETCHING_STATUS } from '../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 
 export const createDrivingSchool = createFormAction('CREATE_DRIVING_SCHOOL');
 export const updateDrivingSchool = createFormAction('UPDATE_DRIVING_SCHOOL');

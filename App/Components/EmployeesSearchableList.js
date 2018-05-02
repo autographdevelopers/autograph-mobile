@@ -21,7 +21,7 @@ const EmployeesSearchableList = props => {
 };
 
 const mapStateToProps = state => ({
-  employees: Object.values(state.employees.active)
+  employees: Object.values(state.entities.employees.active)
 });
 
 export default connect(mapStateToProps)(EmployeesSearchableList);

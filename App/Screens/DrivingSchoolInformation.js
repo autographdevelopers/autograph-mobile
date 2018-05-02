@@ -123,7 +123,7 @@ class DrivingSchoolInformation extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID]
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID]
 })
 
 export default connect(mapStateToProps)(DrivingSchoolInformation)

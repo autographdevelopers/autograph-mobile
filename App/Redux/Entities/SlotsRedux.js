@@ -1,5 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
-import { FETCHING_STATUS } from '../Lib/utils';
+import { FETCHING_STATUS } from '../../Lib/utils';
 import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */
@@ -70,7 +70,7 @@ export const changeStatusHandler = (state, {status}) => {
 
 /* ------------- Hookup Reducers To Types ------------- */
 
-export const slotReducer = createReducer(INITIAL_STATE, {
+export const slotsReducer = createReducer(INITIAL_STATE, {
   [slotActionTypes.SAVE]: saveHandler,
   [slotActionTypes.CHANGE_STATUS]: changeStatusHandler,
   [slotActionTypes.RELEASE_LESSON]: releaseLessonHandler

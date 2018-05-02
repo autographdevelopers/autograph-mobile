@@ -1,6 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce';
 import moment from 'moment'
-import { FETCHING_STATUS } from '../../Lib/utils';
+import { FETCHING_STATUS } from '../../../Lib/utils';
 import _ from 'lodash';
 
 /* ------------- Types and Action Creators ------------- */

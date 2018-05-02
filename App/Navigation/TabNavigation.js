@@ -120,7 +120,7 @@ const studentRoutesConfigs = {
 
 const navigationConfig = {
   animationEnabled: true,
-  // lazy: true,
+  lazy: true,
   tabBarOptions: {
     activeTintColor: Colors.primaryWarm,
     labelStyle: {

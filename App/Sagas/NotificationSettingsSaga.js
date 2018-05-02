@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
-import { updateNotificationSettings } from '../Redux/EmployeeNotificationsSettingsSetRedux';
-import { notificationSettingsActionCreators } from '../Redux/EmployeeNotificationsSettingsSetRedux';
+import { updateNotificationSettings } from '../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
+import { notificationSettingsActionCreators } from '../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
 import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 

@@ -5,7 +5,7 @@ import { Field, reduxForm, FormSection } from 'redux-form';
 import {
   scheduleSettingsActionCreators,
   updateScheduleSettings,
-} from '../../Redux/ScheduleSettingsRedux';
+} from '../../Redux/Entities/ScheduleSettingsRedux';
 
 import ScheduleBoundariesPicker from '../../Components/ScheduleBoundariesView';
 import FORM_IDS from './Constants';
@@ -150,12 +150,12 @@ ScheduleBoundaries = LoadingHOC(ScheduleBoundaries);
 const mapStateToProps = (state, otherProps)=> {
   return {
     shouldRequestData: true,
-    drivingSchool: state.context.currentDrivingSchoolID,
+    drivingSchool: state.support.context.currentDrivingSchoolID,
     initialValues: {
-      [PARAM_NAME]: state.scheduleSettings[PARAM_NAME],
+      [PARAM_NAME]: state.entities.scheduleSettings[PARAM_NAME],
       driving_school_id: getSchoolIdOfCurrentContext(otherProps)
     },
-    status: state.scheduleSettings.status
+    status: state.entities.scheduleSettings.status
   }
 };
 

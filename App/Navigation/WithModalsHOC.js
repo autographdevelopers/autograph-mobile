@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import ModalTemplate from '../Components/ModalTemplate';
-import { MODALS_IDS } from '../Redux/ModalRedux';
+import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
 import CancelDrivingLesson from '../Components/CancelDrivingLesson';
 import BookLessonWidget from '../Components/BookLessonWidget';
 
@@ -43,8 +43,8 @@ export const withModals = (TabNav) => {
   TabFlowWithModals.router = TabNav.router;
 
   const mapStateToProps = state => ({
-    drivingLessonCancelStatus: state.lessonModal.cancel.status,
-    drivingLessonBookStatus: state.lessonModal.book.status,
+    drivingLessonCancelStatus: state.views.modals.cancelLesson.status,
+    drivingLessonBookStatus: state.views.modals.bookLesson.status,
   });
 
   return connect(mapStateToProps)(TabFlowWithModals);

@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment/moment';
 
-import { contextActionCreators } from '../../Redux/ContextRedux';
-import { drivingCourseActionCreators } from '../../Redux/DrivingCourseRedux';
-import { drivingLessonActionCreators } from '../../Redux/DrivingLessonRedux';
-import { activityActionCreators } from '../../Redux/ActivityRedux';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/ModalRedux';
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { drivingCourseActionCreators } from '../../Redux/Entities/DrivingCourseRedux';
+import { drivingLessonActionCreators } from '../../Redux/Entities/DrivingLessonRedux';
+import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
+import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import {
@@ -172,11 +172,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  drivingCourse: state.drivingCourse,
-  drivingLessons: state.drivingLessons,
-  studentId: state.context.currentStudentID,
-  drivingSchool: state.drivingSchools.hashMap[state.context.currentDrivingSchoolID],
-  activities: state.activities
+  drivingCourse: state.entities.drivingCourse,
+  drivingLessons: state.entities.drivingLessons,
+  studentId: state.support.context.currentStudentID,
+  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  activities: state.entities.activities
 });
 
 const mapDispatchToProps = dispatch => ({

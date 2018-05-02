@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
-import { updateScheduleSettings } from '../Redux/ScheduleSettingsRedux';
-import { scheduleSettingsActionCreators } from '../Redux/ScheduleSettingsRedux';
+import { updateScheduleSettings } from '../Redux/Entities/ScheduleSettingsRedux';
+import { scheduleSettingsActionCreators } from '../Redux/Entities/ScheduleSettingsRedux';
 import { SubmissionError } from 'redux-form';
 import { FETCHING_STATUS } from '../Lib/utils';
 

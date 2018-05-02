@@ -2,13 +2,13 @@ import { createSelector } from 'reselect';
 import moment from 'moment/moment';
 import _ from 'lodash';
 
-const getCurrentDrivingSchool = state => state.context.currentDrivingSchoolID;
-const getSlots = state => Object.values(state.slots.data);
-const getLessons = state => state.drivingLessons.hashMap;
-const getSelectedEmployee = state => state.employeeDailyAgenda.employeeId;
-const getEmployeeDailyAgendaDay = state => state.employeeDailyAgenda.daySelected;
-const getCurrentUser = state => state.user;
-const employeesSummaryAgendaDay = state => state.employeesSummaryAgenda.daySelected;
+const getCurrentDrivingSchool = state => state.support.context.currentDrivingSchoolID;
+const getSlots = state => Object.values(state.entities.slots.data);
+const getLessons = state => state.entities.drivingLessons.hashMap;
+const getSelectedEmployee = state => state.views.employeeDailyAgenda.employeeId;
+const getEmployeeDailyAgendaDay = state => state.views.employeeDailyAgenda.daySelected;
+const getCurrentUser = state => state.access.currentUser;
+const employeesSummaryAgendaDay = state => state.views.employeesSummaryAgenda.daySelected;
 
 const compareStartTimes = (left, right) => {
   return moment(left.start_time).diff(moment(right.start_time));
