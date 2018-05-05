@@ -13,66 +13,82 @@ import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
 import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
 /** == Utilities  ================================ */
 import { getEmployeesSummaryAgenda } from '../Selectors/slots';
+import { getCurrentDrivingSchool } from '../Selectors/DrivingSchool';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
+import { getSlotsIndexParamsForSummaryAgenda } from '../Selectors/slots';
 import { timeHelpers } from '../Lib/timeHandlers';
 import I18n from '../I18n';
 
 class EmployeesSummaryAgenda extends Component {
   onDaySelected = date => {
     const { dateString } = date;
-    const { currentSchool: { time_zone }, slotsIndexRequest, cacheHistory } = this.props;
-    this.props.setDay(dateString);
+    const {
+      currentSchool: { time_zone },
+      slotsIndexRequest,
+      setDay,
+      employeesSummaryAgendaState: { cacheHistory },
+    } = this.props;
 
-    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone)) {
+    setDay(dateString);
+
+    if ( timeHelpers.isCacheStale(dateString, cacheHistory, time_zone) ) {
       const dateRangeParams = timeHelpers.getWeekRange(dateString, time_zone);
 
       slotsIndexRequest(
         dateRangeParams,
-        SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY
+        SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY,
       );
     }
   };
 
   renderSummaryCell = employeeSlots => {
-    const id = employeeSlots[0].employee_id;
-    const employee = this.props.employees[id] || {};
+    const {
+      initDailyAgenda,
+      navigation,
+      employees,
+      employeesSummaryAgendaState
+    } = this.props;
 
-    console.log('employeeSlots');
-    console.log(employeeSlots);
+    const id = employeeSlots[0].employee_id;
+    const employee = employees[id] || {};
 
     return (
-      <View style={{paddingVertical: 5, paddingHorizontal: 15}}>
+      <View style={{ paddingVertical: 5, paddingHorizontal: 15 }}>
         <EmployeeAvailabilitySummaryCell slots={employeeSlots}
-                                                employee={employee}
-                                                onCalendarPress={() => {
-                                                  this.props.initDailyAgenda({
-                                                    ...this.props.employeesSummaryAgendaState,
-                                                    employeeId: id});
-                                                  this.props.navigation.navigate('employeeDailyAgenda', { employee })
-                                                }}/>
+                                         employee={employee}
+                                         onCalendarPress={() => {
+                                           initDailyAgenda({
+                                             ...employeesSummaryAgendaState,
+                                             employeeId: id,
+                                           });
+
+                                           navigation.navigate(
+                                             'employeeDailyAgenda',
+                                             { employee });
+                                         }}/>
       </View>
-    )
+    );
   };
 
   render() {
     const {
       employeesSummaryAgendaItems,
       selectedDay,
-      currentUser
+      currentUser,
     } = this.props;
 
-    const emptyDayLabels = ['title', 'description'].map(
-      key => I18n.t(`employee_summary_agenda_day_empty.${currentUser.type.toLowerCase()}_perspective.${key}`));
+    const emptyDayLabels = ['title', 'description'].map(key =>
+      I18n.t(`employee_summary_agenda_day_empty.${currentUser.type.toLowerCase()}_perspective.${key}`));
 
     return (
       <AgendaWrapper
         renderEmptyData={
           () =>
-          <InfoBox
-            title={emptyDayLabels[0]}
-            description={emptyDayLabels[1]}
-            customContainerStyle={{marginHorizontal: 15}}
-          />
+            <InfoBox
+              title={emptyDayLabels[0]}
+              description={emptyDayLabels[1]}
+              customContainerStyle={{ marginHorizontal: 15 }}
+            />
         }
         selected={selectedDay}
         onDayPress={this.onDaySelected}
@@ -84,29 +100,36 @@ class EmployeesSummaryAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
-  employeesStatus: state.entities.employees.status,
-  studentsStatus: state.entities.students.status,
-  scheduleSettingsStatus: state.entities.scheduleSettings.status,
-  slotsStatus: state.entities.slots.status,
-
-  employees: state.entities.employees.active,
+  status: state.views.employeesSummaryAgenda.status,
+  requestDataArguments: {
+    employeesPayload: {},
+    studentsPayload: {},
+    slotsPayload: getSlotsIndexParamsForSummaryAgenda(state),
+    scheduleSettingsPayload: {}
+  },
   selectedDay: state.views.employeesSummaryAgenda.daySelected,
   employeesSummaryAgendaState: state.views.employeesSummaryAgenda,
   employeesSummaryAgendaItems: getEmployeesSummaryAgenda(state),
-  cacheHistory: state.views.employeesSummaryAgenda.cacheHistory,
-  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
-  currentUser: state.access.currentUser
+  employees: state.entities.employees.active,
+  slotsIndexParams: getSlotsIndexParamsForSummaryAgenda(state),
+  currentSchool: getCurrentDrivingSchool(state),
+  currentUser: state.access.currentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
-  slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
-  setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
-  initDailyAgenda: (stateToMerge) => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge)),
-});
+const mapDispatchToProps = dispatch => {
+  return {
+    requestData: payloads => dispatch(employeesSummaryAgendaActionCreators.requestDataForView(payloads)),
+    slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
+    setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
+    initDailyAgenda: stateToMerge => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge))
+  }
+};
 
 const withAsyncLoading = withRequiredData(
   EmployeesSummaryAgenda,
-  ['employeesStatus', 'slotsStatus', 'scheduleSettingsStatus']
+  'status',
+  'requestData',
+  'requestDataArguments'
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);

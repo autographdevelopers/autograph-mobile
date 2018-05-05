@@ -1,4 +1,5 @@
 import { createReducer, createActions } from 'reduxsauce';
+import { FETCHING_STATUS } from '../../Lib/utils';
 import moment from 'moment-timezone';
 import _ from 'lodash';
 
@@ -12,12 +13,13 @@ export const COMMON_STATE = {
     // dataTo,
     // expire_at
     // }, ...
-  ]
+  ],
+  status: FETCHING_STATUS.READY,
 };
 
 export const DAILY_AGENDA_STATE = {
   ..._.cloneDeep(COMMON_STATE),
-  employeeId: null
+  employeeId: null,
 };
 
 /** == HANDLERS =================================== */
@@ -34,8 +36,15 @@ export const pushToCacheHistoryHandler = (state, { from, to }) => {
   newState.cacheHistory.push({
     dataFrom: from,
     dataTo: to,
-    expireAt: moment.tz('Poland').add(5, 'minutes').format()
+    expireAt: moment.tz('Poland').add(5, 'minutes').format(),
   });
+
+  return newState;
+};
+
+export const changeStatusHandler = (state, { status }) => {
+  const newState = _.cloneDeep(state);
+  newState.status = status;
 
   return newState;
 };
@@ -48,17 +57,20 @@ export const initHandler = (state, { templateState }) => {
 
 /** == HOC REDUX HELPERS =================================== */
 
-const createAgendaActions = (prefix, additionalActions={} ) => {
+const createAgendaActions = (prefix, additionalActions = {}) => {
   return createActions({
     setDay: ['daySelected'],
     pushCacheHistory: ['from', 'to'],
+    requestDataForView: ['payloads'], //{ payloads: { employeesPayload: null, studentsPayload: null, slotsPayload: null, scheduleSettingsPayload: null }},
+    changeStatus: ['status'],
     ...additionalActions
   }, { prefix });
 };
 
-const createAgendaReducer = (initialState, types, additionalHandlers={} ) => {
+const createAgendaReducer = (initialState, types, additionalHandlers = {}) => {
   return createReducer(initialState, {
     [types.SET_DAY]: setDayHandler,
+    [types.CHANGE_STATUS]: changeStatusHandler,
     [types.PUSH_CACHE_HISTORY]: pushToCacheHistoryHandler,
     ...additionalHandlers
   });
@@ -70,19 +82,19 @@ const employeesSummaryAgenda = createAgendaActions('EMPLOYEES_SUMMARY_AGENDA/');
 export const employeesSummaryAgendaTypes = employeesSummaryAgenda.Types;
 export const employeesSummaryAgendaActionCreators = employeesSummaryAgenda.Creators;
 export const employeesSummaryAgendaReducer = createAgendaReducer(
-  COMMON_STATE, employeesSummaryAgendaTypes
+  COMMON_STATE, employeesSummaryAgendaTypes,
 );
 
 /** == DAILY AGENDA REDUX =================================== */
 
 const employeeDailyAgenda = createAgendaActions('EMPLOYEE_DAILY_AGENDA/', {
   setEmployee: ['employeeId'],
-  init: ['templateState']
+  init: ['templateState'],
 });
 export const employeeDailyAgendaTypes = employeeDailyAgenda.Types;
 export const employeeDailyAgendaActionCreators = employeeDailyAgenda.Creators;
 export const employeeDailyAgendaReducer = createAgendaReducer(
   DAILY_AGENDA_STATE, employeeDailyAgendaTypes, {
-    [employeeDailyAgendaTypes.INIT]: initHandler
-  }
+    [employeeDailyAgendaTypes.INIT]: initHandler,
+  },
 );

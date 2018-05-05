@@ -1,5 +1,5 @@
 import ActivitiesScreen from '../Screens/ActivitiesScreen';
-import EmployeesSummaryAgendaScreen from '../Screens/SummaryAgendaFetcher';
+import EmployeesSummaryAgendaScreen from '../Screens/EmployeesSummaryAgenda';
 import StudentDashboard from '../Screens/StudentDashboard'
 import EmployeesScreen from '../Screens/Employees/index';
 import StudentsScreen from '../Screens/Students/index';

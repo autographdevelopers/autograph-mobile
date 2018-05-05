@@ -19,9 +19,11 @@ import { drivingLessonActionTypes } from '../Redux/Entities/DrivingLessonRedux';
 import { slotActionTypes } from '../Redux/Entities/SlotsRedux';
 import { activityActionTypes } from '../Redux/Entities/ActivityRedux';
 import { toastActionTypes } from '../Redux/Support/ToastRedux';
-
+import { employeesSummaryAgendaTypes } from '../Redux/Views/AgendaRedux';
 /* ------------- Sagas ------------- */
 
+import { requestDataForSummaryAgendaScreenSaga } from './PerView/EmployeesSummaryAgendaSaga';
+import { longPollSummaryAgenda } from './PerView/EmployeesSummaryAgendaSaga';
 import { displayToastMessageSaga } from './ToastSaga';
 
 import {
@@ -41,44 +43,45 @@ import {
   index as indexDrivingSchoolsSaga,
   show as showDrivingSchoolSaga,
   activate as activateDrivingSchoolSaga,
-  confirmRegistration as confirmDrivingSchoolRegistrationSaga
+  confirmRegistration as confirmDrivingSchoolRegistrationSaga,
 } from './DrivingSchoolSagas';
 
 import {
   update as updateNotificationSettingsSaga,
-  show as showNotificationSettingsSaga
+  show as showNotificationSettingsSaga,
 } from './NotificationSettingsSaga';
 
 import {
   update as updateScheduleSettingsSaga,
-  show as showScheduleSettingsSaga } from './ScheduleSettingsSaga';
+  show as showScheduleSettingsSaga,
+} from './ScheduleSettingsSaga';
 
 import {
   create as createInvitationSaga,
   accept as acceptInvitationSaga,
   reject as rejectInvitationSaga,
-  destroy as destroyInvitationSaga
+  destroy as destroyInvitationSaga,
 } from './InvitationsSaga';
 
 import {
   update as updateEmployeePrivilegesSaga,
-  show as showEmployeePrivilegesSaga
+  show as showEmployeePrivilegesSaga,
 } from './EmployeePrivilegesSaga';
 
 import {
   show as showEmployeeScheduleSaga,
-  update as updateEmployeeScheduleSaga
+  update as updateEmployeeScheduleSaga,
 } from './SchedulesSaga';
 
 import {
   show as showDrivingCourseSaga,
-  update as updateDrivingCourseSaga
+  update as updateDrivingCourseSaga,
 } from './DrivingCourseSaga';
 
 import {
   index as indexDrivingLessonSaga,
   cancel as cancelDrivingLessonSaga,
-  create as createDrivingLessonSaga
+  create as createDrivingLessonSaga,
 } from './DrivingLessonSaga';
 
 import {
@@ -93,7 +96,7 @@ import { invite } from '../Redux/Views/InvitationsRedux';
 import {
   createDrivingSchool,
   updateDrivingSchool,
-  confirmDrivingSchoolRegistration
+  confirmDrivingSchoolRegistration,
 } from '../Redux/Entities/DrivingSchoolRedux';
 
 import { updateNotificationSettings } from '../Redux/Entities/EmployeeNotificationsSettingsSetRedux';
@@ -106,7 +109,6 @@ export default function* root() {
   yield all([
     takeEvery(toastActionTypes.DISPLAY_TOAST_MESSAGE, displayToastMessageSaga),
 
-
     takeLatest(login.REQUEST, LoginSaga, api),
     takeLatest(sessionActionTypes.DESTROY_REQUEST, LogoutSaga, api),
 
@@ -114,41 +116,62 @@ export default function* root() {
 
     takeLatest(createDrivingSchool.REQUEST, createDrivingSchoolSaga, api),
     takeLatest(updateDrivingSchool.REQUEST, updateDrivingSchoolSaga, api),
-    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchoolsSaga, api),
-    takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga, api),
-    takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchoolSaga, api),
-    takeLatest(confirmDrivingSchoolRegistration.REQUEST, confirmDrivingSchoolRegistrationSaga, api),
+    takeLatest(drivingSchoolActionTypes.INDEX_REQUEST, indexDrivingSchoolsSaga,
+      api),
+    takeLatest(drivingSchoolActionTypes.SHOW_REQUEST, showDrivingSchoolSaga,
+      api),
+    takeLatest(schoolActivationActionTypes.REQUEST, activateDrivingSchoolSaga,
+      api),
+    takeLatest(confirmDrivingSchoolRegistration.REQUEST,
+      confirmDrivingSchoolRegistrationSaga, api),
 
     takeLatest(updateScheduleSettings.REQUEST, updateScheduleSettingsSaga, api),
-    takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga, api),
+    takeLatest(scheduleSettingsTypes.SHOW_REQUEST, showScheduleSettingsSaga,
+      api),
 
-    takeLatest(updateNotificationSettings.REQUEST, updateNotificationSettingsSaga, api),
-    takeLatest(notificationSettingsActionTypes.SHOW_REQUEST, showNotificationSettingsSaga, api),
+    takeLatest(updateNotificationSettings.REQUEST,
+      updateNotificationSettingsSaga, api),
+    takeLatest(notificationSettingsActionTypes.SHOW_REQUEST,
+      showNotificationSettingsSaga, api),
 
     takeLatest(invite.REQUEST, createInvitationSaga, api),
     takeLatest(invitationActionTypes.ACCEPT_REQUEST, acceptInvitationSaga, api),
     takeLatest(invitationActionTypes.REJECT_REQUEST, rejectInvitationSaga, api),
-    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitationSaga, api),
+    takeLatest(invitationActionTypes.DESTROY_REQUEST, destroyInvitationSaga,
+      api),
 
     takeLatest(employeesActionTypes.INDEX_REQUEST, employeesIndexSaga, api),
     takeLatest(studentsActionTypes.INDEX_REQUEST, studentsIndexSaga, api),
 
-    takeLatest(updateEmployeePrivileges.REQUEST, updateEmployeePrivilegesSaga, api),
-    takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST, showEmployeePrivilegesSaga, api),
+    takeLatest(updateEmployeePrivileges.REQUEST, updateEmployeePrivilegesSaga,
+      api),
+    takeLatest(employeePrivilegesActionTypes.SHOW_REQUEST,
+      showEmployeePrivilegesSaga, api),
 
     takeLatest(scheduleActionTypes.SHOW_REQUEST, showEmployeeScheduleSaga, api),
-    takeLatest(scheduleFormActionTypes.UPDATE_REQUEST, updateEmployeeScheduleSaga, api),
+    takeLatest(scheduleFormActionTypes.UPDATE_REQUEST,
+      updateEmployeeScheduleSaga, api),
 
-    takeLatest(drivingCourseActionTypes.SHOW_REQUEST, showDrivingCourseSaga, api),
-    takeLatest(drivingCourseActionTypes.UPDATE_REQUEST, updateDrivingCourseSaga, api),
+    takeLatest(drivingCourseActionTypes.SHOW_REQUEST, showDrivingCourseSaga,
+      api),
+    takeLatest(drivingCourseActionTypes.UPDATE_REQUEST, updateDrivingCourseSaga,
+      api),
 
-    takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLessonSaga, api),
-    takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLessonSaga, api),
-    takeLatest(drivingLessonActionTypes.CREATE_REQUEST, createDrivingLessonSaga, api),
+    takeLatest(drivingLessonActionTypes.INDEX_REQUEST, indexDrivingLessonSaga,
+      api),
+    takeLatest(drivingLessonActionTypes.CANCEL_REQUEST, cancelDrivingLessonSaga,
+      api),
+    takeLatest(drivingLessonActionTypes.CREATE_REQUEST, createDrivingLessonSaga,
+      api),
 
     takeLatest(slotActionTypes.INDEX_REQUEST, indexSlotsSaga, api),
 
     takeLatest(activityActionTypes.INDEX_REQUEST, indexActivitySaga, api),
-    takeLatest(activityActionTypes.MY_ACTIVITIES_REQUEST, myActivitiesActivitySaga, api),
-  ])
+    takeLatest(activityActionTypes.MY_ACTIVITIES_REQUEST,
+      myActivitiesActivitySaga, api),
+
+    /** Employees summary agenda */
+    takeLatest(employeesSummaryAgendaTypes.REQUEST_DATA_FOR_VIEW, requestDataForSummaryAgendaScreenSaga, api),
+    takeLatest(employeesSummaryAgendaTypes.REQUEST_DATA_FOR_VIEW, longPollSummaryAgenda, api),
+  ]);
 }

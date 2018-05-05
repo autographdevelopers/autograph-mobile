@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 import moment from 'moment/moment';
 import _ from 'lodash';
-
+import { getCurrentDrivingSchool as getCurrentDrivingSchoolObject } from './DrivingSchool';
+import { timeHelpers } from '../Lib/timeHandlers';
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 const getCurrentDrivingSchool = state => state.support.context.currentDrivingSchoolID;
 const getSlots = state => Object.values(state.entities.slots.data);
 const getLessons = state => state.entities.drivingLessons.hashMap;
@@ -9,6 +11,7 @@ const getSelectedEmployee = state => state.views.employeeDailyAgenda.employeeId;
 const getEmployeeDailyAgendaDay = state => state.views.employeeDailyAgenda.daySelected;
 const getCurrentUser = state => state.access.currentUser;
 const employeesSummaryAgendaDay = state => state.views.employeesSummaryAgenda.daySelected;
+const selectedDayInSummaryAgenda = state => state.views.employeesSummaryAgenda.daySelected;
 
 const compareStartTimes = (left, right) => {
   return moment(left.start_time).diff(moment(right.start_time));
@@ -172,4 +175,16 @@ export const getLessonInterval = createSelector(
       to,
     };
   },
+);
+
+export const getSlotsIndexParamsForSummaryAgenda = createSelector(
+  [getCurrentDrivingSchoolObject, selectedDayInSummaryAgenda],
+  (currentSchool, selectedDay) => {
+    const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
+
+    return {
+      params: dateRangeParams,
+      callback: SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY
+    }
+  }
 );

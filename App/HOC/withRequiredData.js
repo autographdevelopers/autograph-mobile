@@ -4,23 +4,28 @@ import { Colors } from '../Themes/';
 import { FETCHING_STATUS } from '../Lib/utils';
 import SpinnerView from '../Components/SpinnerView';
 
-export default function withRequiredData(WrappedComponent, statusesKeys) {
+export default function withRequiredData(WrappedComponent, statusKey, requestDataPropFunc, requestDataPropArgs) {
   return class LoadingHOC extends Component {
     constructor(props) {
       super(props);
     }
 
-    render() {
-      const statuses = statusesKeys.map(status => this.props[status]);
+    componentWillMount() {
+      console.log(this.props[requestDataPropArgs]);
 
-      if(statuses.includes(FETCHING_STATUS.FETCHING))
-        return <SpinnerView/>;
-      else if (statuses.includes(FETCHING_STATUS.ERROR))
-        return <Text>Unexpected error occured.</Text>;
-      else if (statuses.every(status => status === FETCHING_STATUS.SUCCESS))
-        return  <WrappedComponent {...this.props} />;
-      else {
-        return <Text>Ready?</Text>
+      this.props[requestDataPropFunc](this.props[requestDataPropArgs]);
+    }
+
+    render() {
+      switch(this.props[statusKey]) {
+        case FETCHING_STATUS.FETCHING:
+          return <SpinnerView/>;
+        case FETCHING_STATUS.READY:
+          return <SpinnerView/>;
+        case FETCHING_STATUS.ERROR:
+          return <Text>Unexpected error occured.</Text>
+        case FETCHING_STATUS.SUCCESS:
+          return  <WrappedComponent {...this.props} />;
       }
     };
   }
