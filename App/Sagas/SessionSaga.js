@@ -3,7 +3,6 @@ import { userActionCreators } from '../Redux/Access/CurrentUserRedux';
 import { gatherErrorsFromResponse } from '../Lib/apiErrorHandlers';
 import { login } from '../Redux/Access/SessionRedux';
 import { SubmissionError } from 'redux-form';
-import { NavigationActions } from 'react-navigation';
 import { sessionActionCreators } from '../Redux/Access/SessionRedux';
 
 export function* create(api, action) {

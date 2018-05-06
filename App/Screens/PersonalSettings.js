@@ -19,7 +19,7 @@ class PersonalSettings extends Component {
       title={item.field}
       subtitle={item.value}
     />
-  )
+  );
 
   logout = () => {
     const resetAction = NavigationActions.reset({
@@ -27,6 +27,7 @@ class PersonalSettings extends Component {
       key: null,
       actions: [ NavigationActions.navigate({ routeName: 'loginLaunch' }) ],
     });
+
     this.props.navigation.dispatch(resetAction);
     this.props.logout();
   };

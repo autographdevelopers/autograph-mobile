@@ -7,7 +7,6 @@ export const INITIAL_STATE = {
   active: {},
   activeIds: [],
   status: FETCHING_STATUS.READY,
-  refreshing: false,
   errorMsg: null
 };
 
@@ -24,11 +23,6 @@ const { Types, Creators } = createActions({
 
 export const employeesActionCreators = Creators;
 export const employeesActionTypes = Types;
-
-/** Handlers */
-// export const toggleRefreshingState = state => {
-//
-// };
 
 export const saveSingleHandler = (state, { data }) => {
   const dataKey = data.status;

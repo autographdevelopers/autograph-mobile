@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { getCurrentDrivingSchool as getCurrentDrivingSchoolObject } from './DrivingSchool';
 import { timeHelpers } from '../Lib/timeHandlers';
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
-const getCurrentDrivingSchool = state => state.support.context.currentDrivingSchoolID;
+
 const getSlots = state => Object.values(state.entities.slots.data);
 const getLessons = state => state.entities.drivingLessons.hashMap;
 const getSelectedEmployee = state => state.views.employeeDailyAgenda.employeeId;
@@ -30,15 +30,17 @@ export const getEmployeesSummaryAgenda = createSelector(
        _.chain(arrayOfSlots)
         .groupBy('employee_id')
         .values()
-        .value(),
+        .value()
      )
      .value(),
 );
 
 export const getDrivingSchoolsSlots = createSelector(
-  [getSlots, getCurrentDrivingSchool],
-  (slots, id) => {
-    return slots.filter(slot => slot.driving_school_id === id);
+  [getSlots, getCurrentDrivingSchoolObject],
+  (slots, school) => {
+    if(!school) return; /** Guards for the scenarios when during logout store is cleared */
+
+    return slots.filter(slot => slot.driving_school_id === school.id);
   },
 );
 
@@ -183,6 +185,8 @@ export const getLessonInterval = createSelector(
 export const getSlotsIndexParamsForSummaryAgenda = createSelector(
   [getCurrentDrivingSchoolObject, getSelectedDayInSummaryAgenda],
   (currentSchool, selectedDay) => {
+    if(!currentSchool) return; /** Guards for the scenarios when during logout store is cleared */
+
     const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
 
     return {
@@ -195,6 +199,8 @@ export const getSlotsIndexParamsForSummaryAgenda = createSelector(
 export const getSlotsIndexParamsForEmployeeDailyAgenda = createSelector(
   [getCurrentDrivingSchoolObject, getSelectedDayInEmployeeDailyAgenda, getEmployeeInEmployeeDailyAgenda],
   (currentSchool, selectedDay, employeeId) => {
+    if(!currentSchool) return; /** Guards for the scenarios when during logout store is cleared */
+
     const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
 
     return {
@@ -203,3 +209,4 @@ export const getSlotsIndexParamsForEmployeeDailyAgenda = createSelector(
     }
   }
 );
+

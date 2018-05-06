@@ -5,13 +5,9 @@ import { FETCHING_STATUS } from '../Lib/utils';
 import SpinnerView from '../Components/SpinnerView';
 
 export default function withRequiredData(WrappedComponent, statusKey, requestDataPropFunc, requestDataPropArgs) {
-  return class LoadingHOC extends Component {
-    constructor(props) {
-      super(props);
-    }
-
+  return class WithRequiredDataHOC extends Component {
     componentWillMount() {
-      console.log(this.props[requestDataPropArgs]);
+      console.log('componentWillMount');
 
       this.props[requestDataPropFunc](this.props[requestDataPropArgs]);
     }
