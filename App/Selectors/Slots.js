@@ -11,7 +11,10 @@ const getSelectedEmployee = state => state.views.employeeDailyAgenda.employeeId;
 const getEmployeeDailyAgendaDay = state => state.views.employeeDailyAgenda.daySelected;
 const getCurrentUser = state => state.access.currentUser;
 const employeesSummaryAgendaDay = state => state.views.employeesSummaryAgenda.daySelected;
-const selectedDayInSummaryAgenda = state => state.views.employeesSummaryAgenda.daySelected;
+const getSelectedDayInSummaryAgenda = state => state.views.employeesSummaryAgenda.daySelected;
+const getSelectedDayInEmployeeDailyAgenda = state => state.views.employeeDailyAgenda.daySelected;
+const getEmployeeInEmployeeDailyAgenda = state => state.views.employeeDailyAgenda.employeeId;
+
 
 const compareStartTimes = (left, right) => {
   return moment(left.start_time).diff(moment(right.start_time));
@@ -143,7 +146,7 @@ export const getAgendaItemsArray = createSelector(
       }, []
     )
   }
-)
+);
 
 export const getEmployeeDailyAgenda = createSelector(
   [getAgendaItemsArray],
@@ -178,13 +181,25 @@ export const getLessonInterval = createSelector(
 );
 
 export const getSlotsIndexParamsForSummaryAgenda = createSelector(
-  [getCurrentDrivingSchoolObject, selectedDayInSummaryAgenda],
+  [getCurrentDrivingSchoolObject, getSelectedDayInSummaryAgenda],
   (currentSchool, selectedDay) => {
     const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
 
     return {
       params: dateRangeParams,
       callback: SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY
+    }
+  }
+);
+
+export const getSlotsIndexParamsForEmployeeDailyAgenda = createSelector(
+  [getCurrentDrivingSchoolObject, getSelectedDayInEmployeeDailyAgenda, getEmployeeInEmployeeDailyAgenda],
+  (currentSchool, selectedDay, employeeId) => {
+    const dateRangeParams = timeHelpers.getWeekRange(selectedDay, currentSchool.time_zone);
+
+    return {
+      params: { ...dateRangeParams, employee_id: employeeId },
+      callback: SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY
     }
   }
 );

@@ -4,9 +4,9 @@ import _ from 'lodash';
 export const timeHelpers = {
   getWeekRange: (date, timeZone) => {
     const referenceDay = moment.tz(date, timeZone);
-
-    const from = referenceDay.startOf('week').format();
-    const to = referenceDay.endOf('week').format();
+    // isoWeek starts on Monday in opposite to week which start on Sunday
+    const from = referenceDay.startOf('isoWeek').format();
+    const to = referenceDay.endOf('isoWeek').format();
 
     return {
       by_start_time: { from, to }

@@ -55,13 +55,20 @@ export const initHandler = (state, { templateState }) => {
   return _.merge(newState, templateState);
 };
 
-/** == HOC REDUX HELPERS =================================== */
+export const clearCacheHistoryHandler = state => {
+  const newState = _.cloneDeep(state);
+  newState.cacheHistory = [];
+
+  return newState;
+};
+
+/** == HO REDUX HELPERS =================================== */
 
 const createAgendaActions = (prefix, additionalActions = {}) => {
   return createActions({
     setDay: ['daySelected'],
     pushCacheHistory: ['from', 'to'],
-    requestDataForView: ['payloads'], //{ payloads: { employeesPayload: null, studentsPayload: null, slotsPayload: null, scheduleSettingsPayload: null }},
+    requestDataForView: ['payloads'],
     changeStatus: ['status'],
     ...additionalActions
   }, { prefix });
@@ -78,11 +85,16 @@ const createAgendaReducer = (initialState, types, additionalHandlers = {}) => {
 
 /** == SUMMARY AGENDA REDUX =================================== */
 
-const employeesSummaryAgenda = createAgendaActions('EMPLOYEES_SUMMARY_AGENDA/');
+const employeesSummaryAgenda = createAgendaActions('EMPLOYEES_SUMMARY_AGENDA/', {
+  requestSlotsForAnotherWeek: ['slotsAction'],
+  clearCacheHistory: null
+});
 export const employeesSummaryAgendaTypes = employeesSummaryAgenda.Types;
 export const employeesSummaryAgendaActionCreators = employeesSummaryAgenda.Creators;
 export const employeesSummaryAgendaReducer = createAgendaReducer(
-  COMMON_STATE, employeesSummaryAgendaTypes,
+  COMMON_STATE, employeesSummaryAgendaTypes, {
+    [employeesSummaryAgendaTypes.CLEAR_CACHE_HISTORY]: clearCacheHistoryHandler
+  }
 );
 
 /** == DAILY AGENDA REDUX =================================== */

@@ -37,7 +37,7 @@ import StudentSearchablelist from '../Components/StudentsSearchableList';
 
 import PersonalSettings from '../Screens/PersonalSettings';
 
-import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgendaFetcher';
+import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgenda';
 import I18n from '../I18n';
 
 const primaryFlowNavigationOptions = ({navigation}) => {

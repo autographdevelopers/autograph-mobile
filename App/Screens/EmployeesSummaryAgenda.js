@@ -2,42 +2,43 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-/** == Custom modules ================================ */
+import I18n from '../I18n';
+/** == Custom modules ================================== */
 import EmployeeAvailabilitySummaryCell from '../Components/EmployeeAvailabilitySummaryCell';
 import AgendaWrapper from './AgendaWrapper';
 import InfoBox from '../Components/InfoBox';
-import withRequiredData from '../HOC/withRequiredData';
-/** == Action Creators ================================ */
+/** == Action Creators ================================= */
 import { employeesSummaryAgendaActionCreators } from '../Redux/Views/AgendaRedux';
 import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
-import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
-/** == Utilities  ================================ */
-import { getEmployeesSummaryAgenda } from '../Selectors/slots';
+/** == Selectors ======================================= */
 import { getCurrentDrivingSchool } from '../Selectors/DrivingSchool';
-import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
-import { getSlotsIndexParamsForSummaryAgenda } from '../Selectors/slots';
+import { getSlotsIndexParamsForSummaryAgenda } from '../Selectors/Slots';
+import { getEmployeesSummaryAgenda } from '../Selectors/Slots';
+/** == Utilities  ====================================== */
+import withRequiredData from '../HOC/withRequiredData';
 import { timeHelpers } from '../Lib/timeHandlers';
-import I18n from '../I18n';
+/** == Constants  ====================================== */
+import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 
 class EmployeesSummaryAgenda extends Component {
   onDaySelected = date => {
     const { dateString } = date;
     const {
       currentSchool: { time_zone },
-      slotsIndexRequest,
       setDay,
       employeesSummaryAgendaState: { cacheHistory },
+      requestSlotsForAnotherWeek
     } = this.props;
 
     setDay(dateString);
 
-    if ( timeHelpers.isCacheStale(dateString, cacheHistory, time_zone) ) {
+    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone) ) {
       const dateRangeParams = timeHelpers.getWeekRange(dateString, time_zone);
 
-      slotsIndexRequest(
-        dateRangeParams,
-        SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY,
-      );
+      requestSlotsForAnotherWeek({
+        params: dateRangeParams,
+        callback: SLOTS_FETCHED_CALLBACKS.SUMMARY_AGENDA_PUSH_CACHE_HISTORY
+      });
     }
   };
 
@@ -116,14 +117,12 @@ const mapStateToProps = state => ({
   currentUser: state.access.currentUser,
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    requestData: payloads => dispatch(employeesSummaryAgendaActionCreators.requestDataForView(payloads)),
-    slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
-    setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
-    initDailyAgenda: stateToMerge => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge))
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  requestSlotsForAnotherWeek: params => dispatch(employeesSummaryAgendaActionCreators.requestSlotsForAnotherWeek(params)),
+  requestData: payloads => dispatch(employeesSummaryAgendaActionCreators.requestDataForView(payloads)),
+  setDay: day => dispatch(employeesSummaryAgendaActionCreators.setDay(day)),
+  initDailyAgenda: stateToMerge => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge))
+});
 
 const withAsyncLoading = withRequiredData(
   EmployeesSummaryAgenda,

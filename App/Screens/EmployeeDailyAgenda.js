@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment-timezone';
 import { View } from 'react-native';
+import I18n from '../I18n';
 import _ from 'lodash';
 /** == Custom Components =============================== */
 import AgendaWrapper from './AgendaWrapper';
@@ -11,73 +12,33 @@ import LockedSlot from '../Containers/Slots/LockedSlot';
 import DrivingLessonCell from '../Components/Slots/DriveSlot';
 import SelectedSlotComponent from '../Components/Slots/SelectedSlot';
 import BreakSlot from '../Components/Slots/BreakSlot';
-import BlockButton from '../Components/BlockButton';
-import BookLessonTimeoutCounter from '../Components/BookLessonTimeoutCounter';
 import InfoBox from '../Components/InfoBox';
-import withRequiredData from '../HOC/withRequiredData';
+import { WastedSlot } from '../Components/Slots/WastedSlot';
+import { BookLessonActionBar } from './BookLessonActionBar';
 /** == Action Creators ================================ */
 import { employeeDailyAgendaActionCreators } from '../Redux/Views/AgendaRedux';
 import { modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
 import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
 import { toastActionCreators } from '../Redux/Support/ToastRedux';
-import { WastedSlot } from '../Components/Slots/WastedSlot';
 import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
 import { bookLessonActionCreators } from '../Redux/Views/Modals/BookLesson';
 import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
-/** == Utilities ====================================== */
+/** == Selectors ====================================== */
 import {
   getEmployeeDailyAgenda,
   getSelectedSlots,
-  getLessonInterval
-} from '../Selectors/slots';
-import I18n from '../I18n';
+  getLessonInterval,
+  getSlotsIndexParamsForEmployeeDailyAgenda
+} from '../Selectors/Slots';
+import { getCurrentDrivingSchool } from '../Selectors/DrivingSchool';
+/** == Utilities ====================================== */
+import withRequiredData from '../HOC/withRequiredData';
 import { timeHelpers } from '../Lib/timeHandlers';
-import { Colors, Fonts } from '../Themes/';
 /** == Constants ====================================== */
 import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
-import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 /** == Sockets ======================================== */
 import { EmployeeSlotsSocket } from './EmployeeSlotsSocket';
-
-const BookLessonActionPane = props => {
-  const {
-    minimum_slots_count_per_driving_lesson,
-    selectedSlots,
-    lessonInterval,
-    handleBookLessonBtnPress,
-    unlockSelectedSlots
-  } = props;
-
-
-  const slotsSelected = selectedSlots.length > 0;
-  const tooFewSlotsSelected = slotsSelected && selectedSlots.length < minimum_slots_count_per_driving_lesson;
-  const enoughSlotsSelected = slotsSelected && selectedSlots.length >= minimum_slots_count_per_driving_lesson;
-
-  if(!slotsSelected) return null;
-
-  return (
-    <View>
-      { tooFewSlotsSelected &&
-        <BlockButton customContainerStyles={{backgroundColor: Colors.salmon}} disabled={true}>
-          {`Zaznacz co najmniej ${minimum_slots_count_per_driving_lesson} sloty by stworzyc lekcję`}
-        </BlockButton>
-      }
-      { enoughSlotsSelected &&
-        <BlockButton onPress={handleBookLessonBtnPress}>
-          {`Umów jazdę ${lessonInterval.from} - ${lessonInterval.to} ->`}
-        </BlockButton>
-      }
-      { slotsSelected &&
-        <BookLessonTimeoutCounter
-          submaskColor={enoughSlotsSelected ? Colors.primaryWarm : Colors.salmon}
-          release_at={selectedSlots[0].release_at}
-          handleTimeout={unlockSelectedSlots}/>
-      }
-    </View>
-  )
-}
-
 
 class EmployeeDailyAgenda extends Component {
   constructor(props) {
@@ -86,7 +47,7 @@ class EmployeeDailyAgenda extends Component {
     this.socket = new EmployeeSlotsSocket(
       props.session,
       props.employeeId,
-      props.schoolId,
+      props.currentSchool.id,
       props.saveSlots,
       this.handleLessonChanged,
       props.displayToastMsg.bind(this, I18n.t('lost_connection_with_server'))
@@ -94,13 +55,8 @@ class EmployeeDailyAgenda extends Component {
   }
 
   handleLessonChanged = lesson => {
-    // console.log('lesson');
-    // console.log(lesson);
-
     switch(lesson.status) {
       case 'canceled':
-        // console.log('canceled');
-
         const slotsToRelease = this.props.allSlots
                                    .filter(slot => slot.driving_lesson_id === lesson.id)
                                    .map(slot => {
@@ -108,14 +64,11 @@ class EmployeeDailyAgenda extends Component {
 
                                      return slot;
                                    });
-        console.log('slotsToRelease');
-        console.log(slotsToRelease);
         if(slotsToRelease.length > 0)
           this.props.saveSlots(slotsToRelease);
 
         break;
       case 'active':
-        // console.log('canceled');
         this.props.saveLesson(lesson);
         this.props.saveSlots(lesson.slots);
         break;
@@ -126,29 +79,21 @@ class EmployeeDailyAgenda extends Component {
     this.unlockSelectedSlots();
   }
 
-  _buildParams = date => {
-    const { time_zone } = this.props.currentSchool;
-
-    return {
-      employee_id: this.props.employeeId,
-      ...timeHelpers.getWeekRange(date, time_zone)
-    }
-  };
-
   onDaySelected = date => {
     this.unlockSelectedSlots();
     const { dateString } = date;
-    const { slotsIndexRequest, setDay, cacheHistory, currentSchool: { time_zone } } = this.props;
+    const {
+      requestData,
+      setDay,
+      cacheHistory,
+      requestDataArguments,
+      currentSchool: { time_zone }
+    } = this.props;
+
     setDay(dateString);
 
-    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone)) {
-      const params = this._buildParams(dateString);
-
-      slotsIndexRequest(
-        params,
-        SLOTS_FETCHED_CALLBACKS.DAILY_AGENDA_PUSH_CACHE_HISTORY
-      );
-    }
+    if (timeHelpers.isCacheStale(dateString, cacheHistory, time_zone))
+      requestData(requestDataArguments);
   };
 
   unlockSelectedSlots = () => {
@@ -163,7 +108,7 @@ class EmployeeDailyAgenda extends Component {
     this.socket.unlockSlot(slot);
   };
 
-  renderAgendaItem = (slot, dsas) => {
+  renderAgendaItem = slot => {
     let agendaItem;
     const { selectedSlots, currentUser } = this.props;
 
@@ -385,7 +330,7 @@ class EmployeeDailyAgenda extends Component {
           items={employeeDailyAgendaItems}
           renderItem={this.renderAgendaItem}
         />
-        <BookLessonActionPane
+        <BookLessonActionBar
           minimum_slots_count_per_driving_lesson={minimum_slots_count_per_driving_lesson}
           selectedSlots={selectedSlots}
           lessonInterval={lessonInterval}
@@ -398,26 +343,23 @@ class EmployeeDailyAgenda extends Component {
 }
 
 const mapStateToProps = state => ({
-  slotsStatus: state.entities.slots.status,
+  status: state.views.employeeDailyAgenda.status,
   allSlots: _.values(state.entities.slots.data),
   employeeDailyAgendaItems: getEmployeeDailyAgenda(state),
-  employees: state.entities.employees.active,
   selectedDay: state.views.employeeDailyAgenda.daySelected,
-  fetchedDataBoundaries: state.views.employeeDailyAgenda.fetchedDataBoundaries,
   employeeId: state.views.employeeDailyAgenda.employeeId,
   currentUser: state.access.currentUser,
   session: state.access.session,
-  schoolId: state.support.context.currentDrivingSchoolID,
-  currentSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  currentSchool: getCurrentDrivingSchool(state),
   selectedSlots: getSelectedSlots(state),
   lessonInterval: getLessonInterval(state),
-  drivingLessonStatus: state.entities.drivingLessons.status,
   cacheHistory: state.views.employeeDailyAgenda.cacheHistory,
-  scheduleSettings: state.entities.scheduleSettings
+  scheduleSettings: state.entities.scheduleSettings,
+  requestDataArguments: { slotsPayload: getSlotsIndexParamsForEmployeeDailyAgenda(state) }
 });
 
 const mapDispatchToProps = dispatch => ({
-  slotsIndexRequest: (params, callback) => dispatch(slotActionCreators.indexRequest(params, callback)),
+  requestData: payloads => dispatch(employeeDailyAgendaActionCreators.requestDataForView(payloads)),
   setDay: day => dispatch(employeeDailyAgendaActionCreators.setDay(day)),
   saveSlots: slots => dispatch(slotActionCreators.save(slots)),
   saveLesson: lesson => dispatch(drivingLessonActionCreators.save(lesson)),
@@ -429,7 +371,9 @@ const mapDispatchToProps = dispatch => ({
 
 const withAsyncLoading = withRequiredData(
   EmployeeDailyAgenda,
-  ['slotsStatus']
+  'status',
+  'requestData',
+  'requestDataArguments'
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);
