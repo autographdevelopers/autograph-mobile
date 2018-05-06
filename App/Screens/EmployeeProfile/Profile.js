@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-
+import { employeeProfileActionCreators } from '../../Redux/Views/EmployeeProfileRedux';
 import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
 
 import { FETCHING_STATUS } from '../../Lib/utils';
@@ -22,21 +22,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { employeeDailyAgendaActionCreators } from '../../Redux/Views/AgendaRedux';
 import moment from 'moment-timezone';
 import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
+import withRequiredData from '../../HOC/withRequiredData';
 
 
 class Profile extends Component {
-  componentWillMount = () => {
-    const { employeeId } = this.props;
-
-    this.props.fetchActivities({related_user_id: employeeId})
-    this.props.fetchDrivingLessons({
-      employee_id: this.props.employeeId,
-      upcoming: true,
-      active: true
-    })
-  }
-
-
   componentWillUnmount = () =>
     this.props.setCurrentEmployee(null);
 
@@ -141,14 +130,48 @@ const mapStateToProps = state => ({
   employee: state.entities.employees.active[state.support.context.currentEmployeeID],
   drivingLessons: state.entities.drivingLessons,
   drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
-  activities: state.entities.activities
+  activities: state.entities.activities,
+  status: state.views.employeeProfileScreen.status
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
-  fetchActivities: (params) => dispatch(activityActionCreators.indexRequest(params, ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED)),
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
-  initDailyAgenda: (stateToMerge) => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge)),
-});
+const mapDispatchToProps = (dispatch, otherProps )=> {
+  const { user: { id } } = otherProps.navigation.state.params;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+  const activitiesPayload = {
+    related_user_id: id
+  };
+
+  const drivingLessonsPayload = {
+    employee_id: id,
+    upcoming: true,
+    active: true
+  };
+
+  const payloads = {
+    activitiesPayload,
+    drivingLessonsPayload
+  };
+
+  return {
+    requestDataForView: () => dispatch(
+      employeeProfileActionCreators.requestDataForView({payloads})),
+    setCurrentEmployee: id => dispatch(
+      contextActionCreators.setCurrentEmployee(id)),
+    fetchActivities: (params) => dispatch(
+      activityActionCreators.indexRequest(params,
+        ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED)),
+    fetchDrivingLessons: (params) => dispatch(
+      drivingLessonActionCreators.indexRequest(params,
+        AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
+    initDailyAgenda: (stateToMerge) => dispatch(
+      employeeDailyAgendaActionCreators.init(stateToMerge)),
+  }
+};
+
+const withAsyncLoading = withRequiredData(
+  Profile,
+  'status',
+  'requestDataForView',
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)
