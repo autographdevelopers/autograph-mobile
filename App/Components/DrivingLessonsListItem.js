@@ -17,8 +17,6 @@ export default DrivingLessonsListItem = ({
                                            userContext,
                                            onCancelPress }) => {
 
-  console.log(drivingLesson);
-
   const rightIcon = lesson => {
     if (lesson.status === DRIVING_LESSON_STATUSES.CANCELED)
       return <Text style={styles.canceledText}>Odwołana</Text>;

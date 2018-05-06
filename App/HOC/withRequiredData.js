@@ -7,8 +7,6 @@ import SpinnerView from '../Components/SpinnerView';
 export default function withRequiredData(WrappedComponent, statusKey, requestDataPropFunc, requestDataPropArgs) {
   return class WithRequiredDataHOC extends Component {
     componentWillMount() {
-      console.log('componentWillMount');
-
       this.props[requestDataPropFunc](this.props[requestDataPropArgs]);
     }
 
