@@ -16,13 +16,14 @@ import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import { studentsActionCreators } from '../../Redux/Entities/StudentsRedux';
+import { studentsScreenActionCreators } from '../../Redux/Views/StudentsScreenRedux';
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
 import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
 
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
+import withRequiredData from '../../HOC/withRequiredData';
 
 /** Screen */
 class StudentsIndex extends Component {
@@ -32,10 +33,6 @@ class StudentsIndex extends Component {
       segmentIndex: 0,
       studentId: null
     }
-  }
-
-  componentWillMount() {
-    this.props.studentsIndexRequest();
   }
 
   changeTab = index => {
@@ -145,8 +142,8 @@ class StudentsIndex extends Component {
               keyExtractor={(element, _) => `employee-cell-${element.id}`}
               refreshControl={
                 <RefreshControl
-                  onRefresh={this.props.studentsIndexRequest}
-                  refreshing={status === FETCHING_STATUS.FETCHING}
+                  onRefresh={this.props.refreshStudentsList}
+                  refreshing={this.props.isRefreshing}
                   tintColor={Colors.primaryWarm}
                 />
               }
@@ -171,7 +168,8 @@ const mapStateToProps = state => ({
   drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
   activeStudents: state.entities.students.activeIds.map( id => state.entities.students.active[id]),
   pendingStudents: state.entities.students.pendingIds.map( id => state.entities.students.pending[id]),
-  status: state.entities.students.status,
+  status: state.views.studentsScreen.status,
+  isRefreshing: state.views.studentsScreen.refreshing,
   invitationDestroyStatus: state.views.invitations.status
 });
 
@@ -180,7 +178,8 @@ const styles = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  studentsIndexRequest: () => dispatch(studentsActionCreators.indexRequest()),
+  requestDataForView: () => dispatch(studentsScreenActionCreators.requestDataForView({})),
+  refreshStudentsList: () => dispatch(studentsScreenActionCreators.refreshListRequest({})),
   setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_STUDENT_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
@@ -188,4 +187,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentsIndex);
+const withAsyncLoading = withRequiredData(
+  StudentsIndex,
+  'status',
+  'requestDataForView'
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);

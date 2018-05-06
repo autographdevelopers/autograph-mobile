@@ -5,17 +5,11 @@ import { employeesScreenActionCreators } from '../../Redux/Views/EmploeesScreenR
 
 export function* requestDataForEmployeesScreen(api, action) {
   try {
-    console.tron.log(0);
     yield put(employeesScreenActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-    console.tron.log(1);
-
     yield call(employeesIndex, api, action.payloads.employeesPayload || {});
-    console.tron.log(2);
     yield put(employeesScreenActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
-    console.tron.log(3);
   } catch(error) {
     yield put(employeesScreenActionCreators.changeStatus(FETCHING_STATUS.ERROR));
-    console.tron.log(4);
   }
 }
 

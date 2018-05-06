@@ -152,7 +152,7 @@ class EmployeesIndex extends Component {
               keyExtractor={(element, _) => `employee-cell-${element.id}`}
               refreshControl={
                 <RefreshControl
-                  onRefresh={this.props.refreshEmployeeList}
+                  onRefresh={this.props.refreshEmployeesList}
                   refreshing={this.props.isRefreshing}
                   tintColor={Colors.primaryWarm}
                 />
@@ -190,7 +190,7 @@ const styles = {
 const mapDispatchToProps = dispatch => ({
   setCurrentEmployee: (id) => dispatch(contextActionCreators.setCurrentEmployee(id)),
   requestDataForView: () => dispatch(employeesScreenActionCreators.requestDataForView({})),
-  refreshEmployeeList: () => dispatch(employeesScreenActionCreators.refreshListRequest({})),
+  refreshEmployeesList: () => dispatch(employeesScreenActionCreators.refreshListRequest({})),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>

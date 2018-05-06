@@ -8,11 +8,13 @@ const INITIAL_STATE = {
 
 const { Types, Creators } = createActions({
   toggleRefreshingFlag: null,
-  requestDataForView: null,
+  requestDataForView: { payloads: {} },
+  refreshListRequest: { payloads: {} },
   changeStatus: ['status']
-});
+}, { prefix: 'STUDENTS_SCREEN/' } );
 
 export const studentsScreenActionCreators = Creators;
+export const studentsScreenActionTypes = Types;
 
 const toggleRefreshingFlagHandler = state =>
   ({...state, refreshing: !state.refreshing});

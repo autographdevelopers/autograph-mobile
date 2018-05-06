@@ -22,6 +22,7 @@ import { toastActionTypes } from '../Redux/Support/ToastRedux';
 import { employeesSummaryAgendaTypes } from '../Redux/Views/AgendaRedux';
 import { employeeDailyAgendaTypes } from '../Redux/Views/AgendaRedux';
 import { employeesScreenActionTypes } from '../Redux/Views/EmploeesScreenRedux';
+import { studentsScreenActionTypes } from '../Redux/Views/StudentsScreenRedux';
 
 /* ------------- Sagas ------------- */
 
@@ -31,6 +32,8 @@ import { requestDataForEmployeeDailyAgendaScreenSaga } from './PerView/EmployeeD
 import { longPollSummaryAgenda } from './PerView/EmployeesSummaryAgendaSaga';
 import { requestDataForEmployeesScreen } from './PerView/EmployeesIndexSaga';
 import { refreshEmployeesList } from './PerView/EmployeesIndexSaga';
+import { refreshStudentsList } from './PerView/StudentsIndexSaga';
+import { requestDataForStudentsScreen } from './PerView/StudentsIndexSaga';
 import { displayToastMessageSaga } from './ToastSaga';
 
 import {
@@ -185,6 +188,9 @@ export default function* root() {
     takeLatest(employeeDailyAgendaTypes.REQUEST_DATA_FOR_VIEW, requestDataForEmployeeDailyAgendaScreenSaga, api),
     /** Employees index View */
     takeLatest(employeesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForEmployeesScreen, api),
-    takeLatest(employeesScreenActionTypes.REFRESH_LIST_REQUEST, refreshEmployeesList, api)
+    takeLatest(employeesScreenActionTypes.REFRESH_LIST_REQUEST, refreshEmployeesList, api),
+    /** Students index View */
+    takeLatest(studentsScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForStudentsScreen, api),
+    takeLatest(studentsScreenActionTypes.REFRESH_LIST_REQUEST, refreshStudentsList, api)
   ]);
 }
