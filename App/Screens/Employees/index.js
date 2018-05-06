@@ -16,11 +16,12 @@ import InvitationInformationTitle from '../../Components/InvitationInformationTi
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
+import withRequiredData from '../../HOC/withRequiredData';
 
 import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { FETCHING_STATUS } from '../../Lib/utils';
 
-import { employeesActionCreators } from '../../Redux/Entities/EmployeesRedux';
+import { employeesScreenActionCreators } from '../../Redux/Views/EmploeesScreenRedux';
 import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
@@ -36,10 +37,6 @@ class EmployeesIndex extends Component {
       segmentIndex: 0,
       employeeId: null
     }
-  }
-
-  componentWillMount() {
-    this.props.employeesIndexRequest();
   }
 
   changeTab = index => {
@@ -155,8 +152,8 @@ class EmployeesIndex extends Component {
               keyExtractor={(element, _) => `employee-cell-${element.id}`}
               refreshControl={
                 <RefreshControl
-                  onRefresh={this.props.employeesIndexRequest}
-                  refreshing={status === FETCHING_STATUS.FETCHING}
+                  onRefresh={this.props.refreshEmployeeList}
+                  refreshing={this.props.isRefreshing}
                   tintColor={Colors.primaryWarm}
                 />
               }
@@ -181,7 +178,8 @@ const mapStateToProps = state => ({
   drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
   pendingEmployees: state.entities.employees.pendingIds.map(id => state.entities.employees.pending[id]),
   activeEmployees: state.entities.employees.activeIds.map(id => state.entities.employees.active[id]),
-  status: state.entities.employees.status,
+  status: state.views.employeesScreen.status,
+  isRefreshing: state.views.employeesScreen.refreshing,
   invitationDestroyStatus: state.views.invitations.status
 });
 
@@ -191,11 +189,18 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   setCurrentEmployee: (id) => dispatch(contextActionCreators.setCurrentEmployee(id)),
-  employeesIndexRequest: () => dispatch(employeesActionCreators.indexRequest()),
+  requestDataForView: () => dispatch(employeesScreenActionCreators.requestDataForView({})),
+  refreshEmployeeList: () => dispatch(employeesScreenActionCreators.refreshListRequest({})),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
   destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeesIndex)
+const withAsyncLoading = withRequiredData(
+  EmployeesIndex,
+  'status',
+  'requestDataForView'
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)

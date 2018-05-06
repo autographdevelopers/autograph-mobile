@@ -68,7 +68,7 @@
     "redux-form-saga": "^0.2.0",
     "redux-persist": "^4.1.0",
     "redux-saga": "^0.15.6",
-    "reduxsauce": "0.4.1",
+    "reduxsauce": "0.7.0",
     "reselect": "^3.0.1",
     "seamless-immutable": "^7.0.1",
     "styled-components": "^2.2.3"

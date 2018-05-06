@@ -21,12 +21,16 @@ import { activityActionTypes } from '../Redux/Entities/ActivityRedux';
 import { toastActionTypes } from '../Redux/Support/ToastRedux';
 import { employeesSummaryAgendaTypes } from '../Redux/Views/AgendaRedux';
 import { employeeDailyAgendaTypes } from '../Redux/Views/AgendaRedux';
+import { employeesScreenActionTypes } from '../Redux/Views/EmploeesScreenRedux';
+
 /* ------------- Sagas ------------- */
 
 import { requestDataForSummaryAgendaScreenSaga } from './PerView/EmployeesSummaryAgendaSaga';
 import { requestSlotsForAnotherWeekSaga } from './PerView/EmployeesSummaryAgendaSaga';
 import { requestDataForEmployeeDailyAgendaScreenSaga } from './PerView/EmployeeDailyAgendaSaga';
 import { longPollSummaryAgenda } from './PerView/EmployeesSummaryAgendaSaga';
+import { requestDataForEmployeesScreen } from './PerView/EmployeesIndexSaga';
+import { refreshEmployeesList } from './PerView/EmployeesIndexSaga';
 import { displayToastMessageSaga } from './ToastSaga';
 
 import {
@@ -179,5 +183,8 @@ export default function* root() {
     takeLatest(employeesSummaryAgendaTypes.REQUEST_SLOTS_FOR_ANOTHER_WEEK, requestSlotsForAnotherWeekSaga, api),
     /** Employee daily agenda */
     takeLatest(employeeDailyAgendaTypes.REQUEST_DATA_FOR_VIEW, requestDataForEmployeeDailyAgendaScreenSaga, api),
+    /** Employees index View */
+    takeLatest(employeesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForEmployeesScreen, api),
+    takeLatest(employeesScreenActionTypes.REFRESH_LIST_REQUEST, refreshEmployeesList, api)
   ]);
 }
