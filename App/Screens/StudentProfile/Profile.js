@@ -8,6 +8,7 @@ import { contextActionCreators } from '../../Redux/Support/ContextRedux';
 import { drivingCourseActionCreators } from '../../Redux/Entities/DrivingCourseRedux';
 import { drivingLessonActionCreators } from '../../Redux/Entities/DrivingLessonRedux';
 import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
+import { studentProfileActionCreators } from '../../Redux/Views/StudentProfileRedux';
 import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
@@ -26,19 +27,21 @@ import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
 import SectionHeader from '../../Components/SectionHeader';
 import SpinnerView from '../../Components/SpinnerView';
+import { getActionsPayloadsForSaga } from '../../Selectors/StudentProfileScreen';
+import withRequiredData from '../../HOC/withRequiredData';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentWillMount = () => {
-    const { studentId } = this.props;
-
-    this.props.fetchDrivingCourse();
-    this.props.fetchDrivingLessons({ student_id: studentId })
-    this.props.fetchActivities({related_user_id: studentId})
-  };
+  // componentWillMount = () => {
+  //   const { studentId } = this.props;
+  //
+  //   this.props.fetchDrivingCourse();
+  //   this.props.fetchDrivingLessons({ student_id: studentId })
+  //   this.props.fetchActivities({related_user_id: studentId})
+  // };
 
   componentWillUnmount = () =>
     this.props.setCurrentStudent(null);
@@ -176,10 +179,13 @@ const mapStateToProps = state => ({
   drivingLessons: state.entities.drivingLessons,
   studentId: state.support.context.currentStudentID,
   drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
-  activities: state.entities.activities
+  activities: state.entities.activities,
+  status: state.views.studentProfileScreen.status,
+  requestDataArguments: getActionsPayloadsForSaga(state)
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, otherProps) => ({
+  requestDataForView: (payloads) => dispatch(studentProfileActionCreators.requestDataForView({payloads})),
   setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   fetchDrivingCourse: () => dispatch(drivingCourseActionCreators.showRequest()),
   fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
@@ -187,8 +193,14 @@ const mapDispatchToProps = dispatch => ({
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
   resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
   updateDrivingCourse: (data) => dispatch(drivingCourseActionCreators.updateRequest(data)),
-  fetchActivities: (params) =>
-    dispatch(activityActionCreators.indexRequest(params, ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED))
+  fetchActivities: (params) => dispatch(activityActionCreators.indexRequest(params, ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+const withAsyncLoading = withRequiredData(
+  Profile,
+  'status',
+  'requestDataForView',
+  'requestDataArguments'
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)

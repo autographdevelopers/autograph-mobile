@@ -138,7 +138,10 @@ const mapDispatchToProps = (dispatch, otherProps )=> {
   const { user: { id } } = otherProps.navigation.state.params;
 
   const activitiesPayload = {
-    related_user_id: id
+    params: {
+      related_user_id: id
+    },
+    activityDisplayType: ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED
   };
 
   const drivingLessonsPayload = {
