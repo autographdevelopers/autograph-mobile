@@ -7,10 +7,11 @@ import { index as drivingLessonsIndex } from '../DrivingLessonSaga';
 export function* requestDataForEmployeeProfileScreenSaga(api, action) {
   try {
     yield put(employeeProfileActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-    yield all([
-      call(activitiesIndex, api, action.payloads.activitiesPayload),
-      call(drivingLessonsIndex, api, action.payloads.drivingLessonsPayload),
-    ]);
+    const { activities, lessons } = yield all({
+      activities: call(activitiesIndex, api, action.payloads.activitiesPayload),
+      lessons: call(drivingLessonsIndex, api, action.payloads.drivingLessonsPayload)
+    });
+    yield put(employeeProfileActionCreators.saveLessons(lessons));
     yield put(employeeProfileActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } catch(error) {
     yield put(employeeProfileActionCreators.changeStatus(FETCHING_STATUS.ERROR));

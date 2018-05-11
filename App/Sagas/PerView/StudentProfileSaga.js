@@ -8,11 +8,12 @@ import { show as showDrivingCourse } from '../DrivingCourseSaga';
 export function* requestDataForStudentProfileScreenSaga(api, action) {
   try {
     yield put(studentProfileActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-    yield all([
-      call(activitiesIndex, api, action.payloads.activitiesPayload),
-      call(drivingLessonsIndex, api, action.payloads.drivingLessonsPayload),
-      call(showDrivingCourse, api, action.payloads.drivingCoursePayload)
-    ]);
+    const { activities, drivingLessons, drivingCourse } = yield all({
+      activities: call(activitiesIndex, api, action.payloads.activitiesPayload),
+      drivingLessons: call(drivingLessonsIndex, api, action.payloads.drivingLessonsPayload),
+      drivingCourse: call(showDrivingCourse, api, action.payloads.drivingCoursePayload)
+    });
+    yield put(studentProfileActionCreators.saveLessons(drivingLessons));
     yield put(studentProfileActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } catch(error) {
     yield put(studentProfileActionCreators.changeStatus(FETCHING_STATUS.ERROR));

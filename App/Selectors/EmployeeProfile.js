@@ -11,9 +11,11 @@ export const getActionsPayloadsForSaga = state => {
   };
 
   const drivingLessonsPayload = {
-    employee_id: employeeId,
-    upcoming: true,
-    active: true,
+    params: {
+      employee_id: employeeId,
+      upcoming: true,
+      active: true,
+    }
   };
 
   return {

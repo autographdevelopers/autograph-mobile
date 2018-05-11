@@ -11,10 +11,10 @@ const { Types, Creators } = createActions({
   requestDataForView: { payloads: {} },
   changeStatus: ['status'],
   saveLessons: ['lessons'],
-}, { prefix: 'STUDENT_PROFILE_SCREEN/' } );
+}, { prefix: 'STUDENT_DASHBOARD_SCREEN/' } );
 
-export const studentProfileActionCreators = Creators;
-export const studentProfileActionTypes = Types;
+export const studentDashboardActionCreators = Creators;
+export const studentDashboardActionTypes = Types;
 
 const changeStatusHandler = (state, { status }) =>
   ({...state, status});
@@ -26,7 +26,7 @@ const saveLessonsHandler = (state, { lessons }) => {
   return newState;
 };
 
-export const studentProfileScreenReducer = createReducer(INITIAL_STATE, {
+export const studentDashboardScreenReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: changeStatusHandler,
   [Types.SAVE_LESSONS]: saveLessonsHandler
 });

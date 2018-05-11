@@ -25,7 +25,8 @@ import { employeesScreenActionTypes } from '../Redux/Views/EmploeesScreenRedux';
 import { studentsScreenActionTypes } from '../Redux/Views/StudentsScreenRedux';
 import { employeeProfileActionTypes } from '../Redux/Views/EmployeeProfileRedux';
 import { studentProfileActionTypes } from '../Redux/Views/StudentProfileRedux';
-
+import { studentDashboardActionTypes } from '../Redux/Views/StudentDashboardRedux';
+import { requestDataForStudentDashboardScreenSaga } from './PerView/StudentDashboardSaga';
 /* ------------- Sagas ------------- */
 
 import { requestDataForSummaryAgendaScreenSaga } from './PerView/EmployeesSummaryAgendaSaga';
@@ -199,6 +200,8 @@ export default function* root() {
     /** EmployeeProfile */
     takeLatest(employeeProfileActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForEmployeeProfileScreenSaga, api),
     /** Student Profile */
-    takeLatest(studentProfileActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForStudentProfileScreenSaga, api)
+    takeLatest(studentProfileActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForStudentProfileScreenSaga, api),
+    /** Student Dashboard */
+    takeLatest(studentDashboardActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForStudentDashboardScreenSaga, api)
   ]);
 }

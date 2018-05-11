@@ -9,7 +9,9 @@ export const getActionsPayloadsForSaga = state => {
     activityDisplayType: ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED
   };
   const drivingLessonsPayload = {
-    student_id: studentId
+    params: {
+      student_id: studentId
+    }
   };
 
   const drivingCoursePayload = {

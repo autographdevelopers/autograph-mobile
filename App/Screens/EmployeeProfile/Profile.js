@@ -26,6 +26,7 @@ import ActivitiesList from '../../Components/ActivitiesList';
 import { getActionsPayloadsForSaga } from '../../Selectors/EmployeeProfile';
 import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getCurrentEmployee } from '../../Selectors/Employees';
+import { getEmployeeUpcomingLessons } from '../../Selectors/DrivingLesson';
 /** == HOCs ======================================= */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Utils =========================================== */
@@ -55,7 +56,7 @@ class Profile extends Component {
 
   render() {
     const {
-      drivingLessons,
+      lessons,
       activities,
       drivingSchool
     } = this.props;
@@ -79,10 +80,8 @@ class Profile extends Component {
             </View>
             <View style={[listProjectorStyles.containerStyle]}>
               <DrivingLessonsList
-                drivingLessons={drivingLessons.allIDs.map(
-                  id => drivingLessons.hashMap[id])}
+                drivingLessons={lessons}
                 userContext={'student'}
-                fetchingStatus={drivingLessons.status}
                 scrollEnabled={false}/>
             </View>
 
@@ -128,7 +127,7 @@ const styles = {
 
 const mapStateToProps = state => ( {
   employee: getCurrentEmployee(state),
-  drivingLessons: state.entities.drivingLessons,
+  lessons: getEmployeeUpcomingLessons(state),
   drivingSchool: getCurrentDrivingSchool(state),
   activities: state.entities.activities,
   status: state.views.employeeProfileScreen.status,

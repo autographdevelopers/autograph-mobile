@@ -12,12 +12,9 @@ import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedu
 
 import DrivingLessonsListItem from '../Components/DrivingLessonsListItem';
 import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
+import { getCurrentDrivingSchool } from '../Selectors/DrivingSchool';
 
 class DrivingLessonsList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   openCancelDrivingLessonModal = lesson => () => {
     this.props.initCancelLessonModal(lesson);
     this.props.openModal(MODALS_IDS.CANCEL_DRIVING_LESSON)
@@ -39,29 +36,27 @@ class DrivingLessonsList extends Component {
       drivingLessons,
       userContext,
       scrollEnabled,
-      fetchingStatus
     } = this.props;
 
-    if (fetchingStatus === FETCHING_STATUS.READY || fetchingStatus === FETCHING_STATUS.SUCCESS)
-      if (drivingLessons.length === 0) {
-        return <Text style={styles.emptyDrivingLessons}>Brak jazd</Text>
-      } else {
-        return (
-          <FlatList
-            contentContainerStyle={{paddingBottom: 100}}
-            scrollEnabled={scrollEnabled}
-            data={this.sort(drivingLessons)}
-            renderItem={({ item }) => (
-              <DrivingLessonsListItem drivingLesson={item}
-                                      userCanCancelLesson={this.userCanCancelLessons()}
-                                      userContext={userContext}
-                                      onCancelPress={this.openCancelDrivingLessonModal(item)} />
-            )}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={element => `drivingLesson-${element.id}`}
-          />
-        )
-      }
+    if (drivingLessons.length === 0) {
+      return <Text style={styles.emptyDrivingLessons}>Brak jazd</Text>
+    } else {
+      return (
+        <FlatList
+          contentContainerStyle={{paddingBottom: 100}}
+          scrollEnabled={scrollEnabled}
+          data={this.sort(drivingLessons)}
+          renderItem={({ item }) => (
+            <DrivingLessonsListItem drivingLesson={item}
+                                    userCanCancelLesson={this.userCanCancelLessons()}
+                                    userContext={userContext}
+                                    onCancelPress={this.openCancelDrivingLessonModal(item)} />
+          )}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={element => `drivingLesson-${element.id}`}
+        />
+      )
+    }
   };
 
   render() {
@@ -92,7 +87,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   user: state.access.currentUser,
-  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  drivingSchool: getCurrentDrivingSchool(state),
 });
 
 const mapDispatchToProps = dispatch => ({

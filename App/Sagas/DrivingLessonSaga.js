@@ -14,6 +14,7 @@ export function* index(api, action) {
   if (response.ok) {
     yield put(drivingLessonActionCreators.save(response.data, action.after_save_callback_type));
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY));
+    return response.data;
   } else {
     yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }

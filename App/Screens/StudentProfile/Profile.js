@@ -21,7 +21,7 @@ import SectionHeader from '../../Components/SectionHeader';
 /** == Selectors ======================================= */
 import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getActionsPayloadsForSaga } from '../../Selectors/StudentProfileScreen';
-import { getUpcomingDrivingLessons } from '../../Selectors/DrivingLesson';
+import { getStudentsUpcomingLessons } from '../../Selectors/DrivingLesson';
 import { getCurrentStudent } from '../../Selectors/Student';
 /** == HOCs ======================================= */
 import withRequiredData from '../../HOC/withRequiredData';
@@ -93,7 +93,6 @@ class Profile extends Component {
               <DrivingLessonsList
                 drivingLessons={upcomingDrivingLessons}
                 userContext={'employee'}
-                fetchingStatus={drivingLessons.status}
                 scrollEnabled={false}
               />
             </View>
@@ -148,7 +147,7 @@ const mapStateToProps = state => ({
   drivingSchool: getCurrentDrivingSchool(state),
   activities: state.entities.activities,
   status: state.views.studentProfileScreen.status,
-  upcomingDrivingLessons: getUpcomingDrivingLessons(state),
+  upcomingDrivingLessons: getStudentsUpcomingLessons(state),
   requestDataArguments: getActionsPayloadsForSaga(state)
 });
 

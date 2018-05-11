@@ -2,22 +2,17 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment/moment';
 /** Custom modules */
-import { drivingCourseActionCreators } from '../Redux/Entities/DrivingCourseRedux';
-import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
+import { studentDashboardActionCreators } from '../Redux/Views/StudentDashboardRedux';
 import { Colors, Fonts } from '../Themes/';
-import {
-  AFTER_SAVE_CALLBACKS,
-  DRIVING_LESSON_STATUSES,
-} from '../Lib/DrivingLessonHelpers';
-import { FETCHING_STATUS } from '../Lib/utils';
 import listProjectorStyles from '../Styles/ListProjector';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
-import SpinnerView from '../Components/SpinnerView';
+import withRequiredData from '../HOC/withRequiredData';
+import { getStudentsDashboardRequestParams } from '../Selectors/StudentDashboard';
+import { getUpcomingDrivingLessons } from '../Selectors/StudentDashboard';
 
 /** Screen */
 class StudentDashboard extends Component {
@@ -25,56 +20,44 @@ class StudentDashboard extends Component {
     super(props);
   }
 
-  componentWillMount = () => {
-    this.props.fetchDrivingCourse(this.props.user.id);
-    this.props.fetchDrivingLessons({ student_id: this.props.user.id })
-  }
-
-  isFetching = (drivingLessonsStatus, drivingCourseStatus) =>
-    drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING
-
-
-  upcomingDrivingLessons = (drivingLessons) =>
-    drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
-      (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
-    )
-
   render() {
-    const { user } = this.props;
-    const { drivingLessons, drivingCourse } = this.props;
+    const {
+      drivingLessons,
+      drivingCourse,
+      upcomingDrivingLessons,
+      user
+    } = this.props;
 
     return (
       <View style={{flex: 1}}>
-        { this.isFetching(drivingLessons.status, drivingCourse.status) ? <SpinnerView /> :
-          <ScrollView style={styles.container}>
-            <SectionHeader title={'Postępy'} />
+        <ScrollView style={styles.container}>
+          <SectionHeader title={'Postępy'} />
 
-            <View style={styles.drivingCourseProgressWrapper}>
-              <DrivingCourseProgress
-                drivingCourse={drivingCourse}
-                drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
-            </View>
+          <View style={styles.drivingCourseProgressWrapper}>
+            <DrivingCourseProgress
+              drivingCourse={drivingCourse}
+              drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
+          </View>
 
-            <View style={styles.headerWithBtn}>
-              <SectionHeader title={'Nadchodzące jazdy'} />
+          <View style={styles.headerWithBtn}>
+            <SectionHeader title={'Nadchodzące jazdy'} />
 
-              <ButtonText
-                onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: user.id})}
-                customTextStyle={{fontSize: Fonts.size.small}}>
-                Pokaż wszystkie
-              </ButtonText>
-            </View>
+            <ButtonText
+              onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: user.id})}
+              customTextStyle={{fontSize: Fonts.size.small}}>
+              Pokaż wszystkie
+            </ButtonText>
+          </View>
 
-            <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
-              <DrivingLessonsList
-                drivingLessons={this.upcomingDrivingLessons(drivingLessons)}
-                userContext={'employee'}
-                fetchingStatus={drivingLessons.status}
-                scrollEnabled={false}
-              />
-            </View>
-          </ScrollView>
-        }
+          <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
+            <DrivingLessonsList
+              drivingLessons={upcomingDrivingLessons}
+              userContext={'employee'}
+              fetchingStatus={drivingLessons.status}
+              scrollEnabled={false}
+            />
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -102,12 +85,21 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   drivingCourse: state.entities.drivingCourse,
   user: state.access.currentUser,
-  drivingLessons: state.entities.drivingLessons
+  status: state.views.studentDashboardScreen.status,
+  drivingLessons: state.entities.drivingLessons,
+  requestDataParams: getStudentsDashboardRequestParams(state),
+  upcomingDrivingLessons: getUpcomingDrivingLessons(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchDrivingCourse: (studentId) => dispatch(drivingCourseActionCreators.showRequest(studentId)),
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID))
+  requestDataForView: payloads => dispatch(studentDashboardActionCreators.requestDataForView({payloads})),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudentDashboard)
+const withAsyncLoading = withRequiredData(
+  StudentDashboard,
+  'status',
+  'requestDataForView',
+  'requestDataParams'
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)
