@@ -1,12 +1,11 @@
-/** Built-in modules */
+/** == Built-in modules ================================ */
 import React, { Component } from 'react';
 import { FlatList, View, RefreshControl, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
 import ActionButton from 'react-native-action-button';
-/** Custom modules */
-import SpinnerView from '../../Components/SpinnerView';
+/** == Components ====================================== */
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
@@ -16,16 +15,21 @@ import InvitationInformationTitle from '../../Components/InvitationInformationTi
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
+/** == HOCs ============================================ */
 import withRequiredData from '../../HOC/withRequiredData';
-
-import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
+/** == Constants ============================================ */
 import { FETCHING_STATUS } from '../../Lib/utils';
-
+import { MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
+/** == Action Creators ================================= */
 import { employeesScreenActionCreators } from '../../Redux/Views/EmploeesScreenRedux';
 import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
-
+import { modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
+/** == Selectors ======================================= */
+import { getPendingEmployees, getActiveEmployees } from '../../Selectors/Employees';
+import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
+/** == Utils ============================================ */
+import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
 
@@ -103,17 +107,18 @@ class EmployeesIndex extends Component {
   };
 
   render() {
-    if(this.props.status === FETCHING_STATUS.FETCHING) return <SpinnerView/>;
-
     const {
-      status,
+      refreshEmployeesList,
       pendingEmployees,
       activeEmployees,
+      resetInvitationFetchingStatus,
+      invitationDestroyStatus,
+      destroyInvitation,
       navigation,
       drivingSchool
     } = this.props;
 
-    const { segmentIndex } = this.state;
+    const { segmentIndex, employeeId } = this.state;
 
     const list = [
       { data: activeEmployees,
@@ -152,7 +157,7 @@ class EmployeesIndex extends Component {
               keyExtractor={(element, _) => `employee-cell-${element.id}`}
               refreshControl={
                 <RefreshControl
-                  onRefresh={this.props.refreshEmployeesList}
+                  onRefresh={refreshEmployeesList}
                   refreshing={this.props.isRefreshing}
                   tintColor={Colors.primaryWarm}
                 />
@@ -162,10 +167,10 @@ class EmployeesIndex extends Component {
           <ActionButton buttonColor={Colors.primaryWarm} onPress={()=>navigation.navigate('inviteEmployee')} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
-            status={this.props.invitationDestroyStatus}
-            closeModalCallback={this.props.resetInvitationFetchingStatus}>
+            status={invitationDestroyStatus}
+            closeModalCallback={resetInvitationFetchingStatus}>
             <DestroyInvitationConfirmation
-              onPress={() => this.props.destroyInvitation({type: 'Employee', user_id: this.state.employeeId})}
+              onPress={() => destroyInvitation({type: 'Employee', user_id: employeeId})}
             />
           </ModalTemplate>
         </View>
@@ -175,24 +180,20 @@ class EmployeesIndex extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
-  pendingEmployees: state.entities.employees.pendingIds.map(id => state.entities.employees.pending[id]),
-  activeEmployees: state.entities.employees.activeIds.map(id => state.entities.employees.active[id]),
+  drivingSchool: getCurrentDrivingSchool(state),
+  pendingEmployees: getPendingEmployees(state),
+  activeEmployees: getActiveEmployees(state),
   status: state.views.employeesScreen.status,
   isRefreshing: state.views.employeesScreen.refreshing,
   invitationDestroyStatus: state.views.invitations.status
 });
 
-const styles = {
-  listPlaceholder: {}
-};
-
 const mapDispatchToProps = dispatch => ({
-  setCurrentEmployee: (id) => dispatch(contextActionCreators.setCurrentEmployee(id)),
+  setCurrentEmployee: id => dispatch(contextActionCreators.setCurrentEmployee(id)),
   requestDataForView: () => dispatch(employeesScreenActionCreators.requestDataForView({})),
   refreshEmployeesList: () => dispatch(employeesScreenActionCreators.refreshListRequest({})),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_EMPLOYEE_INVITATION)),
-  destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
+  destroyInvitation: params => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });
