@@ -6,8 +6,9 @@ import { Provider } from 'react-redux'
 import createStore from '../Redux'
 import AppNavigation from '../Navigation/AppNavigation';
 import { Colors } from '../Themes';
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 import ReduxPersist from '../Config/ReduxPersist';
+import { Overlay } from '../Components/OverlayWithActivity';
 
 // create our store
 export const store = createStore();
@@ -33,6 +34,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.applicationView}>
+          <Overlay/>
           <StatusBar barStyle='light-content' translucent={true} />
           <AppNavigation/>
         </View>

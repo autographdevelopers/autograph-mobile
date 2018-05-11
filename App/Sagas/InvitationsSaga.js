@@ -6,6 +6,7 @@ import { employeesActionCreators } from '../Redux/Entities/EmployeesRedux';
 import { studentsActionCreators } from '../Redux/Entities/StudentsRedux';
 import { invitationActionCreators } from '../Redux/Views/InvitationsRedux';
 import { drivingSchoolActionCreators } from '../Redux/Entities/DrivingSchoolRedux';
+import { overlayActionCreators } from '../Redux/Views/Utils/OverlayRedux';
 import { FETCHING_STATUS } from '../Lib/utils';
 
 export function* create(api, action) {
@@ -26,7 +27,7 @@ export function* create(api, action) {
 
 export function* accept(api, action) {
   yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-
+  yield put(overlayActionCreators.show());
   const response = yield call(api.invitations.accept, action.id);
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data));
@@ -34,11 +35,12 @@ export function* accept(api, action) {
   } else {
     yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
+  yield put(overlayActionCreators.hide());
 }
 
 export function* reject(api, action) {
   yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-
+  yield put(overlayActionCreators.show());
   const response = yield call(api.invitations.reject, action.id);
   if (response.ok) {
     yield put(drivingSchoolActionCreators.destroySingle(action.id));
@@ -46,6 +48,7 @@ export function* reject(api, action) {
   } else {
     yield put(invitationActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
+  yield put(overlayActionCreators.hide());
 }
 
 export function* destroy(api, action) {

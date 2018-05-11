@@ -9,15 +9,18 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Colors } from '../../Themes/index';
-/** Custom modules */
+/** == Action Creators ============================ */
 import { drivingSchoolActionCreators } from '../../Redux/Entities/DrivingSchoolRedux';
-import { contextActionCreators } from '../../Redux/Support/ContextRedux';
-import { modalActionCreators, MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
 import { schoolActivationActionCreators } from '../../Redux/Views/Modals/SchoolActivationRedux';
 import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
-
+import { contextActionCreators } from '../../Redux/Support/ContextRedux';
+import { modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
+/** == Constants ============================ */
+import { MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
+import { FETCHING_STATUS } from '../../Lib/utils';
+/** == Components ============================ */
 import AccountHeader from '../../Components/AccountHeader';
 import SpinnerView from '../../Components/SpinnerView';
 import DrivingSchoolCell from '../../Components/DrivingSchoolCell';
@@ -26,21 +29,20 @@ import SchoolActivationInput from './SchoolActivationInput';
 import ModalTemplate from '../../Components/ModalTemplate';
 import SectionHeader from '../../Components/SectionHeader';
 import InfoBox from '../../Components/InfoBox';
+/** == Utils ============================ */
 import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import {
   isDrivingSchoolRelationActive,
   isDrivingSchoolAwaitingActivation,
   isDrivingSchoolRelationPending,
 } from '../../Lib/DrivingSchoolHelpers';
-import { FETCHING_STATUS } from '../../Lib/utils';
-import Fonts from '../../Themes/Fonts';
-import { NavigationActions } from 'react-navigation';
+import { Colors,Fonts } from '../../Themes';
 
-/** Constants */
 const SECTION_TITLES = {
   mySchools: 'Moje szkoły',
   invitingSchools: 'Zaproszenia do współpracy'
 };
+
 
 /** Screen */
 class MySchoolsScreen extends Component {
@@ -49,27 +51,22 @@ class MySchoolsScreen extends Component {
   };
 
   navigateToNewDrivingSchoolForm = () => {
-    // //TODO fix bug when trying to navigate to new school page from existing pne(main school flw tabs  )
-    // this.props.setCurrentSchoolContext(null);
-    //
-    // const resetAction = NavigationActions.navigate({
-    //   index: 0,
-    //   key: null,
-    //   actions: [
-    //     // NavigationActions.navigate({ routeName: `mySchoolsScreen`}),
-    //     NavigationActions.navigate({ routeName: `newDrivingSchool`})
-    //   ],
-    // });
-
     this.props.navigation.navigate('newDrivingSchool');
   };
 
   navigateToSchoolContext = school => {
-    const { user, navigation: { navigate } } = this.props;
-    this.props.setCurrentSchoolContext(school.id);
+    const {
+      user,
+      navigation: { dispatch },
+      setCurrentSchoolContext
+    } = this.props;
 
+    // Set school context
+    setCurrentSchoolContext(school.id);
+
+
+    // Navigate to proper tabs
     let userType;
-
     if ( isEmployee(user) ) {
       if ( isDrivingSchoolOwner(school) )
         userType = 'owner';
@@ -78,8 +75,6 @@ class MySchoolsScreen extends Component {
     } else if ( isStudent(user) ) {
         userType = 'student';
     }
-
-
     const resetAction = NavigationActions.reset({
       index: 0,
       key: null,
@@ -93,14 +88,7 @@ class MySchoolsScreen extends Component {
       ],
     });
 
-    this.props.navigation.dispatch(resetAction);
-  };
-
-  blockUIWhenInvitationResponseRequestIsPending = () => {
-    if ( this.props.invitations.status === FETCHING_STATUS.FETCHING )
-      return <View style={styles.loading}>
-        <ActivityIndicator size='large' color={Colors.snow}/>
-      </View>;
+    dispatch(resetAction);
   };
 
   renderListItem = ({item}) => {
@@ -116,7 +104,7 @@ class MySchoolsScreen extends Component {
     }
   };
 
-  renderSectionHeader = ({section}) => {
+  renderSectionHeader = ({ section }) => {
     switch(section.title) {
       case SECTION_TITLES.mySchools:
         return (
@@ -137,10 +125,14 @@ class MySchoolsScreen extends Component {
   };
 
   dataOrPlaceHolder = (data, placeHolder) =>
-    data.length === 0 ? [{sectionPlaceholder: placeHolder}] : data;
+    data.length === 0 ? [{ sectionPlaceholder: placeHolder }] : data;
 
   render() {
-    const { activeDrivingSchools,
+    if ( this.props.drivingSchools.status === FETCHING_STATUS.FETCHING )
+      return <SpinnerView/>;
+
+    const {
+      activeDrivingSchools,
       awaitingActivationDrivingSchools,
       invitingDrivingSchools,
       schoolActivationStatus,
@@ -156,10 +148,10 @@ class MySchoolsScreen extends Component {
     ];
 
     const sections = [
-      {title: SECTION_TITLES.mySchools,
+      { title: SECTION_TITLES.mySchools,
         data: this.dataOrPlaceHolder(mySchools,
           'Tutaj wyświetlą się szkoły, do których należysz.') },
-      {title: SECTION_TITLES.invitingSchools,
+      { title: SECTION_TITLES.invitingSchools,
         data: this.dataOrPlaceHolder(invitingDrivingSchools,
           'Tutaj wyświetlą się zaproszenia do szkół.') }
     ];
@@ -179,9 +171,6 @@ class MySchoolsScreen extends Component {
           />
         }
 
-        { status === FETCHING_STATUS.FETCHING && <SpinnerView/> }
-
-        {this.blockUIWhenInvitationResponseRequestIsPending()}
 
         <ModalTemplate
           modalID={MODALS_IDS.ACTIVATE_SCHOOL}
@@ -202,15 +191,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center'
-  },
-  listContainer: {
-  },
-  loading: {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    zIndex: 100,
   }
 });
 
@@ -231,7 +211,8 @@ const mapStateToProps = state => {
     drivingSchools,
     invitations,
     user: currentUser,
-    schoolActivationStatus: schoolActivation.status
+    schoolActivationStatus: schoolActivation.status,
+    invitationsStatus: invitations.status
   }
 };
 

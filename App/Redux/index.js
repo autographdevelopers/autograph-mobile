@@ -15,7 +15,7 @@ export const appReducer = combineReducers({
   entities: entitiesReducer,
   views: viewsReducer,
   support: supportReducer,
-  access: accessReducer
+  access: accessReducer,
 });
 
 /* Very Top level reducer wrapper used for resetting store after logout */
