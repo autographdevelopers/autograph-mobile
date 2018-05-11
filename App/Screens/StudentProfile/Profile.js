@@ -1,66 +1,54 @@
+/** == Built-in modules ================================ */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import moment from 'moment/moment';
-
+/** == Action Creators ================================= */
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
 import { drivingCourseActionCreators } from '../../Redux/Entities/DrivingCourseRedux';
-import { drivingLessonActionCreators } from '../../Redux/Entities/DrivingLessonRedux';
-import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
 import { studentProfileActionCreators } from '../../Redux/Views/StudentProfileRedux';
+/** == Constants ======================================= */
 import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
-import listProjectorStyles from '../../Styles/ListProjector';
 import { FETCHING_STATUS } from '../../Lib/utils';
-import {
-  AFTER_SAVE_CALLBACKS,
-  DRIVING_LESSON_STATUSES,
-} from '../../Lib/DrivingLessonHelpers';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
-import { Colors, Fonts } from '../../Themes/';
-import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
-
+/** == Components ====================================== */
 import ModalTemplate from '../../Components/ModalTemplate';
 import DrivingCourseProgress from '../../Components/DrivingCourseProgress'
 import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
 import SectionHeader from '../../Components/SectionHeader';
-import SpinnerView from '../../Components/SpinnerView';
+/** == Selectors ======================================= */
+import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getActionsPayloadsForSaga } from '../../Selectors/StudentProfileScreen';
+import { getUpcomingDrivingLessons } from '../../Selectors/DrivingLesson';
+import { getCurrentStudent } from '../../Selectors/Student';
+/** == HOCs ======================================= */
 import withRequiredData from '../../HOC/withRequiredData';
+/** == Utils =========================================== */
+import listProjectorStyles from '../../Styles/ListProjector';
+import { Colors, Fonts } from '../../Themes/';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  // componentWillMount = () => {
-  //   const { studentId } = this.props;
-  //
-  //   this.props.fetchDrivingCourse();
-  //   this.props.fetchDrivingLessons({ student_id: studentId })
-  //   this.props.fetchActivities({related_user_id: studentId})
-  // };
-
   componentWillUnmount = () =>
     this.props.setCurrentStudent(null);
 
-  upcomingDrivingLessons = (drivingLessons) =>
-    drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
-      (DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status && moment().isBefore(drivingLesson.start_time))
-    );
-
-  isFetching = (drivingLessonsStatus, drivingCourseStatus, activitiesStatus) =>
-    drivingLessonsStatus === FETCHING_STATUS.FETCHING || drivingCourseStatus === FETCHING_STATUS.FETCHING ||
-      activitiesStatus === FETCHING_STATUS.FETCHING
-
   render() {
-    const { drivingCourse, drivingLessons, drivingSchool, activities } = this.props
+    const {
+      drivingCourse,
+      drivingLessons,
+      drivingSchool,
+      activities,
+      openModal,
+      upcomingDrivingLessons,
+      student,
+      navigation: { navigate },
+      resetDrivingCourseFetchingStatus,
+      updateDrivingCourse
+    } = this.props;
 
     return (
       <View style={{flex: 1}}>
-        {this.isFetching(drivingLessons.status, drivingCourse.status, activities.status) ? <SpinnerView/> :
           <ScrollView style={styles.container}>
             <View style={styles.headerWithBtn}>
               <SectionHeader
@@ -71,7 +59,7 @@ class Profile extends Component {
               {
                 canManageStudents(drivingSchool) &&
                 <ButtonText
-                  onPress={() => this.props.openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
+                  onPress={() => openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
                   customTextStyle={{fontSize: Fonts.size.small}}
                   icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
                   Edytuj
@@ -88,10 +76,10 @@ class Profile extends Component {
             <ModalTemplate
               modalID={MODALS_IDS.CHANGE_AVAILABLE_HOURS}
               status={drivingCourse.status}
-              closeModalCallback={this.props.resetDrivingCourseFetchingStatus}>
+              closeModalCallback={resetDrivingCourseFetchingStatus}>
               <ChangeAvailableHours
                 availableHours={drivingCourse.data.available_hours}
-                onPress={this.props.updateDrivingCourse}
+                onPress={updateDrivingCourse}
               />
             </ModalTemplate>
 
@@ -102,7 +90,7 @@ class Profile extends Component {
                 customUnderlineStyles={styles.underline}/>
 
               <ButtonText
-                onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: this.props.studentId})}
+                onPress={() => navigate('drivingLessons', { studentId: student.id })}
                 customTextStyle={{fontSize: Fonts.size.small}}>
                 Pokaż wszystkie
               </ButtonText>
@@ -110,14 +98,14 @@ class Profile extends Component {
 
             <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
               <DrivingLessonsList
-                drivingLessons={this.upcomingDrivingLessons(drivingLessons)}
+                drivingLessons={upcomingDrivingLessons}
                 userContext={'employee'}
                 fetchingStatus={drivingLessons.status}
                 scrollEnabled={false}
               />
             </View>
 
-            { canManageStudents(this.props.drivingSchool) &&
+            { canManageStudents(drivingSchool) &&
             <View>
               <View style={styles.headerWithBtn}>
                 <SectionHeader title={'Aktywności pracownikiem'}
@@ -138,7 +126,6 @@ class Profile extends Component {
             </View>
             }
           </ScrollView>
-        }
       </View>
     );
   }
@@ -177,23 +164,20 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   drivingCourse: state.entities.drivingCourse,
   drivingLessons: state.entities.drivingLessons,
-  studentId: state.support.context.currentStudentID,
-  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
+  student: getCurrentStudent(state),
+  drivingSchool: getCurrentDrivingSchool(state),
   activities: state.entities.activities,
   status: state.views.studentProfileScreen.status,
+  upcomingDrivingLessons: getUpcomingDrivingLessons(state),
   requestDataArguments: getActionsPayloadsForSaga(state)
 });
 
-const mapDispatchToProps = (dispatch, otherProps) => ({
-  requestDataForView: (payloads) => dispatch(studentProfileActionCreators.requestDataForView({payloads})),
-  setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
-  fetchDrivingCourse: () => dispatch(drivingCourseActionCreators.showRequest()),
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
-  openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
+const mapDispatchToProps = dispatch => ({
+  requestDataForView: payloads => dispatch(studentProfileActionCreators.requestDataForView({payloads})),
+  setCurrentStudent: studentID => dispatch(contextActionCreators.setCurrentStudent(studentID)),
+  openModal: modalId => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
-  resetDrivingLessonFetchingStatus: () => dispatch(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.READY)),
-  updateDrivingCourse: (data) => dispatch(drivingCourseActionCreators.updateRequest(data)),
-  fetchActivities: (params) => dispatch(activityActionCreators.indexRequest(params, ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED))
+  updateDrivingCourse: data => dispatch(drivingCourseActionCreators.updateRequest(data)),
 });
 
 const withAsyncLoading = withRequiredData(
