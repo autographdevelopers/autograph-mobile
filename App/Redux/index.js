@@ -8,7 +8,6 @@ import { entitiesReducer } from './Entities';
 import { viewsReducer } from './Views';
 import { supportReducer } from './Support';
 import { accessReducer } from './Access';
-
 /* ------------- Assemble The Reducers ------------- */
 export const appReducer = combineReducers({
   form: formReducer,

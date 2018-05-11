@@ -4,7 +4,6 @@ import { Colors, Fonts } from '../Themes/index';
 import SectionHeader from '../Components/SectionHeader';
 import ButtonText from '../Components/ButtonText'
 import Layout from '../Components/Layout';
-import { ListItem } from 'react-native-elements';
 import UniversalCell from '../Components/UniversalCell';
 import IconF from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';

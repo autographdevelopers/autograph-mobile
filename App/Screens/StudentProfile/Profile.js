@@ -51,11 +51,7 @@ class Profile extends Component {
       <View style={{flex: 1}}>
           <ScrollView style={styles.container}>
             <View style={styles.headerWithBtn}>
-              <SectionHeader
-                title={'Postępy'}
-                customTextStyles={styles.headerText}
-                customUnderlineStyles={styles.underline}/>
-
+              <SectionHeader title={'Postępy'} />
               {
                 canManageStudents(drivingSchool) &&
                 <ButtonText
@@ -84,10 +80,7 @@ class Profile extends Component {
             </ModalTemplate>
 
             <View style={styles.headerWithBtn}>
-              <SectionHeader
-                title={'Nadchodzące jazdy'}
-                customTextStyles={styles.headerText}
-                customUnderlineStyles={styles.underline}/>
+              <SectionHeader title={'Nadchodzące jazdy'} />
 
               <ButtonText
                 onPress={() => navigate('drivingLessons', { studentId: student.id })}
@@ -108,9 +101,7 @@ class Profile extends Component {
             { canManageStudents(drivingSchool) &&
             <View>
               <View style={styles.headerWithBtn}>
-                <SectionHeader title={'Aktywności pracownikiem'}
-                               customTextStyles={styles.headerText}
-                               customUnderlineStyles={styles.underline}/>
+                <SectionHeader title={'Aktywności pracownikiem'} />
                 <ButtonText
                   customTextStyle={{ fontSize: Fonts.size.small }}
                   icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
@@ -140,17 +131,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center',
-  },
-  headerText: {
-    fontSize: Fonts.size.medium,
-    color: Colors.strongGrey,
-    fontWeight: '400'
-  },
-  underline: {
-    marginTop: 3,
-    width: 30,
-    borderColor: Colors.primaryWarm,
-    borderWidth: 1,
   },
   drivingCourseProgressWrapper: {
     marginVertical: 15

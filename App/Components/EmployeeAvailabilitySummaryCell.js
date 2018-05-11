@@ -58,10 +58,7 @@ export default EmployeeAvailabilitySummaryCell = ({ employee, slots, onCalendarP
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <SectionHeader
-          title={`${employee.name} ${employee.surname}`}
-          customUnderlineStyles={{width: 40}}
-        />
+        <SectionHeader title={`${employee.name} ${employee.surname}`} />
         <ButtonText customTextStyle={{ fontSize: Fonts.size.small }}
                     onPress={onCalendarPress}
                     customStyle={{alignSelf: 'flex-start'}}

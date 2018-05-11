@@ -18,7 +18,6 @@ import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
 import SpinnerView from '../Components/SpinnerView';
-import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux'
 
 /** Screen */
 class StudentDashboard extends Component {
@@ -48,10 +47,7 @@ class StudentDashboard extends Component {
       <View style={{flex: 1}}>
         { this.isFetching(drivingLessons.status, drivingCourse.status) ? <SpinnerView /> :
           <ScrollView style={styles.container}>
-            <SectionHeader
-              title={'Postępy'}
-              customTextStyles={styles.headerText}
-              customUnderlineStyles={styles.underline}/>
+            <SectionHeader title={'Postępy'} />
 
             <View style={styles.drivingCourseProgressWrapper}>
               <DrivingCourseProgress
@@ -60,10 +56,7 @@ class StudentDashboard extends Component {
             </View>
 
             <View style={styles.headerWithBtn}>
-              <SectionHeader
-                title={'Nadchodzące jazdy'}
-                customTextStyles={styles.headerText}
-                customUnderlineStyles={styles.underline}/>
+              <SectionHeader title={'Nadchodzące jazdy'} />
 
               <ButtonText
                 onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: user.id})}
@@ -97,17 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.snow,
     alignItems: 'center',
   },
-  headerText: {
-    fontSize: Fonts.size.medium,
-    color: Colors.strongGrey,
-    fontWeight: '400'
-  },
-  underline: {
-    marginTop: 3,
-    width: 30,
-    borderColor: Colors.primaryWarm,
-    borderWidth: 1,
-  },
   drivingCourseProgressWrapper: {
     marginVertical: 15
   },
@@ -115,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   }
-})
+});
 
 const mapStateToProps = state => ({
   drivingCourse: state.entities.drivingCourse,

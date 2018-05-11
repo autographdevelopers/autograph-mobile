@@ -65,9 +65,7 @@ export default class DrivingLessonsFilter extends Component {
     return(
       <View style={styles.container}>
         <View>
-          <SectionHeader customTextStyles={{fontSize: Fonts.size.medium}}
-                         customUnderlineStyles={styles.customUnderlineStyles}
-                         title={'Filtry'}/>
+          <SectionHeader title={'Filtry'}/>
 
           <View style={styles.section}>
             <Text style={styles.dateCaption}>Od:</Text>
@@ -130,10 +128,5 @@ const styles = StyleSheet.create({
   submitButton: {
     marginTop: 15,
     alignSelf: 'center'
-  },
-  customUnderlineStyles: {
-    width: 20,
-    borderWidth: 1,
-    marginTop: 3
   }
 });

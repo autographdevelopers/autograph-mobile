@@ -64,9 +64,7 @@ class Profile extends Component {
       <View style={{ flex: 1 }}>
           <ScrollView style={styles.container}>
             <View style={styles.headerWithBtn}>
-              <SectionHeader title={'Nadchodzące jazdy'}
-                             customTextStyles={styles.headerText}
-                             customUnderlineStyles={styles.underline}/>
+              <SectionHeader title={'Nadchodzące jazdy'} />
               { canManageEmployees(drivingSchool) &&
                   <ButtonText
                     customTextStyle={{ fontSize: Fonts.size.small }}
@@ -91,9 +89,7 @@ class Profile extends Component {
             { canManageEmployees(drivingSchool) &&
               <View>
                 <View style={styles.headerWithBtn}>
-                  <SectionHeader title={'Aktywności pracownikiem'}
-                                 customTextStyles={styles.headerText}
-                                 customUnderlineStyles={styles.underline}/>
+                  <SectionHeader title={'Aktywności pracownikiem'} />
                   <ButtonText
                     customTextStyle={{ fontSize: Fonts.size.small }}
                     icon={<Icon name={'edit'} size={16}
@@ -127,18 +123,7 @@ const styles = {
     backgroundColor: Colors.snow,
     alignItems: 'center',
     marginBottom: 5,
-  },
-  headerText: {
-    fontSize: Fonts.size.medium,
-    color: Colors.strongGrey,
-    fontWeight: '400',
-  },
-  underline: {
-    marginTop: 3,
-    width: 30,
-    borderColor: Colors.primaryWarm,
-    borderWidth: 1,
-  },
+  }
 };
 
 const mapStateToProps = state => ( {

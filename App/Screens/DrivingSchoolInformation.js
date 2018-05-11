@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements'
 import { Colors, Fonts } from '../Themes/index';
 import MapView, { Marker } from 'react-native-maps';
+import SectionHeader from '../Components/SectionHeader';
 
 class DrivingSchoolInformation extends Component {
   renderHeader = drivinShoolName => {
@@ -31,7 +32,7 @@ class DrivingSchoolInformation extends Component {
 
     return (
       <View style={styles.segment}>
-        <Text style={styles.subtitle}>o szkole</Text>
+        <SectionHeader title={'O szkole'}/>
         <Text style={styles.softBlack}>
           {drivinShoolAdditionalInformation}
         </Text>
@@ -42,7 +43,7 @@ class DrivingSchoolInformation extends Component {
   renderContactInformation = drivingSchool => {
     return (
       <View style={styles.segment}>
-        <Text style={styles.subtitle}>kontakt</Text>
+        <SectionHeader title={'Kontakt'}/>
         {this.renderEmails(drivingSchool.emails)}
         {this.renderPhoneNumbers(drivingSchool.phone_numbers)}
         {this.renderWebSiteLink(drivingSchool.website_link)}
@@ -53,7 +54,7 @@ class DrivingSchoolInformation extends Component {
   renderLocalization = drivingSchool => {
     return (
       <View style={styles.segment}>
-        <Text style={styles.subtitle}>lokalizacja</Text>
+        <SectionHeader title={'Lokalizacja'}/>
         <Text style={styles.localizationSegment}>{`${drivingSchool.country}, ${drivingSchool.city}`}</Text>
         <Text style={styles.localizationSegment}>{`ul. ${drivingSchool.street}, ${drivingSchool.zip_code}`}</Text>
         <MapView

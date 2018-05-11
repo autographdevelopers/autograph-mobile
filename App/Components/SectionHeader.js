@@ -23,13 +23,14 @@ const styles = {
   listHeader: {
     fontSize: Fonts.size.medium,
     fontFamily: Fonts.type.base,
-    color: Colors.softBlack,
+    color: Colors.strongGrey,
+    fontWeight: '400',
   },
   underline: {
     borderColor: Colors.primaryWarm,
     borderRadius: 10,
-    width: 20,
+    width: 30,
     borderWidth: 1,
-    marginTop: 1
+    marginTop: 2
   }
 };
