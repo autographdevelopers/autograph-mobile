@@ -5,7 +5,7 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import I18n from '../../I18n';
 import ActionButton from 'react-native-action-button';
-/** Custom modules */
+/** == Components ====================================== */
 import InfoBox from '../../Components/InfoBox';
 import SegmentsControl from '../../Components/SegmentsControl';
 import DefaultAvatar from '../../Components/DefaultAvatar';
@@ -14,21 +14,31 @@ import InvitationInformationTitle from '../../Components/InvitationInformationTi
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
-import { canManageStudents } from '../../Lib/AuthorizationHelpers';
+/** == HOCs ============================================ */
+import withRequiredData from '../../HOC/withRequiredData';
+/** == Constants ============================================ */
 import { FETCHING_STATUS } from '../../Lib/utils';
+import { MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
+/** == Action Creators ================================= */
 import { studentsScreenActionCreators } from '../../Redux/Views/StudentsScreenRedux';
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
 import { invitationActionCreators } from '../../Redux/Views/InvitationsRedux';
-import { MODALS_IDS, modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
-
+import { modalActionCreators } from '../../Redux/Views/Modals/ModalRedux';
+/** == Selectors ======================================= */
+import { getActiveStudents } from '../../Selectors/Students';
+import { getPendingStudents } from '../../Selectors/Students';
+import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
+/** == Utils ============================================ */
+import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
-import withRequiredData from '../../HOC/withRequiredData';
+
 
 /** Screen */
 class StudentsIndex extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       segmentIndex: 0,
       studentId: null
@@ -42,7 +52,7 @@ class StudentsIndex extends Component {
   };
 
   openConfirmationModal = (studentId) =>
-    this.setState({ studentId }, this.props.openDestroyInvitationModal)
+    this.setState({ studentId }, this.props.openDestroyInvitationModal);
 
   goToStudentProfile = (user, index) => () => {
     this.props.setCurrentStudent(user.id);
@@ -98,14 +108,18 @@ class StudentsIndex extends Component {
 
   render() {
     const {
-      status,
       pendingStudents,
       activeStudents,
-      navigation,
-      drivingSchool
+      navigation: { navigate },
+      isRefreshing,
+      drivingSchool,
+      invitationDestroyStatus,
+      resetInvitationFetchingStatus,
+      destroyInvitation,
+      refreshStudentsList
     } = this.props;
 
-    const { segmentIndex } = this.state;
+    const { segmentIndex, studentId } = this.state;
 
     const list = [
       { data: activeStudents,
@@ -142,20 +156,21 @@ class StudentsIndex extends Component {
               keyExtractor={(element, _) => `employee-cell-${element.id}`}
               refreshControl={
                 <RefreshControl
-                  onRefresh={this.props.refreshStudentsList}
-                  refreshing={this.props.isRefreshing}
+                  onRefresh={refreshStudentsList}
+                  refreshing={isRefreshing}
                   tintColor={Colors.primaryWarm}
                 />
               }
             />
           </List>
-          <ActionButton buttonColor={Colors.primaryWarm} onPress={()=>navigation.navigate('inviteStudent')} />
+          <ActionButton buttonColor={Colors.primaryWarm}
+                        onPress={() => navigate('inviteStudent')} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_STUDENT_INVITATION}
-            status={this.props.invitationDestroyStatus}
-            closeModalCallback={this.props.resetInvitationFetchingStatus}>
+            status={invitationDestroyStatus}
+            closeModalCallback={resetInvitationFetchingStatus}>
             <DestroyInvitationConfirmation
-              onPress={() => this.props.destroyInvitation({type: 'Student', user_id: this.state.studentId})}
+              onPress={() => destroyInvitation({type: 'Student', user_id: studentId})}
             />
           </ModalTemplate>
         </View>
@@ -165,24 +180,20 @@ class StudentsIndex extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingSchool: state.entities.drivingSchools.hashMap[state.support.context.currentDrivingSchoolID],
-  activeStudents: state.entities.students.activeIds.map( id => state.entities.students.active[id]),
-  pendingStudents: state.entities.students.pendingIds.map( id => state.entities.students.pending[id]),
+  drivingSchool: getCurrentDrivingSchool(state),
+  activeStudents: getActiveStudents(state),
+  pendingStudents: getPendingStudents(state),
   status: state.views.studentsScreen.status,
   isRefreshing: state.views.studentsScreen.refreshing,
   invitationDestroyStatus: state.views.invitations.status
 });
 
-const styles = {
-  listPlaceholder: {}
-};
-
 const mapDispatchToProps = dispatch => ({
   requestDataForView: () => dispatch(studentsScreenActionCreators.requestDataForView({})),
   refreshStudentsList: () => dispatch(studentsScreenActionCreators.refreshListRequest({})),
-  setCurrentStudent: (studentID) => dispatch(contextActionCreators.setCurrentStudent(studentID)),
+  setCurrentStudent: studentID => dispatch(contextActionCreators.setCurrentStudent(studentID)),
   openDestroyInvitationModal: () => dispatch(modalActionCreators.open(MODALS_IDS.DESTROY_STUDENT_INVITATION)),
-  destroyInvitation: (params) => dispatch(invitationActionCreators.destroyRequest(params)),
+  destroyInvitation: params => dispatch(invitationActionCreators.destroyRequest(params)),
   resetInvitationFetchingStatus: () =>
     dispatch(invitationActionCreators.changeStatus(FETCHING_STATUS.READY))
 });

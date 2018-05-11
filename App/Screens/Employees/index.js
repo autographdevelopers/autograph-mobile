@@ -33,6 +33,7 @@ import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
 
+
 /** Screen */
 class EmployeesIndex extends Component {
   constructor(props) {
