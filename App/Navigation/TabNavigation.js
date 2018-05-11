@@ -25,6 +25,13 @@ const employeeRoutesConfigs = {
       tabBarIcon: ({ tintColor }) => (<IconsOcticons size={25} name={'calendar'} color={tintColor}/> ),
     }
   },
+  activities: {
+    screen: withFluidLayout(ActivitiesScreen),
+    navigationOptions: {
+      tabBarLabel: I18n.t('activities'),
+      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
+    }
+  },
   employees: {
     screen: withFluidLayout(EmployeesScreen),
     navigationOptions: {
@@ -39,13 +46,6 @@ const employeeRoutesConfigs = {
       tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'graduation-cap'} color={tintColor}/> ),
     }
   },
-  activities: {
-    screen: withFluidLayout(ActivitiesScreen),
-    navigationOptions: {
-      tabBarLabel: I18n.t('activities'),
-      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
-    }
-  }
 };
 
 const ownerRoutesConfigs = {
@@ -56,6 +56,13 @@ const ownerRoutesConfigs = {
       tabBarIcon: ({ tintColor }) => (<IconsOcticons size={25} name={'calendar'} color={tintColor}/> ),
     }
   },
+  activities: {
+    screen: withFluidLayout(ActivitiesScreen),
+    navigationOptions: {
+      tabBarLabel: I18n.t('activities'),
+      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
+    }
+  },
   employees: {
     screen: withFluidLayout(EmployeesScreen),
     navigationOptions: {
@@ -68,13 +75,6 @@ const ownerRoutesConfigs = {
     navigationOptions: {
       tabBarLabel: I18n.t('students'),
       tabBarIcon: ({ tintColor }) => (<IconF size={25} name={'graduation-cap'} color={tintColor}/> ),
-    }
-  },
-  activities: {
-    screen: withFluidLayout(ActivitiesScreen),
-    navigationOptions: {
-      tabBarLabel: I18n.t('activities'),
-      tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
     }
   },
   settings: {
@@ -95,18 +95,18 @@ const studentRoutesConfigs = {
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'view-dashboard'} color={tintColor}/> ),
     }
   },
-  employees: {
-    screen: EmployeesSummaryAgendaScreen,
-    navigationOptions: {
-      tabBarLabel: I18n.t('enroll'),
-      tabBarIcon: ({ tintColor }) => (<IconFeather size={25} name={'edit'} color={tintColor}/> ),
-    }
-  },
   activities: {
     screen: withFluidLayout(ActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
+    }
+  },
+  employees: {
+    screen: EmployeesSummaryAgendaScreen,
+    navigationOptions: {
+      tabBarLabel: I18n.t('enroll'),
+      tabBarIcon: ({ tintColor }) => (<IconFeather size={25} name={'edit'} color={tintColor}/> ),
     }
   },
   drivingSchoolInformation: {
