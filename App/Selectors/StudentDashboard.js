@@ -2,7 +2,7 @@ import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 import moment from 'moment/moment';
 
 export const getStudentsDashboardRequestParams = state => {
-  const coursePayload =  { studentId: state.access.currentUser };
+  const coursePayload =  { studentId: state.access.currentUser.id };
   const lessonsPayload = { params: { student_id: state.access.currentUser }};
 
   return {
