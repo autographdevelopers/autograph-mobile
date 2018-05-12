@@ -11,6 +11,7 @@ import { employeeProfileScreenReducer } from './EmployeeProfileRedux';
 import { studentProfileScreenReducer } from './StudentProfileRedux';
 import { utilsReducer } from './Utils/index';
 import { studentDashboardScreenReducer } from './StudentDashboardRedux';
+import { drivingLessonsScreenReducer } from './DrivingLessonsList';
 
 export const viewsReducer = combineReducers({
   employeeDailyAgenda: employeeDailyAgendaReducer,
@@ -18,6 +19,7 @@ export const viewsReducer = combineReducers({
   employeeProfileScreen: employeeProfileScreenReducer,
   studentProfileScreen: studentProfileScreenReducer,
   studentDashboardScreen: studentDashboardScreenReducer,
+  drivingLessonsScreen: drivingLessonsScreenReducer,
   studentsScreen: studentsScreenReducer,
   employeesScreen: employeesScreenReducer,
   invitations: invitationsReducer,

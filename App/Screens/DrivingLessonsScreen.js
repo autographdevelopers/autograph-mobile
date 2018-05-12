@@ -18,7 +18,8 @@ import { Fonts, Colors } from '../Themes/';
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import ModalTemplate from '../Components/ModalTemplate';
-import SpinnerView from '../Components/SpinnerView';
+import { drivingLessonsScreenActionCreators } from '../Redux/Views/DrivingLessonsList';
+import withRequiredData from '../HOC/withRequiredData';
 
 /** Screen */
 class DrivingLessonsScreen extends Component {
@@ -32,12 +33,12 @@ class DrivingLessonsScreen extends Component {
     }
   }
 
-  componentWillMount() {
-    this.props.fetchDrivingLessons({
-      student_id: this.props.navigation.state.params.studentId,
-      employee_id: this.props.navigation.state.params.employeeId,
-    })
-  }
+  // componentWillMount() {
+  //   this.props.fetchDrivingLessons({
+  //     student_id: this.props.navigation.state.params.studentId,
+  //     employee_id: this.props.navigation.state.params.employeeId,
+  //   })
+  // }
 
   fromDateFilter = (drivingLesson, fromDate) =>
     !!!fromDate || moment(fromDate).startOf('day').isBefore(drivingLesson.start_time)
@@ -51,29 +52,25 @@ class DrivingLessonsScreen extends Component {
   onApplyFilters = (type, fromDate, toDate) =>
     this.setState({type, fromDate, toDate}, this.props.closeModal)
 
-  filteredDrivingLessons = (drivingLessons) => {
+  filteredDrivingLessons = () => {
     const { type, fromDate, toDate } = this.state;
+    const { drivingLessons, lessonsIds } = this.props;
 
-    return drivingLessons.allIDs.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
+    return lessonsIds.map(id => drivingLessons.hashMap[id]).filter(drivingLesson =>
       this.fromDateFilter(drivingLesson, fromDate) &&
         this.toDateFilter(drivingLesson, toDate) &&
           this.typeFilter(drivingLesson, type)
     )
-  }
+  };
 
   render() {
-    const { drivingLessons } = this.props;
-
     return(
       <View style={{flex: 1}}>
-        { drivingLessons.status === FETCHING_STATUS.FETCHING ? <SpinnerView /> :
-          <DrivingLessonsList
-            drivingLessons={this.filteredDrivingLessons(drivingLessons)}
-            userContext={'employee'}
-            fetchingStatus={drivingLessons.status}
-            scrollEnabled={true}
-          />
-        }
+        <DrivingLessonsList
+          drivingLessons={this.filteredDrivingLessons()}
+          userContext={'employee'}
+          scrollEnabled={true}
+        />
 
         <ActionButton onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)}
                       renderIcon={()=><Icon name="filter" size={20} color={Colors.primaryWarm} />}
@@ -97,13 +94,31 @@ class DrivingLessonsScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  drivingLessons: state.entities.drivingLessons
+  drivingLessons: state.entities.drivingLessons,
+  lessonsIds: state.views.drivingLessonsScreen.ids,
+  status: state.views.drivingLessonsScreen.status
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDrivingLessons: (params) => dispatch(drivingLessonActionCreators.indexRequest(params, AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
-  openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
-  closeModal: () => dispatch(modalActionCreators.close())
-});
+const mapDispatchToProps = (dispatch, otherProps) => {
+  const payloads = {
+    lessonsParams: otherProps.navigation.state.params.lessonsParams
+  };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrivingLessonsScreen)
+  return {
+    requestDataForView: () => dispatch(
+      drivingLessonsScreenActionCreators.requestDataForView({payloads})),
+    fetchDrivingLessons: (params) => dispatch(
+      drivingLessonActionCreators.indexRequest(params,
+        AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
+    openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
+    closeModal: () => dispatch(modalActionCreators.close())
+  }
+};
+
+const withAsyncLoading = withRequiredData(
+  DrivingLessonsScreen,
+  'status',
+  'requestDataForView',
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)

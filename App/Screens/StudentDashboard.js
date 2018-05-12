@@ -25,6 +25,7 @@ class StudentDashboard extends Component {
       drivingLessons,
       drivingCourse,
       upcomingDrivingLessons,
+      navigation: { navigate },
       user
     } = this.props;
 
@@ -43,7 +44,7 @@ class StudentDashboard extends Component {
             <SectionHeader title={'Nadchodzące jazdy'} />
 
             <ButtonText
-              onPress={() => this.props.navigation.navigate('drivingLessons', {studentId: user.id})}
+              onPress={() => navigate('drivingLessons', { lessonsParams: { studentId: user.id }})}
               customTextStyle={{fontSize: Fonts.size.small}}>
               Pokaż wszystkie
             </ButtonText>

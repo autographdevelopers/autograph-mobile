@@ -30,8 +30,11 @@ import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
 
 class Profile extends Component {
-  componentWillUnmount = () =>
+  componentWillUnmount = () => {
+    console.tron.log('Unmouneting students profile')
     this.props.setCurrentStudent(null);
+  }
+
 
   render() {
     const {
@@ -83,7 +86,7 @@ class Profile extends Component {
               <SectionHeader title={'Nadchodzące jazdy'} />
 
               <ButtonText
-                onPress={() => navigate('drivingLessons', { studentId: student.id })}
+                onPress={() => navigate('drivingLessons', { lessonsParams: { studentId: student.id } })}
                 customTextStyle={{fontSize: Fonts.size.small}}>
                 Pokaż wszystkie
               </ButtonText>
