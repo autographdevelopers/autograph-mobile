@@ -7,13 +7,15 @@ const INITIAL_STATE = {
   ids: [],
   nextPage: 1,
   endReached: false,
-  fetchingMore: false // TODO add handlers
+  fetchingMore: false
 };
 
 const { Types, Creators } = createActions({
   requestDataForView: { payloads: {} },
+  requestMoreActivities: ['params'],
   saveActivities: ['activities'],
-  changeStatus: ['status']
+  changeStatus: ['status'],
+  setFetchingMoreFlag: ['value']
 }, { prefix: 'MY_ACTIVITIES_SCREEN/' });
 
 export const myActivitiesScreenActionCreators = Creators;
@@ -35,7 +37,15 @@ const saveActivitiesIdsHandler = (state, { activities }) => {
   return newState;
 };
 
+const setFetchingMoreFlagHandler = (state, { value }) => {
+  const newState =  _.cloneDeep(state);
+  newState.fetchingMore = value;
+
+  return newState;
+};
+
 export const myActivitiesScreenReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: changeStatusHandler,
   [Types.SAVE_ACTIVITIES]: saveActivitiesIdsHandler,
+  [Types.SET_FETCHING_MORE_FLAG]: setFetchingMoreFlagHandler,
 });

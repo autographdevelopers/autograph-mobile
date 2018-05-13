@@ -1,5 +1,4 @@
 import { FETCHING_STATUS } from '../Lib/utils';
-import { ACTIVITY_DISPLAY_TYPE } from '../Lib/ActivitiesHelper';
 import { call, put } from 'redux-saga/effects';
 import { activityActionCreators } from '../Redux/Entities/ActivityRedux';
 

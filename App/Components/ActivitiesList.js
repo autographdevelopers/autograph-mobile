@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
-import moment from 'moment/moment';
-
-import { FETCHING_STATUS } from '../Lib/utils';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  ActivityIndicator
+} from 'react-native';
 import { Fonts, Colors } from '../Themes/index';
 import ActivityListItem from './ActivitiesListItem';
 
@@ -10,15 +13,25 @@ export default ActivitiesList = ({
                                    scrollEnabled,
                                    activities,
                                    fetchingStatus,
+                                   fetchingMore = false,
                                    customListStyle = {},
                                    customListWrapperStyle = {},
                                    onEndReached = () => {} }) => {
 
+
+  const renderFooter = () => {
+    if(fetchingMore) {
+      return <ActivityIndicator color={Colors.primaryWarm} size={'small'} style={{alignSelf: 'center', marginVertical: 10}} />
+    } else {
+      return null;
+    }
+  };
+
   return (
     <View style={customListWrapperStyle}>
       <FlatList
-        scrollEnabled={scrollEnabled}
         contentContainerStyle={customListStyle}
+        ListFooterComponent={renderFooter()}
         data={activities}
         renderItem={({item, index}) => (
           <ActivityListItem activity={item} onPress={() => {}}/>
@@ -31,7 +44,7 @@ export default ActivitiesList = ({
           </Text>
         }
         onEndReached={onEndReached}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={0.8}
       />
     </View>
   )

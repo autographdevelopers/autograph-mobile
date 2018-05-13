@@ -41,6 +41,7 @@ import { requestDataForStudentsScreen } from './PerView/StudentsIndexSaga';
 import { requestDataForEmployeeProfileScreenSaga } from './PerView/EmployeeProfileSaga';
 import { requestDataForStudentProfileScreenSaga } from './PerView/StudentProfileSaga';
 import { requestDataForMyActivitesScreen } from './PerView/MyActivitiesScreenSaga';
+import { requestMoreActivities } from './PerView/MyActivitiesScreenSaga';
 import { displayToastMessageSaga } from './ToastSaga';
 
 import {
@@ -210,6 +211,7 @@ export default function* root() {
     /** Driving Lessons Screen */
     takeLatest(drivingLessonsScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForDrivingLessonsListScreenSaga, api),
     /** My Activities Screen */
-    takeLatest(myActivitiesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForMyActivitesScreen, api)
+    takeLatest(myActivitiesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForMyActivitesScreen, api),
+    takeLatest(myActivitiesScreenActionTypes.REQUEST_MORE_ACTIVITIES, requestMoreActivities, api)
   ]);
 }

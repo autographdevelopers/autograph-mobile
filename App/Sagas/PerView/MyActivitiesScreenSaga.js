@@ -14,16 +14,9 @@ export function* requestDataForMyActivitesScreen(api, action) {
   }
 }
 
-// export function* myActivities(api, action) {
-//   yield put(activityActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
-//
-//   const response = yield call(api.activities.myActivities, action.params);
-//
-//   if (response.ok) {
-//     yield put(activityActionCreators.saveCollection(response.data, ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES));
-//     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.READY));
-//     return response.data;
-//   } else {
-//     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.ERROR));
-//   }
-// }
+export function* requestMoreActivities(api, action) {
+    yield put(myActivitiesScreenActionCreators.setFetchingMoreFlag(true));
+    const activities = yield call(myActivities, api, action);
+    yield put(myActivitiesScreenActionCreators.saveActivities(activities));
+    yield put(myActivitiesScreenActionCreators.setFetchingMoreFlag(false));
+}

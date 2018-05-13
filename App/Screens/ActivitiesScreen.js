@@ -9,23 +9,23 @@ import ActivitiesList from '../Components/ActivitiesList';
 import withRequiredData from '../HOC/withRequiredData';
 import { getMyActivites } from '../Selectors/Activities';
 import { myActivitiesScreenActionCreators } from '../Redux/Views/MyActivitiesScreenRedux';
+import { Colors } from '../Themes';
 
 class ActivitiesScreen extends Component {
   loadMore = () => {
     if (this.props.endReached) return;
 
-   this.props.fetchActivities({ page: this.props.nextPage });
+   this.props.requestMoreActivities({ page: this.props.nextPage });
   };
 
   render() {
-    const { activitiesData, activitiesFetchingStatus } = this.props;
+    const { activitiesData, fetchingMore } = this.props;
 
     return (
       <View style={{flex: 1}}>
         <ActivitiesList
           activities={activitiesData}
-          fetchingStatus={activitiesFetchingStatus}
-          scrollEnabled={true}
+          fetchingMore={fetchingMore}
           onEndReached={this.loadMore}
           customListStyle={[listProjectorStyles.containerStyle, styles.customListStyle]}
           customListWrapperStyle={styles.customListWrapperStyle}
@@ -49,13 +49,13 @@ const mapStateToProps = state => ({
   activitiesData: getMyActivites(state),
   status: state.views.myActivitiesScreen.status,
   endReached: state.views.myActivitiesScreen.endReached,
-  activitiesFetchingStatus: state.entities.activities.status,
+  fetchingMore: state.views.myActivitiesScreen.fetchingMore,
   nextPage: state.views.myActivitiesScreen.nextPage
 });
 
 const mapDispatchToProps = dispatch => ({
   requestData: () => dispatch(myActivitiesScreenActionCreators.requestDataForView({ payloads: { activitiesPayload: { params: { page: 1 } }}})),
-  fetchActivities: (params) => dispatch(activityActionCreators.myActivitiesRequest(params))
+  requestMoreActivities: params => dispatch(myActivitiesScreenActionCreators.requestMoreActivities(params))
 });
 
 const withAsyncLoading = withRequiredData(
