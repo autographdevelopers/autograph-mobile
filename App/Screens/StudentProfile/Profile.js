@@ -18,17 +18,21 @@ import ChangeAvailableHours from '../../Components/ChangeAvailableHours'
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import ButtonText from '../../Components/ButtonText';
 import SectionHeader from '../../Components/SectionHeader';
+import ActivitiesList from '../../Components/ActivitiesList';
 /** == Selectors ======================================= */
 import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getActionsPayloadsForSaga } from '../../Selectors/StudentProfileScreen';
 import { getAllStudentsLessons } from '../../Selectors/DrivingLesson';
 import { getStudentsUpcomingLessons } from '../../Selectors/DrivingLesson';
 import { getCurrentStudent } from '../../Selectors/Student';
+import { getStudentProfileActivities } from '../../Selectors/Activities';
 /** == HOCs ======================================= */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Utils =========================================== */
 import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
+
+const VISIBLE_ACTIVITIES_NO = 3;
 
 class Profile extends Component {
   render() {
@@ -97,7 +101,7 @@ class Profile extends Component {
             { canManageStudents(drivingSchool) &&
             <View>
               <View style={styles.headerWithBtn}>
-                <SectionHeader title={'Aktywności pracownikiem'} />
+                <SectionHeader title={'Ostatnie aktywności kursanta'} />
                 <ButtonText
                   customTextStyle={{ fontSize: Fonts.size.small }}
                   icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
@@ -105,10 +109,7 @@ class Profile extends Component {
                 </ButtonText>
               </View>
               <View style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
-                <ActivitiesList
-                  activities={activities.userActivitiesFeedIds.map(id => activities.data[id])}
-                  fetchingStatus={activities.status}
-                  scrollEnabled={false} />
+                <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)}/>
               </View>
             </View>
             }
@@ -142,7 +143,7 @@ const mapStateToProps = state => ({
   allDrivingLessons: getAllStudentsLessons(state),
   student: getCurrentStudent(state),
   drivingSchool: getCurrentDrivingSchool(state),
-  activities: state.entities.activities,
+  activities: getStudentProfileActivities(state),
   status: state.views.studentProfileScreen.status,
   upcomingDrivingLessons: getStudentsUpcomingLessons(state),
   requestDataArguments: getActionsPayloadsForSaga(state)

@@ -5,3 +5,6 @@ export const getMyActivites = state =>
 
 export const getEmployeeProfileActivities = state =>
   state.views.employeeProfileScreen.activitiesIds.map(toObject(state));
+
+export const getStudentProfileActivities = state =>
+  state.views.studentProfileScreen.activitiesIds.map(toObject(state));

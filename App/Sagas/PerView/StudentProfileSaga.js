@@ -14,6 +14,7 @@ export function* requestDataForStudentProfileScreenSaga(api, action) {
       drivingCourse: call(showDrivingCourse, api, action.payloads.drivingCoursePayload)
     });
     yield put(studentProfileActionCreators.saveLessons(drivingLessons));
+    yield put(studentProfileActionCreators.saveActivities(activities));
     yield put(studentProfileActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } catch(error) {
     yield put(studentProfileActionCreators.changeStatus(FETCHING_STATUS.ERROR));
