@@ -1,12 +1,17 @@
+/** == Built-in modules ====================================== */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-
-import listProjectorStyles from '../Styles/ListProjector';
+import { View } from 'react-native';
+/** == Components ====================================== */
 import ActivitiesList from '../Components/ActivitiesList';
+/** == HOCs ====================================== */
 import withRequiredData from '../HOC/withRequiredData';
+/** == Action Creators ====================================== */
 import { activitiesFullListScreenScreenActionCreators } from '../Redux/Views/ActivitiesFullListScreenRedux';
+/** == Selectors ====================================== */
 import { getFullListActivities } from '../Selectors/Activities';
+/** == Styles ====================================== */
+import listProjectorStyles from '../Styles/ListProjector';
 
 class ActivitiesFullListScreen extends Component {
   componentWillUnmount() {
@@ -16,7 +21,7 @@ class ActivitiesFullListScreen extends Component {
   loadMore = () => {
     if (this.props.endReached) return;
 
-   this.props.requestMoreActivities({ page: this.props.nextPage });
+    this.props.requestMoreActivities({ page: this.props.nextPage });
   };
 
   render() {
@@ -36,14 +41,13 @@ class ActivitiesFullListScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   customListStyle: {
-    // margin: 15
   },
   customListWrapperStyle: {
     flex: 1
   }
-});
+};
 
 
 const mapStateToProps = state => ({

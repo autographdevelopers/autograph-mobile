@@ -1,20 +1,25 @@
-/** Built-in modules */
+/** == Built-in modules ====================================== */
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment/moment';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Feather';
-/** Custom modules */
-import { MODALS_IDS, modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
-import { DRIVING_LESSON_STATUSES, } from '../Lib/DrivingLessonHelpers';
-import { Fonts, Colors } from '../Themes/';
-
+/** == Components ====================================== */
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import ModalTemplate from '../Components/ModalTemplate';
+/** == Action Creators ====================================== */
 import { drivingLessonsScreenActionCreators } from '../Redux/Views/DrivingLessonsScreenRedux';
+import { modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
+/** == Constants ====================================== */
+import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
+import { DRIVING_LESSON_STATUSES, } from '../Lib/DrivingLessonHelpers';
+/** == HOCs  ====================================== */
 import withRequiredData from '../HOC/withRequiredData';
+/** == Styles ====================================== */
+import { Fonts, Colors } from '../Themes/';
+
 
 /** Screen */
 class DrivingLessonsFullListScreen extends Component {
