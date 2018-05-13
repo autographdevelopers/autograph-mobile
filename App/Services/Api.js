@@ -1,5 +1,7 @@
 import { store } from '../Containers/App';
 import { sessionActionCreators } from '../Redux/Access/SessionRedux';
+import { modalActionCreators, MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
+
 const queryString = require('qs');
 
 import apisauce, {
@@ -13,6 +15,12 @@ import apisauce, {
 const responseHook = response => {
   const sessionMetadata = {};
   // QUESTION: why response doesnt not return access token when validation on server falied?
+
+  if(response.status === 401) {
+    store.dispatch(
+      modalActionCreators.open(MODALS_IDS.UNAUTHORIZED_ACTION_DETECTED));
+  }
+
   if (response.headers && response.headers['access-token'] && response.headers['token-type'] && response.headers['client'] && response.headers['expiry'] && response.headers['uid']) {
     sessionMetadata['accessToken'] = response.headers['access-token'];
     sessionMetadata['tokenType'] = response.headers['token-type'];

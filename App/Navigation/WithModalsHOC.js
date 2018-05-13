@@ -5,6 +5,7 @@ import ModalTemplate from '../Components/ModalTemplate';
 import { MODALS_IDS } from '../Redux/Views/Modals/ModalRedux';
 import CancelDrivingLesson from '../Components/CancelDrivingLesson';
 import BookLessonWidget from '../Components/BookLessonWidget';
+import { UnauthorizedActionWidget } from '../Components/UnauthorizedActionModal';
 
 export const withModals = (TabNav) => {
   class TabFlowWithModals extends Component {
@@ -15,7 +16,8 @@ export const withModals = (TabNav) => {
     render() {
       const {
         drivingLessonCancelStatus,
-        drivingLessonBookStatus
+        drivingLessonBookStatus,
+        navigation
       } = this.props;
 
       return (
@@ -32,6 +34,13 @@ export const withModals = (TabNav) => {
             status={drivingLessonBookStatus}
           >
             <BookLessonWidget/>
+          </ModalTemplate>
+
+          <ModalTemplate
+            modalID={MODALS_IDS.UNAUTHORIZED_ACTION_DETECTED}
+            showCross={false}
+          >
+            <UnauthorizedActionWidget navigation={navigation} />
           </ModalTemplate>
 
           <TabNav navigation={this.props.navigation}/>

@@ -25,9 +25,9 @@ const CloseModalRow = ({ onPress }) => (
   </View>
 );
 
-const ModalLayout = ({children, customContainerStyle, closeWithCallback}) => (
+const ModalLayout = ({children, customContainerStyle, closeWithCallback, showCross }) => (
   <View style={[styles.container, customContainerStyle]}>
-    <CloseModalRow onPress={closeWithCallback}/>
+    { showCross && <CloseModalRow onPress={closeWithCallback}/> }
     {children}
   </View>
 );
@@ -71,7 +71,8 @@ const ModalTemplate = props => {
     modalProps,
     closeModal,
     modalTitle,
-    modalMsg
+    modalMsg,
+    showCross=true
   } = props;
 
   const closeWithCallback = () => {
@@ -83,7 +84,8 @@ const ModalTemplate = props => {
     switch (status) {
       case FETCHING_STATUS.READY:
         return (
-          <ModalLayout customContainerStyle={customContainerStyle} closeWithCallback={closeWithCallback}>
+          <ModalLayout showCross={showCross} customContainerStyle={customContainerStyle}
+                       closeWithCallback={closeWithCallback}>
               { (modalTitle || modalMsg) &&
                 <View style={styles.textArea}>
                   { modalTitle && <Text style={styles.msgTitle}>{modalTitle}</Text> }

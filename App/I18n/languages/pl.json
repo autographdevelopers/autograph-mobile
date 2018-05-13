@@ -2,6 +2,7 @@
   "brand_name": "AutoGraph",
   "brand_description": "Profesjonalne narzędzie do zarządzania szkołami jazdy.",
   "login": "ZALOGUJ SIĘ",
+  "login_again": "Zaloguj ponownie",
   "register": "ZAREJESTRUJ SIĘ",
   "have_account": "Masz już konto?",
   "not_have_account": "Nie masz jeszcze konta?",
@@ -83,5 +84,7 @@
       "description": "Wygląda na to, że nikt nie jeździ tego dnia, wybierz na kalendarzu inny dzień."
     }
   },
-  "invalid_gap_around_selection": "Nie możesz zostawiać przerw, które nie są wielkrotnosciami minimalnej długości lekcji."
+  "invalid_gap_around_selection": "Nie możesz zostawiać przerw, które nie są wielkrotnosciami minimalnej długości lekcji.",
+  "unauthorized_alert_message":  "Najprawdopodbniej Twoje uprawnienia zostały zmienione lub aplikacja z innego powodu wymaga ponownego zalogowania.",
+  "unauthorized": "Brak autoryzacji"
 }
