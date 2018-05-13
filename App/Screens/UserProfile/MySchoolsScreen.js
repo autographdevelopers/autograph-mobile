@@ -58,12 +58,13 @@ class MySchoolsScreen extends Component {
     const {
       user,
       navigation: { dispatch },
+      saveDrivingSchool,
       setCurrentSchoolContext
     } = this.props;
 
     // Set school context
     setCurrentSchoolContext(school.id);
-
+    saveDrivingSchool(school);
 
     // Navigate to proper tabs
     let userType;
@@ -216,7 +217,8 @@ const mapStateToProps = state => {
   }
 };
 
-const mapDispatchToProps = dispatch => ( {
+const mapDispatchToProps = dispatch => ({
+  saveDrivingSchool: school => dispatch(drivingSchoolActionCreators.saveSingle(school)),
   fetchSchoolsRequest: () => dispatch(drivingSchoolActionCreators.indexRequest()),
   setCurrentSchoolContext: id => dispatch(contextActionCreators.setCurrentDrivingSchool(id)),
   acceptInvitationRequest: id => dispatch(invitationActionCreators.acceptRequest(id)),

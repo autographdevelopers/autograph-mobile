@@ -21,10 +21,10 @@ export function* requestDataForSummaryAgendaScreenSaga(api, action) {
   try {
     yield put(employeesSummaryAgendaActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
     yield all([
-      call(employeesIndex, api, action.payloads.employeesPayload || {} ),
-      call(studentsIndex, api, action.payloads.studentsPayload || {} ),
-      call(slotsIndex, api, action.payloads.slotsPayload || {} ),
-      call(scheduleSettingsShow, api, action.payloads.scheduleSettingsPayload || {} ),
+      call(employeesIndex, api, action.payloads.employeesPayload || {}),
+      call(studentsIndex, api, action.payloads.studentsPayload || {}),
+      call(slotsIndex, api, action.payloads.slotsPayload || {}),
+      call(scheduleSettingsShow, api, action.payloads.scheduleSettingsPayload || {}),
     ]);
     yield put(employeesSummaryAgendaActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } catch(error) {

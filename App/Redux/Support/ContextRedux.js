@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   setCurrentStudent: ['currentStudentID'],
 });
 
-export const contextTypes = Types;
+export const contextActionTypes = Types;
 export const contextActionCreators = Creators;
 
 /* ------------- Initial State ------------- */

@@ -62,6 +62,7 @@ export function* show(api, action) {
   if (response.ok) {
     yield put(drivingSchoolActionCreators.saveSingle(response.data)); // add in redux
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
+    return response.data
   } else {
     yield put(drivingSchoolActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
