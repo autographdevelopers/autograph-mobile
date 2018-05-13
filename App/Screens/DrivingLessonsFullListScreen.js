@@ -97,7 +97,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch, otherProps) => {
   const payloads = {
-    lessonsParams: otherProps.navigation.state.params.lessonsParams
+    lessonsParams: { params: otherProps.navigation.state.params.lessonsParams }
   };
 
   return {
@@ -114,4 +114,4 @@ const withAsyncLoading = withRequiredData(
   'requestDataForView',
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)
+export default  connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)

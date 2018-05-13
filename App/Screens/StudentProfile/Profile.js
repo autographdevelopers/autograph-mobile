@@ -84,7 +84,7 @@ class Profile extends Component {
             <View style={styles.headerWithBtn}>
               <SectionHeader title={'Nadchodzące jazdy'} />
               <ButtonText
-                onPress={() => navigate('drivingLessons', { lessonsParams: { studentId: student.id } })}
+                onPress={() => navigate('drivingLessons', { lessonsParams: { student_id: student.id } })}
                 customTextStyle={{fontSize: Fonts.size.small}}>
                 Pokaż wszystkie
               </ButtonText>
