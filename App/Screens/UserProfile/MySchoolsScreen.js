@@ -68,7 +68,9 @@ class MySchoolsScreen extends Component {
     /** if we are already in the context of this school this means
      *  that it is enough to pop this screen to go back to school tabs navigator
      *  */
-    if(currentDrivingSchool && currentDrivingSchool.id === school.id) {
+    const isCurrent = currentDrivingSchool && currentDrivingSchool.id === school.id;
+
+    if(isCurrent) {
       goBack();
       return;
     }
@@ -107,10 +109,14 @@ class MySchoolsScreen extends Component {
   };
 
   renderListItem = ({item}) => {
+    const { currentDrivingSchool } = this.props;
+    const isCurrent = currentDrivingSchool && currentDrivingSchool.id === item.id;
+
     if (item.sectionPlaceholder) {
       return <InfoBox description={item.sectionPlaceholder}   />
     } else {
       return <DrivingSchoolCell drivingSchool={item}
+                                current={isCurrent}
                                 acceptInvitationRequest={this.props.acceptInvitationRequest}
                                 rejectInvitationRequest={this.props.rejectInvitationRequest}
                                 navigateToSchool={this.navigateToSchoolContext}

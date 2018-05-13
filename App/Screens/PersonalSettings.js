@@ -66,6 +66,7 @@ class PersonalSettings extends Component {
     return(
       <Layout scroll={false}>
         <SectionList
+          showsVerticalScrollIndicator={false}
           sections={sections}
           keyExtractor={(s, index) => `info-${index}`}
           renderSectionHeader={this.renderSectionHeader}

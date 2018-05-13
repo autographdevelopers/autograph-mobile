@@ -9,7 +9,12 @@ import {
   isDrivingSchoolRelationPending
 } from '../Lib/DrivingSchoolHelpers';
 
-export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, rejectInvitationRequest, navigateToSchool, openActivateSchoolModal }) => {
+export default DrivingSchoolCell = ({ drivingSchool,
+                                      acceptInvitationRequest,
+                                      rejectInvitationRequest,
+                                      navigateToSchool,
+                                      openActivateSchoolModal,
+                                      current = false }) => {
 
   renderInvitationButtons = () => {
     if (isDrivingSchoolRelationPending(drivingSchool))
@@ -27,7 +32,7 @@ export default DrivingSchoolCell = ({ drivingSchool, acceptInvitationRequest, re
 
   renderCellAction = () => {
     if (isDrivingSchoolRelationActive(drivingSchool))
-      return <Icon name={'chevron-right'} size={30} color={Colors.primaryWarm}/>
+      return <Icon name={'chevron-right'} size={30} color={current ? Colors.primaryWarm : Colors.strongGrey}/>
     else if (isDrivingSchoolAwaitingActivation(drivingSchool))
       return <TouchableOpacity onPress={() => openActivateSchoolModal(drivingSchool.id)}>
         <Text style={{color: Colors.primaryWarm}}>Aktywuj</Text>
