@@ -21,12 +21,15 @@ import { getActionsPayloadsForSaga } from '../../Selectors/EmployeeProfile';
 import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getCurrentEmployee } from '../../Selectors/Employees';
 import { getEmployeeUpcomingLessons } from '../../Selectors/DrivingLesson';
+import { getEmployeeProfileActivities } from '../../Selectors/Activities';
 /** == HOCs ======================================= */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Utils =========================================== */
 import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
 
+
+const VISIBLE_ACTIVITIES_NO = 3;
 
 class Profile extends Component {
   goToCalendar = () => {
@@ -79,7 +82,7 @@ class Profile extends Component {
             { canManageEmployees(drivingSchool) &&
               <View>
                 <View style={styles.headerWithBtn}>
-                  <SectionHeader title={'Aktywności pracownikiem'} />
+                  <SectionHeader title={'Ostatnie aktywności'} />
                   <ButtonText
                     customTextStyle={{ fontSize: Fonts.size.small }}
                     icon={<Icon name={'edit'} size={16}
@@ -89,11 +92,7 @@ class Profile extends Component {
                 </View>
                 <View
                   style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
-                  <ActivitiesList
-                    activities={activities.userActivitiesFeedIds.map(
-                      id => activities.data[id])}
-                    fetchingStatus={activities.status}
-                    scrollEnabled={false}/>
+                  <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)} />
                 </View>
               </View>
             }
@@ -116,11 +115,11 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => ( {
+const mapStateToProps = state => ({
   employee: getCurrentEmployee(state),
   lessons: getEmployeeUpcomingLessons(state),
   drivingSchool: getCurrentDrivingSchool(state),
-  activities: state.entities.activities,
+  activities: getEmployeeProfileActivities(state),
   status: state.views.employeeProfileScreen.status,
   requestDataParams: getActionsPayloadsForSaga(state),
 });

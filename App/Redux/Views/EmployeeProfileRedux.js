@@ -4,13 +4,15 @@ import _ from  'lodash';
 
 const INITIAL_STATE = {
   status: FETCHING_STATUS.READY,
-  lessonsIds: []
+  lessonsIds: [],
+  activitiesIds: []
 };
 
 const { Types, Creators } = createActions({
   requestDataForView: { payloads: {} },
   changeStatus: ['status'],
   saveLessons: ['lessons'],
+  saveActivities: ['activities'],
 }, { prefix: 'EMPLOYEE_PROFILE_SCREEN/' });
 
 export const employeeProfileActionCreators = Creators;
@@ -26,7 +28,15 @@ const saveLessonsHandler = (state, { lessons }) => {
   return newState;
 };
 
+const saveActivitiesHandler = (state, { activities }) => {
+  const newState = _.cloneDeep(state);
+  newState.activitiesIds = activities.map(a => a.id);
+
+  return newState;
+};
+
 export const employeeProfileScreenReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: changeStatusHandler,
-  [Types.SAVE_LESSONS]: saveLessonsHandler
+  [Types.SAVE_LESSONS]: saveLessonsHandler,
+  [Types.SAVE_ACTIVITIES]: saveActivitiesHandler
 });
