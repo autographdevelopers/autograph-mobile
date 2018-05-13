@@ -27,7 +27,7 @@ import { employeeProfileActionTypes } from '../Redux/Views/EmployeeProfileRedux'
 import { studentProfileActionTypes } from '../Redux/Views/StudentProfileRedux';
 import { studentDashboardActionTypes } from '../Redux/Views/StudentDashboardRedux';
 import { drivingLessonsScreenActionTypes } from '../Redux/Views/DrivingLessonsScreenRedux';
-
+import { myActivitiesScreenActionTypes } from '../Redux/Views/MyActivitiesScreenRedux';
 /* ------------- Sagas ------------- */
 
 import { requestDataForSummaryAgendaScreenSaga } from './PerView/EmployeesSummaryAgendaSaga';
@@ -40,6 +40,7 @@ import { refreshStudentsList } from './PerView/StudentsIndexSaga';
 import { requestDataForStudentsScreen } from './PerView/StudentsIndexSaga';
 import { requestDataForEmployeeProfileScreenSaga } from './PerView/EmployeeProfileSaga';
 import { requestDataForStudentProfileScreenSaga } from './PerView/StudentProfileSaga';
+import { requestDataForMyActivitesScreen } from './PerView/MyActivitiesScreenSaga';
 import { displayToastMessageSaga } from './ToastSaga';
 
 import {
@@ -208,5 +209,7 @@ export default function* root() {
     takeLatest(studentDashboardActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForStudentDashboardScreenSaga, api),
     /** Driving Lessons Screen */
     takeLatest(drivingLessonsScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForDrivingLessonsListScreenSaga, api),
+    /** My Activities Screen */
+    takeLatest(myActivitiesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForMyActivitesScreen, api)
   ]);
 }

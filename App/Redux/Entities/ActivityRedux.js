@@ -38,20 +38,20 @@ export const saveCollectionHandler = (state, { activities, activityDisplayType }
     newState.data[activity.id] = activity
   );
 
-  switch(activityDisplayType) {
-    case ACTIVITY_DISPLAY_TYPE.ACTIVITIES_LIST:
-      newState.activitiesListIds = activities.map(s => s.id);
-      newState.activitiesListEndReached = !activities_length;
-      break;
-    case ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED:
-      newState.currentUserActivitiesFeedIds = activities.map(s => s.id);
-      newState.currentUserActivitiesFeedEndReached = !activities_length;
-      break;
-    case ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES:
-      newState.myActivitiesIds = _.uniq(_.concat(newState.myActivitiesIds, activities.map(s => s.id)));
-      newState.myActivitiesEndReached = !activities_length;
-      break;
-  }
+  // switch(activityDisplayType) {
+  //   case ACTIVITY_DISPLAY_TYPE.ACTIVITIES_LIST:
+  //     newState.activitiesListIds = activities.map(s => s.id);
+  //     newState.activitiesListEndReached = !activities_length;
+  //     break;
+  //   case ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED:
+  //     newState.currentUserActivitiesFeedIds = activities.map(s => s.id);
+  //     newState.currentUserActivitiesFeedEndReached = !activities_length;
+  //     break;
+  //   case ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES:
+  //     newState.myActivitiesIds = _.uniq(_.concat(newState.myActivitiesIds, activities.map(s => s.id)));
+  //     newState.myActivitiesEndReached = !activities_length;
+  //     break;
+  // }
 
   return newState
 };

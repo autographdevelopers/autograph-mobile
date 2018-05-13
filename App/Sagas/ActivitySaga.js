@@ -23,7 +23,7 @@ export function* myActivities(api, action) {
   const response = yield call(api.activities.myActivities, action.params);
 
   if (response.ok) {
-    yield put(activityActionCreators.saveCollection(response.data, ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES));
+    yield put(activityActionCreators.saveCollection(response.data));
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.READY));
     return response.data;
   } else {

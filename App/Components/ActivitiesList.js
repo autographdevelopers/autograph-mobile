@@ -13,34 +13,26 @@ export default ActivitiesList = ({
                                    customListStyle = {},
                                    customListWrapperStyle = {},
                                    onEndReached = () => {} }) => {
-  const renderActivities = () => {
-    if (fetchingStatus === FETCHING_STATUS.READY || fetchingStatus === FETCHING_STATUS.SUCCESS) {
-      return (
-        <FlatList
-          scrollEnabled={scrollEnabled}
-          contentContainerStyle={customListStyle}
-          data={activities}
-          renderItem={({item, index}) => (
-            <ActivityListItem activity={item}
-                              onPress={() => {}}/>
-          )}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(element) => `activity-${element.id}`}
-          ListEmptyComponent={
-            <Text style={styles.emptyActivities}>
-              Brak aktywności
-            </Text>
-          }
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0}
-        />
-      )
-    }
-  }
 
   return (
     <View style={customListWrapperStyle}>
-      {renderActivities()}
+      <FlatList
+        scrollEnabled={scrollEnabled}
+        contentContainerStyle={customListStyle}
+        data={activities}
+        renderItem={({item, index}) => (
+          <ActivityListItem activity={item} onPress={() => {}}/>
+        )}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={ element => `activity-${element.id}`}
+        ListEmptyComponent={
+          <Text style={styles.emptyActivities}>
+            Brak aktywności
+          </Text>
+        }
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0}
+      />
     </View>
   )
 };
