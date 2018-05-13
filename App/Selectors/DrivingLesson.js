@@ -7,12 +7,18 @@ const upcomingLessons = lesson =>
 
 const toLessonObject = state => id => state.entities.drivingLessons.hashMap[id];
 
-export const getStudentsUpcomingLessons = state =>
+export const getAllStudentsLessons = state =>
   state.views.studentProfileScreen.lessonsIds
-       .map(toLessonObject(state))
-       .filter(upcomingLessons);
+       .map(toLessonObject(state));
+
+export const getStudentsUpcomingLessons = state =>
+  getAllStudentsLessons(state)
+    .filter(upcomingLessons);
+
+export const getAllEmployeesLessons = state =>
+  state.views.employeeProfileScreen.lessonsIds
+       .map(toLessonObject(state));
 
 export const getEmployeeUpcomingLessons = state =>
-  state.views.employeeProfileScreen.lessonsIds
-       .map(toLessonObject(state))
-       .filter(upcomingLessons);
+  getAllEmployeesLessons(state)
+    .filter(upcomingLessons);

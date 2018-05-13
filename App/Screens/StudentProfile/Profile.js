@@ -21,6 +21,7 @@ import SectionHeader from '../../Components/SectionHeader';
 /** == Selectors ======================================= */
 import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { getActionsPayloadsForSaga } from '../../Selectors/StudentProfileScreen';
+import { getAllStudentsLessons } from '../../Selectors/DrivingLesson';
 import { getStudentsUpcomingLessons } from '../../Selectors/DrivingLesson';
 import { getCurrentStudent } from '../../Selectors/Student';
 /** == HOCs ======================================= */
@@ -33,7 +34,7 @@ class Profile extends Component {
   render() {
     const {
       drivingCourse,
-      drivingLessons,
+      allDrivingLessons,
       drivingSchool,
       activities,
       openModal,
@@ -43,12 +44,6 @@ class Profile extends Component {
       resetDrivingCourseFetchingStatus,
       updateDrivingCourse
     } = this.props;
-
-    console.tron.log('student');
-    console.tron.log('student');
-    console.tron.log(student);
-    console.tron.log('student');
-    console.tron.log('student');
 
     return (
       <View style={{flex: 1}}>
@@ -69,7 +64,7 @@ class Profile extends Component {
             <View style={styles.drivingCourseProgressWrapper}>
               <DrivingCourseProgress
                 drivingCourse={drivingCourse}
-                drivingLessonsData={drivingLessons.allIDs.map(id => drivingLessons.hashMap[id])}/>
+                drivingLessonsData={allDrivingLessons}/>
             </View>
 
             <ModalTemplate
@@ -84,7 +79,6 @@ class Profile extends Component {
 
             <View style={styles.headerWithBtn}>
               <SectionHeader title={'Nadchodzące jazdy'} />
-
               <ButtonText
                 onPress={() => navigate('drivingLessons', { lessonsParams: { studentId: student.id } })}
                 customTextStyle={{fontSize: Fonts.size.small}}>
@@ -145,7 +139,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   drivingCourse: state.entities.drivingCourse,
-  drivingLessons: state.entities.drivingLessons,
+  allDrivingLessons: getAllStudentsLessons(state),
   student: getCurrentStudent(state),
   drivingSchool: getCurrentDrivingSchool(state),
   activities: state.entities.activities,
