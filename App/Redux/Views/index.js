@@ -11,12 +11,14 @@ import { employeeProfileScreenReducer } from './EmployeeProfileRedux';
 import { studentProfileScreenReducer } from './StudentProfileRedux';
 import { utilsReducer } from './Utils/index';
 import { studentDashboardScreenReducer } from './StudentDashboardRedux';
-import { drivingLessonsScreenReducer } from './DrivingLessonsList';
+import { drivingLessonsScreenReducer } from './DrivingLessonsScreenRedux';
+import { myActivitiesScreenReducer } from './MyActivitiesScreenRedux';
 
 export const viewsReducer = combineReducers({
   employeeDailyAgenda: employeeDailyAgendaReducer,
   employeesSummaryAgenda: employeesSummaryAgendaReducer,
   employeeProfileScreen: employeeProfileScreenReducer,
+  myActivitiesScreen: myActivitiesScreenReducer,
   studentProfileScreen: studentProfileScreenReducer,
   studentDashboardScreen: studentDashboardScreenReducer,
   drivingLessonsScreen: drivingLessonsScreenReducer,

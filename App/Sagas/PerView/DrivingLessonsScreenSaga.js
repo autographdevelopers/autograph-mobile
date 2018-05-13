@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { FETCHING_STATUS } from '../../Lib/utils';
 import { index as drivingLessonsIndex } from '../DrivingLessonSaga';
-import { drivingLessonsScreenActionCreators } from '../../Redux/Views/DrivingLessonsList';
+import { drivingLessonsScreenActionCreators } from '../../Redux/Views/DrivingLessonsScreenRedux';
 
 export function* requestDataForDrivingLessonsListScreenSaga(api, action) {
   try {

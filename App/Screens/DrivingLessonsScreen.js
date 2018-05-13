@@ -17,7 +17,7 @@ import { Fonts, Colors } from '../Themes/';
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingLessonsFilter from '../Components/DrivingLessonsFilter';
 import ModalTemplate from '../Components/ModalTemplate';
-import { drivingLessonsScreenActionCreators } from '../Redux/Views/DrivingLessonsList';
+import { drivingLessonsScreenActionCreators } from '../Redux/Views/DrivingLessonsScreenRedux';
 import withRequiredData from '../HOC/withRequiredData';
 
 /** Screen */

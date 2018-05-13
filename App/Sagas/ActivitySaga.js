@@ -11,6 +11,7 @@ export function* index(api, action) {
   if (response.ok) {
     yield put(activityActionCreators.saveCollection(response.data, action.activityDisplayType));
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.READY));
+    return response.data;
   } else {
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }
@@ -24,6 +25,7 @@ export function* myActivities(api, action) {
   if (response.ok) {
     yield put(activityActionCreators.saveCollection(response.data, ACTIVITY_DISPLAY_TYPE.MY_ACTIVITIES));
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.READY));
+    return response.data;
   } else {
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.ERROR));
   }

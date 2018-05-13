@@ -4,19 +4,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment-timezone';
-/** == Constants ======================================= */
-import { ACTIVITY_DISPLAY_TYPE } from '../../Lib/ActivitiesHelper';
-import { AFTER_SAVE_CALLBACKS } from '../../Lib/DrivingLessonHelpers';
 import {
   canManageEmployees,
-  canManageStudents,
 } from '../../Lib/AuthorizationHelpers';
 /** == Action Creators ================================= */
 import { employeeProfileActionCreators } from '../../Redux/Views/EmployeeProfileRedux';
 import { employeeDailyAgendaActionCreators } from '../../Redux/Views/AgendaRedux';
-import { activityActionCreators } from '../../Redux/Entities/ActivityRedux';
 import { contextActionCreators } from '../../Redux/Support/ContextRedux';
-import { drivingLessonActionCreators } from '../../Redux/Entities/DrivingLessonRedux';
 /** == Components ====================================== */
 import DrivingLessonsList from '../../Containers/DrivingLessonsList';
 import SectionHeader from '../../Components/SectionHeader';
@@ -132,20 +126,9 @@ const mapStateToProps = state => ( {
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestDataForView: payloads => dispatch(
-
-    employeeProfileActionCreators.requestDataForView({ payloads })
-  ),
-  cleanupCurrentEmployee: () => dispatch(
-    contextActionCreators.setCurrentEmployee()),
-  fetchActivities: params => dispatch(
-    activityActionCreators.indexRequest(params,
-      ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED)),
-  fetchDrivingLessons: params => dispatch(
-    drivingLessonActionCreators.indexRequest(params,
-      AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
-  initDailyAgenda: stateToMerge => dispatch(
-    employeeDailyAgendaActionCreators.init(stateToMerge)),
+  requestDataForView: payloads => dispatch(employeeProfileActionCreators.requestDataForView({ payloads })),
+  cleanupCurrentEmployee: () => dispatch(contextActionCreators.setCurrentEmployee()),
+  initDailyAgenda: stateToMerge => dispatch(employeeDailyAgendaActionCreators.init(stateToMerge)),
 });
 
 const withAsyncLoading = withRequiredData(

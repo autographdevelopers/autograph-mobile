@@ -26,7 +26,7 @@ import { studentsScreenActionTypes } from '../Redux/Views/StudentsScreenRedux';
 import { employeeProfileActionTypes } from '../Redux/Views/EmployeeProfileRedux';
 import { studentProfileActionTypes } from '../Redux/Views/StudentProfileRedux';
 import { studentDashboardActionTypes } from '../Redux/Views/StudentDashboardRedux';
-import { drivingLessonsScreenActionTypes } from '../Redux/Views/DrivingLessonsList';
+import { drivingLessonsScreenActionTypes } from '../Redux/Views/DrivingLessonsScreenRedux';
 
 /* ------------- Sagas ------------- */
 
