@@ -1,4 +1,4 @@
-import { takeLatest, takeEvery, all } from 'redux-saga/effects';
+import { takeLatest, takeEvery, all, take, race } from 'redux-saga/effects';
 import { API as api } from '../Services/Api';
 
 /* ------------- Types ------------- */
@@ -125,8 +125,10 @@ import { login } from '../Redux/Access/SessionRedux';
 import { update as updateEmployeePrivileges } from '../Redux/Entities/EmployeePrivileges';
 
 /* ------------- Connect Types To Sagas ------------- */
-export default function* root() {
-  yield all([
+export const rootSaga = function* () {
+  yield race({
+    cancelled: take('USER_LOGOUT'),
+    parallel: all([
     takeEvery(toastActionTypes.DISPLAY_TOAST_MESSAGE, displayToastMessageSaga),
 
     takeLatest(login.REQUEST, LoginSaga, api),
@@ -213,5 +215,5 @@ export default function* root() {
     /** My Activities Screen */
     takeLatest(myActivitiesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForMyActivitesScreen, api),
     takeLatest(myActivitiesScreenActionTypes.REQUEST_MORE_ACTIVITIES, requestMoreActivities, api)
-  ]);
+  ])});
 }

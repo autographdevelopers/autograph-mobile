@@ -29,6 +29,8 @@ import SchoolActivationInput from './SchoolActivationInput';
 import ModalTemplate from '../../Components/ModalTemplate';
 import SectionHeader from '../../Components/SectionHeader';
 import InfoBox from '../../Components/InfoBox';
+/** == Selectors ============================ */
+import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 /** == Utils ============================ */
 import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
 import {
@@ -57,16 +59,28 @@ class MySchoolsScreen extends Component {
   navigateToSchoolContext = school => {
     const {
       user,
-      navigation: { dispatch },
+      navigation: { dispatch, goBack },
       saveDrivingSchool,
+      currentDrivingSchool,
       setCurrentSchoolContext
     } = this.props;
 
-    // Set school context
+    /** if we are already in the context of this school this means
+     *  that it is enough to pop this screen to go back to school tabs navigator
+     *  */
+    if(currentDrivingSchool && currentDrivingSchool.id === school.id) {
+      goBack();
+      return;
+    }
+
+    /** Set school context, this causes most of the store to be reset
+     * but since we need to have current driving school object in store we
+     * immediately push it to the store
+     * */
     setCurrentSchoolContext(school.id);
     saveDrivingSchool(school);
 
-    // Navigate to proper tabs
+    /** Navigate to proper tabs depending on user role */
     let userType;
     if ( isEmployee(user) ) {
       if ( isDrivingSchoolOwner(school) )
@@ -213,7 +227,8 @@ const mapStateToProps = state => {
     invitations,
     user: currentUser,
     schoolActivationStatus: schoolActivation.status,
-    invitationsStatus: invitations.status
+    invitationsStatus: invitations.status,
+    currentDrivingSchool: getCurrentDrivingSchool(state)
   }
 };
 

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import configureStore from './CreateStore';
-import rootSaga from '../Sagas/';
+import { rootSaga } from '../Sagas/index';
 import formActionSaga from 'redux-form-saga';
 
 import { reducer as formReducer } from 'redux-form';
