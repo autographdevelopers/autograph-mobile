@@ -41,7 +41,7 @@ class StudentDashboard extends Component {
           </View>
 
           <View style={styles.headerWithBtn}>
-            <SectionHeader title={'Nadchodzące jazdy'} />
+            <SectionHeader title={`Nadchodzące jazdy (${upcomingDrivingLessons.length})`} />
 
             <ButtonText
               onPress={() => navigate('drivingLessons', { lessonsParams: { studentId: user.id }})}

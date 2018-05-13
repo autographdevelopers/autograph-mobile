@@ -82,7 +82,7 @@ class Profile extends Component {
             </ModalTemplate>
 
             <View style={styles.headerWithBtn}>
-              <SectionHeader title={'Nadchodzące jazdy'} />
+              <SectionHeader title={`Nadchodzące jazdy (${upcomingDrivingLessons.length})`} />
               <ButtonText
                 onPress={() => navigate('drivingLessons', { lessonsParams: { student_id: student.id } })}
                 customTextStyle={{fontSize: Fonts.size.small}}>
@@ -101,7 +101,7 @@ class Profile extends Component {
             { canManageStudents(drivingSchool) &&
             <View>
               <View style={styles.headerWithBtn}>
-                <SectionHeader title={'Ostatnie aktywności kursanta'} />
+                <SectionHeader title={'Ostatnie aktywności'} />
                 <ButtonText
                   onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: student.id } })}
                   customTextStyle={{ fontSize: Fonts.size.small }}
