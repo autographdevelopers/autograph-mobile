@@ -14,12 +14,14 @@ import { utilsReducer } from './Utils/index';
 import { studentDashboardScreenReducer } from './StudentDashboardRedux';
 import { drivingLessonsScreenReducer } from './DrivingLessonsScreenRedux';
 import { myActivitiesScreenReducer } from './MyActivitiesScreenRedux';
+import { activitiesFullListScreenReducer } from './ActivitiesFullListScreenRedux';
 
 const reducer = combineReducers({
   employeeDailyAgenda: employeeDailyAgendaReducer,
   employeesSummaryAgenda: employeesSummaryAgendaReducer,
   employeeProfileScreen: employeeProfileScreenReducer,
   myActivitiesScreen: myActivitiesScreenReducer,
+  activitiesFullListScreen: activitiesFullListScreenReducer,
   studentProfileScreen: studentProfileScreenReducer,
   studentDashboardScreen: studentDashboardScreenReducer,
   drivingLessonsScreen: drivingLessonsScreenReducer,

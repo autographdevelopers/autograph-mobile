@@ -6,12 +6,8 @@ import moment from 'moment/moment';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
-import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
-import {
-  AFTER_SAVE_CALLBACKS,
-  DRIVING_LESSON_STATUSES,
-} from '../Lib/DrivingLessonHelpers';
+import { DRIVING_LESSON_STATUSES, } from '../Lib/DrivingLessonHelpers';
 import { Fonts, Colors } from '../Themes/';
 
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
@@ -21,7 +17,7 @@ import { drivingLessonsScreenActionCreators } from '../Redux/Views/DrivingLesson
 import withRequiredData from '../HOC/withRequiredData';
 
 /** Screen */
-class DrivingLessonsScreen extends Component {
+class DrivingLessonsFullListScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -30,6 +26,10 @@ class DrivingLessonsScreen extends Component {
       fromDate: null,
       toDate: null
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetListState();
   }
 
   fromDateFilter = (drivingLesson, fromDate) =>
@@ -67,8 +67,7 @@ class DrivingLessonsScreen extends Component {
         <ActionButton onPress={() => this.props.openModal(MODALS_IDS.FILTER_DRIVING_LESSON)}
                       renderIcon={()=><Icon name="filter" size={20} color={Colors.primaryWarm} />}
                       buttonColor={Colors.lightGrey}
-        >
-        </ActionButton>
+        />
 
         <ModalTemplate
           customContainerStyle={{width: null}}
@@ -97,18 +96,15 @@ const mapDispatchToProps = (dispatch, otherProps) => {
   };
 
   return {
-    requestDataForView: () => dispatch(
-      drivingLessonsScreenActionCreators.requestDataForView({payloads})),
-    fetchDrivingLessons: (params) => dispatch(
-      drivingLessonActionCreators.indexRequest(params,
-        AFTER_SAVE_CALLBACKS.OVERRIDE_ID)),
+    requestDataForView: () => dispatch(drivingLessonsScreenActionCreators.requestDataForView({payloads})),
     openModal: (modalId) => dispatch(modalActionCreators.open(modalId)),
-    closeModal: () => dispatch(modalActionCreators.close())
+    closeModal: () => dispatch(modalActionCreators.close()),
+    resetListState: () => dispatch(drivingLessonsScreenActionCreators.resetState())
   }
 };
 
 const withAsyncLoading = withRequiredData(
-  DrivingLessonsScreen,
+  DrivingLessonsFullListScreen,
   'status',
   'requestDataForView',
 );

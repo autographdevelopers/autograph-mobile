@@ -28,6 +28,7 @@ import { studentProfileActionTypes } from '../Redux/Views/StudentProfileRedux';
 import { studentDashboardActionTypes } from '../Redux/Views/StudentDashboardRedux';
 import { drivingLessonsScreenActionTypes } from '../Redux/Views/DrivingLessonsScreenRedux';
 import { myActivitiesScreenActionTypes } from '../Redux/Views/MyActivitiesScreenRedux';
+import { activitiesFullListScreenScreenActionTypes } from '../Redux/Views/ActivitiesFullListScreenRedux';
 /* ------------- Sagas ------------- */
 
 import { requestDataForSummaryAgendaScreenSaga } from './PerView/EmployeesSummaryAgendaSaga';
@@ -110,6 +111,8 @@ import {
 import { index as indexSlotsSaga } from './SlotsSaga';
 import { requestDataForStudentDashboardScreenSaga } from './PerView/StudentDashboardSaga';
 import { requestDataForDrivingLessonsListScreenSaga } from './PerView/DrivingLessonsScreenSaga';
+import { requestMoreFullListActivities } from './PerView/ActivitiesFullListScreenScreenSaga';
+import { requestDataForActivitiesFullListScreen  } from './PerView/ActivitiesFullListScreenScreenSaga';
 
 /* ------------- ReduxForm - Sagas actions------------- */
 import { invite } from '../Redux/Views/InvitationsRedux';
@@ -214,6 +217,9 @@ export const rootSaga = function* () {
     takeLatest(drivingLessonsScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForDrivingLessonsListScreenSaga, api),
     /** My Activities Screen */
     takeLatest(myActivitiesScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForMyActivitesScreen, api),
-    takeLatest(myActivitiesScreenActionTypes.REQUEST_MORE_ACTIVITIES, requestMoreActivities, api)
+    takeLatest(myActivitiesScreenActionTypes.REQUEST_MORE_ACTIVITIES, requestMoreActivities, api),
+    /** Activities Full List Screen */
+    takeLatest(activitiesFullListScreenScreenActionTypes.REQUEST_DATA_FOR_VIEW, requestDataForActivitiesFullListScreen, api),
+    takeLatest(activitiesFullListScreenScreenActionTypes.REQUEST_MORE_ACTIVITIES, requestMoreFullListActivities, api),
   ])});
 }

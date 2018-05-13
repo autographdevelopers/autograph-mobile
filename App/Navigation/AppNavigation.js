@@ -26,7 +26,8 @@ import StudentProfile from '../Screens/StudentProfile/ModuleNavigator';
 import EmployeeProfile from '../Screens/EmployeeProfile/ModuleNavigator';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 
-import DrivingLessonsScreen from '../Screens/DrivingLessonsScreen';
+import DrivingLessonsFullListScreen from '../Screens/DrivingLessonsFullListScreen';
+import ActivitiesFullListScreen from '../Screens/ActivitiesFullListScreen';
 
 import EmployeeFlow from './EmployeeFlow';
 import StudentFlow from './StudentFlow';
@@ -159,10 +160,20 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
 
 const DRIVING_LESSONS = {
   drivingLessons: {
-    screen: DrivingLessonsScreen,
+    screen: DrivingLessonsFullListScreen,
     navigationOptions: {
       title: 'Lista jazd',
       headerTitle: 'Lista jazd',
+    }
+  }
+};
+
+const ACTIVITIES = {
+  activitiesFullList: {
+    screen: ActivitiesFullListScreen,
+    navigationOptions: {
+      title: 'Lista aktywności',
+      headerTitle: 'Lista aktywności',
     }
   }
 };
@@ -212,7 +223,8 @@ const routeConfigs = {
   ...INVITE_USER_SCREENS,
   ...SETTINGS_SCREENS,
   ...PROFILE_SCREENS,
-  ...DRIVING_LESSONS
+  ...DRIVING_LESSONS,
+  ...ACTIVITIES
 };
 
 const navigationConfigs = {

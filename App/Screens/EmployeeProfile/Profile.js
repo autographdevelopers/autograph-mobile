@@ -52,7 +52,9 @@ class Profile extends Component {
     const {
       lessons,
       activities,
-      drivingSchool
+      drivingSchool,
+      employee,
+      navigation: { navigate }
     } = this.props;
 
     return (
@@ -84,6 +86,7 @@ class Profile extends Component {
                 <View style={styles.headerWithBtn}>
                   <SectionHeader title={'Ostatnie aktywności'} />
                   <ButtonText
+                    onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: employee.id } })}
                     customTextStyle={{ fontSize: Fonts.size.small }}
                     icon={<Icon name={'edit'} size={16}
                                 color={Colors.primaryWarm}/>}>

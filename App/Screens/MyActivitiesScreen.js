@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { activityActionCreators } from '../Redux/Entities/ActivityRedux';
-
 import listProjectorStyles from '../Styles/ListProjector';
 import ActivitiesList from '../Components/ActivitiesList';
 import withRequiredData from '../HOC/withRequiredData';
-import { getMyActivites } from '../Selectors/Activities';
+import { getMyActivities } from '../Selectors/Activities';
 import { myActivitiesScreenActionCreators } from '../Redux/Views/MyActivitiesScreenRedux';
-import { Colors } from '../Themes';
 
-class ActivitiesScreen extends Component {
+class MyActivitiesScreen extends Component {
   loadMore = () => {
     if (this.props.endReached) return;
 
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => ({
-  activitiesData: getMyActivites(state),
+  activitiesData: getMyActivities(state),
   status: state.views.myActivitiesScreen.status,
   endReached: state.views.myActivitiesScreen.endReached,
   fetchingMore: state.views.myActivitiesScreen.fetchingMore,
@@ -59,7 +56,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const withAsyncLoading = withRequiredData(
-  ActivitiesScreen,
+  MyActivitiesScreen,
   'status',
   'requestData',
 );

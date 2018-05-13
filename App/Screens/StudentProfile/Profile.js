@@ -103,6 +103,7 @@ class Profile extends Component {
               <View style={styles.headerWithBtn}>
                 <SectionHeader title={'Ostatnie aktywności kursanta'} />
                 <ButtonText
+                  onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: student.id } })}
                   customTextStyle={{ fontSize: Fonts.size.small }}
                   icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
                   Pokaż wszystkie

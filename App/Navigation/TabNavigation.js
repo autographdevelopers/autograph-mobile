@@ -1,4 +1,4 @@
-import ActivitiesScreen from '../Screens/ActivitiesScreen';
+import MyActivitiesScreen from '../Screens/MyActivitiesScreen';
 import EmployeesSummaryAgendaScreen from '../Screens/EmployeesSummaryAgenda';
 import StudentDashboard from '../Screens/StudentDashboard'
 import EmployeesScreen from '../Screens/Employees/index';
@@ -26,7 +26,7 @@ const employeeRoutesConfigs = {
     }
   },
   activities: {
-    screen: withFluidLayout(ActivitiesScreen),
+    screen: withFluidLayout(MyActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
@@ -57,7 +57,7 @@ const ownerRoutesConfigs = {
     }
   },
   activities: {
-    screen: withFluidLayout(ActivitiesScreen),
+    screen: withFluidLayout(MyActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),
@@ -96,7 +96,7 @@ const studentRoutesConfigs = {
     }
   },
   activities: {
-    screen: withFluidLayout(ActivitiesScreen),
+    screen: withFluidLayout(MyActivitiesScreen),
     navigationOptions: {
       tabBarLabel: I18n.t('activities'),
       tabBarIcon: ({ tintColor }) => (<Icon size={25} name={'bell'} color={tintColor}/> ),

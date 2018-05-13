@@ -40,4 +40,3 @@ export const studentProfileScreenReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE_LESSONS]: saveLessonsHandler,
   [Types.SAVE_ACTIVITIES]: saveActivitiesHandler
 });
-

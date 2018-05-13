@@ -13,8 +13,9 @@ const { Types, Creators } = createActions({
   requestDataForView: { payloads: {} },
   refreshListRequest: { payloads: {} },
   saveLessons: ['lessons'],
-  changeStatus: ['status']
-}, { prefix: 'DRIVING_LESSONS_SCREEN/' } );
+  changeStatus: ['status'],
+  resetState: null
+}, { prefix: 'DRIVING_LESSONS_FULL_LIST_SCREEN/' });
 
 export const drivingLessonsScreenActionCreators = Creators;
 export const drivingLessonsScreenActionTypes = Types;
@@ -25,6 +26,8 @@ const toggleRefreshingFlagHandler = state => {
 
   return newState;
 };
+
+const resetStateHandler = state => INITIAL_STATE;
 
 const changeStatusHandler = (state, { status }) => {
   const newState =  _.cloneDeep(state);
@@ -44,4 +47,5 @@ export const drivingLessonsScreenReducer = createReducer(INITIAL_STATE, {
   [Types.TOGGLE_REFRESHING_FLAG]: toggleRefreshingFlagHandler,
   [Types.CHANGE_STATUS]: changeStatusHandler,
   [Types.SAVE_LESSONS]: saveLessonsIdsHandler,
+  [Types.RESET_STATE]: resetStateHandler,
 });
