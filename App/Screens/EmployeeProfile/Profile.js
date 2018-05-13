@@ -35,9 +35,6 @@ import { Colors, Fonts } from '../../Themes/';
 
 
 class Profile extends Component {
-  componentWillUnmount = () =>
-    this.props.setCurrentEmployee(null);
-
   goToCalendar = () => {
     const {
       employee,
@@ -136,10 +133,11 @@ const mapStateToProps = state => ( {
 
 const mapDispatchToProps = dispatch => ({
   requestDataForView: payloads => dispatch(
+
     employeeProfileActionCreators.requestDataForView({ payloads })
   ),
-  setCurrentEmployee: id => dispatch(
-    contextActionCreators.setCurrentEmployee(id)),
+  cleanupCurrentEmployee: () => dispatch(
+    contextActionCreators.setCurrentEmployee()),
   fetchActivities: params => dispatch(
     activityActionCreators.indexRequest(params,
       ACTIVITY_DISPLAY_TYPE.USER_ACTIVITIES_FEED)),
@@ -155,6 +153,7 @@ const withAsyncLoading = withRequiredData(
   'status',
   'requestDataForView',
   'requestDataParams',
+  'cleanupCurrentEmployee'
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading);

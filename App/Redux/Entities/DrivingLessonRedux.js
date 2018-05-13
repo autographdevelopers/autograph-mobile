@@ -10,7 +10,8 @@ const { Types, Creators } = createActions({
   indexRequest: ['params', 'after_save_callback_type'],
   cancelRequest: ['id'],
   createRequest: ['params'],
-  destroySingle: ['lessonId']
+  destroySingle: ['lessonId'],
+  updateSingle: ['lesson']
 }, { prefix: 'DRIVING_LESSON_' });
 
 export const drivingLessonActionTypes = Types;
@@ -54,10 +55,19 @@ export const saveHandler = (state, { data, after_save_callback_type }) => {
   return newState;
 };
 
+export const updateSingleHandler = (state, { lesson }) => {
+  const newState = _.cloneDeep(state);
+  newState.hashMap[lesson.id] = _.merge(newState.hashMap[lesson.id], lesson);
+
+  return newState;
+};
+
+
 /* ------------- Gather all handlers to create single reducer ------------- */
 
 export const drivingLessonReducer = createReducer(INITIAL_STATE, {
   [Types.SAVE]: saveHandler,
   [Types.CHANGE_STATUS]: changeStatusHandler,
-  [Types.DESTROY_SINGLE]: destroySingleHandler
+  [Types.DESTROY_SINGLE]: destroySingleHandler,
+  [Types.UPDATE_SINGLE]: updateSingleHandler,
 });

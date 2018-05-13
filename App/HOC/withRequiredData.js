@@ -4,14 +4,15 @@ import { Colors } from '../Themes/';
 import { FETCHING_STATUS } from '../Lib/utils';
 import SpinnerView from '../Components/SpinnerView';
 
-export default function withRequiredData(WrappedComponent, statusKey, requestDataPropFunc, requestDataPropArgs) {
+export default function withRequiredData(WrappedComponent, statusKey, requestDataPropFunc, requestDataPropArgs, destructorFunctionKey) {
   return class WithRequiredDataHOC extends Component {
     componentWillMount() {
-      if (this.props[requestDataPropArgs]) {
-        this.props[requestDataPropFunc](this.props[requestDataPropArgs]);
-      } else {
-        this.props[requestDataPropFunc]();
-      }
+      const params = this.props[requestDataPropArgs];
+      this.props[requestDataPropFunc] && this.props[requestDataPropFunc](params);
+    }
+
+    componentWillUnmount() {
+      this.props[destructorFunctionKey] && this.props[destructorFunctionKey]();
     }
 
     render() {

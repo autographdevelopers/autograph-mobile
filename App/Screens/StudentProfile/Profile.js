@@ -30,12 +30,6 @@ import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
 
 class Profile extends Component {
-  componentWillUnmount = () => {
-    console.tron.log('Unmouneting students profile')
-    this.props.setCurrentStudent(null);
-  }
-
-
   render() {
     const {
       drivingCourse,
@@ -49,6 +43,12 @@ class Profile extends Component {
       resetDrivingCourseFetchingStatus,
       updateDrivingCourse
     } = this.props;
+
+    console.tron.log('student');
+    console.tron.log('student');
+    console.tron.log(student);
+    console.tron.log('student');
+    console.tron.log('student');
 
     return (
       <View style={{flex: 1}}>
@@ -156,7 +156,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestDataForView: payloads => dispatch(studentProfileActionCreators.requestDataForView({payloads})),
-  setCurrentStudent: studentID => dispatch(contextActionCreators.setCurrentStudent(studentID)),
+  cleanupCurrentStudent: () => dispatch(contextActionCreators.setCurrentStudent(null)),
   openModal: modalId => dispatch(modalActionCreators.open(modalId)),
   resetDrivingCourseFetchingStatus: () => dispatch(drivingCourseActionCreators.changeStatus(FETCHING_STATUS.READY)),
   updateDrivingCourse: data => dispatch(drivingCourseActionCreators.updateRequest(data)),
@@ -166,7 +166,8 @@ const withAsyncLoading = withRequiredData(
   Profile,
   'status',
   'requestDataForView',
-  'requestDataArguments'
+  'requestDataArguments',
+  'cleanupCurrentStudent'
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(withAsyncLoading)

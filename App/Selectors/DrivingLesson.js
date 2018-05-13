@@ -1,19 +1,18 @@
 import { DRIVING_LESSON_STATUSES } from '../Lib/DrivingLessonHelpers';
 import moment from 'moment/moment';
 
-export const getStudentsUpcomingLessons = state => {
-  const { drivingLessons } = state.entities;
+const upcomingLessons = lesson =>
+  DRIVING_LESSON_STATUSES.ACTIVE === lesson.status
+    && moment().isBefore(lesson.start_time);
 
-  return state.views.studentProfileScreen.lessonsIds
-                       .map(id => drivingLessons.hashMap[id])
-                       .filter(drivingLesson => {
-                         return DRIVING_LESSON_STATUSES.ACTIVE === drivingLesson.status
-                         && moment().isBefore(drivingLesson.start_time)
-                       });
-};
+const toLessonObject = state => id => state.entities.drivingLessons.hashMap[id];
 
-export const getEmployeeUpcomingLessons = state => {
-  const { drivingLessons } = state.entities;
+export const getStudentsUpcomingLessons = state =>
+  state.views.studentProfileScreen.lessonsIds
+       .map(toLessonObject(state))
+       .filter(upcomingLessons);
 
-  return state.views.employeeProfileScreen.lessonsIds.map(id => drivingLessons.hashMap[id])
-};
+export const getEmployeeUpcomingLessons = state =>
+  state.views.employeeProfileScreen.lessonsIds
+       .map(toLessonObject(state))
+       .filter(upcomingLessons);

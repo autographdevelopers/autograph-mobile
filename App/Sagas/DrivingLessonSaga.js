@@ -27,7 +27,7 @@ export function* cancel(api, action) {
 
   if (response.ok) {
     yield put(slotActionCreators.releaseLesson(action.id));
-    yield put(drivingLessonActionCreators.destroySingle(action.id));
+    yield put(drivingLessonActionCreators.updateSingle(response.data));
     yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
   } else {
     yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.ERROR));

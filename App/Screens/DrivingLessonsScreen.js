@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/Feather';
 /** Custom modules */
 import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedux';
 import { MODALS_IDS, modalActionCreators } from '../Redux/Views/Modals/ModalRedux';
-import { FETCHING_STATUS } from '../Lib/utils';
 import {
   AFTER_SAVE_CALLBACKS,
   DRIVING_LESSON_STATUSES,
@@ -32,13 +31,6 @@ class DrivingLessonsScreen extends Component {
       toDate: null
     }
   }
-
-  // componentWillMount() {
-  //   this.props.fetchDrivingLessons({
-  //     student_id: this.props.navigation.state.params.studentId,
-  //     employee_id: this.props.navigation.state.params.employeeId,
-  //   })
-  // }
 
   fromDateFilter = (drivingLesson, fromDate) =>
     !!!fromDate || moment(fromDate).startOf('day').isBefore(drivingLesson.start_time)
