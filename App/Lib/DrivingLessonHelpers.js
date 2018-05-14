@@ -7,12 +7,6 @@ export const DRIVING_LESSON_STATUSES = {
   ALL: 'all',
 };
 
-export const AFTER_SAVE_CALLBACKS = {
-  APPEND_ID: 'ADD_ID',
-  SUBTRACT_ID: 'SUBTRACT_ID',
-  OVERRIDE_ID: 'OVERRIDE_ID'
-};
-
 export const drivingLessonHelpers = {
   getEndTime: lesson => {
     if (lesson.slots.length === 0) return '';
