@@ -116,7 +116,7 @@ class Profile extends Component {
               Pokaż wszystkie
             </ButtonText>
           </View>
-          <View style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
+          <View style={[listProjectorStyles.containerStyle, { paddingHorizontal: 15 }]}>
             <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)}/>
           </View>
         </View>
@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center',
+    marginBottom: 10
   },
   drivingCourseProgressWrapper: {
     marginVertical: 15
   },
   drivingLessonsListWrapper: {
-    marginTop: 10,
     marginBottom: 15
   }
 });

@@ -8,16 +8,15 @@ import { Fonts } from '../Themes/';
 export default ActivitiesListItem = ({ activity }) => {
   leftIcon = () =>
     <Avatar
-      medium
-      resizeMode={'cover'}
+      small
       source={ACTIVITY_IMAGE[activity.activity_type]}
-      containerStyle={{ alignSelf: 'center', paddingTop: 0, paddingBottom: 0, paddingRight: 0, margin: 5 }}
-      overlayContainerStyle={{backgroundColor: 'transparent'}} />
+      containerStyle={{ alignSelf: 'center', marginRight: 5}}
+      overlayContainerStyle={{backgroundColor: 'transparent'}} />;
 
   formatMessage = message =>
     message.split(/<\/b>|<b>/).map((part, i) => {
         const bolded = message.includes(`<b>${part}</b>`)
-        return <Text key={i} style={bolded ? styles.bolded : styles.regular}>
+        return <Text key={i} style={[styles.text, bolded ? styles.bolded : styles.regular]}>
           {part}
         </Text>
       }
@@ -55,11 +54,14 @@ export default ActivitiesListItem = ({ activity }) => {
 };
 
 const styles = StyleSheet.create({
+  text: {
+    fontSize: Fonts.size.small
+  },
   bolded: {
-    fontWeight: '700'
+    fontFamily: Fonts.type.medium,
   },
   regular: {
-    fontWeight: '400'
+    fontFamily: Fonts.type.regular
   },
   subtitle: {
     fontSize: Fonts.size.small,

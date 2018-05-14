@@ -99,8 +99,7 @@ class Profile extends Component {
                 Pokaż wszystkie
               </ButtonText>
             </View>
-            <View
-              style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
+            <View style={[listProjectorStyles.containerStyle, { paddingHorizontal: 15 }]}>
               <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)} />
             </View>
           </View>
@@ -120,7 +119,7 @@ const styles = {
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 10,
   }
 };
 

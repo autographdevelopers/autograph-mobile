@@ -19,28 +19,14 @@ class MyActivitiesScreen extends Component {
     const { activitiesData, fetchingMore } = this.props;
 
     return (
-      <View style={{flex: 1}}>
-        <ActivitiesList
-          activities={activitiesData}
-          fetchingMore={fetchingMore}
-          onEndReached={this.loadMore}
-          customListStyle={[listProjectorStyles.containerStyle, styles.customListStyle]}
-          customListWrapperStyle={styles.customListWrapperStyle}
-        />
-      </View>
+      <ActivitiesList
+        activities={activitiesData}
+        fetchingMore={fetchingMore}
+        onEndReached={this.loadMore}
+      />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  customListStyle: {
-    // margin: 15
-  },
-  customListWrapperStyle: {
-    flex: 1
-  }
-});
-
 
 const mapStateToProps = state => ({
   activitiesData: getMyActivities(state),
