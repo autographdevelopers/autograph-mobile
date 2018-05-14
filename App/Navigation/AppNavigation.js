@@ -160,7 +160,7 @@ const NOT_AUTHENTICATED_USER_SCREENS = {
 
 const DRIVING_LESSONS = {
   drivingLessons: {
-    screen: DrivingLessonsFullListScreen,
+    screen: withFluidLayout(DrivingLessonsFullListScreen),
     navigationOptions: {
       title: 'Lista jazd',
       headerTitle: 'Lista jazd',
@@ -170,7 +170,7 @@ const DRIVING_LESSONS = {
 
 const ACTIVITIES = {
   activitiesFullList: {
-    screen: ActivitiesFullListScreen,
+    screen: withFluidLayout(ActivitiesFullListScreen),
     navigationOptions: {
       title: 'Lista aktywności',
       headerTitle: 'Lista aktywności',

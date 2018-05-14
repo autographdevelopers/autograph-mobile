@@ -10,6 +10,7 @@ import listProjectorStyles from '../Styles/ListProjector';
 import DrivingLessonsList from '../Containers/DrivingLessonsList';
 import DrivingCourseProgress from '../Components/DrivingCourseProgress'
 import SectionHeader from '../Components/SectionHeader';
+import ButtonText from '../Components/ButtonText';
 import withRequiredData from '../HOC/withRequiredData';
 import { getStudentsDashboardRequestParams } from '../Selectors/StudentDashboard';
 import { getUpcomingDrivingLessons } from '../Selectors/StudentDashboard';

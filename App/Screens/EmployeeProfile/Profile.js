@@ -30,6 +30,7 @@ import { Colors, Fonts } from '../../Themes/';
 
 
 const VISIBLE_ACTIVITIES_NO = 3;
+const VISIBLE_LESSONS_NO = 3;
 
 class Profile extends Component {
   goToCalendar = () => {
@@ -58,56 +59,56 @@ class Profile extends Component {
     } = this.props;
 
     return (
-      <View style={{ flex: 1 }}>
-          <ScrollView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}
+                  showsVerticalScrollIndicator={false}>
+        <View style={styles.headerWithBtn}>
+          <SectionHeader title={'Nadchodzące jazdy'} />
+          { canManageEmployees(drivingSchool) &&
+              <ButtonText
+                customTextStyle={{ fontSize: Fonts.size.small }}
+                onPress={this.goToCalendar}
+                icon={ <Icon name={'edit'} size={16}
+                            color={Colors.primaryWarm}/>}
+              >
+                Zobacz Kalendarz
+              </ButtonText>
+          }
+
+        </View>
+        <View style={[listProjectorStyles.containerStyle]}>
+          <DrivingLessonsList
+            drivingLessons={lessons.slice(0, VISIBLE_LESSONS_NO)}
+            userContext={'student'}
+            scrollEnabled={false}/>
+        </View>
+
+        { canManageEmployees(drivingSchool) &&
+          <View>
             <View style={styles.headerWithBtn}>
-              <SectionHeader title={'Nadchodzące jazdy'} />
-              { canManageEmployees(drivingSchool) &&
-                  <ButtonText
-                    customTextStyle={{ fontSize: Fonts.size.small }}
-                    onPress={this.goToCalendar}
-                    icon={ <Icon name={'edit'} size={16}
-                                color={Colors.primaryWarm}/>}
-                  >
-                    Zobacz Kalendarz
-                  </ButtonText>
-              }
-
+              <SectionHeader title={'Ostatnie aktywności'} />
+              <ButtonText
+                onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: employee.id } })}
+                customTextStyle={{ fontSize: Fonts.size.small }}
+                icon={<Icon name={'edit'} size={16}
+                            color={Colors.primaryWarm}/>}>
+                Pokaż wszystkie
+              </ButtonText>
             </View>
-            <View style={[listProjectorStyles.containerStyle]}>
-              <DrivingLessonsList
-                drivingLessons={lessons}
-                userContext={'student'}
-                scrollEnabled={false}/>
+            <View
+              style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
+              <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)} />
             </View>
-
-            { canManageEmployees(drivingSchool) &&
-              <View>
-                <View style={styles.headerWithBtn}>
-                  <SectionHeader title={'Ostatnie aktywności'} />
-                  <ButtonText
-                    onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: employee.id } })}
-                    customTextStyle={{ fontSize: Fonts.size.small }}
-                    icon={<Icon name={'edit'} size={16}
-                                color={Colors.primaryWarm}/>}>
-                    Pokaż wszystkie
-                  </ButtonText>
-                </View>
-                <View
-                  style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
-                  <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)} />
-                </View>
-              </View>
-            }
-          </ScrollView>
-      </View>
+          </View>
+        }
+      </ScrollView>
     );
   }
 }
 
 const styles = {
   container: {
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
   },
   headerWithBtn: {
     flexDirection: 'row',

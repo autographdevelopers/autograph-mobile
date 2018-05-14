@@ -33,6 +33,7 @@ import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
 
 const VISIBLE_ACTIVITIES_NO = 3;
+const VISIBLE_LESSONS_NO = 3;
 
 class Profile extends Component {
   render() {
@@ -50,79 +51,80 @@ class Profile extends Component {
     } = this.props;
 
     return (
-      <View style={{flex: 1}}>
-          <ScrollView style={styles.container}>
-            <View style={styles.headerWithBtn}>
-              <SectionHeader title={'Postępy'} />
-              {
-                canManageStudents(drivingSchool) &&
-                <ButtonText
-                  onPress={() => openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
-                  customTextStyle={{fontSize: Fonts.size.small}}
-                  icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
-                  Edytuj
-                </ButtonText>
-              }
-            </View>
+      <ScrollView contentContainerStyle={styles.container}
+                  showsVerticalScrollIndicator={false}>
+        <View style={styles.headerWithBtn}>
+          <SectionHeader title={'Postępy'} />
+          {
+            canManageStudents(drivingSchool) &&
+            <ButtonText
+              onPress={() => openModal(MODALS_IDS.CHANGE_AVAILABLE_HOURS)}
+              customTextStyle={{fontSize: Fonts.size.small}}
+              icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+              Edytuj
+            </ButtonText>
+          }
+        </View>
 
-            <View style={styles.drivingCourseProgressWrapper}>
-              <DrivingCourseProgress
-                drivingCourse={drivingCourse}
-                drivingLessonsData={allDrivingLessons}/>
-            </View>
+        <View style={styles.drivingCourseProgressWrapper}>
+          <DrivingCourseProgress
+            drivingCourse={drivingCourse}
+            drivingLessonsData={allDrivingLessons}/>
+        </View>
 
-            <ModalTemplate
-              modalID={MODALS_IDS.CHANGE_AVAILABLE_HOURS}
-              status={drivingCourse.status}
-              closeModalCallback={resetDrivingCourseFetchingStatus}>
-              <ChangeAvailableHours
-                availableHours={drivingCourse.data.available_hours}
-                onPress={updateDrivingCourse}
-              />
-            </ModalTemplate>
+        <ModalTemplate
+          modalID={MODALS_IDS.CHANGE_AVAILABLE_HOURS}
+          status={drivingCourse.status}
+          closeModalCallback={resetDrivingCourseFetchingStatus}>
+          <ChangeAvailableHours
+            availableHours={drivingCourse.data.available_hours}
+            onPress={updateDrivingCourse}
+          />
+        </ModalTemplate>
 
-            <View style={styles.headerWithBtn}>
-              <SectionHeader title={`Nadchodzące jazdy (${upcomingDrivingLessons.length})`} />
-              <ButtonText
-                onPress={() => navigate('drivingLessons', { lessonsParams: { student_id: student.id } })}
-                customTextStyle={{fontSize: Fonts.size.small}}>
-                Pokaż wszystkie
-              </ButtonText>
-            </View>
+        <View style={styles.headerWithBtn}>
+          <SectionHeader title={`Nadchodzące jazdy (${upcomingDrivingLessons.length})`} />
+          <ButtonText
+            onPress={() => navigate('drivingLessons', { lessonsParams: { student_id: student.id } })}
+            icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}
+            customTextStyle={{fontSize: Fonts.size.small}}>
+              Pokaż wszystkie
+          </ButtonText>
+        </View>
 
-            <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
-              <DrivingLessonsList
-                drivingLessons={upcomingDrivingLessons}
-                userContext={'employee'}
-                scrollEnabled={false}
-              />
-            </View>
+        <View style={[listProjectorStyles.containerStyle, styles.drivingLessonsListWrapper]}>
+          <DrivingLessonsList
+            drivingLessons={upcomingDrivingLessons.slice(0, VISIBLE_LESSONS_NO)}
+            userContext={'employee'}
+            scrollEnabled={false}
+          />
+        </View>
 
-            { canManageStudents(drivingSchool) &&
-            <View>
-              <View style={styles.headerWithBtn}>
-                <SectionHeader title={'Ostatnie aktywności'} />
-                <ButtonText
-                  onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: student.id } })}
-                  customTextStyle={{ fontSize: Fonts.size.small }}
-                  icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
-                  Pokaż wszystkie
-                </ButtonText>
-              </View>
-              <View style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
-                <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)}/>
-              </View>
-            </View>
-            }
-          </ScrollView>
-      </View>
+        { canManageStudents(drivingSchool) &&
+        <View>
+          <View style={styles.headerWithBtn}>
+            <SectionHeader title={'Ostatnie aktywności'} />
+            <ButtonText
+              onPress={() => navigate('activitiesFullList', { activitiesParams: { related_user_id: student.id } })}
+              customTextStyle={{ fontSize: Fonts.size.small }}
+              icon={<Icon name={'edit'} size={16} color={Colors.primaryWarm}/>}>
+              Pokaż wszystkie
+            </ButtonText>
+          </View>
+          <View style={[listProjectorStyles.containerStyle, { marginTop: 10 }]}>
+            <ActivitiesList activities={activities.slice(0, VISIBLE_ACTIVITIES_NO)}/>
+          </View>
+        </View>
+        }
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
   },
   headerWithBtn: {
     flexDirection: 'row',
