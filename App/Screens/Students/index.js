@@ -34,6 +34,7 @@ import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
 import { debouncePressEvent } from '../../Lib/utils';
 import { propsChangedOnlyByNavigation } from '../../Lib/utils';
+import _ from 'lodash'
 
 /** Screen */
 class StudentsIndex extends Component {
@@ -46,8 +47,8 @@ class StudentsIndex extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  shouldComponentUpdate(nextProps, nextState) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props) || !_.isEqual(this.state, nextState);
   }
 
   changeTab = index => {
