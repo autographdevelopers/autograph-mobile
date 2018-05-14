@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
 import LinearGradient from 'react-native-linear-gradient';
+import { debouncePressEvent } from '../Lib/utils';
 
 const THEMES = { PRIMARY: 'primary', WARNING: 'warning' };
 
@@ -72,7 +73,7 @@ export default ButtonPrimary = ({ onPress,
 
   const Button = () => (
     <LinearGradient {...gradientCoords} colors={gradientThemes[theme]} style={[styles.bg, customBgStyle]}>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <TouchableOpacity style={styles.button} onPress={debouncePressEvent(onPress)}>
         <Text style={styles.title}>{children}</Text>
         {icon}
       </TouchableOpacity>

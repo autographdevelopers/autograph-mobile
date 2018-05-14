@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { stackNavigatorConfig } from '../../Config/NavigationConfig';
 import Profile from './Profile';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import StudentProfileHeader from '../../Components/StudentProfileHeader';
@@ -16,6 +17,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   navigationOptions: ({ navigation }) => {
     return {
       header: <StudentProfileHeader navigation={navigation} />

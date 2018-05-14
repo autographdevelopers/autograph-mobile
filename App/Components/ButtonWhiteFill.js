@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
+import { debouncePressEvent } from '../Lib/utils';
 
 export default ButtonWhiteFill = ({ color, children, onPress }) => {
   const styles = StyleSheet.create({
@@ -24,7 +25,7 @@ export default ButtonWhiteFill = ({ color, children, onPress }) => {
   });
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={debouncePressEvent(onPress)}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );

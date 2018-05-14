@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import { StudentTabNavigator } from './TabNavigation';
+import { stackNavigatorConfig } from '../Config/NavigationConfig';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
 import styles from './Styles/NavigationStyles';
 import { withModals } from './WithModalsHOC';
@@ -16,6 +17,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   mode: 'modal',
   headerMode: 'none',
   cardStyle: styles.card,

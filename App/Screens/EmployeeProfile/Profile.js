@@ -27,6 +27,7 @@ import withRequiredData from '../../HOC/withRequiredData';
 /** == Utils =========================================== */
 import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 
 
 const VISIBLE_ACTIVITIES_NO = 3;
@@ -48,6 +49,10 @@ class Profile extends Component {
 
     navigate('employeeDailyAgenda', { employee });
   };
+
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
 
   render() {
     const {

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconE from 'react-native-vector-icons/Entypo';
 import { Colors } from '../Themes';
 import { connect } from 'react-redux';
+import { debouncePressEvent, propsChangedOnlyByNavigation } from '../Lib/utils';
 
 class SettingsScreen extends Component {
   static navigationOptions = { header: null };
@@ -22,6 +23,10 @@ class SettingsScreen extends Component {
 
     Alert.alert(title, message, buttons);
   };
+
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
 
   render() {
     const { navigation, id } = this.props;
@@ -40,9 +45,9 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0, marginLeft: 0 }}
           keyExtractor={(item, index) => index}
           wrapperStyle={{marginLeft: 0}}
-          onPress={() => {
+          onPress={debouncePressEvent(() => {
             navigation.navigate('editSchoolInfo', navParams)
-          }}
+          })}
         />
 
         <ListItem
@@ -52,9 +57,9 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           wrapperStyle={{marginLeft: 0}}
-          onPress={() => {
+          onPress={debouncePressEvent(() => {
             navigation.navigate('editValidTimeFrames', navParams)
-          }}
+          })}
         />
 
         <ListItem
@@ -64,9 +69,9 @@ class SettingsScreen extends Component {
           containerStyle={{ borderBottomWidth: 0 }}
           keyExtractor={(item, index) => index}
           wrapperStyle={{marginLeft: 0}}
-          onPress={() => {
+          onPress={debouncePressEvent(() => {
             navigation.navigate('editScheduleSettings', navParams)
-          }}
+          })}
         />
 
         {/*<ListItem*/}

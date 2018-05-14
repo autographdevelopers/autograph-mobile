@@ -31,11 +31,16 @@ import withRequiredData from '../../HOC/withRequiredData';
 /** == Utils =========================================== */
 import listProjectorStyles from '../../Styles/ListProjector';
 import { Colors, Fonts } from '../../Themes/';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 
 const VISIBLE_ACTIVITIES_NO = 3;
 const VISIBLE_LESSONS_NO = 3;
 
 class Profile extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
+
   render() {
     const {
       drivingCourse,

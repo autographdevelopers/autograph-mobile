@@ -17,7 +17,7 @@ import DestroyInvitationConfirmation from '../../Components/DestroyInvitationCon
 /** == HOCs ============================================ */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Constants ============================================ */
-import { FETCHING_STATUS } from '../../Lib/utils';
+import { FETCHING_STATUS} from '../../Lib/utils';
 import { MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
 /** == Action Creators ================================= */
 import { studentsScreenActionCreators } from '../../Redux/Views/StudentsScreenRedux';
@@ -32,7 +32,8 @@ import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { canManageStudents } from '../../Lib/AuthorizationHelpers';
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
-
+import { debouncePressEvent } from '../../Lib/utils';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 
 /** Screen */
 class StudentsIndex extends Component {
@@ -43,6 +44,10 @@ class StudentsIndex extends Component {
       segmentIndex: 0,
       studentId: null
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
   }
 
   changeTab = index => {
@@ -67,7 +72,7 @@ class StudentsIndex extends Component {
           {`Tel. ${item.phone_number}`}
         </Text>
       }
-      onPress={this.goToStudentProfile(item, index)}
+      onPress={debouncePressEvent(this.goToStudentProfile(item, index))}
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       containerStyle={{ borderBottomWidth: 0 }}
     />
@@ -164,7 +169,7 @@ class StudentsIndex extends Component {
             />
           </List>
           <ActionButton buttonColor={Colors.primaryWarm}
-                        onPress={() => navigate('inviteStudent')} />
+                        onPress={debouncePressEvent(() => navigate('inviteStudent'))} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_STUDENT_INVITATION}
             status={invitationDestroyStatus}

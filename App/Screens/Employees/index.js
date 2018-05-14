@@ -18,7 +18,7 @@ import DestroyInvitationConfirmation from '../../Components/DestroyInvitationCon
 /** == HOCs ============================================ */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Constants ============================================ */
-import { FETCHING_STATUS } from '../../Lib/utils';
+import {  FETCHING_STATUS } from '../../Lib/utils';
 import { MODALS_IDS } from '../../Redux/Views/Modals/ModalRedux';
 /** == Action Creators ================================= */
 import { employeesScreenActionCreators } from '../../Redux/Views/EmploeesScreenRedux';
@@ -32,7 +32,8 @@ import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
 import { canManageEmployees } from '../../Lib/AuthorizationHelpers';
 import { Fonts, Colors } from '../../Themes/';
 import listProjectorStyles from '../../Styles/ListProjector';
-
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
+import { debouncePressEvent } from '../../Lib/utils';
 
 /** Screen */
 class EmployeesIndex extends Component {
@@ -42,6 +43,10 @@ class EmployeesIndex extends Component {
       segmentIndex: 0,
       employeeId: null
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
   }
 
   changeTab = index => {
@@ -65,7 +70,7 @@ class EmployeesIndex extends Component {
       subtitle={<EmployeeRolesSubtitle employeePrivileges={item.privileges}/>}
       leftIcon={<DefaultAvatar name={item.name} index={index}/>}
       containerStyle={{ borderBottomWidth: 0 }}
-      onPress={this.goToUserProfile(item, index)}
+      onPress={debouncePressEvent(this.goToUserProfile(item, index))}
     />
   );
 
@@ -165,7 +170,7 @@ class EmployeesIndex extends Component {
               }
               />
           </List>
-          <ActionButton buttonColor={Colors.primaryWarm} onPress={()=>navigation.navigate('inviteEmployee')} />
+          <ActionButton buttonColor={Colors.primaryWarm} onPress={debouncePressEvent(()=>navigation.navigate('inviteEmployee'))} />
           <ModalTemplate
             modalID={MODALS_IDS.DESTROY_EMPLOYEE_INVITATION}
             status={invitationDestroyStatus}

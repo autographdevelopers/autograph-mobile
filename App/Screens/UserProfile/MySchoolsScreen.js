@@ -38,6 +38,7 @@ import {
   isDrivingSchoolAwaitingActivation,
   isDrivingSchoolRelationPending,
 } from '../../Lib/DrivingSchoolHelpers';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 import { Colors,Fonts } from '../../Themes';
 
 const SECTION_TITLES = {
@@ -55,6 +56,10 @@ class MySchoolsScreen extends Component {
   navigateToNewDrivingSchoolForm = () => {
     this.props.navigation.navigate('newDrivingSchool');
   };
+
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
 
   navigateToSchoolContext = school => {
     const {
@@ -132,7 +137,7 @@ class MySchoolsScreen extends Component {
           <View style={styles.headerWithBtn}>
             <SectionHeader title={section.title}/>
             <ButtonText
-              onPress={this.navigateToNewDrivingSchoolForm}
+              onPress={()=>{this.props.navigation.navigate('newDrivingSchool')}}
               customTextStyle={{ fontSize: Fonts.size.small }}
               icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
               visible={isEmployee(this.props.user)}>
@@ -149,6 +154,10 @@ class MySchoolsScreen extends Component {
     data.length === 0 ? [{ sectionPlaceholder: placeHolder }] : data;
 
   render() {
+    console.log('****************************');
+    console.log('rerendering myShcools screen');
+    console.log('****************************');
+
     if ( this.props.drivingSchools.status === FETCHING_STATUS.FETCHING )
       return <SpinnerView/>;
 

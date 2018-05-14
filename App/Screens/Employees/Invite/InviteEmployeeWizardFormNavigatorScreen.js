@@ -6,6 +6,7 @@ import { destroy } from 'redux-form';
 import React, { Component } from 'react';
 import { View, Alert } from 'react-native';
 /** Custom components */
+import { stackNavigatorConfig } from '../../../Config/NavigationConfig';
 import ButtonPrimary from '../../../Components/ButtonPrimary';
 import DataScreen from './PersonalDataStep';
 import PrivilegesScreen from './PrivilegesStep';
@@ -21,6 +22,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   navigationOptions: props => {
     const { routeName } = props.navigation.state;
     const index = parseInt(routeName.charAt(routeName.length - 1));

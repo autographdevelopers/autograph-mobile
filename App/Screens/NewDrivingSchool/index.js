@@ -13,11 +13,11 @@ import ScheduleSettings from './ScheduleSettings';
 import ConfirmRegistration from './ConfirmRegistration';
 
 /** Other */
+import { STACK_TRANSITION_DURATION } from '../../Config/NavigationConfig';
 import navStyles from '../../Navigation/Styles/NavigationStyles';
 import ButtonPrimary from '../../Components/ButtonPrimary';
 import StepsIndicators from '../../Components/StepsIndicators';
 import FORM_IDS from './Constants';
-import { Fonts, Colors } from '../../Themes/';
 import Layout from '../../Components/Layout';
 import NavHeader from '../../Components/NavHeader';
 
@@ -56,6 +56,7 @@ const navigationConfigs = {
   },
   transitionConfig: () => ({
     containerStyle: {
+      duration: STACK_TRANSITION_DURATION,
       backgroundColor: 'transparent'
     }
   }),

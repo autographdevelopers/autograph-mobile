@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
+import { debouncePressEvent } from '../Lib/utils';
 
 export default ButtonOutline = ({ color=Colors.snow, children, onPress, submitting=false }) => {
   const styles = StyleSheet.create({
@@ -27,7 +28,7 @@ export default ButtonOutline = ({ color=Colors.snow, children, onPress, submitti
   if(submitting) {
     body = <ActivityIndicator size={'large'} color={color}/>
   } else {
-    body = (<TouchableOpacity style={styles.button} onPress={onPress}>
+    body = (<TouchableOpacity style={styles.button} onPress={debouncePressEvent(onPress)}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>)
   }

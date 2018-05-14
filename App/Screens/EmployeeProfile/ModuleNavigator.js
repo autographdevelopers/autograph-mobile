@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { stackNavigatorConfig } from '../../Config/NavigationConfig';
 import Profile from './Profile';
 import EditPrivileges from './Privileges/EditPrivileges';
 import AvailabilityForm from './Availability/AvailabilityForm';
@@ -24,6 +25,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   navigationOptions: ({ navigation }) => {
     return {
       header: <EmployeeProfileHeader navigation={navigation} />

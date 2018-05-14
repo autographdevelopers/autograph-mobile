@@ -40,6 +40,7 @@ import PersonalSettings from '../Screens/PersonalSettings';
 
 import EmployeeDailyAgenda from '../Screens/EmployeeDailyAgenda';
 import I18n from '../I18n';
+import { STACK_TRANSITION_DURATION } from '../Config/NavigationConfig';
 
 const primaryFlowNavigationOptions = ({navigation}) => {
   const { routes, index, params } = navigation.state;
@@ -234,7 +235,8 @@ const navigationConfigs = {
   cardStyle: styles.card,
   transitionConfig: () => ({
     containerStyle: {
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      duration: STACK_TRANSITION_DURATION
     }
   }),
   navigationOptions: {

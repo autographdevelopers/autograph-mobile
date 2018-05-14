@@ -17,10 +17,15 @@ import { getEmployeesSummaryAgenda } from '../Selectors/Slots';
 /** == Utilities  ====================================== */
 import withRequiredData from '../HOC/withRequiredData';
 import { timeHelpers } from '../Lib/timeHandlers';
+import { propsChangedOnlyByNavigation } from '../Lib/utils';
 /** == Constants  ====================================== */
 import { SLOTS_FETCHED_CALLBACKS } from '../Redux/Entities/SlotsRedux';
 
 class EmployeesSummaryAgenda extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
+
   onDaySelected = date => {
     const { dateString } = date;
     const {

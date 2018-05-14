@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import LoginScreen from './LoginScreen';
 import LaunchScreen from './LaunchScreen';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
+import { stackNavigatorConfig } from '../../Config/NavigationConfig';
 import { Text, ScrollView, TouchableOpacity, View, Animated } from 'react-native';
 import FancyBackground from '../../Components/FancyBackground';
 import { Fonts, Metrics, Colors } from '../../Themes/';
 import { StyleSheet } from 'react-native';
 import Layout from '../../Components/Layout';
 import I18n from '../../I18n/';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 
 const routeConfigs = {
   login: {
@@ -21,6 +22,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   initialRouteName: 'launch',
   cardStyle: {
     backgroundColor: 'transparent', // TODO check why needed
@@ -48,6 +50,7 @@ class LaunchLoginPair extends Component {
       },
     ).start();
   };
+
 
   render() {
 

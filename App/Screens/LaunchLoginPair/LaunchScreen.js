@@ -5,32 +5,40 @@ import { StyleSheet } from 'react-native';
 import ButtonOutline from '../../Components/ButtonOutline';
 import ButtonWhiteFill from '../../Components/ButtonWhiteFill';
 import I18n from '../../I18n/';
+import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 
-export default LaunchScreen = ({navigation, screenProps}) => {
+export default class LaunchScreen extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !propsChangedOnlyByNavigation(nextProps, this.props);
+  }
 
-  return (
-    <View style={[styles.section, styles.actions]}>
-      <View style={styles.actionWrapper}>
-        <Text style={styles.label}>
-          {I18n.t('not_have_account')}
-        </Text>
-        <ButtonWhiteFill onPress={() => {
-          navigation.navigate('signUp');
-        }}>
-          {I18n.t('register')}
-        </ButtonWhiteFill>
+  render () {
+    const {navigation, screenProps} = this.props;
+
+    return (
+      <View style={[styles.section, styles.actions]}>
+        <View style={styles.actionWrapper}>
+          <Text style={styles.label}>
+            {I18n.t('not_have_account')}
+          </Text>
+          <ButtonWhiteFill onPress={() => {
+            navigation.navigate('signUp');
+          }}>
+            {I18n.t('register')}
+          </ButtonWhiteFill>
+        </View>
+        <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
+          <Text style={styles.label}>{I18n.t('have_account')}</Text>
+          <ButtonOutline onPress={() => {
+            navigation.navigate('login');
+            screenProps.toggleSlogan();
+          }}>
+            {I18n.t('login')}
+          </ButtonOutline>
+        </View>
       </View>
-      <View style={[styles.actionWrapper, styles.actionWrapperLast]}>
-        <Text style={styles.label}>{I18n.t('have_account')}</Text>
-        <ButtonOutline onPress={() => {
-          navigation.navigate('login');
-          screenProps.toggleSlogan();
-        }}>
-          {I18n.t('login')}
-        </ButtonOutline>
-      </View>
-    </View>
-  );
+    );
+  }
 };
 
 LaunchScreen.navigationOptions = {

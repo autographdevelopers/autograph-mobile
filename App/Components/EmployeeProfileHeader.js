@@ -10,6 +10,7 @@ import NavHeader from '../Components/NavHeader';
 import { Fonts, Colors } from '../Themes/';
 import DefaultAvatar from './DefaultAvatar';
 import ButtonText from './ButtonText';
+import { debouncePressEvent } from '../Lib/utils';
 
 const DURATION = 350;
 const AVATAR_SMALL_SIZE = 45;
@@ -147,12 +148,12 @@ export default class EmployeeProfileHeader extends Component  {
 
             <Animated.Text style={[styles.secondaryInfo, { marginTop: 3 }, textAnimationStyles]}>{`email: ${user.email}`}</Animated.Text>
 
-            <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' }))}
+            <ButtonText onPress={debouncePressEvent(this.resizeHeaderAndRedirect(() => navigation.navigate('editPrivileges', { user, index, title: 'Ustaw uprawnienia' })))}
               customTextStyle={[textAnimationStyles, { marginTop: 3 }]}>
               Zarzadzaj pracownikiem
             </ButtonText>
 
-            <ButtonText onPress={this.resizeHeaderAndRedirect(() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' }))}
+            <ButtonText onPress={debouncePressEvent(this.resizeHeaderAndRedirect(() => navigation.navigate('availabilityIndex', { user, index, title: 'Dyspozycyjnosc' })))}
                         customTextStyle={[textAnimationStyles, { marginTop: 3 }]}>
               Ustaw dyspozycyjnosc
             </ButtonText>

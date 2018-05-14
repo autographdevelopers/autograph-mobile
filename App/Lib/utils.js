@@ -1,4 +1,7 @@
 import { View, ScrollView } from 'react-native';
+import _ from 'lodash';
+import { STACK_TRANSITION_DURATION } from '../Config/NavigationConfig';
+
 export const deepClone = entity => ( JSON.parse(JSON.stringify(entity)) );
 export const arrayToHash = array => array.reduce((accumulator, current) => {
   accumulator[current.id] = current;
@@ -21,6 +24,19 @@ export const isTemplateEmpty = template => {
     && template['friday'] && template['friday'].length === 0
     && template['saturday'] && template['saturday'].length === 0
     && template['sunday'] && template['sunday'].length === 0
+};
+
+export const propsChangedOnlyByNavigation = (nextProps, currentProps) => {
+  const _nextProps = _.cloneDeep(nextProps);
+  const _currentProps = _.cloneDeep(currentProps);
+  delete _nextProps['navigation'];
+  delete _currentProps['navigation'];
+
+  return  _.isEqual(_nextProps, _currentProps);
+};
+
+export const debouncePressEvent = onPress => {
+  return _.debounce(onPress, 2*STACK_TRANSITION_DURATION, { leading: true, trailing: false })
 };
 
 String.prototype.capitalize = function() {

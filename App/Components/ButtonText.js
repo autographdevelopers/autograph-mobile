@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, Animated } from 'react-native';
+import { debouncePressEvent } from '../Lib/utils';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors } from '../Themes/';
+import _ from 'lodash';
 
 export default ButtonText = ({ children, position, onPress, customStyle={}, customTextStyle={}, icon, visible=true }) => {
   const styles = StyleSheet.create({
@@ -20,8 +22,9 @@ export default ButtonText = ({ children, position, onPress, customStyle={}, cust
 
   let body = null;
 
+
   if(visible)
-    body = <TouchableOpacity style={[styles.button, customStyle]} onPress={onPress}>
+    body = <TouchableOpacity style={[styles.button, customStyle]} onPress={debouncePressEvent(onPress)}>
       {icon}
       <Animated.Text style={[styles.text, customTextStyle]}>{children}</Animated.Text>
     </TouchableOpacity>

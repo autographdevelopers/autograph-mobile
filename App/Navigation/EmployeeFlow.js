@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import { EmployeeTabNavigator } from './TabNavigation';
 import MySchoolsScreen from '../Screens/UserProfile/MySchoolsScreen';
+import { stackNavigatorConfig } from '../Config/NavigationConfig';
 import styles from './Styles/NavigationStyles';
 import { withModals } from './WithModalsHOC';
 import withFluidLayout from '../HOC/withFluidLayout';
@@ -16,6 +17,7 @@ const routeConfigs = {
 };
 
 const navigationConfigs = {
+  ...stackNavigatorConfig,
   mode: 'modal',
   headerMode: 'none',
   cardStyle: styles.card,
