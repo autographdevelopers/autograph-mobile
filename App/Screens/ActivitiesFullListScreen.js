@@ -19,7 +19,7 @@ class ActivitiesFullListScreen extends Component {
   }
 
   loadMore = () => {
-    if (this.props.endReached) return;
+    if (this.props.endReached || this.props.fetchingMore) return;
 
     this.props.requestMoreActivities({ page: this.props.nextPage });
   };

@@ -8,7 +8,7 @@ export function* index(api, action) {
   const response = yield call(api.activities.index, action.params);
 
   if (response.ok) {
-    yield put(activityActionCreators.saveCollection(response.data, action.activityDisplayType));
+    yield put(activityActionCreators.saveCollection(response.data));
     yield put(activityActionCreators.changeStatus(FETCHING_STATUS.READY));
     return response.data;
   } else {

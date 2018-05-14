@@ -17,6 +17,6 @@ export function* requestDataForMyActivitesScreen(api, action) {
 export function* requestMoreActivities(api, action) {
     yield put(myActivitiesScreenActionCreators.setFetchingMoreFlag(true));
     const activities = yield call(myActivities, api, action);
-    yield put(myActivitiesScreenActionCreators.saveActivities(activities));
+    yield put(myActivitiesScreenActionCreators.saveActivities(activities || []));
     yield put(myActivitiesScreenActionCreators.setFetchingMoreFlag(false));
 }

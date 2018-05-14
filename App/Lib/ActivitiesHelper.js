@@ -11,13 +11,7 @@ export const ACTIVITY_TYPE = {
   schedule_changed: 'schedule_changed',
   driving_lesson_canceled: 'driving_lesson_canceled',
   driving_lesson_scheduled: 'driving_lesson_scheduled'
-}
-
-export const ACTIVITY_DISPLAY_TYPE = {
-  USER_ACTIVITIES_FEED: 'USER_ACTIVITIES_FEED',
-  MY_ACTIVITIES: 'MY_ACTIVITIES',
-  ACTIVITIES_LIST: 'ACTIVITIES_LIST',
-}
+};
 
 export const ACTIVITY_IMAGE = {
   student_invitation_sent: require('../Images/activities/invitation_sent.png'),
@@ -32,4 +26,4 @@ export const ACTIVITY_IMAGE = {
   schedule_changed: require('../Images/activities/schedule_changed.png'),
   driving_lesson_canceled: require('../Images/activities/driving_lesson_canceled.png'),
   driving_lesson_scheduled: require('../Images/activities/driving_lesson_scheduled.png')
-}
+};
