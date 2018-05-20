@@ -3,11 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Text,
-  FlatList,
   SectionList,
   View,
-  ActivityIndicator,
-  StyleSheet
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,14 +27,9 @@ import ModalTemplate from '../../Components/ModalTemplate';
 import SectionHeader from '../../Components/SectionHeader';
 import InfoBox from '../../Components/InfoBox';
 /** == Selectors ============================ */
-import { getCurrentDrivingSchool } from '../../Selectors/DrivingSchool';
+import * as schoolSelectors from '../../Selectors/DrivingSchool';
 /** == Utils ============================ */
 import { isEmployee, isStudent, isDrivingSchoolOwner } from '../../Lib/AuthorizationHelpers'
-import {
-  isDrivingSchoolRelationActive,
-  isDrivingSchoolAwaitingActivation,
-  isDrivingSchoolRelationPending,
-} from '../../Lib/DrivingSchoolHelpers';
 import { propsChangedOnlyByNavigation } from '../../Lib/utils';
 import { Colors,Fonts } from '../../Themes';
 
@@ -53,17 +45,13 @@ class MySchoolsScreen extends Component {
     this.props.fetchSchoolsRequest();
   };
 
-  navigateToNewDrivingSchoolForm = () => {
-    this.props.navigation.navigate('newDrivingSchool');
-  };
-
   shouldComponentUpdate(nextProps) {
     return !propsChangedOnlyByNavigation(nextProps, this.props);
   }
 
   navigateToSchoolContext = school => {
     const {
-      user,
+      currentUser,
       navigation: { dispatch, goBack },
       saveDrivingSchool,
       currentDrivingSchool,
@@ -89,12 +77,12 @@ class MySchoolsScreen extends Component {
 
     /** Navigate to proper tabs depending on user role */
     let userType;
-    if ( isEmployee(user) ) {
+    if ( isEmployee(currentUser) ) {
       if ( isDrivingSchoolOwner(school) )
         userType = 'owner';
       else
         userType = 'employee';
-    } else if ( isStudent(user) ) {
+    } else if ( isStudent(currentUser) ) {
         userType = 'student';
     }
     const resetAction = NavigationActions.reset({
@@ -104,7 +92,7 @@ class MySchoolsScreen extends Component {
           NavigationActions.navigate(
             {
               routeName: `${userType}Flow`,
-              params: { drivingSchool: school, user },
+              params: { drivingSchool: school, user: currentUser },
             }
           )
       ],
@@ -140,7 +128,7 @@ class MySchoolsScreen extends Component {
               onPress={()=>{this.props.navigation.navigate('newDrivingSchool')}}
               customTextStyle={{ fontSize: Fonts.size.small }}
               icon={<Icon name={'plus'} size={16} color={Colors.primaryWarm}/>}
-              visible={isEmployee(this.props.user)}>
+              visible={isEmployee(this.props.currentUser)}>
               Dodaj Szkołę
             </ButtonText>
           </View>
@@ -154,11 +142,7 @@ class MySchoolsScreen extends Component {
     data.length === 0 ? [{ sectionPlaceholder: placeHolder }] : data;
 
   render() {
-    console.log('****************************');
-    console.log('rerendering myShcools screen');
-    console.log('****************************');
-
-    if ( this.props.drivingSchools.status === FETCHING_STATUS.FETCHING )
+    if ( this.props.drivingSchoolsFetchingStatus === FETCHING_STATUS.FETCHING )
       return <SpinnerView/>;
 
     const {
@@ -168,8 +152,8 @@ class MySchoolsScreen extends Component {
       schoolActivationStatus,
       resetSchoolActivationState,
       navigation,
-      user,
-      drivingSchools: { status }
+      currentUser,
+      drivingSchoolsFetchingStatus
     } = this.props;
 
     const mySchools = [
@@ -188,11 +172,11 @@ class MySchoolsScreen extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <AccountHeader user={user} navigation={navigation}/>
+        <AccountHeader user={currentUser} navigation={navigation}/>
 
-        { status === FETCHING_STATUS.SUCCESS &&
+        { drivingSchoolsFetchingStatus === FETCHING_STATUS.SUCCESS &&
           <SectionList
-            contentContainerStyle={styles.listContainer}
+            showsVerticalScrollIndicator={false}
             sections={sections}
             stickySectionHeadersEnabled={true}
             keyExtractor={(s, _) => `drivingSchool-${s.id}`}
@@ -200,7 +184,6 @@ class MySchoolsScreen extends Component {
             renderItem={this.renderListItem}
           />
         }
-
 
         <ModalTemplate
           modalID={MODALS_IDS.ACTIVATE_SCHOOL}
@@ -215,37 +198,25 @@ class MySchoolsScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   headerWithBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: Colors.snow,
     alignItems: 'center'
   }
-});
-
-const mapStateToProps = state => {
-  const { drivingSchools } = state.entities;
-  const { invitations } = state.views;
-  const { currentUser } = state.access;
-  const { modals: { schoolActivation } } = state.views;
-
-  return {
-    activeDrivingSchools: Object.values(drivingSchools.hashMap)
-                                .filter(isDrivingSchoolRelationActive),
-    invitingDrivingSchools: Object.values(drivingSchools.hashMap)
-                                  .filter(isDrivingSchoolRelationPending),
-    awaitingActivationDrivingSchools: Object.values(drivingSchools.hashMap)
-                                            .filter(
-                                              isDrivingSchoolAwaitingActivation),
-    drivingSchools,
-    invitations,
-    user: currentUser,
-    schoolActivationStatus: schoolActivation.status,
-    invitationsStatus: invitations.status,
-    currentDrivingSchool: getCurrentDrivingSchool(state)
-  }
 };
+
+const mapStateToProps = state => ({
+  activeDrivingSchools: schoolSelectors.getActiveDrivingSchools(state),
+  invitingDrivingSchools: schoolSelectors.getInvitingDrivingSchools(state),
+  awaitingActivationDrivingSchools: schoolSelectors.getAwaitingActivationDrivingSchools(state),
+  drivingSchoolsFetchingStatus: state.entities.drivingSchools.status,
+  currentUser: state.access.currentUser,
+  schoolActivationStatus: state.views.modals.schoolActivation.status,
+  invitationsStatus: state.views.invitations.status,
+  currentDrivingSchool: schoolSelectors.getCurrentDrivingSchool(state)
+});
 
 const mapDispatchToProps = dispatch => ({
   saveDrivingSchool: school => dispatch(drivingSchoolActionCreators.saveSingle(school)),

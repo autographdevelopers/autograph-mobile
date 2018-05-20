@@ -240,7 +240,8 @@ const navigationConfigs = {
     }
   }),
   navigationOptions: {
-    headerTruncatedBackTitle: 'Wstecz',
+    headerTruncatedBackTitle: null,
+    headerBackTitle: null,
     headerTintColor: 'white',
     headerBackground: <NavigationHeaderBackground/>,
     headerMode: 'screen',
