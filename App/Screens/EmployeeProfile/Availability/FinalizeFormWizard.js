@@ -135,7 +135,7 @@ class FinalizeFormWizard extends Component {
 
 const mapStateToProps = state => {
   const showBindingFromStepForCurrentSchedule =
-    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.schedule.new_template_binding_from == null;
+    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.entities.schedule.new_template_binding_from == null;
 
   const showBindingFromStepForNewSchedule =
     state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE;
