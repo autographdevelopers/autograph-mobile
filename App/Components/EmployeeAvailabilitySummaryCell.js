@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Fonts, Colors } from '../Themes/index';
-import DefaultAvatar from './DefaultAvatar';
 import { PieChart } from 'react-native-svg-charts';
 import ButtonText from '../Components/ButtonText';
 import { slotHelper } from '../Lib/SlotHelpers';

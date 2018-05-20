@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
-import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Fonts, Colors } from '../Themes/'
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
+import {  Colors } from '../Themes/'
 
 export default () => (
   <LinearGradient start={{ x: 0.0, y: 0.5 }}

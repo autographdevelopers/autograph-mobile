@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.extraSmall,
     fontWeight: '500'
   }
-})
+});

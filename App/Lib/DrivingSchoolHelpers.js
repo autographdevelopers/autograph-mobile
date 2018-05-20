@@ -9,10 +9,8 @@ export const DRIVING_SCHOOL_RELATION_STATUS = {
 }
 
 export const isDrivingSchoolRelationActive = school =>
-  school.status === DRIVING_SCHOOL_STATUS.ACTIVE && (
-    school.relation_status === DRIVING_SCHOOL_RELATION_STATUS.ACTIVE ||
-    school.relation_status === DRIVING_SCHOOL_RELATION_STATUS.ACTIVE
-  )
+  school.status === DRIVING_SCHOOL_STATUS.ACTIVE &&
+    school.relation_status === DRIVING_SCHOOL_RELATION_STATUS.ACTIVE;
 
 export const isDrivingSchoolAwaitingActivation = school =>
   school.status === DRIVING_SCHOOL_STATUS.PENDING &&

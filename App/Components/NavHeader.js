@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Fonts, Colors } from '../Themes/'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import EvilIconsIcon from 'react-native-vector-icons/EvilIcons';
 
 export default NavHeader = ({ navigation, title, back = true, rightIcon, onRightIconPress }) => {
   const displayLeftButton = () => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Fonts, Colors, Metrics } from '../Themes/';
 import Icon from 'react-native-vector-icons/Ionicons';
