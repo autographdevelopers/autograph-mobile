@@ -11,7 +11,7 @@ export const slotHelper = {
     }
   },
   summarizeDay: function(daySlots) {
-    const sortedSlots = daySlots.sort();
+    const sortedSlots = daySlots.sort((a, b) => a-b);
     const groupedSlots = this.groupAdjacentSlots(sortedSlots);
     const intervals = this.mapToHumanReadableIntervals(groupedSlots);
 

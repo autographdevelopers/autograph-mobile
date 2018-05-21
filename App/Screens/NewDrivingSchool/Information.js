@@ -129,21 +129,23 @@ class InformationStep extends Component {
     const { change, error, navigation, submitting } = this.props;
 
     return (
-      <View>
-        <FormErrorMessage>{error}</FormErrorMessage>
-        <KeyboardAwareScrollView>
-          <Field name={'id'}
-                 component={() => <View style={{ height: 0, width: 0 }}/>}/>
-          <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
-          <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
-                 validate={[required, address]} openListView={this.openListView} closeListView={this.closeListView}
-                 listViewDisplayed={this.state.listViewDisplayed}/>
-          <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
-          <FieldArray name={"emails"} component={renderEmailsCollection}/>
-          <Field name={'website_link'} component={InputField} label={'Witryna Internetowa'}/>
-          <Field name={'additional_information'} component={InputField} label={'Dodadkowe informacje'}
-                 options={{ multiline: true }}/>
-        </KeyboardAwareScrollView>
+      <View style={{justifyContent: 'space-between', flex: 1}}>
+        <View>
+          <FormErrorMessage>{error}</FormErrorMessage>
+          <KeyboardAwareScrollView>
+            <Field name={'id'}
+                   component={() => <View style={{ height: 0, width: 0 }}/>}/>
+            <Field name={'name'} component={InputField} label={'Nazwa'} asterix={true} validate={required}/>
+            <Field name={'street'} component={PlacesAutocomplete} label={'Adres'} asterix={true} setValue={change}
+                   validate={[required, address]} openListView={this.openListView} closeListView={this.closeListView}
+                   listViewDisplayed={this.state.listViewDisplayed}/>
+            <FieldArray name={"phone_numbers"} component={renderPhoneNumbersCollection}/>
+            <FieldArray name={"emails"} component={renderEmailsCollection}/>
+            <Field name={'website_link'} component={InputField} label={'Witryna Internetowa'}/>
+            <Field name={'additional_information'} component={InputField} label={'Dodadkowe informacje'}
+                   options={{ multiline: true }}/>
+          </KeyboardAwareScrollView>
+        </View>
         {navigation.state.params && navigation.state.params.id &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>}
       </View>

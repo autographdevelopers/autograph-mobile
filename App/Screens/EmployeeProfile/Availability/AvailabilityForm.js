@@ -68,7 +68,8 @@ class AvailabilityForm extends Component {
     return <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.scheduleContainer}
-      ListHeaderComponent={this.state.startFrom === 12 && <Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
+      ListEmptyComponent={<Text style={styles.blank}>Szkoła zamknięta</Text>}
+      ListHeaderComponent={this.state.startFrom === 12 && slotsIds.length > 0 && <Text style={styles.loadMoreText}>Pull down to load earliers slots.</Text>}
       keyExtractor={this._keyExtractor}
       data={slotsIds.slice(this.state.startFrom)}
       renderItem={this._renderSlot(day)}
@@ -148,6 +149,11 @@ const styles = {
     paddingLeft: 45, // the same as width of the left side of the slot - needed for centering
     fontSize: Fonts.size.small,
     paddingVertical: 10,
+    color: Colors.strongGrey
+  },
+  blank: {
+    textAlign: 'center',
+    marginTop: 50,
     color: Colors.strongGrey
   }
 };

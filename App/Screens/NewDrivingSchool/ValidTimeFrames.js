@@ -81,47 +81,49 @@ class ScheduleBoundaries extends Component {
     const currentDayLabel= I18n.t(`weekdays.normal.${WEEKDAYS[currentDay]}`);
 
     return (
-      <View>
-        <FormErrorMessage>{error}</FormErrorMessage>
-        <View style={[styles.currentWeekdayRow, styles.row]}>
-          <TouchableOpacity onPress={this.prevDay}>
-            <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
-          </TouchableOpacity>
-          <Text style={styles.currentWeekday}>{currentDayLabel}</Text>
-          <TouchableOpacity onPress={this.nextDay}>
-            <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
-          </TouchableOpacity>
-        </View>
-
-        <FormSection name={PARAM_NAME}>
-          <View>
-            {WEEKDAYS.map((day, index) => {
-                if( currentDay === index) {
-                  return (
-                    <Field name={day}
-                           component={ScheduleBoundariesPicker}
-                           setFormValue={change}
-                           paramName={PARAM_NAME}
-                           initForm={initialize}
-                    />
-                  )
-                } else {
-                  return null;
-                }
-            })}
-
-            {WEEKDAYS.map((day, index) => (
-              <Field name={day}
-                     key={`day-summary-checkbox-row-${index}`}
-                     component={WeekdayTimeFrames}
-                     setFormValue={change}
-                     active={index===currentDay}
-                     handlePress={this.setDay(index)}
-                     validate={slotHelper.validateFrames}/>
-            ))}
+      <View style={styles.container}>
+        <View>
+          <FormErrorMessage>{error}</FormErrorMessage>
+          <View style={[styles.currentWeekdayRow, styles.row]}>
+            <TouchableOpacity onPress={this.prevDay}>
+              <Icon name={'angle-left'} size={30} color={Colors.primaryWarm}/>
+            </TouchableOpacity>
+            <Text style={styles.currentWeekday}>{currentDayLabel}</Text>
+            <TouchableOpacity onPress={this.nextDay}>
+              <Icon name={'angle-right'} size={30} color={Colors.primaryWarm}/>
+            </TouchableOpacity>
           </View>
-        </FormSection>
 
+          <FormSection name={PARAM_NAME}>
+            <View>
+              {WEEKDAYS.map((day, index) => {
+                  if( currentDay === index) {
+                    return (
+                      <Field name={day}
+                             component={ScheduleBoundariesPicker}
+                             key={`day-summary-picker-${index}`}
+                             setFormValue={change}
+                             paramName={PARAM_NAME}
+                             initForm={initialize}
+                      />
+                    )
+                  } else {
+                    return null;
+                  }
+              })}
+
+              {WEEKDAYS.map((day, index) => (
+                <Field name={day}
+                       key={`day-summary-checkbox-row-${index}`}
+                       component={WeekdayTimeFrames}
+                       setFormValue={change}
+                       active={index===currentDay}
+                       handlePress={this.setDay(index)}
+                       validate={slotHelper.validateFrames}/>
+              ))}
+            </View>
+          </FormSection>
+        </View>
         {navigation.state.params && navigation.state.params.id &&
           <ButtonPrimary submitting={submitting} onPress={this.submitForm}>Zapisz</ButtonPrimary>
         }
@@ -171,6 +173,10 @@ const mapDispatchToProps = (dispatch, otherProps) => {
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBoundaries);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between'
+  },
   currentWeekdayRow: {
     flexDirection: 'row',
     justifyContent: 'center',

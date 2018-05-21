@@ -114,7 +114,6 @@ class FinalizeFormWizard extends Component {
 
   render() {
     const { showBindingFromStep } = this.props;
-    // TODO: fix this 'width: 100%' issue in modal children
 
     return (
       <View style={{width: '100%'}}>
@@ -135,12 +134,14 @@ class FinalizeFormWizard extends Component {
 
 const mapStateToProps = state => {
   const showBindingFromStepForCurrentSchedule =
-    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE && state.entities.schedule.new_template_binding_from == null;
+    state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.CURRENT_TEMPLATE
+      && state.entities.schedule.new_template_binding_from == null;
 
   const showBindingFromStepForNewSchedule =
     state.views.scheduleForm.schedule_type === TEMPLATE_TYPES.NEW_TEMPLATE;
 
-  const showBindingFromStep = showBindingFromStepForCurrentSchedule || showBindingFromStepForNewSchedule;
+  const showBindingFromStep = showBindingFromStepForCurrentSchedule
+    || showBindingFromStepForNewSchedule;
 
 
   return {

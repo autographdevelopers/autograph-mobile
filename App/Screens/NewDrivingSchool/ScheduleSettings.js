@@ -38,7 +38,8 @@ class ScheduleSettings extends Component {
     const { change, error, navigation, submitting } = this.props;
 
     return (
-      <View>
+      <View style={{ justifyContent: 'space-between', flex: 1 }}>
+        <View>
         <FormErrorMessage>{error}</FormErrorMessage>
         <Field name={'last_minute_booking_enabled'} component={CellSwitch}
                label={'Zapisy na ostatnia chwile'}
@@ -52,6 +53,7 @@ class ScheduleSettings extends Component {
                onChangeHandler={value => change('holidays_enrollment_enabled',
                  value)}
         />
+        </View>
         {navigation.state.params && navigation.state.params.id &&
         <ButtonPrimary submitting={submitting}
                        onPress={this.submitForm}>Zapisz</ButtonPrimary>}

@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   applyToAllDaysContainer: {
-    paddingVertical: 15
+    paddingVertical: 15,
+    paddingLeft: 15
   }
 });
