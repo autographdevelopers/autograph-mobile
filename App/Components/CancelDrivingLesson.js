@@ -23,7 +23,7 @@ const CancelDrivingLessons = ({ cancelRequest, drivingLesson }) => {
         {drivingLesson.start_time}
       </Text>
       <ButtonText
-        onPress={cancelRequest(drivingLesson.id)}
+        onPress={cancelRequest(drivingLesson.id, drivingLesson.student.id, drivingLesson.slots)}
         customTextStyle={{color: Colors.salmon}}
         customStyle={styles.buttonText}>
         Odwołaj
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  cancelRequest: id => () => dispatch(drivingLessonActionCreators.cancelRequest(id))
+  cancelRequest: (id, studentId, slots) => () => dispatch(drivingLessonActionCreators.cancelRequest(id, studentId, slots))
 });
 
 const mapStateToProps = state => ({

@@ -1,5 +1,6 @@
 import { deepClone, FETCHING_STATUS, mergeArraysUniq } from '../../Lib/utils';
 import { createReducer, createActions } from 'reduxsauce';
+import _ from 'lodash';
 
 export const INITIAL_STATE = {
   pending: {},
@@ -18,6 +19,8 @@ const { Types, Creators } = createActions({
   changeStatus: ['status'],
   indicateError: ['msg'],
   destroySinglePending: ['studentId'],
+  subtractAvailableHours: ['id', 'slotsNo'],
+  addAvailableHours: ['id', 'slotsNo'],
   indexRequest: null, /* SAGA */
 }, { prefix: 'STUDENTS_' });
 
@@ -72,8 +75,21 @@ export const destroySinglePendingHandler = (state, { studentId }) => {
   return newState
 };
 
-export const updateStatusHandler = (state, { status }) => ({ ...deepClone(state), status });
+export const subtractAvailableHoursHandler = (state, { id, slotsNo }) => {
+  const newState = _.cloneDeep(state);
+  newState.active[id].available_hours = newState.active[id].available_hours - slotsNo/2;
 
+  return newState;
+};
+
+export const addAvailableHoursHandler = (state, { id, slotsNo }) => {
+  const newState = _.cloneDeep(state);
+  newState.active[id].available_hours = newState.active[id].available_hours + slotsNo/2;
+
+  return newState;
+};
+
+export const updateStatusHandler = (state, { status }) => ({ ...deepClone(state), status });
 /** Reducer */
 
 export const studentsReducer = createReducer(INITIAL_STATE, {
@@ -82,4 +98,6 @@ export const studentsReducer = createReducer(INITIAL_STATE, {
   [Types.CHANGE_STATUS]: updateStatusHandler,
   [Types.INDICATE_ERROR]: indicateErrorHandler,
   [Types.DESTROY_SINGLE_PENDING]: destroySinglePendingHandler,
+  [Types.SUBTRACT_AVAILABLE_HOURS]: subtractAvailableHoursHandler,
+  [Types.ADD_AVAILABLE_HOURS]: addAvailableHoursHandler,
 });

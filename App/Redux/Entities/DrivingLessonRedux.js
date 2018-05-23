@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   save: ['data'],
   changeStatus: ['status'],
   indexRequest: ['params'],
-  cancelRequest: ['id'],
+  cancelRequest: ['id', 'studentId', 'slots'],
   createRequest: ['params'],
   destroySingle: ['lessonId'],
   updateSingle: ['lesson']

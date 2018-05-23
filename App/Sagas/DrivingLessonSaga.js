@@ -4,6 +4,7 @@ import { drivingLessonActionCreators } from '../Redux/Entities/DrivingLessonRedu
 import { slotActionCreators } from '../Redux/Entities/SlotsRedux';
 import { cancelDrivingLessonModalActionCreators } from '../Redux/Views/Modals/CancelDrivingLesson';
 import { bookLessonActionCreators } from '../Redux/Views/Modals/BookLesson';
+import { studentsActionCreators } from '../Redux/Entities/StudentsRedux';
 
 export function* index(api, action) {
   yield put(drivingLessonActionCreators.changeStatus(FETCHING_STATUS.FETCHING));
@@ -25,6 +26,11 @@ export function* cancel(api, action) {
   const response = yield call(api.drivingLesson.cancel, action.id);
 
   if (response.ok) {
+    yield put(studentsActionCreators.addAvailableHours(
+      action.studentId,
+      action.slots.length
+    ));
+
     yield put(slotActionCreators.releaseLesson(action.id));
     yield put(drivingLessonActionCreators.updateSingle(response.data));
     yield put(cancelDrivingLessonModalActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));
@@ -39,6 +45,11 @@ export function* create(api, action) {
   const response = yield call(api.drivingLesson.create, action.params);
 
   if (response.ok) {
+    yield put(studentsActionCreators.subtractAvailableHours(
+      action.params.student_id,
+      action.params.slot_ids.length
+    ));
+
     yield put(drivingLessonActionCreators.save(response.data));
     yield put(slotActionCreators.save(response.data.slots));
     yield put(bookLessonActionCreators.changeStatus(FETCHING_STATUS.SUCCESS));

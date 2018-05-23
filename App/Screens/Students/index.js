@@ -14,6 +14,7 @@ import InvitationInformationTitle from '../../Components/InvitationInformationTi
 import InvitationInformationSubtitle from '../../Components/InvitationInformationSubtitle';
 import ModalTemplate from '../../Components/ModalTemplate';
 import DestroyInvitationConfirmation from '../../Components/DestroyInvitationConfirmation';
+import { ActiveStudentCell } from '../../Components/StudentCell';
 /** == HOCs ============================================ */
 import withRequiredData from '../../HOC/withRequiredData';
 /** == Constants ============================================ */
@@ -66,17 +67,9 @@ class StudentsIndex extends Component {
   };
 
   renderActiveStudent = ({item, index }) => (
-    <ListItem
-      title={`${item.name} ${item.surname}`}
-      subtitle={
-        <Text style={{color: Colors.strongGrey, fontSize: 12, fontWeight: '500'}}>
-          {`Tel. ${item.phone_number}`}
-        </Text>
-      }
-      onPress={debouncePressEvent(this.goToStudentProfile(item, index))}
-      leftIcon={<DefaultAvatar name={item.name} index={index}/>}
-      containerStyle={{ borderBottomWidth: 0 }}
-    />
+    <ActiveStudentCell student={item}
+                       index={index}
+                       onPressCallback={this.goToStudentProfile(item, index)}/>
   );
 
   renderPendingStudent = ({item, index}) => (
