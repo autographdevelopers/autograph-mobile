@@ -5,7 +5,7 @@ import { Colors } from '../Themes';
 import { debouncePressEvent } from '../Lib/utils';
 import Fonts from '../Themes/Fonts';
 
-export const ActiveStudentCell = ({ student, index, onPressCallback }) => {
+export const ActiveStudentCell = ({ student, index, onPressCallback, disabled=false, notEnoughHoursWarning=false }) => {
   return (
     <ListItem
       title={`${student.name} ${student.surname}`}
@@ -16,16 +16,19 @@ export const ActiveStudentCell = ({ student, index, onPressCallback }) => {
       badge={{ value: `${student.available_hours} h`,
         textStyle: { fontSize: Fonts.size.extraSmall,
           fontFamily: Fonts.type.medium,
-          color: Colors.strongGrey }, containerStyle: {
+          // color: Colors.strongGrey,
+          color:  notEnoughHoursWarning ? Colors.salmon : Colors.primaryWarm,
+        }, containerStyle: {
           backgroundColor: 'transparent',
-          borderBottomWidth: 1,
-          borderBottomColor: Colors.primaryWarm,
+          // borderBottomWidth: 2,
+          // borderBottomColor: notEnoughHoursWarning ? Colors.salmon : Colors.primaryWarm,
           paddingBottom: 0,
           borderRadius: 0,
           padding: 0
         } }}
       hideChevron
       leftIcon={<DefaultAvatar name={student.name} index={index}/>}
+      disabled={disabled}
     />
   )
 };

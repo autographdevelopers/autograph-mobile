@@ -288,7 +288,7 @@ class EmployeeDailyAgenda extends Component {
     setBookLessonParams(bookLessonParams);
 
     if(currentUser.type === 'Employee') {
-      navigate('searchStudent', { onResultPress: this.onStudentsSelected })
+      navigate('searchStudent', { onResultPress: this.onStudentsSelected, requestedHours: selectedSlots.length/2 })
     } else if (currentUser.type === 'Student') {
       this.props.openModal(MODALS_IDS.CREATE_DRIVING_LESSON);
     }

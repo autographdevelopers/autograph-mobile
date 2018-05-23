@@ -11,12 +11,16 @@ const StudentsSearchableList = props => {
     callback && callback(id);
   };
 
+  const requestedHours = props.navigation.state.params && props.navigation.state.params.requestedHours;
+
   return (
     <SearchableList
       data={props.students}
-      renderSectionHeader={({section}) => <ListHeaderSmall label={section.title}/>}
+      renderSectionHeader={({ section }) => <ListHeaderSmall label={section.title}/>}
       renderItem={({item, index}) =>
         <ActiveStudentCell student={item}
+                           disabled={requestedHours && item.available_hours < requestedHours }
+                           notEnoughHoursWarning={requestedHours && item.available_hours < requestedHours }
                            onPressCallback={handlePress(item.id)}
                            index={index} />
         }
